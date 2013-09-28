@@ -1,0 +1,868 @@
+<tileset>
+<tile>
+	<texn>GSTONEA1</texn>
+	<texs>GSTONEA1</texs>
+	<texe>GSTONEA2</texe>
+	<texw>GSTONEA2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>0</id>
+</tile>
+
+<tile>
+	<texn>GSTONEB1</texn>
+	<texs>GSTONEB1</texs>
+	<texe>GSTONEB2</texe>
+	<texw>GSTONEB2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>1</id>
+</tile>
+
+<tile>
+	<texn>GSTFLAG1</texn>
+	<texs>GSTFLAG1</texs>
+	<texe>GSTFLAG2</texe>
+	<texw>GSTFLAG2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>2</id>
+</tile>
+
+<tile>
+	<texn>GSTHTLR1</texn>
+	<texs>GSTHTLR1</texs>
+	<texe>GSTHTLR2</texe>
+	<texw>GSTHTLR2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>3</id>
+</tile>
+
+<tile>
+	<texn>BSTCELA1</texn>
+	<texs>BSTCELA1</texs>
+	<texe>BSTCELA2</texe>
+	<texw>BSTCELA2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>4</id>
+</tile>
+
+<tile>
+	<texn>GSTEAGL1</texn>
+	<texs>GSTEAGL1</texs>
+	<texe>GSTEAGL2</texe>
+	<texw>GSTEAGL2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>5</id>
+</tile>
+
+<tile>
+	<texn>BSTCELB1</texn>
+	<texs>BSTCELB1</texs>
+	<texe>BSTCELB2</texe>
+	<texw>BSTCELB2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>6</id>
+</tile>
+
+<tile>
+	<texn>BSTONEA1</texn>
+	<texs>BSTONEA1</texs>
+	<texe>BSTONEA2</texe>
+	<texw>BSTONEA2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>7</id>
+</tile>
+
+<tile>
+	<texn>BSTONEB1</texn>
+	<texs>BSTONEB1</texs>
+	<texe>BSTONEB2</texe>
+	<texw>BSTONEB2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>8</id>
+</tile>
+
+<tile>
+	<texn>WODEAGL1</texn>
+	<texs>WODEAGL1</texs>
+	<texe>WODEAGL2</texe>
+	<texw>WODEAGL2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>9</id>
+</tile>
+
+<tile>
+	<texn>WODHTLR1</texn>
+	<texs>WODHTLR1</texs>
+	<texe>WODHTLR2</texe>
+	<texw>WODHTLR2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>10</id>
+</tile>
+
+<tile>
+	<texn>WOOD1</texn>
+	<texs>WOOD1</texs>
+	<texe>WOOD2</texe>
+	<texw>WOOD2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>11</id>
+</tile>
+
+<tile>
+	<texn>FAKEDOR1</texn>
+	<texs>FAKEDOR1</texs>
+	<texe>FAKEDOR2</texe>
+	<texw>FAKEDOR2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>12</id>
+</tile>
+
+<tile>
+	<texn>METLSGN1</texn>
+	<texs>METLSGN1</texs>
+	<texe>METLSGN2</texe>
+	<texw>METLSGN2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>13</id>
+</tile>
+
+<tile>
+	<texn>METAL1</texn>
+	<texs>METAL1</texs>
+	<texe>METAL2</texe>
+	<texw>METAL2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>14</id>
+</tile>
+
+<tile>
+	<texn>SKY1</texn>
+	<texs>SKY1</texs>
+	<texe>SKY2</texe>
+	<texw>SKY2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>15</id>
+</tile>
+
+<tile>
+	<texn>BRICK1</texn>
+	<texs>BRICK1</texs>
+	<texe>BRICK2</texe>
+	<texw>BRICK2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>16</id>
+</tile>
+
+<tile>
+	<texn>BRIKWRT1</texn>
+	<texs>BRIKWRT1</texs>
+	<texe>BRIKWRT2</texe>
+	<texw>BRIKWRT2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>17</id>
+</tile>
+
+<tile>
+	<texn>PURPLE1</texn>
+	<texs>PURPLE1</texs>
+	<texe>PURPLE2</texe>
+	<texw>PURPLE2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>18</id>
+</tile>
+
+<tile>
+	<texn>BRIKEGL1</texn>
+	<texs>BRIKEGL1</texs>
+	<texe>BRIKEGL2</texe>
+	<texw>BRIKEGL2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>19</id>
+</tile>
+
+<tile>
+	<texn>ELEV1_1</texn>
+	<texs>ELEV1_1</texs>
+	<texe>ELEV1_2</texe>
+	<texw>ELEV1_2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>20</id>
+</tile>
+
+<tile>
+	<texn>ELEV2_1</texn>
+	<texs>ELEV2_1</texs>
+	<texe>ELEV2_2</texe>
+	<texw>ELEV2_2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>21</id>
+</tile>
+
+<tile>
+	<texn>WODCROS1</texn>
+	<texs>WODCROS1</texs>
+	<texe>WODCROS2</texe>
+	<texw>WODCROS2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>22</id>
+</tile>
+
+<tile>
+	<texn>GSTSLME1</texn>
+	<texs>GSTSLME1</texs>
+	<texe>GSTSLME2</texe>
+	<texw>GSTSLME2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>23</id>
+</tile>
+
+<tile>
+	<texn>PURPBLD1</texn>
+	<texs>PURPBLD1</texs>
+	<texe>PURPBLD2</texe>
+	<texw>PURPBLD2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>24</id>
+</tile>
+
+<tile>
+	<texn>GSTLSLM1</texn>
+	<texs>GSTLSLM1</texs>
+	<texe>GSTLSLM2</texe>
+	<texw>GSTLSLM2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>25</id>
+</tile>
+
+<tile>
+	<texn>GSTONEC1</texn>
+	<texs>GSTONEC1</texs>
+	<texe>GSTONEC2</texe>
+	<texw>GSTONEC2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>26</id>
+</tile>
+
+<tile>
+	<texn>GSTSIGN1</texn>
+	<texs>GSTSIGN1</texs>
+	<texe>GSTSIGN2</texe>
+	<texw>GSTSIGN2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>27</id>
+</tile>
+
+<tile>
+	<texn>CHIP1</texn>
+	<texs>CHIP1</texs>
+	<texe>CHIP2</texe>
+	<texw>CHIP2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>28</id>
+</tile>
+
+<tile>
+	<texn>CHPBLDA1</texn>
+	<texs>CHPBLDA1</texs>
+	<texe>CHPBLDA2</texe>
+	<texw>CHPBLDA2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>29</id>
+</tile>
+
+<tile>
+	<texn>CHPBLDB1</texn>
+	<texs>CHPBLDB1</texs>
+	<texe>CHPBLDB2</texe>
+	<texw>CHPBLDB2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>30</id>
+</tile>
+
+<tile>
+	<texn>CHPBLDC1</texn>
+	<texs>CHPBLDC1</texs>
+	<texe>CHPBLDC2</texe>
+	<texw>CHPBLDC2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>31</id>
+</tile>
+
+<tile>
+	<texn>GLASS1</texn>
+	<texs>GLASS1</texs>
+	<texe>GLASS2</texe>
+	<texw>GLASS2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>32</id>
+</tile>
+
+<tile>
+	<texn>BLUSKUL1</texn>
+	<texs>BLUSKUL1</texs>
+	<texe>BLUSKUL2</texe>
+	<texw>BLUSKUL2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>33</id>
+</tile>
+
+<tile>
+	<texn>GRYBRIK1</texn>
+	<texs>GRYBRIK1</texs>
+	<texe>GRYBRIK2</texe>
+	<texw>GRYBRIK2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>34</id>
+</tile>
+
+<tile>
+	<texn>BLUSWAS1</texn>
+	<texs>BLUSWAS1</texs>
+	<texe>BLUSWAS2</texe>
+	<texw>BLUSWAS2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>35</id>
+</tile>
+
+<tile>
+	<texn>GRYVENT1</texn>
+	<texs>GRYVENT1</texs>
+	<texe>GRYVENT2</texe>
+	<texw>GRYVENT2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>36</id>
+</tile>
+
+<tile>
+	<texn>BRIKODD1</texn>
+	<texs>BRIKODD1</texs>
+	<texe>BRIKODD2</texe>
+	<texw>BRIKODD2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>37</id>
+</tile>
+
+<tile>
+	<texn>GRYCRAK1</texn>
+	<texs>GRYCRAK1</texs>
+	<texe>GRYCRAK2</texe>
+	<texw>GRYCRAK2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>38</id>
+</tile>
+
+<tile>
+	<texn>BLUWALL1</texn>
+	<texs>BLUWALL1</texs>
+	<texe>BLUWALL2</texe>
+	<texw>BLUWALL2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>39</id>
+</tile>
+
+<tile>
+	<texn>BSTSIGN1</texn>
+	<texs>BSTSIGN1</texs>
+	<texe>BSTSIGN2</texe>
+	<texw>BSTSIGN2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>40</id>
+</tile>
+
+<tile>
+	<texn>MARB1_1</texn>
+	<texs>MARB1_1</texs>
+	<texe>MARB1_2</texe>
+	<texw>MARB1_2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>41</id>
+</tile>
+
+<tile>
+	<texn>GRYMAPS1</texn>
+	<texs>GRYMAPS1</texs>
+	<texe>GRYMAPS2</texe>
+	<texw>GRYMAPS2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>42</id>
+</tile>
+
+<tile>
+	<texn>BRNSTNA1</texn>
+	<texs>BRNSTNA1</texs>
+	<texe>BRNSTNA2</texe>
+	<texw>BRNSTNA2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>43</id>
+</tile>
+
+<tile>
+	<texn>BRNSTNB1</texn>
+	<texs>BRNSTNB1</texs>
+	<texe>BRNSTNB2</texe>
+	<texw>BRNSTNB2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>44</id>
+</tile>
+
+<tile>
+	<texn>MARB2_1</texn>
+	<texs>MARB2_1</texs>
+	<texe>MARB2_2</texe>
+	<texw>MARB2_2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>45</id>
+</tile>
+
+<tile>
+	<texn>MARB3_1</texn>
+	<texs>MARB3_1</texs>
+	<texe>MARB3_2</texe>
+	<texw>MARB3_2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>46</id>
+</tile>
+
+<tile>
+	<texn>PLASTER1</texn>
+	<texs>PLASTER1</texs>
+	<texe>PLASTER2</texe>
+	<texw>PLASTER2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>47</id>
+</tile>
+
+<tile>
+	<texn>GRYHTLR1</texn>
+	<texs>GRYHTLR1</texs>
+	<texe>GRYHTLR2</texe>
+	<texw>GRYHTLR2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>48</id>
+</tile>
+
+<tile>
+	<texn>SLOT1_1</texn>
+	<texs>SLOT1_1</texs>
+	<texe>DOOR1_2</texe>
+	<texw>DOOR1_2</texw>
+	
+	<offh>false</offh>
+	<offv>true</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>90</id>
+</tile>
+
+<tile>
+	<texn>DOOR1_1</texn>
+	<texs>DOOR1_1</texs>
+	<texe>SLOT1_2</texe>
+	<texw>SLOT1_2</texw>
+	
+	<offh>true</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+	
+	<id>91</id>
+</tile>
+</tileset>
