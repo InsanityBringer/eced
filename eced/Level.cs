@@ -279,6 +279,9 @@ namespace eced
 
         public void updateTriggerHighlight(int x, int y, int z)
         {
+            if (x < 0 || y < 0)
+                return;
+
             if (this.highlightedTrigger == null)
             {
                 highlightTrigger(x, y, z);

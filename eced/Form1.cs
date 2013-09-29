@@ -369,8 +369,8 @@ namespace eced
                 defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, heldMouseButton);
                 //mainLevelPanel.Invalidate();
             }
-            int mapcoordx = (int)((double)e.X * (64d / (double)zoom));
-            int mapcoordy = (int)((double)e.Y * (64d / (double)zoom));
+            int mapcoordx = (int)((double)e.X * (64d / (double)zoom)) + (int)((double)panx * (64d / (double)zoom));
+            int mapcoordy = (int)((double)e.Y * (64d / (double)zoom)) + (int)((double)pany * (64d / (double)zoom));
             currentLevel.updateHighlight(mapcoordx, mapcoordy);
 
             if (defaultBrush is TriggerBrush)
