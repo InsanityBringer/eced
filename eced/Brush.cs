@@ -30,7 +30,22 @@ namespace eced
         {
         }
 
-        public virtual void ApplyToTile(int x, int y, int z, int tilsize, Level level, int button)
+        public virtual void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
+        {
+            int tx = (int)pos.X;
+            int ty = (int)pos.Y;
+            level.setTile(tx, ty, z, null);
+            if (level.getTile(tx - 1, ty, z) != null)
+                level.setTile(tx - 1, ty, z, normalTile);
+            if (level.getTile(tx + 1, ty, z) != null)
+                level.setTile(tx + 1, ty, z, normalTile);
+            if (level.getTile(tx, ty + 1, z) != null)
+                level.setTile(tx, ty + 1, z, normalTile);
+            if (level.getTile(tx, ty - 1, z) != null)
+                level.setTile(tx, ty - 1, z, normalTile);
+        }
+
+        /*public virtual void ApplyToTile(int x, int y, int z, int tilsize, Level level, int button)
         {
             ApplyToTile(x, y, z, tilsize, level);
         }
@@ -48,7 +63,7 @@ namespace eced
                 level.setTile(tx, ty + 1, z, normalTile);
             if (level.getTile(tx, ty - 1, z) != null)
                 level.setTile(tx, ty - 1, z, normalTile);
-        }
+        }*/
 
         public virtual void EndBrush(Level level)
         {

@@ -31,10 +31,10 @@ namespace eced
             this.repeatable = false;
         }
 
-        public override void ApplyToTile(int x, int y, int z, int tilsize, Level level)
+        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {
-            int lx = x / tilsize;
-            int ly = y / tilsize;
+            int lx = (int)pos.X;
+            int ly = (int)pos.Y;
 
             Trigger triggertoput = new Trigger(trigger);
 

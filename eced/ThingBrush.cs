@@ -34,7 +34,8 @@ namespace eced
             this.repeatable = false;
         }
 
-        public override void ApplyToTile(int x, int y, int z, int tilsize, Level level, int button)
+        //public override void ApplyToTile(int x, int y, int z, int tilsize, Level level, int button)
+        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {
             if (button == 0)
             {
@@ -51,16 +52,16 @@ namespace eced
 
                     lx += tilsize; ly += tilsize;*/
 
-                    int lx = x / tilsize;
-                    int ly = y / tilsize;
+                    //int lx = x / tilsize;
+                    //int ly = y / tilsize;
 
                     //Console.WriteLine("placing thing at {0}, {1}", lx, ly);
 
                     Thing lthing = new Thing();
                     lthing.typeid = thing.id;
 
-                    lthing.x = lx;
-                    lthing.y = ly;
+                    lthing.x = pos.X;
+                    lthing.y = pos.Y;
 
                     lthing.flags = flags.getFlags();
                     lthing.angle = flags.angle;
@@ -69,20 +70,14 @@ namespace eced
                 }
                 else
                 {
-                    int lx = x / tilsize;
-                    int ly = y / tilsize;
-
                     int oldchunkx = (int)level.highlighted.x / 16;
                     int oldchunky = (int)level.highlighted.y / 16;
 
                     level.highlighted.moving = true;
-                    level.highlighted.x = lx;
-                    level.highlighted.y = ly;
+                    level.highlighted.x = pos.X;
+                    level.highlighted.y = pos.Y;
 
                     this.repeatable = true;
-
-                    level.markChunkDirty(lx / 16, ly / 16);
-                    level.markChunkDirty(oldchunkx, oldchunky);
                 }
             }
             else if (button == 1)

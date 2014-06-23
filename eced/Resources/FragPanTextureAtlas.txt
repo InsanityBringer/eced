@@ -15,6 +15,12 @@ void main()
 
 	int tileid = texelFetch(mapPlane, itile, 0).r;
 
+	if (tileid < 0)
+	{
+		color = vec4(0.0, 0.0, 0.0, 1.0);
+		return;
+	}
+
 	ivec4 textureInfo = texelFetch(texInfo, ivec2(0, tileid), 0);
 	ivec2 textureRes = textureInfo.rg;
 	ivec2 texOrigin = textureInfo.ba;

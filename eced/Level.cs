@@ -48,6 +48,8 @@ namespace eced
         public Cell highlightedTrigger = null;
         public int[] highlightedPos = new int[2];
 
+        public List<OpenTK.Vector2> updateCells = new List<OpenTK.Vector2>();
+
         public Level(int w, int h, int d, Tile defaultTile)
         {
             Random r = new Random();
@@ -103,7 +105,8 @@ namespace eced
                         internalTileset.Add(tile);
                         Console.WriteLine("tileset size: {0}", internalTileset.Count);
                     }
-                    markChunkDirty(x / 16, y / 16);
+                    //markChunkDirty(x / 16, y / 16);
+                    updateCells.Add(new OpenTK.Vector2(x, y));
                 }
             }
         }
@@ -282,8 +285,10 @@ namespace eced
             {
                 textureData[i * 4 + 0] = 8;
                 textureData[i * 4 + 1] = 8;
-                textureData[i * 4 + 2] = 0;//(short)(i % 16);
-                textureData[i * 4 + 3] = 0;// (short)(i / 16);
+                textureData[i * 4 + 2] = (short)((i % 16) * 8);
+                textureData[i * 4 + 3] = (short)((i / 16) * 8);
+
+                Console.WriteLine("{0} {1} {2} {3}", textureData[i * 4 + 0], textureData[i * 4 + 1], textureData[i * 4 + 2], textureData[i * 4 + 3]);
             }
 
             numTextures = 256;

@@ -407,7 +407,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainLevelPanel.BackColor = System.Drawing.Color.Black;
-            this.mainLevelPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mainLevelPanel.Location = new System.Drawing.Point(210, 28);
             this.mainLevelPanel.Name = "mainLevelPanel";
             this.mainLevelPanel.Size = new System.Drawing.Size(640, 553);

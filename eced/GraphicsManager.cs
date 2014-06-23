@@ -33,6 +33,10 @@ namespace eced
 
         int vboindex = 0;
 
+        int worldTextureID;
+        int resourceTextureID;
+        int atlasTextureID;
+
         Random r = new Random();
 
         public float zoom = 2.0f;
@@ -65,7 +69,9 @@ namespace eced
             int[] tids = new int[4]; GL.GenTextures(4, tids);
 
             GL.ActiveTexture(TextureUnit.Texture0);
-            tids[0] = TextureManager.getTexture(".\\resources\\sneswolftiles.PNG");
+            atlasTextureID = tids[0] = TextureManager.getTexture(".\\resources\\sneswolftiles.PNG");
+            worldTextureID = tids[1];
+            resourceTextureID = tids[2];
 
             GL.ActiveTexture(TextureUnit.Texture1);
             GL.BindTexture(TextureTarget.Texture2D, tids[1]);
@@ -91,11 +97,6 @@ namespace eced
             if (error != ErrorCode.NoError)
             {
                 Console.WriteLine("SETUP TEXTURE GL Error: {0}", error.ToString());
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                Console.WriteLine(tids[i]);
             }
 
             int panUL = GL.GetUniformLocation(program, "pan");
@@ -167,8 +168,16 @@ namespace eced
             //GL.Uniform2(windowUL, winsize);
             GL.Uniform2(windowUL, (int)winsize.X, (int)winsize.Y);
             OpenTK.Matrix4 project = OpenTK.Matrix4.CreateOrthographic(winsize.X / 64f / 8f, winsize.Y / 64f / 8f, -8f, 8f);
-            //OpenTK.Matrix4 project = makeOrthographicMatrix(
             GL.UniformMatrix4(projectUL, false, ref project);
+
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.BindTexture(TextureTarget.Texture2D, worldTextureID);
+
+            GL.ActiveTexture(TextureUnit.Texture2);
+            GL.BindTexture(TextureTarget.Texture2D, resourceTextureID);
+
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, atlasTextureID);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboindex);
             GL.EnableVertexAttribArray(0);
@@ -178,6 +187,30 @@ namespace eced
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
             GL.UseProgram(0);
+        }
+
+        public void updateWorldTexture(Level level)
+        {
+            for (int i = 0; i < level.updateCells.Count; i++)
+            {
+                OpenTK.Vector2 loc = level.updateCells[i];
+                Tile tile = level.getTile((int)loc.X, (int)loc.Y, 0);
+                short[] id = new short[4];
+                if (tile != null)
+                    id[0] = id[1] = id[2] = id[3] = (short)tile.id;
+                else
+                    id[0] = id[1] = id[2] = id[3] = (short)-1;
+
+                GL.ActiveTexture(TextureUnit.Texture1);
+                GL.BindTexture(TextureTarget.Texture2D, worldTextureID);
+
+                GL.TexSubImage2D(TextureTarget.Texture2D, 0, (int)loc.X, (int)loc.Y, 1, 1, PixelFormat.RgbaInteger, PixelType.Short, id);
+
+                GL.BindTexture(TextureTarget.Texture2D, 0);
+                GL.ActiveTexture(TextureUnit.Texture0);
+                Console.WriteLine("heh");
+            }
+            level.updateCells.Clear();
         }
 
         /// <summary>

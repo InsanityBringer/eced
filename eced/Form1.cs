@@ -251,6 +251,7 @@ namespace eced
             if (currentLevel != null)
             {
                 //renderer.renderLevel(currentLevel);
+                renderer.updateWorldTexture(currentLevel);
                 renderer.tempShaderRendererDraw(currentLevel, (uint)program, new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
             }
             GL.Flush();
@@ -372,37 +373,45 @@ namespace eced
             }
         }
 
+        public Vector2 pick(Vector2 mouseCoords)
+        {
+            Vector2 center = new Vector2(mainLevelPanel.Width / 2, mainLevelPanel.Height / 2);
+            Vector2 bstart = new Vector2(center.X - (32 * 8 * zoom) + (pan.X * 64 * 8 * zoom), center.Y - (32 * 8 * zoom) + (pan.Y * 64 * 8 * zoom));
+            //Vector2 bend = new Vector2(32 * 8 * zoom, 32 * 8 * zoom);
+            Vector2 curpos = new Vector2(mouseCoords.X - bstart.X, mouseCoords.Y - bstart.Y);
+            Vector2 tile = new Vector2((curpos.X / (8 * zoom)), (curpos.Y / (8 * zoom)));
+
+            return tile;
+        }
+
         private void mainLevelPanel_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             brushmode = true;
             defaultBrush.normalTile = selectedTile;
-            //int tilex = (e.X + panx);// -(panx % zoom);
-            //int tiley = (e.Y + pany);// -(panx % zoom);
-            //Console.WriteLine("coords: {0}, {1}, tiles: {2}, {3}, pan: {4}, {5}, raw {6}, {7}", e.X, e.Y, tilex / zoom, tiley / zoom, panx, pany, tilex, tiley);
 
             setMouseButton(e);
-            //defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, this.heldMouseButton);
+            defaultBrush.ApplyToTile(pick(new Vector2(e.X, e.Y)), 0, this.currentLevel, this.heldMouseButton);
             mainLevelPanel.Invalidate();
         }
 
         private void mainLevelPanel_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            Vector2 center = new Vector2(mainLevelPanel.Width / 2, mainLevelPanel.Height / 2);
+            /*Vector2 center = new Vector2(mainLevelPanel.Width / 2, mainLevelPanel.Height / 2);
             Vector2 bstart = new Vector2(center.X - (32 * 8 * zoom) + (pan.X * 64 * 8 * zoom), center.Y - (32 * 8 * zoom) + (pan.Y * 64 * 8 * zoom));
             Vector2 bend = new Vector2(32 * 8 * zoom, 32 * 8 * zoom);
             Vector2 curpos = new Vector2(e.X - bstart.X, e.Y - bstart.Y);
-            Vector2 tile = new Vector2((int)(curpos.X / (8 * zoom)), (int)(curpos.Y / (8 * zoom)));
+            Vector2 tile = new Vector2((int)(curpos.X / (8 * zoom)), (int)(curpos.Y / (8 * zoom)));*/
 
-            Console.WriteLine("{0} {1}, center {2} {3}", tile.X, tile.Y, pan.X, pan.Y);
+            //Vector2 tile = pick(new Vector2(e.X, e.Y));
+
+            //Console.WriteLine("{0} {1}, center {2} {3}", tile.X, tile.Y, pan.X, pan.Y);
 
             if (brushmode && defaultBrush.repeatable)
             {
                 //defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, heldMouseButton);
                 //mainLevelPanel.Invalidate();
+                defaultBrush.ApplyToTile(pick(new Vector2(e.X, e.Y)), 0, this.currentLevel, this.heldMouseButton);
             }
-            //int mapcoordx = (int)((double)e.X * (64d / (double)zoom)) + (int)((double)panx * (64d / (double)zoom));
-            //int mapcoordy = (int)((double)e.Y * (64d / (double)zoom)) + (int)((double)pany * (64d / (double)zoom));
-            //currentLevel.updateHighlight(mapcoordx, mapcoordy);
 
             if (defaultBrush is TriggerBrush)
             {

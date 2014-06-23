@@ -24,10 +24,10 @@ namespace eced
 {
     class TileBrush : Brush
     {
-        public override void ApplyToTile(int x, int y, int z, int tilsize, Level level)
+        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {
-            int tx = x / tilsize;
-            int ty = y / tilsize;
+            int tx = (int)pos.X;
+            int ty = (int)pos.Y;
             level.setTile(tx, ty, z, this.normalTile);
         }
     }
