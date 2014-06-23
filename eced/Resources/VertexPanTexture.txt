@@ -1,0 +1,23 @@
+﻿#version 330 core
+
+layout(location=0) in vec4 point;
+layout(location=1) in vec2 uvcoord;
+
+smooth out vec2 tileloc;
+
+uniform vec2 pan;
+uniform ivec2 window;
+uniform float zoom;
+uniform float tilesize;
+uniform float fov; 
+uniform mat4 project;
+
+void main()
+{ 
+    vec4 pannedPt = point + vec4(pan.x, pan.y, 0.0, 0.0);
+	//gl_Position = vec4(point.x, -point.y, 0.0, 1.0);
+	gl_Position = vec4(pannedPt.x * zoom, -pannedPt.y * zoom, pannedPt.z, pannedPt.w) * project;
+    //theColor = color;
+	//tileLoc = (point.xy / tilesize * zoom) / window; 
+	tileloc = point.xy * tilesize; 
+}

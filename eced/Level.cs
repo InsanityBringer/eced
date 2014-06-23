@@ -44,8 +44,6 @@ namespace eced
 
         public int lastFloorCode = 0;
 
-        public RenderChunk[] chunkids;
-
         public Thing highlighted = null;
         public Cell highlightedTrigger = null;
         public int[] highlightedPos = new int[2];
@@ -72,16 +70,6 @@ namespace eced
             if (defaultTile != null)
                 internalTileset.Add(defaultTile);
             Console.WriteLine("tileset size: {0}", internalTileset.Count);
-
-            if (w < 16 && h < 16)
-                chunkids = new RenderChunk[1];
-            else chunkids = new RenderChunk[(w / 16) * (h / 16)];
-
-            for (int i = 0; i < chunkids.Length; i++)
-            {
-                chunkids[i] = new RenderChunk();
-                chunkids[i].listid = i + 1;
-            }
         }
 
         public void addTile(Tile tile)
@@ -122,15 +110,10 @@ namespace eced
 
         public void markChunkDirty(int x, int y)
         {
-            chunkids[(y * (this.width / 16)) + x].dirty = true;
         }
 
         public void markAllChunksDirty()
         {
-            for (int x = 0; x < chunkids.Length; x++)
-            {
-                chunkids[x].dirty = true;
-            }
         }
 
         public void addThing(Thing thing)
@@ -262,6 +245,51 @@ namespace eced
 
             return ltriggerList;
         }*/
+
+        /// <summary>
+        /// Builds a 2-dimensional array representing the data of a single plane
+        /// </summary>
+        /// <param name="layer">The layer to make the plane from</param>
+        public short[] buildPlaneData(int layer)
+        {
+            short[] planeData = new short[this.width * this.height * 4];
+
+            for (int x = 0; x < this.width; x++)
+            {
+                for (int y = 0; y < this.height; y++)
+                {
+                    planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
+                }
+            }
+
+            return planeData;
+        }
+
+        /// <summary>
+        /// Builds a 1-dimensional array representing the data of all known resources
+        /// Required for the renderer. Intended to be uploaded as an RGBA32I texture
+        /// </summary>
+        /// <param name="numTextures">The amount of textures returned in this texture</param>
+        /// <returns></returns>
+        public short[] buildResourceData(ref int numTextures)
+        {
+            short[] textureData = new short[256 * 4];
+
+            //HACK: fills out with 256 8x8 texutres
+            //TODO: get real resource mangament
+
+            for (int i = 0; i < 256; i++)
+            {
+                textureData[i * 4 + 0] = 8;
+                textureData[i * 4 + 1] = 8;
+                textureData[i * 4 + 2] = 0;//(short)(i % 16);
+                textureData[i * 4 + 3] = 0;// (short)(i / 16);
+            }
+
+            numTextures = 256;
+
+            return textureData;
+        }
 
         public void highlightTrigger(int x, int y, int z)
         {

@@ -37,11 +37,14 @@ namespace eced
 
         private int panx = 0, pany = 0;
 
-        private int zoom = 32;
+        private float zoom = 1.0f;
 
         private bool brushmode = false;
         private int heldMouseButton = 0;
         private Bitmap tilelistimg;
+
+        private int VAOid;
+        int program;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -64,7 +67,7 @@ namespace eced
 
             pbTileList.Image = tilelistimg;
 
-            currentLevel = new Level(64, 64, 1, tilelist.tileset[0]);
+            currentLevel = new Level(64, 64, 1, tilelist.tileset[4]);
             currentLevel.localThingList = this.thinglist;
             selectedTile = tilelist.tileset[0];
 
@@ -78,6 +81,34 @@ namespace eced
             this.thingBrush.thinglist = thinglist;
 
             this.updateZoneList();
+
+            //OpenGL 3.x setup
+            VAOid = GL.GenVertexArray();
+            GL.BindVertexArray(VAOid);
+
+            //temp shader compilation test
+            ShaderManager sm = new ShaderManager();
+
+            program = GL.CreateProgram();
+            int vshader = GL.CreateShader(ShaderType.VertexShader);
+            int fshader = GL.CreateShader(ShaderType.FragmentShader);
+
+            GL.ShaderSource(vshader, sm.loadShader(".\\resources\\VertexPanTexture.txt"));
+            GL.ShaderSource(fshader, sm.loadShader(".\\resources\\FragPanTextureAtlas.txt"));
+
+            GL.CompileShader(vshader); Console.Write("VERTEX SHADER: \n" + GL.GetShaderInfoLog(vshader) + "\n");
+            GL.CompileShader(fshader); Console.Write("FRAGMENT SHADER: \n" + GL.GetShaderInfoLog(fshader) + "\n");
+            GL.AttachShader(program, vshader); GL.AttachShader(program, fshader);
+            GL.LinkProgram(program); Console.Write("LINKER: \n", GL.GetProgramInfoLog(program));
+
+            renderer.tempSetupShaderRenderer(currentLevel, (uint)program, new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+            ErrorCode error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("SETUP GL Error: {0}", error.ToString());
+            }
+
+            GL.Disable(EnableCap.CullFace);
         }
 
         private void updateZoneList()
@@ -202,11 +233,11 @@ namespace eced
 
             SetupViewport();
 
-            GL.Enable(EnableCap.Texture2D);
+            //GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.DepthTest);
-            TextureManager.getTexture("./resources/sneswolftiles.PNG");
+            //TextureManager.getTexture("./resources/sneswolftiles.PNG");
 
-            renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
+            //renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
         }
 
         private void mainLevelPanel_Paint(object sender, PaintEventArgs e)
@@ -218,13 +249,14 @@ namespace eced
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             if (currentLevel != null)
             {
-                renderer.renderLevel(currentLevel);
+                //renderer.renderLevel(currentLevel);
+                renderer.tempShaderRendererDraw(currentLevel, (uint)program, new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
             }
             GL.Flush();
             ErrorCode error = GL.GetError();
             if (error != ErrorCode.NoError)
             {
-                Console.WriteLine("GL Error: ", OpenTK.Graphics.Glu.ErrorString((OpenTK.Graphics.ErrorCode)error));
+                Console.WriteLine("DRAW GL Error: {0}", error.ToString());
             }
             mainLevelPanel.SwapBuffers();
         }
@@ -303,7 +335,7 @@ namespace eced
 
         private void updateZoom()
         {
-            renderer.tilesize = zoom;
+            /*renderer.tilesize = zoom;
             double zoompercent = (double)zoom / 64d;
             statusBar1.Panels[1].Text = String.Format("Zoom: {0:P}", zoompercent);
             renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
@@ -311,20 +343,25 @@ namespace eced
             {
                 currentLevel.markAllChunksDirty();
             }
+            mainLevelPanel.Invalidate();*/
+
+            statusBar1.Panels[1].Text = String.Format("Zoom: {0:P}", zoom);
+            renderer.zoom = zoom;
+
             mainLevelPanel.Invalidate();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            zoom += 4;
+            zoom += .05f;
             updateZoom();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            zoom -= 4;
-            if (zoom < 4)
-                zoom = 4;
+            zoom -= .05f;
+            if (zoom < .05f)
+                zoom = .05f;
             updateZoom();
         }
 
@@ -353,7 +390,7 @@ namespace eced
             Console.WriteLine("coords: {0}, {1}, tiles: {2}, {3}, pan: {4}, {5}, raw {6}, {7}", e.X, e.Y, tilex / zoom, tiley / zoom, panx, pany, tilex, tiley);
 
             setMouseButton(e);
-            defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, this.heldMouseButton);
+            //defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, this.heldMouseButton);
             mainLevelPanel.Invalidate();
         }
 
@@ -366,7 +403,7 @@ namespace eced
 
             if (brushmode && defaultBrush.repeatable)
             {
-                defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, heldMouseButton);
+                //defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, heldMouseButton);
                 //mainLevelPanel.Invalidate();
             }
             int mapcoordx = (int)((double)e.X * (64d / (double)zoom)) + (int)((double)panx * (64d / (double)zoom));
@@ -375,7 +412,7 @@ namespace eced
 
             if (defaultBrush is TriggerBrush)
             {
-                currentLevel.updateTriggerHighlight(tilex / zoom, tiley / zoom, 0);
+                //currentLevel.updateTriggerHighlight(tilex / zoom, tiley / zoom, 0);
             }
             mainLevelPanel.Invalidate();
         }

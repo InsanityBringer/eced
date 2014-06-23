@@ -25,12 +25,159 @@ namespace eced
 {
     class GraphicsManager
     {
-        int panx = 0, pany = 0;
+        float panx = -0.5f, pany = -0.5f;
         int tilesx = 16, tilesy = 16;
 
         int screenwidth = 0, screenheight = 0;
 
+        int vboindex = 0;
+
         Random r = new Random();
+
+        public float zoom = 2.0f;
+
+        float[] vbo = {   0.0f, 0.0f, 0.0f, 1.0f,
+                          1.0f, 0.0f, 0.0f, 1.0f, 
+                          1.0f, 1.0f, 0.0f, 1.0f, 
+                          
+                          1.0f, 1.0f, 0.0f, 1.0f, 
+                          0.0f, 1.0f, 0.0f, 1.0f, 
+                          0.0f, 0.0f, 0.0f, 1.0f };
+
+        public void tempSetupShaderRenderer(Level level, uint program, OpenTK.Vector2 winsize)
+        {
+            GL.UseProgram(program);
+            int numTextures = 0;
+            short[] mapTexture = level.buildPlaneData(0);
+            short[] resTexture = level.buildResourceData(ref numTextures);
+
+            byte[] testArray = new byte[64 * 64 * 4];
+
+            //for (int i = 0; i < 4096; i++)
+            //{
+            r.NextBytes(testArray);
+            //}
+
+            //int mapTextureID = GL.GenTexture();
+            //int resTextureID = GL.GenTexture();
+
+            int[] tids = new int[4]; GL.GenTextures(4, tids);
+
+            GL.ActiveTexture(TextureUnit.Texture0);
+            tids[0] = TextureManager.getTexture(".\\resources\\sneswolftiles.PNG");
+
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.BindTexture(TextureTarget.Texture2D, tids[1]);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, level.width, level.height, 0, PixelFormat.RgbaInteger, PixelType.Short, mapTexture);
+
+            GL.ActiveTexture(TextureUnit.Texture2);
+            GL.BindTexture(TextureTarget.Texture2D, tids[2]);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, 1, numTextures, 0, PixelFormat.RgbaInteger, PixelType.Short, resTexture);
+
+            GL.ActiveTexture(TextureUnit.Texture3);
+            GL.BindTexture(TextureTarget.Texture2D, tids[3]);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 64, 0, PixelFormat.Rgba, PixelType.UnsignedByte, testArray);
+
+            GL.ActiveTexture(TextureUnit.Texture0);
+
+            ErrorCode error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("SETUP TEXTURE GL Error: {0}", error.ToString());
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                Console.WriteLine(tids[i]);
+            }
+
+            int panUL = GL.GetUniformLocation(program, "pan");
+            int zoomUL = GL.GetUniformLocation(program, "zoom");
+            int windowUL = GL.GetUniformLocation(program, "window");
+            int tilesizeUL = GL.GetUniformLocation(program, "tilesize");
+            int atlasUL = GL.GetUniformLocation(program, "atlas");
+            int mapPlaneUL = GL.GetUniformLocation(program, "mapPlane");
+            int texInfoUL = GL.GetUniformLocation(program, "texInfo");
+            int fovUL = GL.GetUniformLocation(program, "fov");
+            int projectUL = GL.GetUniformLocation(program, "project");
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("SETUP UNIFORMS FIND GL Error: {0}", error.ToString());
+            }
+
+            GL.Uniform2(panUL, new OpenTK.Vector2(panx, pany));
+            //forced zoom level
+            GL.Uniform1(zoomUL, 1.0f);
+            //TODO: tilesize fixed
+            GL.Uniform1(tilesizeUL, 8f);
+            GL.Uniform2(windowUL, (int)winsize.X, (int)winsize.Y);
+            //Console.WriteLine(winsize.X / winsize.Y);
+            GL.Uniform1(atlasUL, 0);
+            GL.Uniform1(mapPlaneUL, 1);
+            GL.Uniform1(texInfoUL, 2);
+            GL.Uniform1(fovUL, winsize.X / winsize.Y);
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("SETUP UNIFORMS GL Error: {0}", error.ToString());
+            }
+
+            vboindex = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vboindex);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(sizeof(float) * vbo.Length) ,vbo, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+            GL.UseProgram(0);
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("SETUP BUFFERS GL Error: {0}", error.ToString());
+            }
+        }
+
+        public void tempShaderRendererDraw(Level level, uint program, OpenTK.Vector2 winsize)
+        {
+            GL.UseProgram(program);
+
+            int panUL = GL.GetUniformLocation(program, "pan");
+            int zoomUL = GL.GetUniformLocation(program, "zoom");
+            int windowUL = GL.GetUniformLocation(program, "window");
+            int tilesizeUL = GL.GetUniformLocation(program, "tilesize");
+            int atlasUL = GL.GetUniformLocation(program, "atlas");
+            int mapPlaneUL = GL.GetUniformLocation(program, "mapPlane");
+            int texInfoUL = GL.GetUniformLocation(program, "texInfo");
+            int projectUL = GL.GetUniformLocation(program, "project");
+
+            GL.Uniform2(panUL, new OpenTK.Vector2(panx, pany));
+            //forced zoom level
+            GL.Uniform1(zoomUL, zoom);
+            //TODO: tilesize fixed
+            GL.Uniform1(tilesizeUL, 64.0f);
+            //GL.Uniform2(windowUL, winsize);
+            GL.Uniform2(windowUL, (int)winsize.X, (int)winsize.Y);
+            OpenTK.Matrix4 project = OpenTK.Matrix4.CreateOrthographic(winsize.X / 64f / 8f, winsize.Y / 64f / 8f, -8f, 8f);
+            //OpenTK.Matrix4 project = makeOrthographicMatrix(
+            GL.UniformMatrix4(projectUL, false, ref project);
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vboindex);
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, 0, 0);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            GL.DisableVertexAttribArray(0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+            GL.UseProgram(0);
+        }
 
         /// <summary>
         /// Current tile size, used for zoom
@@ -38,100 +185,22 @@ namespace eced
         public int tilesize = 32;
         private void renderTile(int x, int y, Tile tile)
         {
-            //GL.Color3(r.NextDouble(), r.NextDouble(), r.NextDouble());
-
-            int sx = x, sy = y;
-            int ex = x + tilesize, ey = y + tilesize;
-
-            int indexx = tile.id % 16;
-            int indexy = tile.id / 16;
-
-            double tsx = (double)indexx / 16d;
-            double tsy = (double)indexy / 16d;
-
-            double tex = (double)(indexx+1) / 16d;
-            double tey = (double)(indexy+1) / 16d;
-
-            GL.Begin(BeginMode.Quads);
-
-            GL.TexCoord2(tsx, tsy); GL.Vertex3(sx, sy, 3);
-            GL.TexCoord2(tsx, tey); GL.Vertex3(sx, ey, 3);
-            GL.TexCoord2(tex, tey); GL.Vertex3(ex, ey, 3);
-            GL.TexCoord2(tex, tsy); GL.Vertex3(ex, sy, 3);
-
-            GL.End();
         }
 
         private void renderTrigger(Trigger trigger, bool highlight)
         {
-            if (highlight)
-                GL.Color3(1f, 1f, 0f);
-            else GL.Color3(0f, 1f, 0f);
-
-            int sx = trigger.x * tilesize; int ex = sx + tilesize;
-            int sy = trigger.y * tilesize; int ey = sy + tilesize;
-
-            //draw an 'x'
-            GL.Begin(BeginMode.Lines);
-
-            GL.Vertex3(sx, sy, 2.05);
-            GL.Vertex3(ex, ey, 2.05);
-
-            GL.Vertex3(ex, sy, 2.05);
-            GL.Vertex3(sx, ey, 2.05);
-
-            GL.End();
         }
 
         private void renderHexCode(int x, int y, int digit)
         {
-            int sx = x * tilesize; int sy = y * tilesize;
-            int ey = sy + tilesize; int ex = sx + (tilesize / 2);
-            int digit1 = digit / 16;
-            int digit2 = digit % 16;
-
-            double tsy = 0; double tey = 1;
-
-            double tsx = (double)digit1 / 16;
-            double tex = (double)(digit1 + 1) / 16d;
-
-            GL.Begin(BeginMode.Quads);
-
-            GL.TexCoord2(tsx, tsy); GL.Vertex3(sx, sy, 2.75);
-            GL.TexCoord2(tsx, tey); GL.Vertex3(sx, ey, 2.75);
-            GL.TexCoord2(tex, tey); GL.Vertex3(ex, ey, 2.75);
-            GL.TexCoord2(tex, tsy); GL.Vertex3(ex, sy, 2.75);
-
-            GL.End();
-
-            sx += (tilesize / 2); ex += (tilesize / 2);
-
-            tsx = (double)digit2 / 16d;
-            tex = (double)(digit2 + 1) / 16d;
-
-            GL.Begin(BeginMode.Quads);
-
-            GL.TexCoord2(tsx, tsy); GL.Vertex3(sx, sy, 2.75);
-            GL.TexCoord2(tsx, tey); GL.Vertex3(sx, ey, 2.75);
-            GL.TexCoord2(tex, tey); GL.Vertex3(ex, ey, 2.75);
-            GL.TexCoord2(tex, tsy); GL.Vertex3(ex, sy, 2.75);
-
-            GL.End();
         }
 
         public void renderThing(double lx, double ly, Thing thing, Level level)
         {
-            double x = lx * tilesize + (tilesize / 2);
+            //preserved for reference
+            /*double x = lx * tilesize + (tilesize / 2);
             double y = ly * tilesize + (tilesize / 2);
             GL.PushMatrix();
-
-            /*GL.LoadIdentity();
-            GL.Scale(1, -1, -1);
-
-            GL.Translate(-((double)panx + (double)(screenwidth / 2d)), -((double)pany + (double)(screenheight / 2d)), 0d);
-
-            //offset to the render location
-            GL.Translate(x, y, 0d);*/
 
             ThingDefinition def = level.getThingDef(thing);
 
@@ -187,7 +256,7 @@ namespace eced
             
             GL.End();
 
-            GL.PopMatrix();
+            GL.PopMatrix();*/
         }
 
         public void addTriggersToList(ref List<Trigger> to, ref List<Trigger> from)
@@ -200,153 +269,14 @@ namespace eced
 
         public void renderLevel(Level level)
         {
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
-
-            GL.Scale(1, -1, -1);
-            //GL.Translate(-320, -240, 0);
-
-            int sfx = panx / tilesize;
-            int sfy = pany / tilesize;
-
-            GL.Translate(-((double)panx + (double)(screenwidth / 2d)), -((double)pany + (double)(screenheight / 2d)), 0d);
-
-            if (sfx < 0)
-                sfx = 0;
-
-            if (sfy < 0)
-                sfy = 0;
-
-            /*for (int x = sfx; x < 64; x++)
-            {
-                for (int y = sfy; y < 64; y++)
-                {
-                    if (level.getTile(x, y, 0) != null)
-                        renderTile(x * tilesize, y * tilesize, level.getTile(x, y, 0));
-                }
-            }*/
-            GL.Color3(1f, 1f, 1f);
-
-            for (int x = 0; x < level.width / 16; x++)
-            {
-                for (int y = 0; y < level.height / 16; y++)
-                {
-                    RenderChunk chunk = level.chunkids[y * (level.width / 16) + x];
-                    if (chunk.dirty)
-                    {
-                        List<Trigger> triggerlist = new List<Trigger>();
-                        //Console.WriteLine("Chunk {0} getting rebuilt", chunk.listid);
-                        GL.DeleteLists(chunk.listid, 1);
-                        GL.NewList(chunk.listid, ListMode.Compile);
-
-                        GL.Color3(1f, 1f, 1f);
-                        int sx = x * 16; int ex = sx + 16;
-                        int sy = y * 16; int ey = sy + 16;
-
-                        TextureManager.getTexture("./resources/sneswolftiles.PNG");
-                        
-                        for (int lx = sx; lx < ex; lx++)
-                        {
-                            for (int ly = sy; ly < ey; ly++)
-                            {
-                                if (level.getTile(lx, ly, 0) != null)
-                                    renderTile(lx * tilesize, ly * tilesize, level.getTile(lx, ly, 0));
-
-                                List<Trigger> celltriggers = level.getTriggers(lx, ly, 0);
-                                addTriggersToList(ref triggerlist, ref celltriggers);
-                            }
-                        }
-
-                        TextureManager.getTexture("./resources/floorfont.PNG");
-                        for (int lx = sx; lx < ex; lx++)
-                        {
-                            for (int ly = sy; ly < ey; ly++)
-                            {
-                                if (level.getZoneIDAt(lx, ly, 0) != -1)
-                                {
-                                    renderHexCode(lx, ly, level.getZoneIDAt(lx, ly, 0));
-                                }
-                            }
-                        }
-
-                        GL.Disable(EnableCap.Texture2D);
-
-                        List<Thing> thinglist = level.getThingsInRange(x * 16, y * 16, 16, 16);
-
-                        for (int i = 0; i < thinglist.Count; i++)
-                        {
-                            Thing thing = thinglist[i];
-                            renderThing(thing.x, thing.y, thing, level);
-                        }
-                        GL.Color3(1d, 1d, 1d);
-
-                        //List<Trigger> triggerlist = level.getTriggersInChunk(x, y, 0);
-
-                        for (int i = 0; i < triggerlist.Count; i++)
-                        {
-                            Trigger trigger = triggerlist[i];
-                            renderTrigger(trigger, level.isCellHighlighted(trigger.x, trigger.y, trigger.z));
-                        }
-
-                        GL.Enable(EnableCap.Texture2D);
-
-                        GL.EndList();
-
-                        chunk.dirty = false;
-                    }
-                    GL.CallList(chunk.listid);
-                }
-            }
-
-            GL.Disable(EnableCap.Texture2D);
-
-            renderGridLines();
-
-            GL.Enable(EnableCap.Texture2D);
         }
 
         public void renderGridLines()
         {
-            //GL.Disable(EnableCap.Texture2D);
-            GL.Color3(0, .5, 1.0);
-            int sfx = Math.Max(0, panx / tilesize);
-            int sfy = Math.Max(0, pany / tilesize);
-            
-            GL.Begin(BeginMode.Lines);
-            for (int x = sfx; x < 65; x++)
-            {
-                GL.Vertex3(x * tilesize, 0, 2.5d);
-                GL.Vertex3(x * tilesize, 64 * tilesize, 2.5d);
-            }
-            GL.End();
-
-            GL.Begin(BeginMode.Lines);
-            for (int y = sfy; y < 65; y++)
-            {
-                GL.Vertex3(0, y * tilesize, 2.5d);
-                GL.Vertex3(64 * tilesize, y * tilesize, 2.5d);
-            }
-            GL.End();
-            //GL.Enable(EnableCap.Texture2D);
         }
 
         public void pan(int px, int py, int screenx, int screeny)
         {
-            panx = px;
-            pany = py;
-
-            tilesx = screenx / tilesize + 1;
-            tilesy = screeny / tilesize + 1;
-
-            if (tilesx > 64)
-                tilesx = 64;
-            if (tilesy > 64)
-                tilesy = 64;
-
-            this.screenwidth = screenx;
-            this.screenheight = screeny;
-
-            Console.WriteLine("{0} {1} {2} {3}", panx, pany, tilesx, tilesy);
         }
     }
 }

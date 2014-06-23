@@ -1,0 +1,31 @@
+﻿#version 330 core
+
+smooth in vec2 tileloc;
+
+out vec4 color;
+
+uniform sampler2D atlas;
+uniform isampler2D texInfo;
+uniform isampler2D mapPlane;
+
+void main()
+{
+	//gross hack
+	ivec2 itile = ivec2(tileloc);
+
+	int tileid = texelFetch(mapPlane, itile, 0).r;
+
+	ivec4 textureInfo = texelFetch(texInfo, ivec2(0, tileid), 0);
+	ivec2 textureRes = textureInfo.rg;
+	ivec2 texOrigin = textureInfo.ba;
+
+	vec2 cellposf = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
+	ivec2 cellpos = ivec2(texOrigin.x + int(cellposf.x * textureRes.x) /*% textureRes.x*/, texOrigin.y + int(cellposf.y * textureRes.y)/* % textureRes.y*/);
+
+	color = texelFetch(atlas, cellpos, 0);
+	//color = vec4(1.0 * cellposf.x, 1.0 * cellposf.y, 0.0, 1.0);
+	//color = vec4(clamp(tileloc.x, 0.0, 1.0), clamp(tileloc.y, 0.0, 1.0), 1.0, 1.0);
+	//color = texelFetch(atlas, itile, 0);
+	//color = vec4(textureRes.x / 256.0, textureRes.y / 256.0, 0.0, 0.0);
+	//color = texelFetch(texInfo, itile, 0);
+}

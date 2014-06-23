@@ -53,13 +53,13 @@ namespace eced
                 return returnVal;
             }
 
-            Console.WriteLine("texture comin' right up!");
-
             if (String.IsNullOrEmpty(filename))
                 throw new ArgumentException(filename);
 
             int id = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, id);
+
+            Console.WriteLine("Loading texture {0} from file {1}", id, filename);
 
             Bitmap bmp = new Bitmap(filename);
             BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);

@@ -403,9 +403,9 @@
             // 
             // mainLevelPanel
             // 
-            this.mainLevelPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.mainLevelPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.mainLevelPanel.BackColor = System.Drawing.Color.Black;
             this.mainLevelPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mainLevelPanel.Location = new System.Drawing.Point(210, 28);
@@ -415,10 +415,10 @@
             this.mainLevelPanel.VSync = false;
             this.mainLevelPanel.Load += new System.EventHandler(this.mainLevelPanel_Load);
             this.mainLevelPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mainLevelPanel_Paint);
-            this.mainLevelPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseMove);
-            this.mainLevelPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseDown);
-            this.mainLevelPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseUp);
             this.mainLevelPanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.mainLevelPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseDown);
+            this.mainLevelPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseMove);
+            this.mainLevelPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseUp);
             // 
             // button1
             // 
@@ -1071,10 +1071,10 @@
             this.Name = "Form1";
             this.Text = "eced";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.Move += new System.EventHandler(this.Form1_Move);
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTileList)).EndInit();
