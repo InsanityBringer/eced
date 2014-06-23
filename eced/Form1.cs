@@ -35,7 +35,8 @@ namespace eced
         private GraphicsManager renderer = new GraphicsManager();
         private bool ready = false;
 
-        private int panx = 0, pany = 0;
+        //private int panx = 0, pany = 0;
+        private Vector2 pan;
 
         private float zoom = 1.0f;
 
@@ -266,7 +267,7 @@ namespace eced
             if (ready)
             {
                 SetupViewport();
-                renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
+                //renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
                 mainLevelPanel.Invalidate();
             }
             statusBar1.Panels[0].Width = statusBar1.Width - statusBar1.Panels[1].Width;
@@ -285,29 +286,29 @@ namespace eced
             Console.WriteLine("input");
             if (e.KeyCode == Keys.Down)
             {
-                pany += 32;
-                renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
+                pan.Y -= .05f;
+                renderer.setpan(pan);
                 mainLevelPanel.Invalidate();
             }
 
             if (e.KeyCode == Keys.Up)
             {
-                pany -= 32;
-                renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
+                pan.Y += .05f; 
+                renderer.setpan(pan);
                 mainLevelPanel.Invalidate();
             }
 
             if (e.KeyCode == Keys.Left)
             {
-                panx -= 32;
-                renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
+                pan.X += .05f;
+                renderer.setpan(pan);
                 mainLevelPanel.Invalidate();
             }
 
             if (e.KeyCode == Keys.Right)
             {
-                panx += 32;
-                renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
+                pan.X -= .05f;
+                renderer.setpan(pan);
                 mainLevelPanel.Invalidate();
             }
 
@@ -335,16 +336,6 @@ namespace eced
 
         private void updateZoom()
         {
-            /*renderer.tilesize = zoom;
-            double zoompercent = (double)zoom / 64d;
-            statusBar1.Panels[1].Text = String.Format("Zoom: {0:P}", zoompercent);
-            renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
-            if (currentLevel != null)
-            {
-                currentLevel.markAllChunksDirty();
-            }
-            mainLevelPanel.Invalidate();*/
-
             statusBar1.Panels[1].Text = String.Format("Zoom: {0:P}", zoom);
             renderer.zoom = zoom;
 
@@ -353,15 +344,15 @@ namespace eced
 
         private void button2_Click(object sender, EventArgs e)
         {
-            zoom += .05f;
+            zoom += .10f;
             updateZoom();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            zoom -= .05f;
-            if (zoom < .05f)
-                zoom = .05f;
+            zoom -= .10f;
+            if (zoom < .10f)
+                zoom = .10f;
             updateZoom();
         }
 
@@ -385,9 +376,9 @@ namespace eced
         {
             brushmode = true;
             defaultBrush.normalTile = selectedTile;
-            int tilex = (e.X + panx);// -(panx % zoom);
-            int tiley = (e.Y + pany);// -(panx % zoom);
-            Console.WriteLine("coords: {0}, {1}, tiles: {2}, {3}, pan: {4}, {5}, raw {6}, {7}", e.X, e.Y, tilex / zoom, tiley / zoom, panx, pany, tilex, tiley);
+            //int tilex = (e.X + panx);// -(panx % zoom);
+            //int tiley = (e.Y + pany);// -(panx % zoom);
+            //Console.WriteLine("coords: {0}, {1}, tiles: {2}, {3}, pan: {4}, {5}, raw {6}, {7}", e.X, e.Y, tilex / zoom, tiley / zoom, panx, pany, tilex, tiley);
 
             setMouseButton(e);
             //defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, this.heldMouseButton);
@@ -396,19 +387,22 @@ namespace eced
 
         private void mainLevelPanel_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            int tilex = (e.X + panx);// -(panx % zoom);
-            int tiley = (e.Y + pany);// -(panx % zoom);
-            //tilex += (panx / zoom);
-            //tiley += (pany / zoom);
+            Vector2 center = new Vector2(mainLevelPanel.Width / 2, mainLevelPanel.Height / 2);
+            Vector2 bstart = new Vector2(center.X - (32 * 8 * zoom) + (pan.X * 64 * 8 * zoom), center.Y - (32 * 8 * zoom) + (pan.Y * 64 * 8 * zoom));
+            Vector2 bend = new Vector2(32 * 8 * zoom, 32 * 8 * zoom);
+            Vector2 curpos = new Vector2(e.X - bstart.X, e.Y - bstart.Y);
+            Vector2 tile = new Vector2((int)(curpos.X / (8 * zoom)), (int)(curpos.Y / (8 * zoom)));
+
+            Console.WriteLine("{0} {1}, center {2} {3}", tile.X, tile.Y, pan.X, pan.Y);
 
             if (brushmode && defaultBrush.repeatable)
             {
                 //defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, heldMouseButton);
                 //mainLevelPanel.Invalidate();
             }
-            int mapcoordx = (int)((double)e.X * (64d / (double)zoom)) + (int)((double)panx * (64d / (double)zoom));
-            int mapcoordy = (int)((double)e.Y * (64d / (double)zoom)) + (int)((double)pany * (64d / (double)zoom));
-            currentLevel.updateHighlight(mapcoordx, mapcoordy);
+            //int mapcoordx = (int)((double)e.X * (64d / (double)zoom)) + (int)((double)panx * (64d / (double)zoom));
+            //int mapcoordy = (int)((double)e.Y * (64d / (double)zoom)) + (int)((double)pany * (64d / (double)zoom));
+            //currentLevel.updateHighlight(mapcoordx, mapcoordy);
 
             if (defaultBrush is TriggerBrush)
             {

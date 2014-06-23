@@ -25,7 +25,8 @@ namespace eced
 {
     class GraphicsManager
     {
-        float panx = -0.5f, pany = -0.5f;
+        //float panx = -0.5f, pany = -0.5f;
+        OpenTK.Vector2 pan = new OpenTK.Vector2(0.0f, 0.0f);
         int tilesx = 16, tilesy = 16;
 
         int screenwidth = 0, screenheight = 0;
@@ -113,7 +114,7 @@ namespace eced
                 Console.WriteLine("SETUP UNIFORMS FIND GL Error: {0}", error.ToString());
             }
 
-            GL.Uniform2(panUL, new OpenTK.Vector2(panx, pany));
+            GL.Uniform2(panUL, pan);
             //forced zoom level
             GL.Uniform1(zoomUL, 1.0f);
             //TODO: tilesize fixed
@@ -158,7 +159,7 @@ namespace eced
             int texInfoUL = GL.GetUniformLocation(program, "texInfo");
             int projectUL = GL.GetUniformLocation(program, "project");
 
-            GL.Uniform2(panUL, new OpenTK.Vector2(panx, pany));
+            GL.Uniform2(panUL, pan);
             //forced zoom level
             GL.Uniform1(zoomUL, zoom);
             //TODO: tilesize fixed
@@ -275,8 +276,9 @@ namespace eced
         {
         }
 
-        public void pan(int px, int py, int screenx, int screeny)
+        public void setpan(OpenTK.Vector2 newPan)
         {
+            this.pan = newPan;
         }
     }
 }

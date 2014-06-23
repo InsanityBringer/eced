@@ -14,7 +14,7 @@ uniform mat4 project;
 
 void main()
 { 
-    vec4 pannedPt = point + vec4(pan.x, pan.y, 0.0, 0.0);
+    vec4 pannedPt = point - vec4(0.5, 0.5, 0.0, 0.0) + vec4(pan.x, pan.y, 0.0, 0.0);
 	//gl_Position = vec4(point.x, -point.y, 0.0, 1.0);
 	gl_Position = vec4(pannedPt.x * zoom, -pannedPt.y * zoom, pannedPt.z, pannedPt.w) * project;
     //theColor = color;
