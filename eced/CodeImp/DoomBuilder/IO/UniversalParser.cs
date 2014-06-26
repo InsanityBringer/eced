@@ -496,7 +496,7 @@ namespace CodeImp.DoomBuilder.IO
                     switch (c)
                     {
                         case '{': // beginning of a planemap cell
-
+                            int tag = 0;
                             pos++;
                             planephase++;
                             terminateWhitespace(ref data, ref pos, ref line);
@@ -522,6 +522,13 @@ namespace CodeImp.DoomBuilder.IO
                             terminateWhitespace(ref data, ref pos, ref line);
                             int zone = (int)GetNumber(ref data, ref pos, ref line);
                             c = data[pos];
+                            //handle optional tag
+                            if (c == ',')
+                            {
+                                terminateWhitespace(ref data, ref pos, ref line);
+                                tag = (int)GetNumber(ref data, ref pos, ref line);
+                                c = data[pos];
+                            }
                             if (c != '}')
                             {
                                 RaiseError(line, String.Format("It blew up: expected \'closing brace\', got {0}!", c));
@@ -531,6 +538,7 @@ namespace CodeImp.DoomBuilder.IO
                             cell.tile = til;
                             cell.sector = sec;
                             cell.zone = zone;
+                            cell.tag = tag;
 
                             cells.Add(cell);
 

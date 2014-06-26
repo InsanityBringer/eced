@@ -56,9 +56,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Dev\SharpZipLib\net-20\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\icsharpcode-SharpZipLib-c49a22d\net-20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -100,6 +99,11 @@
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalParser.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\WAD.cs" />
     <Compile Include="LevelIO.cs" />
+    <Compile Include="ResourceFiles\DirectoryResource.cs" />
+    <Compile Include="ResourceFiles\ImageResource.cs" />
+    <Compile Include="ResourceFiles\ResourceArchive.cs" />
+    <Compile Include="ResourceFiles\ResourceFile.cs" />
+    <Compile Include="ResourceFiles\WADResourceFile.cs" />
     <Compile Include="ShaderManager.cs" />
     <Compile Include="ThingEditor.cs">
       <SubType>Form</SubType>

@@ -50,6 +50,8 @@ namespace eced
 
         public List<OpenTK.Vector2> updateCells = new List<OpenTK.Vector2>();
 
+        public List<ResourceFiles.ResourceArchive> loadedResources;
+
         public Level(int w, int h, int d, Tile defaultTile)
         {
             Random r = new Random();
@@ -203,8 +205,6 @@ namespace eced
                 int ly = (int)thing.y;
 
                 this.things.Remove(thing);
-
-                markChunkDirty(lx / 16, ly / 16);
             }
         }
 
@@ -216,8 +216,6 @@ namespace eced
                 int ly = (int)newThing.y;
 
                 this.things[this.things.IndexOf(thing)] = newThing;
-
-                markChunkDirty(lx / 16, ly / 16);
             }
         }
 
@@ -428,6 +426,7 @@ namespace eced
                 stringbuilder.Append("\t{"); stringbuilder.Append(getTileId(planes[plane].cells[x, y].tile));
                 stringbuilder.Append(", "); stringbuilder.Append(getSectorID(x, y, plane));
                 stringbuilder.Append(", "); stringbuilder.Append(getZoneId(planes[plane].cells[x, y]));
+                stringbuilder.Append(", "); stringbuilder.Append(planes[plane].cells[x, y].tag);
                 stringbuilder.Append("}");
                 if (i < ((width * height) - 1))
                 {

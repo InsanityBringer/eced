@@ -772,7 +772,12 @@
             "3: Exit Normal",
             "4: Exit Secret",
             "5: Teleport_NewMap",
-            "6: Exit_VictorySpin"});
+            "6: Exit_VictorySpin",
+            "7: Exit_Victory",
+            "8: Trigger_Execute",
+            "9: StartConversation",
+            "10: Door_Elevator",
+            "11: Elevator_SwitchFloor"});
             this.cbTriggerType.Location = new System.Drawing.Point(6, 37);
             this.cbTriggerType.Name = "cbTriggerType";
             this.cbTriggerType.Size = new System.Drawing.Size(121, 21);
@@ -1055,8 +1060,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(850, 603);
-            this.Controls.Add(this.gbZoneList);
             this.Controls.Add(this.gbTriggerData);
+            this.Controls.Add(this.gbZoneList);
             this.Controls.Add(this.gbThingSelect);
             this.Controls.Add(this.gbTileSelection);
             this.Controls.Add(this.button3);

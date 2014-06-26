@@ -147,7 +147,7 @@ namespace eced
             }
         }
 
-        public void tempShaderRendererDraw(Level level, uint program, OpenTK.Vector2 winsize)
+        public void drawLevel(Level level, uint program, OpenTK.Vector2 winsize)
         {
             GL.UseProgram(program);
 
@@ -161,7 +161,6 @@ namespace eced
             int projectUL = GL.GetUniformLocation(program, "project");
 
             GL.Uniform2(panUL, pan);
-            //forced zoom level
             GL.Uniform1(zoomUL, zoom);
             //TODO: tilesize fixed
             GL.Uniform1(tilesizeUL, 64.0f);
@@ -208,25 +207,8 @@ namespace eced
 
                 GL.BindTexture(TextureTarget.Texture2D, 0);
                 GL.ActiveTexture(TextureUnit.Texture0);
-                Console.WriteLine("heh");
             }
             level.updateCells.Clear();
-        }
-
-        /// <summary>
-        /// Current tile size, used for zoom
-        /// </summary>
-        public int tilesize = 32;
-        private void renderTile(int x, int y, Tile tile)
-        {
-        }
-
-        private void renderTrigger(Trigger trigger, bool highlight)
-        {
-        }
-
-        private void renderHexCode(int x, int y, int digit)
-        {
         }
 
         public void renderThing(double lx, double ly, Thing thing, Level level)
@@ -299,14 +281,6 @@ namespace eced
             {
                 to.Add(from[x]);
             }
-        }
-
-        public void renderLevel(Level level)
-        {
-        }
-
-        public void renderGridLines()
-        {
         }
 
         public void setpan(OpenTK.Vector2 newPan)

@@ -10,6 +10,7 @@ namespace eced
         public Tile tile;
         public Sector sector;
         public Zone zone;
+        public int tag;
         public List<Trigger> triggerList = new List<Trigger>();
 
         public bool highlighted = false;
@@ -17,6 +18,6 @@ namespace eced
 
     class NumberCell
     {
-        public int tile, sector, zone;
+        public int tile, sector, zone, tag;
     }
 }

@@ -182,12 +182,12 @@ namespace eced
 
                 if (ltag == 22)
                 {
-                    currentLevel.saveToUWMFFile("d:/textmap.txt");
+                    currentLevel.saveToUWMFFile("c:/dev/textmap.txt");
                 }
 
                 if (ltag == 21)
                 {
-                    CodeImp.DoomBuilder.IO.UniversalParser parser = new CodeImp.DoomBuilder.IO.UniversalParser("d:/textmap.txt");
+                    CodeImp.DoomBuilder.IO.UniversalParser parser = new CodeImp.DoomBuilder.IO.UniversalParser("c:/dev/textmap.txt");
 
                     Console.WriteLine("Errors: {0}, line {1}", parser.ErrorDescription, parser.ErrorLine);
                     for (int x = 0; x < parser.Root.Count; x++)
@@ -252,7 +252,7 @@ namespace eced
             {
                 //renderer.renderLevel(currentLevel);
                 renderer.updateWorldTexture(currentLevel);
-                renderer.tempShaderRendererDraw(currentLevel, (uint)program, new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+                renderer.drawLevel(currentLevel, (uint)program, new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
             }
             GL.Flush();
             ErrorCode error = GL.GetError();
