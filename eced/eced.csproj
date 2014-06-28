@@ -173,10 +173,16 @@
     <Content Include="PreviewCode.bmp" />
     <Content Include="PreviewFloor.bmp" />
     <Content Include="PreviewNone.bmp" />
+    <Content Include="Resources\errortex.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\floorfont.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\FragPanTextureAtlas.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\missingtex.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\sneswolftiles.PNG">

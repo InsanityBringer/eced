@@ -13,7 +13,7 @@ namespace eced.ResourceFiles
 
         BinaryReader filestream;
 
-        static ResourceArchive loadResourceFile(string filename)
+        public static ResourceArchive loadResourceFile(string filename)
         {
             WADResourceFile wad = new WADResourceFile();
             BinaryReader br = new BinaryReader(File.Open(filename, FileMode.Open), Encoding.ASCII);
@@ -52,10 +52,14 @@ namespace eced.ResourceFiles
                 lump.fullname = fullname;
                 lump.pointer = ptr;
                 lump.ns = ns;
+                lump.size = size;
                 wad.lumps.Add(lump);
+                Console.WriteLine("{0}, {1} {2}", lump.fullname, lump.pointer, lump.size);
             }
 
             wad.filestream = br;
+
+            Console.WriteLine("{0} lumps loaded", wad.lumps.Count);
 
             return (ResourceArchive)wad;
         }

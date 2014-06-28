@@ -52,6 +52,8 @@ namespace eced
 
         public List<ResourceFiles.ResourceArchive> loadedResources;
 
+        public TextureManager tm;
+
         public Level(int w, int h, int d, Tile defaultTile)
         {
             Random r = new Random();
@@ -259,7 +261,8 @@ namespace eced
             {
                 for (int y = 0; y < this.height; y++)
                 {
-                    planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
+                    //planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
+                    planeData[(x * width + y) * 4] = (short)tm.getTextureID(planes[layer].cells[x, y].tile.texn);
                 }
             }
 

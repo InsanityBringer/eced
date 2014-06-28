@@ -49,55 +49,18 @@ namespace eced
                           0.0f, 1.0f, 0.0f, 1.0f, 
                           0.0f, 0.0f, 0.0f, 1.0f };
 
+        int frames = 0;
         public void tempSetupShaderRenderer(Level level, uint program, OpenTK.Vector2 winsize)
         {
             GL.UseProgram(program);
             int numTextures = 0;
-            short[] mapTexture = level.buildPlaneData(0);
-            short[] resTexture = level.buildResourceData(ref numTextures);
+            //short[] mapTexture = level.buildPlaneData(0);
+            //short[] resTexture = level.buildResourceData(ref numTextures);
 
             byte[] testArray = new byte[64 * 64 * 4];
 
-            //for (int i = 0; i < 4096; i++)
-            //{
-            r.NextBytes(testArray);
-            //}
-
             //int mapTextureID = GL.GenTexture();
             //int resTextureID = GL.GenTexture();
-
-            int[] tids = new int[4]; GL.GenTextures(4, tids);
-
-            GL.ActiveTexture(TextureUnit.Texture0);
-            atlasTextureID = tids[0] = TextureManager.getTexture(".\\resources\\sneswolftiles.PNG");
-            worldTextureID = tids[1];
-            resourceTextureID = tids[2];
-
-            GL.ActiveTexture(TextureUnit.Texture1);
-            GL.BindTexture(TextureTarget.Texture2D, tids[1]);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, level.width, level.height, 0, PixelFormat.RgbaInteger, PixelType.Short, mapTexture);
-
-            GL.ActiveTexture(TextureUnit.Texture2);
-            GL.BindTexture(TextureTarget.Texture2D, tids[2]);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, 1, numTextures, 0, PixelFormat.RgbaInteger, PixelType.Short, resTexture);
-
-            GL.ActiveTexture(TextureUnit.Texture3);
-            GL.BindTexture(TextureTarget.Texture2D, tids[3]);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 64, 64, 0, PixelFormat.Rgba, PixelType.UnsignedByte, testArray);
-
-            GL.ActiveTexture(TextureUnit.Texture0);
-
-            ErrorCode error = GL.GetError();
-            if (error != ErrorCode.NoError)
-            {
-                Console.WriteLine("SETUP TEXTURE GL Error: {0}", error.ToString());
-            }
 
             int panUL = GL.GetUniformLocation(program, "pan");
             int zoomUL = GL.GetUniformLocation(program, "zoom");
@@ -109,7 +72,7 @@ namespace eced
             int fovUL = GL.GetUniformLocation(program, "fov");
             int projectUL = GL.GetUniformLocation(program, "project");
 
-            error = GL.GetError();
+            ErrorCode error = GL.GetError();
             if (error != ErrorCode.NoError)
             {
                 Console.WriteLine("SETUP UNIFORMS FIND GL Error: {0}", error.ToString());
@@ -147,8 +110,39 @@ namespace eced
             }
         }
 
+        public void setupTextures(Level level, int resourceID, int atlasID)
+        {
+            short[] mapTexture = level.buildPlaneData(0);
+
+            //int[] tids = new int[4]; GL.GenTextures(4, tids);
+            GL.ActiveTexture(TextureUnit.Texture0);
+            atlasTextureID = atlasID;
+            worldTextureID = GL.GenTexture();
+            resourceTextureID = resourceID;
+
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, worldTextureID);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, level.width, level.height, 0, PixelFormat.RgbaInteger, PixelType.Short, mapTexture);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            //GL.ActiveTexture(TextureUnit.Texture0);
+
+            ErrorCode error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("SETUP TEXTURE GL Error: {0}", error.ToString());
+            }
+        }
+
         public void drawLevel(Level level, uint program, OpenTK.Vector2 winsize)
         {
+            ErrorCode error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("DRAW ENTRY GL Error: {0}", error.ToString());
+            }
+
             GL.UseProgram(program);
 
             int panUL = GL.GetUniformLocation(program, "pan");
@@ -165,9 +159,15 @@ namespace eced
             //TODO: tilesize fixed
             GL.Uniform1(tilesizeUL, 64.0f);
             //GL.Uniform2(windowUL, winsize);
-            GL.Uniform2(windowUL, (int)winsize.X, (int)winsize.Y);
+            //GL.Uniform2(windowUL, (int)winsize.X, (int)winsize.Y);
             OpenTK.Matrix4 project = OpenTK.Matrix4.CreateOrthographic(winsize.X / 64f / 8f, winsize.Y / 64f / 8f, -8f, 8f);
             GL.UniformMatrix4(projectUL, false, ref project);
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("DRAW UNIFORMS GL Error: {0}", error.ToString());
+            }
 
             GL.ActiveTexture(TextureUnit.Texture1);
             GL.BindTexture(TextureTarget.Texture2D, worldTextureID);
@@ -178,6 +178,12 @@ namespace eced
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, atlasTextureID);
 
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("DRAW BIND TEX GL Error: {0}", error.ToString());
+            }
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboindex);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, 0, 0);
@@ -185,30 +191,45 @@ namespace eced
             GL.DisableVertexAttribArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("DRAW GL Error: {0}", error.ToString());
+            }
+
+
+            if (frames == 0)
+            {
+                Console.WriteLine("heh");
+            }
+
+            frames++;
+
             GL.UseProgram(0);
         }
 
         public void updateWorldTexture(Level level)
         {
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.BindTexture(TextureTarget.Texture2D, worldTextureID);
             for (int i = 0; i < level.updateCells.Count; i++)
             {
                 OpenTK.Vector2 loc = level.updateCells[i];
                 Tile tile = level.getTile((int)loc.X, (int)loc.Y, 0);
                 short[] id = new short[4];
                 if (tile != null)
-                    id[0] = id[1] = id[2] = id[3] = (short)tile.id;
+                    id[0] = id[1] = id[2] = id[3] = (short)level.tm.getTextureID(tile.texn);
                 else
                     id[0] = id[1] = id[2] = id[3] = (short)-1;
 
-                GL.ActiveTexture(TextureUnit.Texture1);
-                GL.BindTexture(TextureTarget.Texture2D, worldTextureID);
-
                 GL.TexSubImage2D(TextureTarget.Texture2D, 0, (int)loc.X, (int)loc.Y, 1, 1, PixelFormat.RgbaInteger, PixelType.Short, id);
 
-                GL.BindTexture(TextureTarget.Texture2D, 0);
-                GL.ActiveTexture(TextureUnit.Texture0);
+                Console.WriteLine("pushing {0} cell {1} {2}", id[0], loc.X, loc.Y);
             }
             level.updateCells.Clear();
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            GL.ActiveTexture(TextureUnit.Texture0);
         }
 
         public void renderThing(double lx, double ly, Thing thing, Level level)

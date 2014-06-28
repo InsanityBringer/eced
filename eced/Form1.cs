@@ -47,6 +47,8 @@ namespace eced
         private int VAOid;
         int program;
 
+        private TextureManager tm = new TextureManager();
+
         private void Form1_Load(object sender, EventArgs e)
         {
             //statusBar1.Panels[1].Text =
@@ -68,9 +70,9 @@ namespace eced
 
             pbTileList.Image = tilelistimg;
 
-            currentLevel = new Level(64, 64, 1, tilelist.tileset[4]);
-            currentLevel.localThingList = this.thinglist;
-            selectedTile = tilelist.tileset[0];
+            //currentLevel = new Level(64, 64, 1, tilelist.tileset[4]);
+            //currentLevel.localThingList = this.thinglist;
+            //selectedTile = tilelist.tileset[0];
 
             tbToolPanel.Buttons[5].Pushed = true;
             this.gbThingSelect.Visible = false;
@@ -80,8 +82,6 @@ namespace eced
 
             this.thingBrush.thing = thinglist.thinglist[1];
             this.thingBrush.thinglist = thinglist;
-
-            this.updateZoneList();
 
             //OpenGL 3.x setup
             VAOid = GL.GenVertexArray();
@@ -110,6 +110,27 @@ namespace eced
             }
 
             GL.Disable(EnableCap.CullFace);
+
+            createNewLevel(null); //heh
+            this.updateZoneList();
+        }
+
+        private void createNewLevel(List<ResourceFiles.ResourceArchive> resources)
+        {
+            ResourceFiles.ResourceArchive arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
+            Level level = new Level(64, 64, 1, tilelist.tileset[0]);
+            level.localThingList = this.thinglist;
+            this.selectedTile = tilelist.tileset[0];
+
+            tm.allocateAtlasTexture();
+            tm.getTextureList(arc);
+            tm.createInfoTexture();
+
+            level.tm = this.tm;
+
+            renderer.setupTextures(level, tm.resourceInfoID, tm.atlasTextureID);
+            
+            currentLevel = level;
         }
 
         private void updateZoneList()
@@ -223,9 +244,9 @@ namespace eced
         {
             GL.Viewport(0, 0, mainLevelPanel.Width, mainLevelPanel.Height); // Use all of the glControl painting area
 
-            Matrix4 projection = Matrix4.CreateOrthographic(mainLevelPanel.Width, mainLevelPanel.Height, 0.0f, 64.0f);
+            /*Matrix4 projection = Matrix4.CreateOrthographic(mainLevelPanel.Width, mainLevelPanel.Height, 0.0f, 64.0f);
             GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadMatrix(ref projection);
+            GL.LoadMatrix(ref projection);*/
         }
 
         private void mainLevelPanel_Load(object sender, EventArgs e)
@@ -271,7 +292,8 @@ namespace eced
                 //renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
                 mainLevelPanel.Invalidate();
             }
-            statusBar1.Panels[0].Width = statusBar1.Width - statusBar1.Panels[1].Width;
+            if (statusBar1.Width > 0)
+                statusBar1.Panels[0].Width = statusBar1.Width - statusBar1.Panels[1].Width;
         }
 
         private void Form1_Move(object sender, EventArgs e)
