@@ -406,8 +406,10 @@ namespace eced
 
         public Vector2 pick(Vector2 mouseCoords)
         {
+            float sizex = currentLevel.width / 2f;
+            float sizey = currentLevel.height / 2f;
             Vector2 center = new Vector2(mainLevelPanel.Width / 2, mainLevelPanel.Height / 2);
-            Vector2 bstart = new Vector2(center.X - (32 * 8 * zoom) + (pan.X * 64 * 8 * zoom), center.Y - (32 * 8 * zoom) + (pan.Y * 64 * 8 * zoom));
+            Vector2 bstart = new Vector2(center.X - (sizex * 8 * zoom) + (pan.X * currentLevel.width * 8 * zoom), center.Y - (sizey * 8 * zoom) + (pan.Y * currentLevel.height * 8 * zoom));
             //Vector2 bend = new Vector2(32 * 8 * zoom, 32 * 8 * zoom);
             Vector2 curpos = new Vector2(mouseCoords.X - bstart.X, mouseCoords.Y - bstart.Y);
             Vector2 tile = new Vector2((curpos.X / (8 * zoom)), (curpos.Y / (8 * zoom)));

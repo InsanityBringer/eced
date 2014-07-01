@@ -296,6 +296,7 @@ namespace eced
             int thingcolorUL = GL.GetUniformLocation(program, "thingColor");
             int projectUL = GL.GetUniformLocation(program, "project");
             int rotateUL = GL.GetUniformLocation(program, "rotate");
+            int mapsizeUL = GL.GetUniformLocation(program, "mapsize");
 
             error = GL.GetError();
             if (error != ErrorCode.NoError)
@@ -315,6 +316,7 @@ namespace eced
             GL.UniformMatrix4(projectUL, false, ref project);
             OpenTK.Matrix4 rotate = OpenTK.Matrix4.Identity;
             GL.UniformMatrix4(rotateUL, false, ref rotate);
+            GL.Uniform2(mapsizeUL, level.width, level.height);
 
             error = GL.GetError();
             if (error != ErrorCode.NoError)
@@ -371,6 +373,7 @@ namespace eced
             int thingcolorUL = GL.GetUniformLocation(program, "thingColor");
             int projectUL = GL.GetUniformLocation(program, "project");
             int rotateUL = GL.GetUniformLocation(program, "rotate");
+            int mapsizeUL = GL.GetUniformLocation(program, "mapsize");
 
             error = GL.GetError();
             if (error != ErrorCode.NoError)
@@ -390,6 +393,7 @@ namespace eced
             GL.UniformMatrix4(projectUL, false, ref project);
             OpenTK.Matrix4 rotate = OpenTK.Matrix4.Identity;
             GL.UniformMatrix4(rotateUL, false, ref rotate);
+            GL.Uniform2(mapsizeUL, level.width, level.height);
 
             error = GL.GetError();
             if (error != ErrorCode.NoError)

@@ -13,14 +13,18 @@ uniform float fov;
 uniform mat4 project;
 uniform mat4 rotate;
 uniform vec4 thingColor;
+uniform ivec2 mapsize;
 
 void main()
 { 
-    vec4 pannedPt = vec4(point.x - .5, point.y - .5, point.z, point.w) / vec4(64.0, 64.0, 1.0, 1.0) * vec4(thingrad / 32, thingrad / 32, 1.0, 1.0);
+	float mapScaleX = float(mapsize.x) / 64.0f;
+	float mapScaleY = float(mapsize.y) / 64.0f;
+	vec4 scaledPt = vec4(point.x * mapScaleX, point.y * mapScaleY, point.z, point.w);
+    vec4 pannedPt = vec4(scaledPt.x - (mapScaleX / 2), scaledPt.y - (mapScaleY / 2), point.z, point.w) / vec4(mapsize.x, mapsize.y, 1.0, 1.0) * vec4(thingrad / 32, thingrad / 32, 1.0, 1.0);
 	pannedPt *= rotate;
 	//pannedPt += vec4(0.5, 0.5, 0.0, 0.0);
 	pannedPt += vec4(pan.x, pan.y, 0.0, 0.0);
-	pannedPt += vec4(thingpos.x - 32, thingpos.y - 32, 0.0, 0.0) / 64;
+	pannedPt += vec4(thingpos.x - (32 * mapScaleX), thingpos.y - (32 * mapScaleY), 0.0, 0.0) / 64;
 	gl_Position = vec4(pannedPt.x * zoom, -pannedPt.y * zoom, pannedPt.z, pannedPt.w) * project;
 	acolor = thingColor;
 }

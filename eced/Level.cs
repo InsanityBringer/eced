@@ -270,7 +270,7 @@ namespace eced
                 for (int y = 0; y < this.height; y++)
                 {
                     //planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
-                    planeData[(x * width + y) * 4] = (short)tm.getTextureID(planes[layer].cells[x, y].tile.texn);
+                    planeData[(y * width + x) * 4] = (short)tm.getTextureID(planes[layer].cells[x, y].tile.texn);
                 }
             }
 
