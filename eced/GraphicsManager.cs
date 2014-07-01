@@ -41,7 +41,7 @@ namespace eced
 
         public float zoom = 2.0f;
 
-        float[] vbo = {   0.0f, 0.0f, 0.0f, 1.0f,
+        float[] levelVBO = {   0.0f, 0.0f, 0.0f, 1.0f,
                           1.0f, 0.0f, 0.0f, 1.0f, 
                           1.0f, 1.0f, 0.0f, 1.0f, 
                           
@@ -49,18 +49,35 @@ namespace eced
                           0.0f, 1.0f, 0.0f, 1.0f, 
                           0.0f, 0.0f, 0.0f, 1.0f };
 
+        float[] bodyVBO = {   -0.5f, -0.5f, 0.0f, 1.0f,
+                          0.5f, -0.5f, 0.0f, 1.0f, 
+                          0.5f, 0.5f, 0.0f, 1.0f, 
+                          
+                          0.5f, 0.5f, 0.0f, 1.0f, 
+                         -0.5f, 0.5f, 0.0f, 1.0f, 
+                         -0.5f,-0.5f, 0.0f, 1.0f };
+
+        float[] arrowVBO = {  0.25f, 0.5f, 0.0f, 1.0f,
+                              0.75f, 0.5f, 0.0f, 1.0f,
+                              0.75f, 0.5f, 0.0f, 1.0f,
+                              0.5f, 0.25f, 0.0f, 1.0f,
+                              0.75f, 0.5f, 0.0f, 1.0f,
+                              0.5f, 0.75f, 0.0f, 1.0f };
+
+        float[] triggersVBO = {  0.0f,  0.0f, 0.0f, 1.0f,
+                                 1.0f,  1.0f, 0.0f, 1.0f,
+                                 0.0f,  1.0f, 0.0f, 1.0f,
+                                 1.0f,  0.0f, 0.0f, 1.0f };
+
         int frames = 0;
-        public void tempSetupShaderRenderer(Level level, uint program, OpenTK.Vector2 winsize)
+
+        private int arrowVBOID, bodyVBOID, triggersVBOID;
+
+        public void setupLevelRendering(Level level, uint program, OpenTK.Vector2 winsize)
         {
             GL.UseProgram(program);
-            int numTextures = 0;
-            //short[] mapTexture = level.buildPlaneData(0);
-            //short[] resTexture = level.buildResourceData(ref numTextures);
 
             byte[] testArray = new byte[64 * 64 * 4];
-
-            //int mapTextureID = GL.GenTexture();
-            //int resTextureID = GL.GenTexture();
 
             int panUL = GL.GetUniformLocation(program, "pan");
             int zoomUL = GL.GetUniformLocation(program, "zoom");
@@ -98,7 +115,7 @@ namespace eced
 
             vboindex = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboindex);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(sizeof(float) * vbo.Length) ,vbo, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(sizeof(float) * levelVBO.Length) ,levelVBO, BufferUsageHint.StaticDraw);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
             GL.UseProgram(0);
@@ -137,6 +154,7 @@ namespace eced
 
         public void drawLevel(Level level, uint program, OpenTK.Vector2 winsize)
         {
+            //Console.WriteLine("{0}", program);
             ErrorCode error = GL.GetError();
             if (error != ErrorCode.NoError)
             {
@@ -153,6 +171,7 @@ namespace eced
             int mapPlaneUL = GL.GetUniformLocation(program, "mapPlane");
             int texInfoUL = GL.GetUniformLocation(program, "texInfo");
             int projectUL = GL.GetUniformLocation(program, "project");
+            int mapsizeUL = GL.GetUniformLocation(program, "mapsize");
 
             GL.Uniform2(panUL, pan);
             GL.Uniform1(zoomUL, zoom);
@@ -162,6 +181,7 @@ namespace eced
             //GL.Uniform2(windowUL, (int)winsize.X, (int)winsize.Y);
             OpenTK.Matrix4 project = OpenTK.Matrix4.CreateOrthographic(winsize.X / 64f / 8f, winsize.Y / 64f / 8f, -8f, 8f);
             GL.UniformMatrix4(projectUL, false, ref project);
+            GL.Uniform2(mapsizeUL, level.width, level.height);
 
             error = GL.GetError();
             if (error != ErrorCode.NoError)
@@ -224,7 +244,7 @@ namespace eced
 
                 GL.TexSubImage2D(TextureTarget.Texture2D, 0, (int)loc.X, (int)loc.Y, 1, 1, PixelFormat.RgbaInteger, PixelType.Short, id);
 
-                Console.WriteLine("pushing {0} cell {1} {2}", id[0], loc.X, loc.Y);
+                //Console.WriteLine("pushing {0} cell {1} {2}", id[0], loc.X, loc.Y);
             }
             level.updateCells.Clear();
 
@@ -232,68 +252,166 @@ namespace eced
             GL.ActiveTexture(TextureUnit.Texture0);
         }
 
-        public void renderThing(double lx, double ly, Thing thing, Level level)
+        /// <summary>
+        /// Readies buffers for thing rendering, only needs to be done on startup
+        /// </summary>
+        public void setupThingRendering()
         {
-            //preserved for reference
-            /*double x = lx * tilesize + (tilesize / 2);
-            double y = ly * tilesize + (tilesize / 2);
-            GL.PushMatrix();
+            arrowVBOID = GL.GenBuffer();
+            bodyVBOID = GL.GenBuffer();
 
-            ThingDefinition def = level.getThingDef(thing);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, arrowVBOID);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(sizeof(float) * arrowVBO.Length), arrowVBO, BufferUsageHint.StaticDraw);
 
-            double radius = (double)def.radius;
-            radius *= ((double)tilesize / 64d);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, bodyVBOID);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(sizeof(float) * levelVBO.Length), levelVBO, BufferUsageHint.StaticDraw);
 
-            double sx = x - radius; double sy = y - radius;
-            double ex = x + radius; double ey = y + radius;
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        }
 
-            double r = (double)def.r / 255d;
-            double g = (double)def.g / 255d;
-            double b = (double)def.b / 255d;
+        public void setupTriggerRendering()
+        {
+            triggersVBOID = GL.GenBuffer();
 
-            if (thing.highlighted)
+            GL.BindBuffer(BufferTarget.ArrayBuffer, this.triggersVBOID);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(sizeof(float) * triggersVBO.Length), triggersVBO, BufferUsageHint.StaticDraw);
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        }
+
+        public void drawThing(Thing thing, Level level, int program, OpenTK.Vector2 winsize)
+        {
+            //GL.UseProgram(program);
+            ErrorCode error = GL.GetError();
+            if (error != ErrorCode.NoError)
             {
-                r += .5d;
-                g += .5d;
+                Console.WriteLine("THING ENTRY DRAW GL Error: {0}", error.ToString());
             }
 
-            GL.Color4(r, g, b, 1d);
+            ThingDefinition thingdef = level.getThingDef(thing);
+            int panUL = GL.GetUniformLocation(program, "pan");
+            int zoomUL = GL.GetUniformLocation(program, "zoom");
+            int thingposUL = GL.GetUniformLocation(program, "thingpos");
+            int thingradUL = GL.GetUniformLocation(program, "thingrad");
+            int thingcolorUL = GL.GetUniformLocation(program, "thingColor");
+            int projectUL = GL.GetUniformLocation(program, "project");
+            int rotateUL = GL.GetUniformLocation(program, "rotate");
 
-            GL.Begin(BeginMode.Quads);
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("THING UNIFORM FIND DRAW GL Error: {0} {1} {2} {3} {4} {5}", error.ToString(), panUL, zoomUL, thingposUL, thingradUL, thingcolorUL);
+            }
 
-            GL.Vertex3(sx, sy, 2d);
-            GL.Vertex3(sx, ey, 2d);
-            GL.Vertex3(ex, ey, 2d);
-            GL.Vertex3(ex, sy, 2d);
+            GL.Uniform2(panUL, pan);
+            GL.Uniform1(zoomUL, zoom);
+            GL.Uniform2(thingposUL, new OpenTK.Vector2(thing.x + .5f, thing.y + .5f));
+            GL.Uniform1(thingradUL, (float)thingdef.radius);
+            if (thing.highlighted)
+                GL.Uniform4(thingcolorUL, new OpenTK.Vector4((thingdef.r + 128) / 255f, (thingdef.g + 128) / 255f, thingdef.b / 255f, 1.0f));
+            else
+                GL.Uniform4(thingcolorUL, new OpenTK.Vector4(thingdef.r / 255f, thingdef.g / 255f, thingdef.b / 255f, 1.0f));
+            OpenTK.Matrix4 project = OpenTK.Matrix4.CreateOrthographic(winsize.X / 64f / 8f, winsize.Y / 64f / 8f, -8f, 8f);
+            GL.UniformMatrix4(projectUL, false, ref project);
+            OpenTK.Matrix4 rotate = OpenTK.Matrix4.Identity;
+            GL.UniformMatrix4(rotateUL, false, ref rotate);
 
-            GL.End();
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("THING UNIFORM DRAW GL Error: {0} {1} {2} {3} {4} {5}", error.ToString(), panUL, zoomUL, thingposUL, thingradUL, thingcolorUL);
+            }
 
-            GL.Translate(x, y, 0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, this.bodyVBOID);
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, 0, 0);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            GL.DisableVertexAttribArray(0);
 
-            //set rot to normal for the arrow
-            GL.Rotate(270, 0d, 0d, 1d);
-            //rotate by the thing's angle
-            GL.Rotate(360 - thing.angle, 0, 0, 1d);
-            //arrow is a bit darker
-            GL.Color4(r/4d, g/4d, b/4d, 1d);
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("THING BODY DRAW GL Error: {0} {1}", error.ToString(), program);
+            }
 
-            //render the arrow as lines
-            //draw around origin for rotation
-            GL.Begin(BeginMode.Lines);
+            rotate = OpenTK.Matrix4.CreateRotationZ(OpenTK.MathHelper.DegreesToRadians(thing.angle));
+            GL.UniformMatrix4(rotateUL, false, ref rotate);
 
-            //stalk
-            GL.Vertex2(0, -radius / 2d);
-            GL.Vertex2(0, radius / 2d);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, this.arrowVBOID);
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, 0, 0);
+            GL.Uniform4(thingcolorUL, new OpenTK.Vector4(thingdef.r / 255f / 4f, thingdef.g / 255f / 4f, thingdef.b / 255f / 4f, 1.0f));
+            GL.DrawArrays(PrimitiveType.Lines, 0, 6);
+            GL.DisableVertexAttribArray(0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
-            //head
-            GL.Vertex2(-(radius / 2d), 0);
-            GL.Vertex2(0, radius / 2d);
-            GL.Vertex2((radius / 2d), 0);
-            GL.Vertex2(0, radius / 2d); 
-            
-            GL.End();
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("THING ARROW DRAW GL Error: {0}", error.ToString());
+            }
 
-            GL.PopMatrix();*/
+            //GL.UseProgram(0);
+        }
+
+        public void drawTrigger(OpenTK.Vector2 pos, Level level, int program, OpenTK.Vector2 winsize)
+        {
+            //GL.UseProgram(program);
+            ErrorCode error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("TRIGGER ENTRY DRAW GL Error: {0}", error.ToString());
+            }
+
+            //ThingDefinition thingdef = level.getThingDef(thing);
+            int panUL = GL.GetUniformLocation(program, "pan");
+            int zoomUL = GL.GetUniformLocation(program, "zoom");
+            int thingposUL = GL.GetUniformLocation(program, "thingpos");
+            int thingradUL = GL.GetUniformLocation(program, "thingrad");
+            int thingcolorUL = GL.GetUniformLocation(program, "thingColor");
+            int projectUL = GL.GetUniformLocation(program, "project");
+            int rotateUL = GL.GetUniformLocation(program, "rotate");
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("TRIGGER UNIFORM FIND DRAW GL Error: {0} {1} {2} {3} {4} {5}", error.ToString(), panUL, zoomUL, thingposUL, thingradUL, thingcolorUL);
+            }
+
+            GL.Uniform2(panUL, pan);
+            GL.Uniform1(zoomUL, zoom);
+            GL.Uniform2(thingposUL, new OpenTK.Vector2(pos.X + .5f, pos.Y + .5f));
+            GL.Uniform1(thingradUL, (float)32.0f);
+            /*if (thing.highlighted)
+                GL.Uniform4(thingcolorUL, new OpenTK.Vector4((thingdef.r + 128) / 255f, (thingdef.g + 128) / 255f, thingdef.b / 255f, 1.0f));
+            else*/
+                GL.Uniform4(thingcolorUL, new OpenTK.Vector4(0f, 1f, 0f, 1.0f));
+            OpenTK.Matrix4 project = OpenTK.Matrix4.CreateOrthographic(winsize.X / 64f / 8f, winsize.Y / 64f / 8f, -8f, 8f);
+            GL.UniformMatrix4(projectUL, false, ref project);
+            OpenTK.Matrix4 rotate = OpenTK.Matrix4.Identity;
+            GL.UniformMatrix4(rotateUL, false, ref rotate);
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("TRIGGER UNIFORMS DRAW GL Error: {0} {1} {2} {3} {4} {5}", error.ToString(), panUL, zoomUL, thingposUL, thingradUL, thingcolorUL);
+            }
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, this.triggersVBOID);
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, 0, 0);
+            GL.DrawArrays(PrimitiveType.Lines, 0, 4);
+            GL.DisableVertexAttribArray(0);
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("TRIGGER X DRAW GL Error: {0} {1}", error.ToString(), program);
+            }
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+            //GL.UseProgram(0);
         }
 
         public void addTriggersToList(ref List<Trigger> to, ref List<Trigger> from)

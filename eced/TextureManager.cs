@@ -152,7 +152,7 @@ namespace eced
                 }
                 if (j == width)
                 {
-                    Console.WriteLine(".. oh dear! {0} {1}", i, best2);
+                    //Console.WriteLine(".. oh dear! {0} {1}", i, best2);
                     result.x = i;
                     result.y = best = best2;
                 }
@@ -216,7 +216,7 @@ namespace eced
             //GL.BindTexture(TextureTarget.Texture2D, atlasTextureID);
 
             BitmapData imageData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            GL.TexSubImage2D(TextureTarget.Texture2D, 0, cell.x, cell.y, cell.w, cell.h, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, imageData.Scan0);
+            GL.TexSubImage2D(TextureTarget.Texture2D, 0, cell.x, cell.y, cell.w, cell.h, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, imageData.Scan0);
 
             ErrorCode err = GL.GetError();
             if (err != ErrorCode.NoError)
@@ -261,7 +261,7 @@ namespace eced
                 data[i * 4 + 2] = (short)cells[i].x;
                 data[i * 4 + 3] = (short)cells[i].y;
 
-                Console.WriteLine("{0} {1} {2} {3}", cells[i].w, cells[i].h, cells[i].x, cells[i].y);
+                //Console.WriteLine("{0} {1} {2} {3}", cells[i].w, cells[i].h, cells[i].x, cells[i].y);
             }
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, 1, numResources, 0, OpenTK.Graphics.OpenGL.PixelFormat.RgbaInteger, PixelType.Short, data);

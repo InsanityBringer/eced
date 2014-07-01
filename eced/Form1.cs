@@ -43,11 +43,13 @@ namespace eced
         private bool brushmode = false;
         private int heldMouseButton = 0;
         private Bitmap tilelistimg;
+        private bool locked = false;
 
         private int VAOid;
-        int program;
+        //int program;
 
         private TextureManager tm = new TextureManager();
+        private ShaderManager sm = new ShaderManager();
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -88,31 +90,28 @@ namespace eced
             GL.BindVertexArray(VAOid);
 
             //temp shader compilation test
-            ShaderManager sm = new ShaderManager();
 
-            program = GL.CreateProgram();
-            int vshader = GL.CreateShader(ShaderType.VertexShader);
-            int fshader = GL.CreateShader(ShaderType.FragmentShader);
+            glInit();
 
-            GL.ShaderSource(vshader, sm.loadShader(".\\resources\\VertexPanTexture.txt"));
-            GL.ShaderSource(fshader, sm.loadShader(".\\resources\\FragPanTextureAtlas.txt"));
-
-            GL.CompileShader(vshader); Console.Write("VERTEX SHADER: \n" + GL.GetShaderInfoLog(vshader) + "\n");
-            GL.CompileShader(fshader); Console.Write("FRAGMENT SHADER: \n" + GL.GetShaderInfoLog(fshader) + "\n");
-            GL.AttachShader(program, vshader); GL.AttachShader(program, fshader);
-            GL.LinkProgram(program); Console.Write("LINKER: \n", GL.GetProgramInfoLog(program));
-
-            renderer.tempSetupShaderRenderer(currentLevel, (uint)program, new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
             ErrorCode error = GL.GetError();
             if (error != ErrorCode.NoError)
             {
                 Console.WriteLine("SETUP GL Error: {0}", error.ToString());
             }
 
-            GL.Disable(EnableCap.CullFace);
+            //GL.Disable(EnableCap.CullFace);
+            GL.Disable(EnableCap.DepthTest);
 
             createNewLevel(null); //heh
             this.updateZoneList();
+        }
+
+        private void glInit()
+        {
+            sm.makeProgram("./resources/VertexPanTexture.txt", "./resources/FragPanTextureAtlas.txt", "WorldRender");
+            sm.makeProgram("./resources/VertexPanThing.txt", "./resources/FragPanThing.txt", "ThingRender");
+            renderer.setupThingRendering();
+            renderer.setupTriggerRendering();
         }
 
         private void createNewLevel(List<ResourceFiles.ResourceArchive> resources)
@@ -131,6 +130,8 @@ namespace eced
             renderer.setupTextures(level, tm.resourceInfoID, tm.atlasTextureID);
             
             currentLevel = level;
+
+            renderer.setupLevelRendering(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
         }
 
         private void updateZoneList()
@@ -243,23 +244,12 @@ namespace eced
         private void SetupViewport()
         {
             GL.Viewport(0, 0, mainLevelPanel.Width, mainLevelPanel.Height); // Use all of the glControl painting area
-
-            /*Matrix4 projection = Matrix4.CreateOrthographic(mainLevelPanel.Width, mainLevelPanel.Height, 0.0f, 64.0f);
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadMatrix(ref projection);*/
         }
 
         private void mainLevelPanel_Load(object sender, EventArgs e)
         {
             ready = true;
-
             SetupViewport();
-
-            //GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.DepthTest);
-            //TextureManager.getTexture("./resources/sneswolftiles.PNG");
-
-            //renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
         }
 
         private void mainLevelPanel_Paint(object sender, PaintEventArgs e)
@@ -273,14 +263,33 @@ namespace eced
             {
                 //renderer.renderLevel(currentLevel);
                 renderer.updateWorldTexture(currentLevel);
-                renderer.drawLevel(currentLevel, (uint)program, new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+                renderer.drawLevel(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+
+                ErrorCode error = GL.GetError();
+                if (error != ErrorCode.NoError)
+                {
+                    Console.WriteLine("DRAW GL Error: {0}", error.ToString());
+                }
+
+                GL.UseProgram(sm.programList["ThingRender"]);
+                List<Thing> thinglist = currentLevel.getThings();
+                for (int i = 0; i < thinglist.Count; i++)
+                {
+                    Thing thing = thinglist[i];
+
+                    renderer.drawThing(thing, currentLevel, sm.programList["ThingRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+                }
+                List<OpenTK.Vector2> triggerList = currentLevel.getTriggerLocations();
+
+                for (int i = 0; i < triggerList.Count; i++)
+                {
+                    renderer.drawTrigger(triggerList[i], currentLevel, sm.programList["ThingRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+                }
+
+                //renderer.drawTrigger(new Vector2(2.0f, 2.0f), currentLevel, sm.programList["ThingRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+                GL.UseProgram(0);
             }
             GL.Flush();
-            ErrorCode error = GL.GetError();
-            if (error != ErrorCode.NoError)
-            {
-                Console.WriteLine("DRAW GL Error: {0}", error.ToString());
-            }
             mainLevelPanel.SwapBuffers();
         }
 
@@ -367,15 +376,15 @@ namespace eced
 
         private void button2_Click(object sender, EventArgs e)
         {
-            zoom += .10f;
+            zoom += .25f;
             updateZoom();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            zoom -= .10f;
-            if (zoom < .10f)
-                zoom = .10f;
+            zoom -= .25f;
+            if (zoom < .25f)
+                zoom = .25f;
             updateZoom();
         }
 
@@ -418,20 +427,14 @@ namespace eced
 
         private void mainLevelPanel_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            /*Vector2 center = new Vector2(mainLevelPanel.Width / 2, mainLevelPanel.Height / 2);
-            Vector2 bstart = new Vector2(center.X - (32 * 8 * zoom) + (pan.X * 64 * 8 * zoom), center.Y - (32 * 8 * zoom) + (pan.Y * 64 * 8 * zoom));
-            Vector2 bend = new Vector2(32 * 8 * zoom, 32 * 8 * zoom);
-            Vector2 curpos = new Vector2(e.X - bstart.X, e.Y - bstart.Y);
-            Vector2 tile = new Vector2((int)(curpos.X / (8 * zoom)), (int)(curpos.Y / (8 * zoom)));*/
-
-            //Vector2 tile = pick(new Vector2(e.X, e.Y));
+            Vector2 tile = pick(new Vector2(e.X, e.Y));
 
             //Console.WriteLine("{0} {1}, center {2} {3}", tile.X, tile.Y, pan.X, pan.Y);
 
+            currentLevel.updateHighlight((int)(tile.X * 64), (int)(tile.Y * 64));
+
             if (brushmode && defaultBrush.repeatable)
             {
-                //defaultBrush.ApplyToTile(tilex, tiley, 0, zoom, this.currentLevel, heldMouseButton);
-                //mainLevelPanel.Invalidate();
                 defaultBrush.ApplyToTile(pick(new Vector2(e.X, e.Y)), 0, this.currentLevel, this.heldMouseButton);
             }
 
@@ -464,7 +467,26 @@ namespace eced
             int tile = tx + (ty * 8);
 
             if (tile < tilelist.tileset.Count)
+            {
+                locked = true;
+                Tile newTile = tilelist.tileset[tile];
+                cbTileNorth.Checked = newTile.blockn;
+                cbTileSouth.Checked = newTile.blocks;
+                cbTileEast.Checked = newTile.blocke;
+                cbTileWest.Checked = newTile.blockw;
+
+                tbNorthTex.Text = newTile.texn;
+                tbSouthTex.Text = newTile.texs;
+                tbEastTex.Text = newTile.texe;
+                tbWestTex.Text = newTile.texw;
+
+                cbCenterHoriz.Checked = newTile.offh;
+                cbCenterVert.Checked = newTile.offv;
+
                 selectedTile = tilelist.tileset[tile];
+                locked = false;
+            }
+                //selectedTile = tilelist.tileset[tile];
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -579,6 +601,27 @@ namespace eced
         private void lbZoneList_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.zoneBrush.setCode = lbZoneList.SelectedIndex - 1;
+        }
+
+        private void createTile_Events(object sender, EventArgs e)
+        {
+            if (locked) return;
+            Tile newTile = new Tile(0);
+
+            newTile.texn = tbNorthTex.Text;
+            newTile.texs = tbSouthTex.Text;
+            newTile.texe = tbEastTex.Text;
+            newTile.texw = tbWestTex.Text;
+
+            newTile.blockn = cbTileNorth.Checked;
+            newTile.blocks = cbTileSouth.Checked;
+            newTile.blocke = cbTileEast.Checked;
+            newTile.blockw = cbTileWest.Checked;
+
+            newTile.offh = cbCenterHoriz.Checked;
+            newTile.offv = cbCenterVert.Checked;
+
+            this.selectedTile = newTile;
         }
     }
 }

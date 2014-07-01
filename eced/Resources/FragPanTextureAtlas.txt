@@ -15,6 +15,18 @@ void main()
 
 	int tileid = texelFetch(mapPlane, itile, 0).r;
 
+	float multiplier = 0.5f;
+
+	int neighbornx = texelFetch(mapPlane, ivec2(itile.x - 1, itile.y), 0).r;
+	int neighborpx = texelFetch(mapPlane, ivec2(itile.x + 1, itile.y), 0).r;
+	int neighborny = texelFetch(mapPlane, ivec2(itile.x, itile.y - 1), 0).r;
+	int neighborpy = texelFetch(mapPlane, ivec2(itile.x, itile.y + 1), 0).r;
+
+	if (neighbornx == -1 || neighborny == -1 || neighborpx == -1 || neighborpy == -1)
+	{
+		multiplier = 1.0f;
+	}
+
 	if (tileid < 0)
 	{
 		color = vec4(0.0, 0.0, 0.0, 1.0);
@@ -28,7 +40,7 @@ void main()
 	vec2 cellposf = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
 	ivec2 cellpos = ivec2(texOrigin.x + int(cellposf.x * textureRes.x) /*% textureRes.x*/, texOrigin.y + int(cellposf.y * textureRes.y)/* % textureRes.y*/);
 
-	color = texelFetch(atlas, cellpos, 0);
+	color = texelFetch(atlas, cellpos, 0) * multiplier;
 	//color = vec4(1.0 * cellposf.x, 1.0 * cellposf.y, 0.0, 1.0);
 	//color = vec4(clamp(tileloc.x, 0.0, 1.0), clamp(tileloc.y, 0.0, 1.0), 1.0, 1.0);
 	//color = texelFetch(atlas, itile, 0);

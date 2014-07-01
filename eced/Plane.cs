@@ -28,6 +28,7 @@ namespace eced
         int height = 64;
 
         public Cell[,] cells;
+        public List<OpenTK.Vector2> cellsWithTriggers = new List<OpenTK.Vector2>();
 
         int w = 64, h = 64;
         

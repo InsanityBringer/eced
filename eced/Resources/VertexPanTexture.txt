@@ -11,10 +11,13 @@ uniform float zoom;
 uniform float tilesize;
 uniform float fov; 
 uniform mat4 project;
+uniform ivec2 mapsize;
 
 void main()
-{ 
-    vec4 pannedPt = point - vec4(0.5, 0.5, 0.0, 0.0) + vec4(pan.x, pan.y, 0.0, 0.0);
+{
+	float mapScaleX = mapsize.x / 64.0f;
+	float mapScaleY = mapsize.x / 64.0f;
+    vec4 pannedPt = vec4(point.x * mapScaleX, point.y * mapScaleY, point.z, point.w) - vec4(mapScaleX / 2.0f, mapScaleY / 2.0f, 0.0, 0.0) + vec4(pan.x, pan.y, 0.0, 0.0);
 	//gl_Position = vec4(point.x, -point.y, 0.0, 1.0);
 	gl_Position = vec4(pannedPt.x * zoom, -pannedPt.y * zoom, pannedPt.z, pannedPt.w) * project;
     //theColor = color;

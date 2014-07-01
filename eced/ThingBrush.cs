@@ -60,13 +60,15 @@ namespace eced
                     Thing lthing = new Thing();
                     lthing.typeid = thing.id;
 
-                    lthing.x = pos.X;
-                    lthing.y = pos.Y;
+                    lthing.x = (int)pos.X;
+                    lthing.y = (int)pos.Y;
 
                     lthing.flags = flags.getFlags();
                     lthing.angle = flags.angle;
 
                     level.addThing(lthing);
+
+                    Console.WriteLine("adding thing at {0}, {1}", lthing.x, lthing.y);
                 }
                 else
                 {
@@ -74,8 +76,8 @@ namespace eced
                     int oldchunky = (int)level.highlighted.y / 16;
 
                     level.highlighted.moving = true;
-                    level.highlighted.x = pos.X;
-                    level.highlighted.y = pos.Y;
+                    level.highlighted.x = pos.X - .5f;
+                    level.highlighted.y = pos.Y - .5f;
 
                     this.repeatable = true;
                 }

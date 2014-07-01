@@ -97,6 +97,30 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbTriggerType = new System.Windows.Forms.ComboBox();
             this.gbTileSelection = new System.Windows.Forms.GroupBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.cbTileWest = new System.Windows.Forms.CheckBox();
+            this.cbTileSouth = new System.Windows.Forms.CheckBox();
+            this.cbTileEast = new System.Windows.Forms.CheckBox();
+            this.cbCenterVert = new System.Windows.Forms.CheckBox();
+            this.cbCenterHoriz = new System.Windows.Forms.CheckBox();
+            this.cbDontMap = new System.Windows.Forms.CheckBox();
+            this.cbTileNorth = new System.Windows.Forms.CheckBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tbWestTex = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tbEastTex = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tbSouthTex = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tbNorthTex = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.gbThingSelect = new System.Windows.Forms.GroupBox();
             this.rbThingNW = new System.Windows.Forms.RadioButton();
@@ -454,18 +478,18 @@
             // pbTileList
             // 
             this.pbTileList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbTileList.Location = new System.Drawing.Point(6, 19);
+            this.pbTileList.Location = new System.Drawing.Point(9, 390);
             this.pbTileList.Name = "pbTileList";
-            this.pbTileList.Size = new System.Drawing.Size(130, 194);
+            this.pbTileList.Size = new System.Drawing.Size(130, 129);
             this.pbTileList.TabIndex = 9;
             this.pbTileList.TabStop = false;
             this.pbTileList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbTileList_MouseClick);
             // 
             // vScrollBar1
             // 
-            this.vScrollBar1.Location = new System.Drawing.Point(136, 19);
+            this.vScrollBar1.Location = new System.Drawing.Point(139, 390);
             this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 194);
+            this.vScrollBar1.Size = new System.Drawing.Size(17, 129);
             this.vScrollBar1.TabIndex = 10;
             // 
             // gbTriggerData
@@ -786,15 +810,259 @@
             // 
             // gbTileSelection
             // 
+            this.gbTileSelection.Controls.Add(this.label19);
+            this.gbTileSelection.Controls.Add(this.label20);
+            this.gbTileSelection.Controls.Add(this.label18);
+            this.gbTileSelection.Controls.Add(this.textBox7);
+            this.gbTileSelection.Controls.Add(this.textBox6);
+            this.gbTileSelection.Controls.Add(this.cbTileWest);
+            this.gbTileSelection.Controls.Add(this.cbTileSouth);
+            this.gbTileSelection.Controls.Add(this.cbTileEast);
+            this.gbTileSelection.Controls.Add(this.cbCenterVert);
+            this.gbTileSelection.Controls.Add(this.cbCenterHoriz);
+            this.gbTileSelection.Controls.Add(this.cbDontMap);
+            this.gbTileSelection.Controls.Add(this.cbTileNorth);
+            this.gbTileSelection.Controls.Add(this.label16);
+            this.gbTileSelection.Controls.Add(this.label17);
+            this.gbTileSelection.Controls.Add(this.textBox5);
+            this.gbTileSelection.Controls.Add(this.label14);
+            this.gbTileSelection.Controls.Add(this.tbWestTex);
+            this.gbTileSelection.Controls.Add(this.label15);
+            this.gbTileSelection.Controls.Add(this.tbEastTex);
+            this.gbTileSelection.Controls.Add(this.label13);
+            this.gbTileSelection.Controls.Add(this.tbSouthTex);
+            this.gbTileSelection.Controls.Add(this.label12);
+            this.gbTileSelection.Controls.Add(this.tbNorthTex);
+            this.gbTileSelection.Controls.Add(this.label11);
             this.gbTileSelection.Controls.Add(this.pbTileList);
             this.gbTileSelection.Controls.Add(this.vScrollBar1);
             this.gbTileSelection.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.gbTileSelection.Location = new System.Drawing.Point(12, 32);
             this.gbTileSelection.Name = "gbTileSelection";
-            this.gbTileSelection.Size = new System.Drawing.Size(162, 234);
+            this.gbTileSelection.Size = new System.Drawing.Size(162, 530);
             this.gbTileSelection.TabIndex = 14;
             this.gbTileSelection.TabStop = false;
             this.gbTileSelection.Text = "Tile Selection";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(11, 254);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(32, 13);
+            this.label19.TabIndex = 24;
+            this.label19.Text = "Flags";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(80, 327);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(57, 13);
+            this.label20.TabIndex = 23;
+            this.label20.Text = "Map Level";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(6, 327);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(69, 13);
+            this.label18.TabIndex = 23;
+            this.label18.Text = "Event Sound";
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(80, 343);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(69, 20);
+            this.textBox7.TabIndex = 22;
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(6, 343);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(69, 20);
+            this.textBox6.TabIndex = 22;
+            // 
+            // cbTileWest
+            // 
+            this.cbTileWest.AutoSize = true;
+            this.cbTileWest.Location = new System.Drawing.Point(106, 234);
+            this.cbTileWest.Name = "cbTileWest";
+            this.cbTileWest.Size = new System.Drawing.Size(37, 17);
+            this.cbTileWest.TabIndex = 21;
+            this.cbTileWest.Text = "W";
+            this.cbTileWest.UseVisualStyleBackColor = true;
+            this.cbTileWest.CheckedChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // cbTileSouth
+            // 
+            this.cbTileSouth.AutoSize = true;
+            this.cbTileSouth.Location = new System.Drawing.Point(75, 234);
+            this.cbTileSouth.Name = "cbTileSouth";
+            this.cbTileSouth.Size = new System.Drawing.Size(33, 17);
+            this.cbTileSouth.TabIndex = 21;
+            this.cbTileSouth.Text = "S";
+            this.cbTileSouth.UseVisualStyleBackColor = true;
+            this.cbTileSouth.CheckedChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // cbTileEast
+            // 
+            this.cbTileEast.AutoSize = true;
+            this.cbTileEast.Location = new System.Drawing.Point(42, 234);
+            this.cbTileEast.Name = "cbTileEast";
+            this.cbTileEast.Size = new System.Drawing.Size(33, 17);
+            this.cbTileEast.TabIndex = 21;
+            this.cbTileEast.Text = "E";
+            this.cbTileEast.UseVisualStyleBackColor = true;
+            this.cbTileEast.CheckedChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // cbCenterVert
+            // 
+            this.cbCenterVert.AutoSize = true;
+            this.cbCenterVert.Location = new System.Drawing.Point(9, 307);
+            this.cbCenterVert.Name = "cbCenterVert";
+            this.cbCenterVert.Size = new System.Drawing.Size(95, 17);
+            this.cbCenterVert.TabIndex = 21;
+            this.cbCenterVert.Text = "Center Vertical";
+            this.cbCenterVert.UseVisualStyleBackColor = true;
+            this.cbCenterVert.CheckedChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // cbCenterHoriz
+            // 
+            this.cbCenterHoriz.AutoSize = true;
+            this.cbCenterHoriz.Location = new System.Drawing.Point(9, 289);
+            this.cbCenterHoriz.Name = "cbCenterHoriz";
+            this.cbCenterHoriz.Size = new System.Drawing.Size(107, 17);
+            this.cbCenterHoriz.TabIndex = 21;
+            this.cbCenterHoriz.Text = "Center Horizontal";
+            this.cbCenterHoriz.UseVisualStyleBackColor = true;
+            this.cbCenterHoriz.CheckedChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // cbDontMap
+            // 
+            this.cbDontMap.AutoSize = true;
+            this.cbDontMap.Location = new System.Drawing.Point(9, 270);
+            this.cbDontMap.Name = "cbDontMap";
+            this.cbDontMap.Size = new System.Drawing.Size(126, 17);
+            this.cbDontMap.TabIndex = 21;
+            this.cbDontMap.Text = "Don\'t map on overlay";
+            this.cbDontMap.UseVisualStyleBackColor = true;
+            this.cbDontMap.CheckedChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // cbTileNorth
+            // 
+            this.cbTileNorth.AutoSize = true;
+            this.cbTileNorth.Location = new System.Drawing.Point(9, 234);
+            this.cbTileNorth.Name = "cbTileNorth";
+            this.cbTileNorth.Size = new System.Drawing.Size(34, 17);
+            this.cbTileNorth.TabIndex = 21;
+            this.cbTileNorth.Text = "N";
+            this.cbTileNorth.UseVisualStyleBackColor = true;
+            this.cbTileNorth.CheckedChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(10, 218);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(37, 13);
+            this.label16.TabIndex = 20;
+            this.label16.Text = "Block:";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(10, 182);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(67, 13);
+            this.label17.TabIndex = 19;
+            this.label17.Text = "Map Texture";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(10, 198);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(97, 20);
+            this.textBox5.TabIndex = 18;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(11, 143);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(71, 13);
+            this.label14.TabIndex = 19;
+            this.label14.Text = "West Texture";
+            // 
+            // tbWestTex
+            // 
+            this.tbWestTex.Location = new System.Drawing.Point(11, 159);
+            this.tbWestTex.Name = "tbWestTex";
+            this.tbWestTex.Size = new System.Drawing.Size(97, 20);
+            this.tbWestTex.TabIndex = 18;
+            this.tbWestTex.TextChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(11, 103);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(67, 13);
+            this.label15.TabIndex = 17;
+            this.label15.Text = "East Texture";
+            // 
+            // tbEastTex
+            // 
+            this.tbEastTex.Location = new System.Drawing.Point(11, 119);
+            this.tbEastTex.Name = "tbEastTex";
+            this.tbEastTex.Size = new System.Drawing.Size(97, 20);
+            this.tbEastTex.TabIndex = 16;
+            this.tbEastTex.TextChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(11, 63);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(74, 13);
+            this.label13.TabIndex = 15;
+            this.label13.Text = "South Texture";
+            // 
+            // tbSouthTex
+            // 
+            this.tbSouthTex.Location = new System.Drawing.Point(11, 79);
+            this.tbSouthTex.Name = "tbSouthTex";
+            this.tbSouthTex.Size = new System.Drawing.Size(97, 20);
+            this.tbSouthTex.TabIndex = 14;
+            this.tbSouthTex.TextChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(11, 23);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(72, 13);
+            this.label12.TabIndex = 13;
+            this.label12.Text = "North Texture";
+            // 
+            // tbNorthTex
+            // 
+            this.tbNorthTex.Location = new System.Drawing.Point(11, 39);
+            this.tbNorthTex.Name = "tbNorthTex";
+            this.tbNorthTex.Size = new System.Drawing.Size(97, 20);
+            this.tbNorthTex.TabIndex = 12;
+            this.tbNorthTex.TextChanged += new System.EventHandler(this.createTile_Events);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(8, 374);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(57, 13);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "Swatches:";
             // 
             // listBox1
             // 
@@ -1060,10 +1328,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(850, 603);
+            this.Controls.Add(this.gbTileSelection);
             this.Controls.Add(this.gbTriggerData);
             this.Controls.Add(this.gbZoneList);
             this.Controls.Add(this.gbThingSelect);
-            this.Controls.Add(this.gbTileSelection);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.mainLevelPanel);
             this.Controls.Add(this.button2);
@@ -1090,6 +1358,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ndParam2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ndParam1)).EndInit();
             this.gbTileSelection.ResumeLayout(false);
+            this.gbTileSelection.PerformLayout();
             this.gbThingSelect.ResumeLayout(false);
             this.gbThingSelect.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ndThingAngle)).EndInit();
@@ -1190,6 +1459,30 @@
         private System.Windows.Forms.GroupBox gbZoneList;
         private System.Windows.Forms.ListBox lbZoneList;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.CheckBox cbTileWest;
+        private System.Windows.Forms.CheckBox cbTileSouth;
+        private System.Windows.Forms.CheckBox cbTileEast;
+        private System.Windows.Forms.CheckBox cbCenterVert;
+        private System.Windows.Forms.CheckBox cbCenterHoriz;
+        private System.Windows.Forms.CheckBox cbDontMap;
+        private System.Windows.Forms.CheckBox cbTileNorth;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox tbWestTex;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tbEastTex;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox tbSouthTex;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox tbNorthTex;
     }
 }
 

@@ -126,7 +126,6 @@ namespace eced
         public void addThing(Thing thing)
         {
             this.things.Add(thing);
-            markChunkDirty((int)thing.x / 16, (int)thing.y / 16);
         }
 
         public List<Thing> getThings()
@@ -224,12 +223,21 @@ namespace eced
         public void addTrigger(int x, int y, int z, Trigger trigger)
         {
             planes[z].cells[x, y].triggerList.Add(trigger);
-            markChunkDirty(x / 16, y / 16);
+            OpenTK.Vector2 triggerPos = new OpenTK.Vector2(x, y);
+            if (!planes[z].cellsWithTriggers.Contains(triggerPos))
+            {
+                planes[z].cellsWithTriggers.Add(triggerPos);
+            }
         }
 
         public List<Trigger> getTriggers(int x, int y, int z)
         {
             return planes[z].cells[x, y].triggerList;
+        }
+
+        public List<OpenTK.Vector2> getTriggerLocations()
+        {
+            return planes[0].cellsWithTriggers;
         }
 
         /*public List<Trigger> getTriggersInChunk(int x, int y, int z)
@@ -407,8 +415,8 @@ namespace eced
                     for (int li = 0; li < planes[p].cells[x, y].triggerList.Count; x++)
                     {
                         sw.Write(planes[p].cells[x, y].triggerList[li].getUWMFString());
+                        sw.Write("\n");
                     }
-                    sw.Write("\n");
                 }
             }
             sw.Write("\n");
