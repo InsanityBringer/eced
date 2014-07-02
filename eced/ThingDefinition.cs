@@ -68,6 +68,16 @@ namespace eced
                         g = 0;
                         b = 0;
                         break;
+                    case "Treasure":
+                        r = 128;
+                        g = 128;
+                        b = 0;
+                        break;
+                    case "Powerup":
+                        r = 0;
+                        g = 128;
+                        b = 128;
+                        break;
                 }
             }
         }

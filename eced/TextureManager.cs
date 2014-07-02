@@ -338,7 +338,9 @@ namespace eced
             GL.DeleteTexture(atlasTextureID);
             GL.DeleteTexture(resourceInfoID);
 
-
+            this.lastID = 0;
+            this.textureIDList = new Dictionary<string, int>();
+            this.cells = new List<TextureCell>() ;
         }
 
         public TextureFormat checkFormat(ref byte[] data)

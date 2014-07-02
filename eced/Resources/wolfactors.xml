@@ -167,4 +167,18 @@
 		<name>Inky</name>
 		<type>Enemy</type>
 	</actor>
+	<actor>
+		<id>62</id>
+		<radius>20</radius>
+		<height>16</height>
+		<name>Cross</name>
+		<type>Treasure</type>
+	</actor>
+	<actor>
+		<id>66</id>
+		<radius>20</radius>
+		<height>16</height>
+		<name>Extra Life</name>
+		<type>Powerup</type>
+	</actor>
 </wolfactors>

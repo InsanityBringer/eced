@@ -171,7 +171,6 @@ namespace eced
                     this.highlighted = thing;
                     thing.highlighted = true;
                     Console.WriteLine("Highlighted");
-                    markChunkDirty((int)thing.x / 16, (int)thing.y / 16);
                     return;
                 }
             }
@@ -193,7 +192,6 @@ namespace eced
             {
                 Console.WriteLine("unhighlighting");
                 this.highlighted.highlighted = false;
-                markChunkDirty((int)highlighted.x / 16, (int)highlighted.y / 16);
                 this.highlighted = null;
             }
         }
@@ -270,7 +268,9 @@ namespace eced
                 for (int y = 0; y < this.height; y++)
                 {
                     //planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
-                    planeData[(y * width + x) * 4] = (short)tm.getTextureID(planes[layer].cells[x, y].tile.texn);
+                    if (planes[layer].cells[x, y].tile != null)
+                        planeData[(y * width + x) * 4] = (short)tm.getTextureID(planes[layer].cells[x, y].tile.texn);
+                    else planeData[(y * width + x) * 4] = -1;
                 }
             }
 

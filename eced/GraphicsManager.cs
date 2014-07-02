@@ -306,7 +306,7 @@ namespace eced
 
             GL.Uniform2(panUL, pan);
             GL.Uniform1(zoomUL, zoom);
-            GL.Uniform2(thingposUL, new OpenTK.Vector2(thing.x + .5f, thing.y + .5f));
+            GL.Uniform2(thingposUL, new OpenTK.Vector2(thing.x, thing.y));
             GL.Uniform1(thingradUL, (float)thingdef.radius);
             if (thing.highlighted)
                 GL.Uniform4(thingcolorUL, new OpenTK.Vector4((thingdef.r + 128) / 255f, (thingdef.g + 128) / 255f, thingdef.b / 255f, 1.0f));

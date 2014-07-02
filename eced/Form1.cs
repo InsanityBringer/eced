@@ -103,7 +103,6 @@ namespace eced
             GL.Disable(EnableCap.DepthTest);
 
             createNewLevel(null); //heh
-            this.updateZoneList();
         }
 
         private void glInit()
@@ -132,6 +131,8 @@ namespace eced
             currentLevel = level;
 
             renderer.setupLevelRendering(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+
+            //this.updateZoneList();
         }
 
         private void updateZoneList()
@@ -220,18 +221,33 @@ namespace eced
                     //reconstruct the level
                     if (parser.ErrorDescription == "")
                     {
-                        try
+                        //try
                         {
+                            tm.cleanup();
+                            ResourceFiles.ResourceArchive arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
+
                             Level newLevel = LevelIO.makeNewLevel(parser.Root);
                             newLevel.localThingList = this.thinglist;
-                            this.currentLevel = newLevel;
+
+                            tm.allocateAtlasTexture();
+                            tm.getTextureList(arc);
+                            tm.createInfoTexture();
+
+                            newLevel.tm = this.tm;
+
+                            renderer.setupTextures(newLevel, tm.resourceInfoID, tm.atlasTextureID);
+
+                            currentLevel = newLevel;
+
+                            renderer.setupLevelRendering(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+
                             this.updateZoneList();
                         }
-                        catch (Exception exc)
+                        /*catch (Exception exc)
                         {
                             statusBar1.Panels[0].Text = "Error loading map: " + exc.Message;
                             Console.WriteLine(exc.ToString());
-                        }
+                        }*/
                     }
                     Console.WriteLine("heh");
                 }
@@ -409,8 +425,7 @@ namespace eced
             float sizex = currentLevel.width / 2f;
             float sizey = currentLevel.height / 2f;
             Vector2 center = new Vector2(mainLevelPanel.Width / 2, mainLevelPanel.Height / 2);
-            Vector2 bstart = new Vector2(center.X - (sizex * 8 * zoom) + (pan.X * currentLevel.width * 8 * zoom), center.Y - (sizey * 8 * zoom) + (pan.Y * currentLevel.height * 8 * zoom));
-            //Vector2 bend = new Vector2(32 * 8 * zoom, 32 * 8 * zoom);
+            Vector2 bstart = new Vector2(center.X - (sizex * 8 * zoom) + (pan.X * 64 * 8 * zoom), center.Y - (sizey * 8 * zoom) + (pan.Y * 64 * 8 * zoom));
             Vector2 curpos = new Vector2(mouseCoords.X - bstart.X, mouseCoords.Y - bstart.Y);
             Vector2 tile = new Vector2((curpos.X / (8 * zoom)), (curpos.Y / (8 * zoom)));
 
@@ -419,6 +434,9 @@ namespace eced
 
         private void mainLevelPanel_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            if (currentLevel == null)
+                return;
+            
             brushmode = true;
             defaultBrush.normalTile = selectedTile;
 
@@ -429,11 +447,14 @@ namespace eced
 
         private void mainLevelPanel_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            if (currentLevel == null)
+                return;
+
             Vector2 tile = pick(new Vector2(e.X, e.Y));
 
             //Console.WriteLine("{0} {1}, center {2} {3}", tile.X, tile.Y, pan.X, pan.Y);
 
-            currentLevel.updateHighlight((int)(tile.X * 64), (int)(tile.Y * 64));
+            currentLevel.updateHighlight((int)((tile.X + .5) * 64), (int)((tile.Y + .5) * 64));
 
             if (brushmode && defaultBrush.repeatable)
             {
@@ -449,6 +470,9 @@ namespace eced
 
         private void mainLevelPanel_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            if (currentLevel == null)
+                return; 
+
             brushmode = false;
             defaultBrush.EndBrush(currentLevel);
             this.updateZoneList();

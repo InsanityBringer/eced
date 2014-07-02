@@ -27,7 +27,9 @@ namespace eced
     {
         public static Level makeNewLevel(UniversalCollection data)
         {
-            Level level = new Level(64, 64, 1, null);
+            int width = UWMFSearch.getIntTag(data, "width", 64);
+            int height = UWMFSearch.getIntTag(data, "height", 64);
+            Level level = new Level(width, height, 1, null);
             for (int x = 0; x < data.Count; x++)
             {
                 UniversalEntry entry = data[x];

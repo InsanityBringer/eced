@@ -522,12 +522,15 @@ namespace CodeImp.DoomBuilder.IO
                             terminateWhitespace(ref data, ref pos, ref line);
                             int zone = (int)GetNumber(ref data, ref pos, ref line);
                             c = data[pos];
+                            pos++;
                             //handle optional tag
                             if (c == ',')
                             {
                                 terminateWhitespace(ref data, ref pos, ref line);
                                 tag = (int)GetNumber(ref data, ref pos, ref line);
+                                terminateWhitespace(ref data, ref pos, ref line);
                                 c = data[pos];
+                                Console.WriteLine("tag {0}", tag);
                             }
                             if (c != '}')
                             {
