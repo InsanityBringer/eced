@@ -57,6 +57,7 @@
             this.toolBarButton6 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton7 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton8 = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButton18 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton13 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton14 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton15 = new System.Windows.Forms.ToolBarButton();
@@ -143,6 +144,16 @@
             this.gbZoneList = new System.Windows.Forms.GroupBox();
             this.lbZoneList = new System.Windows.Forms.ListBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.gbSectorPanel = new System.Windows.Forms.GroupBox();
+            this.nudSectorLight = new System.Windows.Forms.NumericUpDown();
+            this.label23 = new System.Windows.Forms.Label();
+            this.tbCeilingTex = new System.Windows.Forms.TextBox();
+            this.tbFloorTex = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.gbTag = new System.Windows.Forms.GroupBox();
+            this.nudNewTag = new System.Windows.Forms.NumericUpDown();
+            this.label24 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTileList)).BeginInit();
@@ -156,6 +167,10 @@
             this.gbThingSelect.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ndThingAngle)).BeginInit();
             this.gbZoneList.SuspendLayout();
+            this.gbSectorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSectorLight)).BeginInit();
+            this.gbTag.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNewTag)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -259,6 +274,7 @@
             this.toolBarButton6,
             this.toolBarButton7,
             this.toolBarButton8,
+            this.toolBarButton18,
             this.toolBarButton13,
             this.toolBarButton14,
             this.toolBarButton15,
@@ -352,6 +368,12 @@
             this.toolBarButton8.Tag = "7";
             this.toolBarButton8.ToolTipText = "Floor Fill Tool";
             // 
+            // toolBarButton18
+            // 
+            this.toolBarButton18.ImageIndex = 15;
+            this.toolBarButton18.Name = "toolBarButton18";
+            this.toolBarButton18.Tag = "8";
+            // 
             // toolBarButton13
             // 
             this.toolBarButton13.Name = "toolBarButton13";
@@ -401,6 +423,7 @@
             this.imageList1.Images.SetKeyName(12, "PreviewCode.bmp");
             this.imageList1.Images.SetKeyName(13, "PreviewCeiling.bmp");
             this.imageList1.Images.SetKeyName(14, "PreviewFloor.bmp");
+            this.imageList1.Images.SetKeyName(15, "TagTool.png");
             // 
             // statusBar1
             // 
@@ -1323,13 +1346,115 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // gbSectorPanel
+            // 
+            this.gbSectorPanel.Controls.Add(this.nudSectorLight);
+            this.gbSectorPanel.Controls.Add(this.label23);
+            this.gbSectorPanel.Controls.Add(this.tbCeilingTex);
+            this.gbSectorPanel.Controls.Add(this.tbFloorTex);
+            this.gbSectorPanel.Controls.Add(this.label22);
+            this.gbSectorPanel.Controls.Add(this.label21);
+            this.gbSectorPanel.Location = new System.Drawing.Point(12, 32);
+            this.gbSectorPanel.Name = "gbSectorPanel";
+            this.gbSectorPanel.Size = new System.Drawing.Size(162, 528);
+            this.gbSectorPanel.TabIndex = 17;
+            this.gbSectorPanel.TabStop = false;
+            this.gbSectorPanel.Text = "Sector";
+            // 
+            // nudSectorLight
+            // 
+            this.nudSectorLight.Location = new System.Drawing.Point(10, 124);
+            this.nudSectorLight.Name = "nudSectorLight";
+            this.nudSectorLight.Size = new System.Drawing.Size(99, 20);
+            this.nudSectorLight.TabIndex = 3;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(6, 105);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(59, 13);
+            this.label23.TabIndex = 2;
+            this.label23.Text = "Light Level";
+            // 
+            // tbCeilingTex
+            // 
+            this.tbCeilingTex.Location = new System.Drawing.Point(9, 78);
+            this.tbCeilingTex.Name = "tbCeilingTex";
+            this.tbCeilingTex.Size = new System.Drawing.Size(100, 20);
+            this.tbCeilingTex.TabIndex = 1;
+            this.tbCeilingTex.Text = "#383838";
+            this.tbCeilingTex.TextChanged += new System.EventHandler(this.tbFloorTex_TextChanged);
+            // 
+            // tbFloorTex
+            // 
+            this.tbFloorTex.Location = new System.Drawing.Point(9, 38);
+            this.tbFloorTex.Name = "tbFloorTex";
+            this.tbFloorTex.Size = new System.Drawing.Size(100, 20);
+            this.tbFloorTex.TabIndex = 1;
+            this.tbFloorTex.Text = "#717171";
+            this.tbFloorTex.TextChanged += new System.EventHandler(this.tbFloorTex_TextChanged);
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(7, 61);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(77, 13);
+            this.label22.TabIndex = 0;
+            this.label22.Text = "Ceiling Texture";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(7, 21);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(69, 13);
+            this.label21.TabIndex = 0;
+            this.label21.Text = "Floor Texture";
+            // 
+            // gbTag
+            // 
+            this.gbTag.Controls.Add(this.nudNewTag);
+            this.gbTag.Controls.Add(this.label24);
+            this.gbTag.Location = new System.Drawing.Point(12, 32);
+            this.gbTag.Name = "gbTag";
+            this.gbTag.Size = new System.Drawing.Size(162, 100);
+            this.gbTag.TabIndex = 18;
+            this.gbTag.TabStop = false;
+            this.gbTag.Text = "Tag";
+            // 
+            // nudNewTag
+            // 
+            this.nudNewTag.Location = new System.Drawing.Point(9, 40);
+            this.nudNewTag.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.nudNewTag.Name = "nudNewTag";
+            this.nudNewTag.Size = new System.Drawing.Size(99, 20);
+            this.nudNewTag.TabIndex = 1;
+            this.nudNewTag.ValueChanged += new System.EventHandler(this.nudNewTag_ValueChanged);
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(10, 21);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(51, 13);
+            this.label24.TabIndex = 0;
+            this.label24.Text = "New Tag";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(850, 603);
-            this.Controls.Add(this.gbTileSelection);
             this.Controls.Add(this.gbTriggerData);
+            this.Controls.Add(this.gbTag);
+            this.Controls.Add(this.gbSectorPanel);
+            this.Controls.Add(this.gbTileSelection);
             this.Controls.Add(this.gbZoneList);
             this.Controls.Add(this.gbThingSelect);
             this.Controls.Add(this.button3);
@@ -1363,6 +1488,12 @@
             this.gbThingSelect.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ndThingAngle)).EndInit();
             this.gbZoneList.ResumeLayout(false);
+            this.gbSectorPanel.ResumeLayout(false);
+            this.gbSectorPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSectorLight)).EndInit();
+            this.gbTag.ResumeLayout(false);
+            this.gbTag.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNewTag)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1483,6 +1614,17 @@
         private System.Windows.Forms.TextBox tbSouthTex;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tbNorthTex;
+        private System.Windows.Forms.GroupBox gbSectorPanel;
+        private System.Windows.Forms.NumericUpDown nudSectorLight;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox tbCeilingTex;
+        private System.Windows.Forms.TextBox tbFloorTex;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.ToolBarButton toolBarButton18;
+        private System.Windows.Forms.GroupBox gbTag;
+        private System.Windows.Forms.NumericUpDown nudNewTag;
+        private System.Windows.Forms.Label label24;
     }
 }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace eced.ResourceFiles
 {
-    abstract class ResourceArchive
+    public abstract class ResourceArchive
     {
         public abstract ResourceFile findResource(string name);
         public abstract List<ResourceFile> getResourceList(ResourceNamespace ns);

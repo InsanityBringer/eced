@@ -23,7 +23,7 @@ using CodeImp.DoomBuilder.IO;
 
 namespace eced
 {
-    class Plane
+    public class Plane
     {
         int height = 64;
 

@@ -22,7 +22,7 @@ using System.Text;
 
 namespace eced
 {
-    class TriggerBrush : Brush
+    public class TriggerBrush : Brush
     {
         public Trigger trigger = new Trigger();
         public TriggerBrush()
@@ -36,13 +36,24 @@ namespace eced
             int lx = (int)pos.X;
             int ly = (int)pos.Y;
 
-            Trigger triggertoput = new Trigger(trigger);
+            if (button == 0)
+            {
+                Trigger triggertoput = new Trigger(trigger);
 
-            triggertoput.x = lx;
-            triggertoput.y = ly;
-            triggertoput.z = 0;
+                triggertoput.x = lx;
+                triggertoput.y = ly;
+                triggertoput.z = 0;
 
-            level.addTrigger(lx, ly, z, triggertoput);
+                level.addTrigger(lx, ly, z, triggertoput);
+            }
+            else
+            {
+                Cell cell = level.getCell(lx, ly, z);
+                TriggerEditor editor = new TriggerEditor(ref cell, lx, ly, z);
+                editor.ShowDialog();
+                level.setCell(lx, ly, z, editor.getNewCell());
+                editor.Dispose();
+            }
         }
     }
 }

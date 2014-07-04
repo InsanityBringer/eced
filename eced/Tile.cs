@@ -24,7 +24,7 @@ using CodeImp.DoomBuilder.IO;
 
 namespace eced
 {
-    class Tile
+    public class Tile
     {
         public string texn = "-", texs = "-", texe = "-", texw = "-";
         public bool offh = false, offv = false;
@@ -114,8 +114,6 @@ namespace eced
             stringmaker.Append("\n\ttextureeast = \""); stringmaker.Append(texe); stringmaker.Append("\";");
             stringmaker.Append("\n\ttexturewest = \""); stringmaker.Append(texw); stringmaker.Append("\";");
 
-            stringmaker.Append("\n\tuser_id = "); stringmaker.Append(id); stringmaker.Append(";");
-
             stringmaker.Append("\n\toffsetvertical = "); stringmaker.Append(offv.ToString().ToLower()); stringmaker.Append(";");
             stringmaker.Append("\n\toffsethorizontal = "); stringmaker.Append(offh.ToString().ToLower()); stringmaker.Append(";");
 
@@ -137,8 +135,6 @@ namespace eced
             tile.texs = UWMFSearch.getStringTag(data, "texturesouth", "#FF0000");
             tile.texe = UWMFSearch.getStringTag(data, "textureeast", "#A00000");
             tile.texw = UWMFSearch.getStringTag(data, "texturewest", "#A00000");
-
-            tile.id = UWMFSearch.getIntTag(data, "user_id", 0);
 
             tile.offh = UWMFSearch.getBoolTag(data, "offsethorizontal", false);
             tile.offv = UWMFSearch.getBoolTag(data, "offsetvertical", false);

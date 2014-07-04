@@ -6,7 +6,7 @@ using System.IO;
 
 namespace eced.ResourceFiles
 {
-    enum ResourceType
+    public enum ResourceType
     {
         RES_TEXT,
         RES_PIC,
@@ -14,14 +14,14 @@ namespace eced.ResourceFiles
         RES_DIRECTORY
     }
 
-    enum ResourceNamespace
+    public enum ResourceNamespace
     {
         NS_GENERIC,
         NS_SPRITE,
         NS_TEXTURE
     }
 
-    class ResourceFile
+    public class ResourceFile
     {
         //public byte[] data;
         /// <summary>

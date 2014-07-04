@@ -25,7 +25,7 @@ using CodeImp.DoomBuilder.IO;
 
 namespace eced
 {
-    class UWMFSearch
+    public class UWMFSearch
     {
         //why is this not a dictionary
         /// <summary>
@@ -73,6 +73,12 @@ namespace eced
             if (entry.Value is int) //weirdness from the parser
             {
                 int value = (int)entry.Value;
+                return (double)value;
+            }
+
+            if (entry.Value is float)
+            {
+                float value = (float)entry.Value;
                 return (double)value;
             }
 

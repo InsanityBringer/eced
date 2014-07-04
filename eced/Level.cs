@@ -24,7 +24,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace eced
 {
-    class Level
+    public class Level
     {
         public int width = 64, height = 64, depth = 1;
 
@@ -35,6 +35,7 @@ namespace eced
         private List<Tile> internalTileset = new List<Tile>();
         private List<Thing> things = new List<Thing>();
         private List<Zone> zonedefs = new List<Zone>();
+        private List<Sector> sectors = new List<Sector>();
         //private Dictionary<int, Trigger> triggerList = new Dictionary<int, Trigger>();
         //private List<int> triggerKeys = new List<int>();
 
@@ -64,6 +65,7 @@ namespace eced
             //cells = new Cell[width, height, depth];
 
             planes.Add(new Plane(w, h));
+            sectors.Add(new Sector());
 
             for (int x = 0; x < width; x++)
             {
@@ -71,11 +73,37 @@ namespace eced
                 {
                     planes[0].cells[x, y] = new Cell();
                     planes[0].cells[x, y].tile = defaultTile;
+                    planes[0].cells[x, y].sector = sectors[0];
                 }
             }
             if (defaultTile != null)
                 internalTileset.Add(defaultTile);
             Console.WriteLine("tileset size: {0}", internalTileset.Count);
+        }
+
+        public Cell getCell(int x, int y, int z)
+        {
+            return planes[z].cells[x, y];
+        }
+
+        public void setCell(int x, int y, int z, Cell cell)
+        {
+            if (x >= 0 && y >= 0 && x < width && y < height)
+            {
+                planes[z].cells[x, y] = cell;
+                OpenTK.Vector2 triggerPos = new OpenTK.Vector2(x, y);
+                if (cell.triggerList.Count > 0)
+                {
+                    if (!planes[z].cellsWithTriggers.Contains(triggerPos))
+                    {
+                        planes[z].cellsWithTriggers.Add(triggerPos);
+                    }
+                }
+                else if (cell.triggerList.Count == 0 && planes[z].cellsWithTriggers.Contains(triggerPos))
+                {
+                    planes[z].cellsWithTriggers.Remove(triggerPos);
+                }
+            }
         }
 
         public void addTile(Tile tile)
@@ -115,12 +143,28 @@ namespace eced
             }
         }
 
-        public void markChunkDirty(int x, int y)
+        public void setTag(int x, int y, int z, int tag)
         {
+            if (x >= 0 && y >= 0 && x < width && y < height)
+            {
+                planes[z].cells[x, y].tag = tag;
+            }
         }
 
-        public void markAllChunksDirty()
+        public void addSector(Sector sector)
         {
+            sectors.Add(sector);
+        }
+
+        public void setSector(int x, int y, int z, Sector sector)
+        {
+            if (x >= 0 && y >= 0 && x < width && y < height)
+            {
+                planes[z].cells[x, y].sector = sector;
+
+                if (!sectors.Contains(sector))
+                    sectors.Add(sector);
+            }
         }
 
         public void addThing(Thing thing)
@@ -315,7 +359,6 @@ namespace eced
                 this.highlightedTrigger = planes[z].cells[x, y];
                 this.highlightedPos[0] = x;
                 this.highlightedPos[1] = y;
-                this.markChunkDirty(x / 16, y / 16);
             }
         }
 
@@ -334,7 +377,6 @@ namespace eced
                 if (x != this.highlightedPos[0] || y != this.highlightedPos[1])
                 {
                     this.highlightedTrigger.highlighted = false;
-                    this.markChunkDirty(this.highlightedPos[0] / 16, this.highlightedPos[1] / 16);
                     this.highlightedTrigger = null;
                     return;
                 }
@@ -351,7 +393,6 @@ namespace eced
             }
 
             planes[z].cells[x, y].zone = zonedefs[code];
-            this.markChunkDirty(x / 16, y / 16);
         }
 
         public int getUniqueCode()
@@ -391,12 +432,17 @@ namespace eced
             }
             sw.Write("\n");
 
-            sw.Write(new Sector().getUWMFString());
+            for (int x = 0; x < sectors.Count; x++)
+            {
+                sw.Write(sectors[x].getUWMFString());
+                sw.Write("\n");
+            }
             sw.Write("\n");
 
             for (int x = 0; x < planes.Count; x++)
             {
                 sw.Write(planes[x].makeUWMFString());
+                sw.Write("\n");
             }
             sw.Write("\n");
 
@@ -412,7 +458,7 @@ namespace eced
                 {
                     int x = i % width;
                     int y = i / width;
-                    for (int li = 0; li < planes[p].cells[x, y].triggerList.Count; x++)
+                    for (int li = 0; li < planes[p].cells[x, y].triggerList.Count; li++)
                     {
                         sw.Write(planes[p].cells[x, y].triggerList[li].getUWMFString());
                         sw.Write("\n");
@@ -460,7 +506,10 @@ namespace eced
 
         public int getSectorID(int x, int y, int z)
         {
-            return 0;
+            if (sectors.Contains(planes[z].cells[x, y].sector))
+                return sectors.IndexOf(planes[z].cells[x, y].sector);
+
+            return -1;
         }
 
         public int getZoneId(Cell cell)

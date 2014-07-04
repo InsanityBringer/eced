@@ -23,7 +23,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace eced
 {
-    class GraphicsManager
+    public class GraphicsManager
     {
         //float panx = -0.5f, pany = -0.5f;
         OpenTK.Vector2 pan = new OpenTK.Vector2(0.0f, 0.0f);

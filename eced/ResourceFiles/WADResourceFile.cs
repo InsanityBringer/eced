@@ -6,7 +6,7 @@ using System.IO;
 
 namespace eced.ResourceFiles
 {
-    class WADResourceFile : ResourceArchive
+    public class WADResourceFile : ResourceArchive
     {
         public List<ResourceFile> lumps = new List<ResourceFile>();
         public string saveToDirectory = "-";

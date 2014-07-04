@@ -22,7 +22,7 @@ using System.Text;
 
 namespace eced
 {
-    class FloodBrush : Brush
+    public class FloodBrush : Brush
     {
         private Level level;
         private int code = 0;

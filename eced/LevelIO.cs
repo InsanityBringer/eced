@@ -43,7 +43,7 @@ namespace eced
                         break;
                     case "sector":
                         Console.WriteLine("processing sector");
-                        Sector sector = Sector.Reconstruct();
+                        Sector sector = Sector.Reconstruct((UniversalCollection)entry.Value);
                         //no sector management, heh
                         break;
                     case "plane":

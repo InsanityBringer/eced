@@ -25,7 +25,7 @@ using System.Drawing;
 
 namespace eced
 {
-    class TileManager
+    public class TileManager
     {
         public List<Tile> tileset = new List<Tile>();
         //public Dictionary<int, Tile> tileset = new Dictionary<int, Tile>();

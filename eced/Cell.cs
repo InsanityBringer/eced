@@ -5,7 +5,7 @@ using System.Text;
 
 namespace eced
 {
-    class Cell
+    public class Cell
     {
         public Tile tile;
         public Sector sector;
@@ -16,7 +16,7 @@ namespace eced
         public bool highlighted = false;
     }
 
-    class NumberCell
+    public class NumberCell
     {
         public int tile, sector, zone, tag;
     }

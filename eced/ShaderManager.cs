@@ -7,7 +7,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace eced
 {
-    class ShaderManager
+    public class ShaderManager
     {
         public Dictionary<string, int> programList = new Dictionary<string,int>();
         public string loadShader(string filename)

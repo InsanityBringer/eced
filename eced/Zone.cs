@@ -23,7 +23,7 @@ using System.Text;
 namespace eced
 {
     //TODO: Add zone features
-    class Zone
+    public class Zone
     {
         public int id;
 

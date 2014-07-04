@@ -29,13 +29,13 @@ namespace eced
     /// <summary>
     /// Represents a single cell on the tilemap texture atlas
     /// </summary>
-    struct TextureCell
+    public struct TextureCell
     {
         public int x, y;
         public int w, h;
     }
 
-    enum TextureFormat
+    public enum TextureFormat
     {
         FORMAT_PNG,
         FORMAT_WOLFWALL,
@@ -46,7 +46,7 @@ namespace eced
     /// Manages textures, responsible for building tilemap texture atlas and filling in details about each texture
     /// </summary>
     // (rewritten for the first time since 2012)
-    class TextureManager
+    public class TextureManager
     {
         public static Dictionary<String, int> textureList = new Dictionary<string, int>();
 

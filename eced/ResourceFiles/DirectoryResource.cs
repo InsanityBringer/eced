@@ -5,7 +5,7 @@ using System.Text;
 
 namespace eced.ResourceFiles
 {
-    class DirectoryResource : ResourceFile
+    public class DirectoryResource : ResourceFile
     {
         public List<ResourceFile> resources;
 

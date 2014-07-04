@@ -22,7 +22,7 @@ using System.Text;
 
 namespace eced
 {
-    class TileBrush : Brush
+    public class TileBrush : Brush
     {
         public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {

@@ -24,10 +24,14 @@ namespace eced
         private TileManager tilelist;
         private ThingManager thinglist;
         private Tile selectedTile;
+
+        //brushes
         Brush defaultBrush = new Brush();
         ThingBrush thingBrush = new ThingBrush();
         TriggerBrush triggerBrush = new TriggerBrush();
         FloodBrush zoneBrush = new FloodBrush();
+        SectorBrush sectorBrush = new SectorBrush();
+        TagTool tagBrush = new TagTool();
         private TriggerTypeList triggerlist = new TriggerTypeList();
 
         private int toolid = 1, oldtoolid = 1;
@@ -51,6 +55,8 @@ namespace eced
         private TextureManager tm = new TextureManager();
         private ShaderManager sm = new ShaderManager();
 
+        private ResourceFiles.ResourceArchive arc;
+
         private void Form1_Load(object sender, EventArgs e)
         {
             //statusBar1.Panels[1].Text =
@@ -72,24 +78,18 @@ namespace eced
 
             pbTileList.Image = tilelistimg;
 
-            //currentLevel = new Level(64, 64, 1, tilelist.tileset[4]);
-            //currentLevel.localThingList = this.thinglist;
-            //selectedTile = tilelist.tileset[0];
-
             tbToolPanel.Buttons[5].Pushed = true;
             this.gbThingSelect.Visible = false;
             this.gbTileSelection.Visible = true;
             this.gbTriggerData.Visible = false;
             this.gbZoneList.Visible = false;
+            this.gbSectorPanel.Visible = false;
+            this.gbTag.Visible = false;
 
             this.thingBrush.thing = thinglist.thinglist[1];
             this.thingBrush.thinglist = thinglist;
-
-            //OpenGL 3.x setup
             VAOid = GL.GenVertexArray();
             GL.BindVertexArray(VAOid);
-
-            //temp shader compilation test
 
             glInit();
 
@@ -99,7 +99,6 @@ namespace eced
                 Console.WriteLine("SETUP GL Error: {0}", error.ToString());
             }
 
-            //GL.Disable(EnableCap.CullFace);
             GL.Disable(EnableCap.DepthTest);
 
             createNewLevel(null); //heh
@@ -115,7 +114,7 @@ namespace eced
 
         private void createNewLevel(List<ResourceFiles.ResourceArchive> resources)
         {
-            ResourceFiles.ResourceArchive arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
+            arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
             Level level = new Level(64, 64, 1, tilelist.tileset[0]);
             level.localThingList = this.thinglist;
             this.selectedTile = tilelist.tileset[0];
@@ -132,7 +131,12 @@ namespace eced
 
             renderer.setupLevelRendering(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
 
-            //this.updateZoneList();
+            this.updateZoneList();
+        }
+
+        private void closeLevel()
+        {
+            arc.closeResource();
         }
 
         private void updateZoneList()
@@ -163,42 +167,42 @@ namespace eced
                     tbToolPanel.Buttons[oldtoolid+4].Pushed = false;
                     tbToolPanel.Buttons[toolid+4].Pushed = true;
 
+                    this.gbThingSelect.Visible = false;
+                    this.gbTileSelection.Visible = false;
+                    this.gbTriggerData.Visible = false;
+                    this.gbZoneList.Visible = false;
+                    this.gbSectorPanel.Visible = false;
+                    this.gbTag.Visible = false;
+
                     switch (toolid)
                     {
                         case 1:
                             this.defaultBrush = new Brush();
-                            this.gbThingSelect.Visible = false;
                             this.gbTileSelection.Visible = true;
-                            this.gbTriggerData.Visible = false;
-                            this.gbZoneList.Visible = false;
                             break;
                         case 2:
                             this.defaultBrush = new TileBrush();
-                            this.gbThingSelect.Visible = false;
                             this.gbTileSelection.Visible = true;
-                            this.gbTriggerData.Visible = false;
-                            this.gbZoneList.Visible = false;
                             break;
                         case 4:
                             this.defaultBrush = thingBrush;
                             this.gbThingSelect.Visible = true;
-                            this.gbTileSelection.Visible = false;
-                            this.gbTriggerData.Visible = false;
-                            this.gbZoneList.Visible = false;
                             break;
                         case 5:
                             this.defaultBrush = triggerBrush;
-                            this.gbThingSelect.Visible = false;
-                            this.gbTileSelection.Visible = false;
                             this.gbTriggerData.Visible = true;
-                            this.gbZoneList.Visible = false;
+                            break;
+                        case 6:
+                            this.defaultBrush = sectorBrush;
+                            this.gbSectorPanel.Visible = true;
                             break;
                         case 7:
                             this.defaultBrush = zoneBrush;
-                            this.gbThingSelect.Visible = false;
-                            this.gbTileSelection.Visible = false;
-                            this.gbTriggerData.Visible = false;
                             this.gbZoneList.Visible = true;
+                            break;
+                        case 8:
+                            this.defaultBrush = tagBrush;
+                            this.gbTag.Visible = true;
                             break;
                     }
                 }
@@ -223,6 +227,7 @@ namespace eced
                     {
                         //try
                         {
+                            closeLevel();
                             tm.cleanup();
                             ResourceFiles.ResourceArchive arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
 
@@ -648,6 +653,20 @@ namespace eced
             newTile.offv = cbCenterVert.Checked;
 
             this.selectedTile = newTile;
+        }
+
+        private void tbFloorTex_TextChanged(object sender, EventArgs e)
+        {
+            Sector newSector = new Sector();
+            newSector.texceil = tbCeilingTex.Text;
+            newSector.texfloor = tbFloorTex.Text;
+
+            this.sectorBrush.currentSector = newSector;
+        }
+
+        private void nudNewTag_ValueChanged(object sender, EventArgs e)
+        {
+            this.tagBrush.tag = (int)nudNewTag.Value;
         }
     }
 }

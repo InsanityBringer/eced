@@ -22,7 +22,7 @@ using System.Text;
 
 namespace eced
 {
-    class Brush
+    public class Brush
     {
         public bool repeatable = true;
         public Tile normalTile = TileManager.tile1;

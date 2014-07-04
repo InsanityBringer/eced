@@ -19,10 +19,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace eced
 {
-    class TriggerType
+    public class TriggerType
     {
         public string name;
 
@@ -38,8 +39,8 @@ namespace eced
             this.p5 = p5;
         }
     }
-    
-    class TriggerTypeList
+
+    public class TriggerTypeList
     {
         public Dictionary<int, TriggerType> triggerList = new Dictionary<int, TriggerType>();
         public List<int> keyList = new List<int>();
@@ -51,13 +52,26 @@ namespace eced
             addTrigger(3, new TriggerType("Exit_Normal", "pos", "<none>", "<none>", "<none>", "<none>"));
             addTrigger(4, new TriggerType("Exit_Secret", "pos", "<none>", "<none>", "<none>", "<none>"));
             addTrigger(5, new TriggerType("Teleport_NewMap", "map", "pos", "flags", "<none>", "<none>"));
-            addTrigger(6, new TriggerType("Exit_VictorySpin()", "<none>", "<none>", "<none>", "<none>", "<none>"));
+            addTrigger(6, new TriggerType("Exit_VictorySpin", "<none>", "<none>", "<none>", "<none>", "<none>"));
+            addTrigger(7, new TriggerType("Exit_Victory", "<none>", "<none>", "<none>", "<none>", "<none>"));
+            addTrigger(8, new TriggerType("Trigger_Execute", "<none>", "<none>", "<none>", "<none>", "<none>"));
+            addTrigger(9, new TriggerType("StartConversation", "<none>", "<none>", "<none>", "<none>", "<none>"));
+            addTrigger(10, new TriggerType("Door_Elevator", "<none>", "<none>", "<none>", "<none>", "<none>"));
+            addTrigger(11, new TriggerType("Elevator_SwitchFloor", "<none>", "<none>", "<none>", "<none>", "<none>"));
         }
 
         public void addTrigger(int key, TriggerType trigger)
         {
             triggerList.Add(key, trigger);
             keyList.Add(key);
+        }
+
+        public void fillOutComboBox(ref ComboBox box)
+        {
+            for (int i = 0; i < keyList.Count; i++)
+            {
+                box.Items.Add(String.Format("{0}: {1}", i + 1, triggerList[keyList[i]].name));
+            }
         }
     }
 }

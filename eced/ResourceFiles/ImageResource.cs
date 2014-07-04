@@ -5,7 +5,7 @@ using System.Text;
 
 namespace eced.ResourceFiles
 {
-    class ImageResource : ResourceFile
+    public class ImageResource : ResourceFile
     {
         public int width, height;
 

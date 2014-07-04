@@ -22,7 +22,7 @@ using System.Text;
 
 namespace eced
 {
-    class ThingBrush : Brush
+    public class ThingBrush : Brush
     {
         public ThingDefinition thing = null;
         public ThingFlags flags = new ThingFlags();
@@ -72,9 +72,6 @@ namespace eced
                 }
                 else
                 {
-                    int oldchunkx = (int)level.highlighted.x / 16;
-                    int oldchunky = (int)level.highlighted.y / 16;
-
                     level.highlighted.moving = true;
                     level.highlighted.x = pos.X;
                     level.highlighted.y = pos.Y;

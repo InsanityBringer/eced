@@ -6,7 +6,7 @@ using CodeImp.DoomBuilder.IO;
 
 namespace eced
 {
-    class Trigger
+    public class Trigger
     {
         public int x, y, z;
 
@@ -61,7 +61,7 @@ namespace eced
             stringmaker.Append("\n\tactivatenorth = "); stringmaker.Append(actn.ToString().ToLower()); stringmaker.Append(";");
             stringmaker.Append("\n\tactivatesouth = "); stringmaker.Append(acts.ToString().ToLower()); stringmaker.Append(";");
             stringmaker.Append("\n\tactivateeast = "); stringmaker.Append(acte.ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\tactivatewest= "); stringmaker.Append(actw.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tactivatewest = "); stringmaker.Append(actw.ToString().ToLower()); stringmaker.Append(";");
 
             stringmaker.Append("\n\targ0 = "); stringmaker.Append(arg0); stringmaker.Append(";");
             stringmaker.Append("\n\targ1 = "); stringmaker.Append(arg1); stringmaker.Append(";");

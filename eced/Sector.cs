@@ -19,10 +19,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CodeImp.DoomBuilder.IO;
 
 namespace eced
 {
-    class Sector
+    public class Sector
     {
         public string texfloor = "#717171", texceil = "#383838";
 
@@ -38,9 +39,21 @@ namespace eced
             return output;
         }
 
-        public static Sector Reconstruct()
+        public static Sector Reconstruct(UniversalCollection data)
         {
-            return new Sector();
+            Sector newSector = new Sector();
+
+            newSector.texfloor = UWMFSearch.getStringTag(data, "texturefloor", "#717171");
+            newSector.texceil = UWMFSearch.getStringTag(data, "textureceiling", "#383838");
+            
+            return newSector;
+        }
+
+        public override bool Equals(object obj)
+        {
+            Sector t = (Sector)obj;
+
+            return t.texfloor == this.texfloor && t.texceil == this.texceil;
         }
     }
 }

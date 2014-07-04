@@ -104,7 +104,9 @@
     <Compile Include="ResourceFiles\ResourceArchive.cs" />
     <Compile Include="ResourceFiles\ResourceFile.cs" />
     <Compile Include="ResourceFiles\WADResourceFile.cs" />
+    <Compile Include="SectorBrush.cs" />
     <Compile Include="ShaderManager.cs" />
+    <Compile Include="TagTool.cs" />
     <Compile Include="ThingEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +143,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TriggerEditor.resx">
+      <DependentUpon>TriggerEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -160,6 +165,12 @@
     <Compile Include="TileBrush.cs" />
     <Compile Include="TileManager.cs" />
     <Compile Include="Trigger.cs" />
+    <Compile Include="TriggerEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TriggerEditor.Designer.cs">
+      <DependentUpon>TriggerEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="TriggerTypeList.cs" />
     <Compile Include="UWMFSearch.cs" />
     <Compile Include="Zone.cs" />
@@ -206,6 +217,7 @@
     <Content Include="SaveIcon.bmp" />
     <Content Include="SectorPaintBrush.bmp" />
     <Content Include="SubtractBrush.bmp" />
+    <Content Include="TagTool.png" />
     <Content Include="TextureBrush.bmp" />
     <Content Include="ThingBrush.bmp" />
     <Content Include="TileBrush.bmp" />
