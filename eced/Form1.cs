@@ -57,6 +57,8 @@ namespace eced
 
         private ResourceFiles.ResourceArchive arc;
 
+        private OpenTK.Vector2 lastMousePos = new Vector2();
+
         private void Form1_Load(object sender, EventArgs e)
         {
             //statusBar1.Panels[1].Text =
@@ -463,7 +465,9 @@ namespace eced
 
             if (brushmode && defaultBrush.repeatable)
             {
-                defaultBrush.ApplyToTile(pick(new Vector2(e.X, e.Y)), 0, this.currentLevel, this.heldMouseButton);
+                //defaultBrush.ApplyToTile(pick(new Vector2(e.X, e.Y)), 0, this.currentLevel, this.heldMouseButton);
+                Vector2 src = pick(lastMousePos);
+                LineDrawer.applyBrushOverLine(src, tile, ref this.currentLevel, heldMouseButton, this.defaultBrush);
             }
 
             if (defaultBrush is TriggerBrush)
@@ -471,6 +475,9 @@ namespace eced
                 //currentLevel.updateTriggerHighlight(tilex / zoom, tiley / zoom, 0);
             }
             mainLevelPanel.Invalidate();
+
+            lastMousePos.X = e.X;
+            lastMousePos.Y = e.Y;
         }
 
         private void mainLevelPanel_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)

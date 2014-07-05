@@ -99,6 +99,7 @@
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalParser.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\WAD.cs" />
     <Compile Include="LevelIO.cs" />
+    <Compile Include="LineDrawer.cs" />
     <Compile Include="ResourceFiles\DirectoryResource.cs" />
     <Compile Include="ResourceFiles\ImageResource.cs" />
     <Compile Include="ResourceFiles\ResourceArchive.cs" />
