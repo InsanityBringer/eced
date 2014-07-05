@@ -110,8 +110,10 @@ namespace eced
         {
             sm.makeProgram("./resources/VertexPanTexture.txt", "./resources/FragPanTextureAtlas.txt", "WorldRender");
             sm.makeProgram("./resources/VertexPanThing.txt", "./resources/FragPanThing.txt", "ThingRender");
+            sm.makeProgram("./resources/VertexPanBasic.txt", "./resources/FragPanThing.txt", "BasicRender");
             renderer.setupThingRendering();
             renderer.setupTriggerRendering();
+            renderer.setupLineRendering();
         }
 
         private void createNewLevel(List<ResourceFiles.ResourceArchive> resources)
@@ -287,6 +289,7 @@ namespace eced
                 //renderer.renderLevel(currentLevel);
                 renderer.updateWorldTexture(currentLevel);
                 renderer.drawLevel(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+                renderer.drawGrid(currentLevel, sm.programList["BasicRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
 
                 ErrorCode error = GL.GetError();
                 if (error != ErrorCode.NoError)

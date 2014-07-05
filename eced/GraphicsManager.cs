@@ -69,9 +69,12 @@ namespace eced
                                  0.0f,  1.0f, 0.0f, 1.0f,
                                  1.0f,  0.0f, 0.0f, 1.0f };
 
+        float[] lineVBOTemplate = { 0.0f, 0.0f, 0.0f, 1.0f,
+                                    0.0f, 0.0f, 0.0f, 1.0f};
+
         int frames = 0;
 
-        private int arrowVBOID, bodyVBOID, triggersVBOID;
+        private int arrowVBOID, bodyVBOID, triggersVBOID, lineVBOID;
 
         public void setupLevelRendering(Level level, uint program, OpenTK.Vector2 winsize)
         {
@@ -279,6 +282,11 @@ namespace eced
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
 
+        public void setupLineRendering()
+        {
+            lineVBOID = GL.GenBuffer();
+        }
+
         public void drawThing(Thing thing, Level level, int program, OpenTK.Vector2 winsize)
         {
             //GL.UseProgram(program);
@@ -351,6 +359,81 @@ namespace eced
             if (error != ErrorCode.NoError)
             {
                 Console.WriteLine("THING ARROW DRAW GL Error: {0}", error.ToString());
+            }
+
+            //GL.UseProgram(0);
+        }
+
+        public void drawGrid(Level level, int program, OpenTK.Vector2 winsize)
+        {
+            GL.UseProgram(program);
+            OpenTK.Vector4 color = new OpenTK.Vector4(0.0f, 0.5f, 0.5f, 1.0f);
+            for (int y = 0; y < level.height; y++)
+            {
+                float ly = (float)y / (float)level.height;
+                drawLine(new OpenTK.Vector2(0.0f, ly), new OpenTK.Vector2(1.0f, ly), color, level, program, winsize);
+            }
+
+            for (int x = 0; x < level.width; x++)
+            {
+                float lx = (float)x / (float)level.width;
+                drawLine(new OpenTK.Vector2(lx, 0.0f), new OpenTK.Vector2(lx, 1.0f), color, level, program, winsize);
+            }
+            GL.UseProgram(0);
+        }
+
+        public void drawLine(OpenTK.Vector2 src, OpenTK.Vector2 dst, OpenTK.Vector4 color, Level level, int program, OpenTK.Vector2 winsize)
+        {
+            //GL.UseProgram(program);
+            ErrorCode error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("LINE ENTRY DRAW GL Error: {0}", error.ToString());
+            }
+
+            lineVBOTemplate[0] = src.X;
+            lineVBOTemplate[1] = src.Y;
+            lineVBOTemplate[4] = dst.X;
+            lineVBOTemplate[5] = dst.Y;
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, lineVBOID);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(sizeof(float) * lineVBOTemplate.Length), lineVBOTemplate, BufferUsageHint.DynamicDraw);
+
+            int panUL = GL.GetUniformLocation(program, "pan");
+            int zoomUL = GL.GetUniformLocation(program, "zoom");
+            int thingcolorUL = GL.GetUniformLocation(program, "thingColor");
+            int projectUL = GL.GetUniformLocation(program, "project");
+            int mapsizeUL = GL.GetUniformLocation(program, "mapsize");
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("LINE UNIFORM FIND DRAW GL Error: {0}", error.ToString());
+            }
+
+            GL.Uniform2(panUL, pan);
+            GL.Uniform1(zoomUL, zoom);
+            GL.Uniform4(thingcolorUL, color);
+            OpenTK.Matrix4 project = OpenTK.Matrix4.CreateOrthographic(winsize.X / 64f / 8f, winsize.Y / 64f / 8f, -8f, 8f);
+            GL.UniformMatrix4(projectUL, false, ref project);
+            GL.Uniform2(mapsizeUL, level.width, level.height);
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("LINE UNIFORM DRAW GL Error: {0} {1}", error.ToString(), program);
+            }
+
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, 0, 0);
+            GL.DrawArrays(PrimitiveType.Lines, 0, 6);
+            GL.DisableVertexAttribArray(0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+            error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("LINE DRAW GL Error: {0}", error.ToString());
             }
 
             //GL.UseProgram(0);
