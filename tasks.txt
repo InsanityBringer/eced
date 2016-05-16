@@ -1,0 +1,28 @@
+Current tasks:
+
+For beta:
+	Resources:
+		-PK3 loading
+		-Load doom patches from archives
+		-Load doom flats from archives
+		
+		-Handle missing archive files gracefully
+
+	Interface:
+		-Load from WAD files
+			-Attach wad silently to resource chain
+			-Provide .dbs file with WAD to demonstrate 
+		-Save into WAD files, DB2 style
+			-Save will save into the current wad file
+			-Save As will write a completely new wad file
+			-Save Into will write into an existing wad
+			
+		-Rewrite swatches, do not show the SNES map tiles
+			-Load swatches from config file, give nicename
+		
+		
+For later:
+	Renderer:
+		-Rewrite uniform handling, don't set uniforms so often
+		-Investigate a better system for rendering tilemap and atlasing textures
+			-Current tilemap system is better suited for a Mario game than an editor for ECWolf
