@@ -51,7 +51,7 @@ namespace eced
 
         public List<OpenTK.Vector2> updateCells = new List<OpenTK.Vector2>();
 
-        public List<ResourceFiles.ResourceArchive> loadedResources;
+        public List<ResourceFiles.ResourceArchive> loadedResources = new List<ResourceFiles.ResourceArchive>();
 
         public TextureManager tm;
 
@@ -81,9 +81,22 @@ namespace eced
             Console.WriteLine("tileset size: {0}", internalTileset.Count);
         }
 
+        public void disposeLevel()
+        {
+            for (int i = 0; i < loadedResources.Count; i++)
+            {
+                loadedResources[i].closeResource();
+            }
+        }
+
         public Cell getCell(int x, int y, int z)
         {
             return planes[z].cells[x, y];
+        }
+
+        public int getZoneID(int x, int y, int z)
+        {
+            return zonedefs.IndexOf(planes[z].cells[x, y].zone);
         }
 
         public void setCell(int x, int y, int z, Cell cell)
@@ -137,7 +150,6 @@ namespace eced
                         internalTileset.Add(tile);
                         Console.WriteLine("tileset size: {0}", internalTileset.Count);
                     }
-                    //markChunkDirty(x / 16, y / 16);
                     updateCells.Add(new OpenTK.Vector2(x, y));
                 }
             }
@@ -196,6 +208,10 @@ namespace eced
 
         public ThingDefinition getThingDef(Thing thing)
         {
+            if (!localThingList.thinglist.ContainsKey(thing.typeid))
+            {
+                return localThingList.getUnknownThing();
+            }
             return localThingList.thinglist[thing.typeid];
         }
 
@@ -282,23 +298,6 @@ namespace eced
             return planes[0].cellsWithTriggers;
         }
 
-        /*public List<Trigger> getTriggersInChunk(int x, int y, int z)
-        {
-            List<Trigger> ltriggerList = new List<Trigger>();
-            int sx = x * 16; int ex = sx + 16;
-            int sy = y * 16; int ey = sy + 16;
-            for (int i = 0; i < triggerKeys.Count; i++)
-            {
-                Trigger trigger = this.triggerList[triggerKeys[i]];
-                if (trigger.x >= sx && trigger.x < ex && trigger.y >= sy && trigger.y < ey)
-                {
-                    ltriggerList.Add(trigger);
-                }
-            }
-
-            return ltriggerList;
-        }*/
-
         /// <summary>
         /// Builds a 2-dimensional array representing the data of a single plane
         /// </summary>
@@ -315,13 +314,16 @@ namespace eced
                     if (planes[layer].cells[x, y].tile != null)
                         planeData[(y * width + x) * 4] = (short)tm.getTextureID(planes[layer].cells[x, y].tile.texn);
                     else planeData[(y * width + x) * 4] = -1;
+
+                    if (planes[layer].cells[x, y].tile == null)
+                        planeData[(y * width + x) * 4 + 1] = (short)zonedefs.IndexOf(planes[layer].cells[x, y].zone);
                 }
             }
 
             return planeData;
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Builds a 1-dimensional array representing the data of all known resources
         /// Required for the renderer. Intended to be uploaded as an RGBA32I texture
         /// </summary>
@@ -347,7 +349,7 @@ namespace eced
             numTextures = 256;
 
             return textureData;
-        }
+        }*/
 
         public void highlightTrigger(int x, int y, int z)
         {
@@ -393,6 +395,7 @@ namespace eced
             }
 
             planes[z].cells[x, y].zone = zonedefs[code];
+            updateCells.Add(new OpenTK.Vector2(x, y));
         }
 
         public int getUniqueCode()

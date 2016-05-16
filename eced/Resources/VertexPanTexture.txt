@@ -6,10 +6,8 @@ layout(location=1) in vec2 uvcoord;
 smooth out vec2 tileloc;
 
 uniform vec2 pan;
-uniform ivec2 window;
 uniform float zoom;
 uniform float tilesize;
-uniform float fov; 
 uniform mat4 project;
 uniform ivec2 mapsize;
 

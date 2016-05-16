@@ -23,6 +23,34 @@ using OpenTK.Graphics.OpenGL;
 
 namespace eced
 {
+    public struct BasicRenderUniforms
+    {
+        //VS
+        public int panUL;
+        public int zoomUL;
+        public int tilesizeUL;
+        public int projectUL;
+        public int mapsizeUL;
+
+        //FS
+        public int atlasUL;
+        public int mapPlaneUL;
+        public int texInfoUL;
+        public int numbersUL;
+    }
+
+    public struct BasicThingUniforms
+    {
+        public int panUL;// = GL.GetUniformLocation(program, "pan");
+        public int zoomUL;// = GL.GetUniformLocation(program, "zoom");
+        public int thingposUL;// = GL.GetUniformLocation(program, "thingpos");
+        public int thingradUL;// = GL.GetUniformLocation(program, "thingrad");
+        public int thingcolorUL;// = GL.GetUniformLocation(program, "thingColor");
+        public int projectUL;// = GL.GetUniformLocation(program, "project");
+        public int rotateUL;// = GL.GetUniformLocation(program, "rotate");
+        public int mapsizeUL;// = GL.GetUniformLocation(program, "mapsize");
+    }
+
     public class GraphicsManager
     {
         //float panx = -0.5f, pany = -0.5f;
@@ -36,8 +64,12 @@ namespace eced
         int worldTextureID;
         int resourceTextureID;
         int atlasTextureID;
+        int numberTextureID;
 
         Random r = new Random();
+
+        BasicRenderUniforms uniformsBasicRender = new BasicRenderUniforms();
+        BasicThingUniforms uniformsThingRender = new BasicThingUniforms();
 
         public float zoom = 2.0f;
 
@@ -82,33 +114,32 @@ namespace eced
 
             byte[] testArray = new byte[64 * 64 * 4];
 
-            int panUL = GL.GetUniformLocation(program, "pan");
-            int zoomUL = GL.GetUniformLocation(program, "zoom");
-            int windowUL = GL.GetUniformLocation(program, "window");
-            int tilesizeUL = GL.GetUniformLocation(program, "tilesize");
-            int atlasUL = GL.GetUniformLocation(program, "atlas");
-            int mapPlaneUL = GL.GetUniformLocation(program, "mapPlane");
-            int texInfoUL = GL.GetUniformLocation(program, "texInfo");
-            int fovUL = GL.GetUniformLocation(program, "fov");
-            int projectUL = GL.GetUniformLocation(program, "project");
+            uniformsBasicRender.panUL = GL.GetUniformLocation(program, "pan");
+            uniformsBasicRender.zoomUL = GL.GetUniformLocation(program, "zoom");
+            uniformsBasicRender.tilesizeUL = GL.GetUniformLocation(program, "tilesize");
+            uniformsBasicRender.atlasUL = GL.GetUniformLocation(program, "atlas");
+            uniformsBasicRender.mapPlaneUL = GL.GetUniformLocation(program, "mapPlane");
+            uniformsBasicRender.texInfoUL = GL.GetUniformLocation(program, "texInfo");
+            uniformsBasicRender.projectUL = GL.GetUniformLocation(program, "project");
+            uniformsBasicRender.numbersUL = GL.GetUniformLocation(program, "numbers");
+            uniformsBasicRender.mapsizeUL = GL.GetUniformLocation(program, "mapsize");
 
             ErrorCode error = GL.GetError();
+
             if (error != ErrorCode.NoError)
             {
                 Console.WriteLine("SETUP UNIFORMS FIND GL Error: {0}", error.ToString());
             }
 
-            GL.Uniform2(panUL, pan);
+            GL.Uniform2(uniformsBasicRender.panUL, pan);
             //forced zoom level
-            GL.Uniform1(zoomUL, 1.0f);
+            GL.Uniform1(uniformsBasicRender.zoomUL, 1.0f);
             //TODO: tilesize fixed
-            GL.Uniform1(tilesizeUL, 8f);
-            GL.Uniform2(windowUL, (int)winsize.X, (int)winsize.Y);
-            //Console.WriteLine(winsize.X / winsize.Y);
-            GL.Uniform1(atlasUL, 0);
-            GL.Uniform1(mapPlaneUL, 1);
-            GL.Uniform1(texInfoUL, 2);
-            GL.Uniform1(fovUL, winsize.X / winsize.Y);
+            GL.Uniform1(uniformsBasicRender.tilesizeUL, 8f);
+            GL.Uniform1(uniformsBasicRender.atlasUL, 0);
+            GL.Uniform1(uniformsBasicRender.mapPlaneUL, 1);
+            GL.Uniform1(uniformsBasicRender.texInfoUL, 2);
+            GL.Uniform1(uniformsBasicRender.numbersUL, 3);
 
             error = GL.GetError();
             if (error != ErrorCode.NoError)
@@ -130,7 +161,7 @@ namespace eced
             }
         }
 
-        public void setupTextures(Level level, int resourceID, int atlasID)
+        public void setupTextures(Level level, int resourceID, int atlasID, int numberID)
         {
             short[] mapTexture = level.buildPlaneData(0);
 
@@ -139,6 +170,7 @@ namespace eced
             atlasTextureID = atlasID;
             worldTextureID = GL.GenTexture();
             resourceTextureID = resourceID;
+            numberTextureID = numberID;
 
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, worldTextureID);
@@ -166,25 +198,13 @@ namespace eced
 
             GL.UseProgram(program);
 
-            int panUL = GL.GetUniformLocation(program, "pan");
-            int zoomUL = GL.GetUniformLocation(program, "zoom");
-            int windowUL = GL.GetUniformLocation(program, "window");
-            int tilesizeUL = GL.GetUniformLocation(program, "tilesize");
-            int atlasUL = GL.GetUniformLocation(program, "atlas");
-            int mapPlaneUL = GL.GetUniformLocation(program, "mapPlane");
-            int texInfoUL = GL.GetUniformLocation(program, "texInfo");
-            int projectUL = GL.GetUniformLocation(program, "project");
-            int mapsizeUL = GL.GetUniformLocation(program, "mapsize");
-
-            GL.Uniform2(panUL, pan);
-            GL.Uniform1(zoomUL, zoom);
+            GL.Uniform2(uniformsBasicRender.panUL, pan);
+            GL.Uniform1(uniformsBasicRender.zoomUL, zoom);
             //TODO: tilesize fixed
-            GL.Uniform1(tilesizeUL, 64.0f);
-            //GL.Uniform2(windowUL, winsize);
-            //GL.Uniform2(windowUL, (int)winsize.X, (int)winsize.Y);
+            GL.Uniform1(uniformsBasicRender.tilesizeUL, 64.0f);
             OpenTK.Matrix4 project = OpenTK.Matrix4.CreateOrthographic(winsize.X / 64f / 8f, winsize.Y / 64f / 8f, -8f, 8f);
-            GL.UniformMatrix4(projectUL, false, ref project);
-            GL.Uniform2(mapsizeUL, level.width, level.height);
+            GL.UniformMatrix4(uniformsBasicRender.projectUL, false, ref project);
+            GL.Uniform2(uniformsBasicRender.mapsizeUL, level.width, level.height);
 
             error = GL.GetError();
             if (error != ErrorCode.NoError)
@@ -197,6 +217,9 @@ namespace eced
 
             GL.ActiveTexture(TextureUnit.Texture2);
             GL.BindTexture(TextureTarget.Texture2D, resourceTextureID);
+
+            GL.ActiveTexture(TextureUnit.Texture3);
+            GL.BindTexture(TextureTarget.Texture2D, numberTextureID);
 
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, atlasTextureID);
@@ -240,10 +263,16 @@ namespace eced
                 OpenTK.Vector2 loc = level.updateCells[i];
                 Tile tile = level.getTile((int)loc.X, (int)loc.Y, 0);
                 short[] id = new short[4];
+                
                 if (tile != null)
+                {
                     id[0] = id[1] = id[2] = id[3] = (short)level.tm.getTextureID(tile.texn);
+                }
                 else
-                    id[0] = id[1] = id[2] = id[3] = (short)-1;
+                {
+                    id[0] = id[2] = id[3] = (short)-1;
+                    id[1] = (short)level.getZoneID((int)loc.X, (int)loc.Y, 0);
+                }
 
                 GL.TexSubImage2D(TextureTarget.Texture2D, 0, (int)loc.X, (int)loc.Y, 1, 1, PixelFormat.RgbaInteger, PixelType.Short, id);
 
@@ -287,6 +316,22 @@ namespace eced
             lineVBOID = GL.GenBuffer();
         }
 
+        public void setupThingUniforms(int program)
+        {
+            GL.UseProgram(program);
+
+            uniformsThingRender.panUL = GL.GetUniformLocation(program, "pan");
+            uniformsThingRender.zoomUL = GL.GetUniformLocation(program, "zoom");
+            uniformsThingRender.thingposUL = GL.GetUniformLocation(program, "thingpos");
+            uniformsThingRender.thingradUL = GL.GetUniformLocation(program, "thingrad");
+            uniformsThingRender.thingcolorUL = GL.GetUniformLocation(program, "thingColor");
+            uniformsThingRender.projectUL = GL.GetUniformLocation(program, "project");
+            uniformsThingRender.rotateUL = GL.GetUniformLocation(program, "rotate");
+            uniformsThingRender.mapsizeUL = GL.GetUniformLocation(program, "mapsize");
+
+            GL.UseProgram(0);
+        }
+
         public void drawThing(Thing thing, Level level, int program, OpenTK.Vector2 winsize)
         {
             //GL.UseProgram(program);
@@ -297,39 +342,31 @@ namespace eced
             }
 
             ThingDefinition thingdef = level.getThingDef(thing);
-            int panUL = GL.GetUniformLocation(program, "pan");
-            int zoomUL = GL.GetUniformLocation(program, "zoom");
-            int thingposUL = GL.GetUniformLocation(program, "thingpos");
-            int thingradUL = GL.GetUniformLocation(program, "thingrad");
-            int thingcolorUL = GL.GetUniformLocation(program, "thingColor");
-            int projectUL = GL.GetUniformLocation(program, "project");
-            int rotateUL = GL.GetUniformLocation(program, "rotate");
-            int mapsizeUL = GL.GetUniformLocation(program, "mapsize");
 
             error = GL.GetError();
             if (error != ErrorCode.NoError)
             {
-                Console.WriteLine("THING UNIFORM FIND DRAW GL Error: {0} {1} {2} {3} {4} {5}", error.ToString(), panUL, zoomUL, thingposUL, thingradUL, thingcolorUL);
+                Console.WriteLine("THING UNIFORM FIND DRAW GL Error {0}", error.ToString());
             }
 
-            GL.Uniform2(panUL, pan);
-            GL.Uniform1(zoomUL, zoom);
-            GL.Uniform2(thingposUL, new OpenTK.Vector2(thing.x, thing.y));
-            GL.Uniform1(thingradUL, (float)thingdef.radius);
+            GL.Uniform2(uniformsThingRender.panUL, pan);
+            GL.Uniform1(uniformsThingRender.zoomUL, zoom);
+            GL.Uniform2(uniformsThingRender.thingposUL, new OpenTK.Vector2(thing.x, thing.y));
+            GL.Uniform1(uniformsThingRender.thingradUL, (float)thingdef.radius);
             if (thing.highlighted)
-                GL.Uniform4(thingcolorUL, new OpenTK.Vector4((thingdef.r + 128) / 255f, (thingdef.g + 128) / 255f, thingdef.b / 255f, 1.0f));
+                GL.Uniform4(uniformsThingRender.thingcolorUL, new OpenTK.Vector4((thingdef.r + 128) / 255f, (thingdef.g + 128) / 255f, thingdef.b / 255f, 1.0f));
             else
-                GL.Uniform4(thingcolorUL, new OpenTK.Vector4(thingdef.r / 255f, thingdef.g / 255f, thingdef.b / 255f, 1.0f));
+                GL.Uniform4(uniformsThingRender.thingcolorUL, new OpenTK.Vector4(thingdef.r / 255f, thingdef.g / 255f, thingdef.b / 255f, 1.0f));
             OpenTK.Matrix4 project = OpenTK.Matrix4.CreateOrthographic(winsize.X / 64f / 8f, winsize.Y / 64f / 8f, -8f, 8f);
-            GL.UniformMatrix4(projectUL, false, ref project);
+            GL.UniformMatrix4(uniformsThingRender.projectUL, false, ref project);
             OpenTK.Matrix4 rotate = OpenTK.Matrix4.Identity;
-            GL.UniformMatrix4(rotateUL, false, ref rotate);
-            GL.Uniform2(mapsizeUL, level.width, level.height);
+            GL.UniformMatrix4(uniformsThingRender.rotateUL, false, ref rotate);
+            GL.Uniform2(uniformsThingRender.mapsizeUL, level.width, level.height);
 
             error = GL.GetError();
             if (error != ErrorCode.NoError)
             {
-                Console.WriteLine("THING UNIFORM DRAW GL Error: {0} {1} {2} {3} {4} {5}", error.ToString(), panUL, zoomUL, thingposUL, thingradUL, thingcolorUL);
+                Console.WriteLine("THING UNIFORM DRAW GL Error: {0}", error.ToString());
             }
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, this.bodyVBOID);
@@ -345,12 +382,12 @@ namespace eced
             }
 
             rotate = OpenTK.Matrix4.CreateRotationZ(OpenTK.MathHelper.DegreesToRadians(thing.angle));
-            GL.UniformMatrix4(rotateUL, false, ref rotate);
+            GL.UniformMatrix4(uniformsThingRender.rotateUL, false, ref rotate);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, this.arrowVBOID);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, 0, 0);
-            GL.Uniform4(thingcolorUL, new OpenTK.Vector4(thingdef.r / 255f / 4f, thingdef.g / 255f / 4f, thingdef.b / 255f / 4f, 1.0f));
+            GL.Uniform4(uniformsThingRender.thingcolorUL, new OpenTK.Vector4(thingdef.r / 255f / 4f, thingdef.g / 255f / 4f, thingdef.b / 255f / 4f, 1.0f));
             GL.DrawArrays(PrimitiveType.Lines, 0, 6);
             GL.DisableVertexAttribArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

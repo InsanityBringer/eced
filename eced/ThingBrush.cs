@@ -100,6 +100,8 @@ namespace eced
             if (level.highlighted != null)
             {
                 level.highlighted.moving = false;
+                level.highlighted.x = ((int)(level.highlighted.x)) + .5f;
+                level.highlighted.y = ((int)(level.highlighted.y)) + .5f;
             }
             this.repeatable = false;
         }

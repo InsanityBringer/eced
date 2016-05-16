@@ -103,7 +103,7 @@ namespace eced
 
             GL.Disable(EnableCap.DepthTest);
 
-            createNewLevel(null); //heh
+            //createNewLevel(null); //heh
         }
 
         private void glInit()
@@ -116,31 +116,63 @@ namespace eced
             renderer.setupLineRendering();
         }
 
-        private void createNewLevel(List<ResourceFiles.ResourceArchive> resources)
+        private void doNewMapDialog()
         {
-            arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
-            Level level = new Level(64, 64, 1, tilelist.tileset[0]);
+            NewMapDialog nmd = new NewMapDialog();
+            nmd.ShowDialog();
+
+            if (nmd.DialogResult == DialogResult.OK)
+            {
+                if (this.currentLevel != null)
+                {
+                    closeLevel();
+                    tm.cleanup();
+                }
+                this.createNewLevel(nmd.getMapInfo());
+            }
+
+            nmd.Dispose();
+        }
+
+        private void createNewLevel(MapInformation mapinfo/*List<ResourceFiles.ResourceArchive> resources*/)
+        {
+            //TODO: Absolute path
+            //arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
+            Level level = new Level(mapinfo.sizex, mapinfo.sizey, mapinfo.layers, tilelist.tileset[0]);
             level.localThingList = this.thinglist;
             this.selectedTile = tilelist.tileset[0];
 
             tm.allocateAtlasTexture();
-            tm.getTextureList(arc);
+            tm.readyAtlasCreation();
+            for (int i = 0; i < mapinfo.files.Count; i++)
+            {
+                ResourceFiles.ResourceArchive file;
+                if (mapinfo.files[i].format == ResourceFiles.ResourceFormat.FORMAT_WAD)
+                {
+                    file = ResourceFiles.WADResourceFile.loadResourceFile(mapinfo.files[i].filename);
+                    tm.getTextureList(file);
+                    level.loadedResources.Add(file);
+                }
+            }
             tm.createInfoTexture();
+            tm.uploadNumberTexture();
 
             level.tm = this.tm;
 
-            renderer.setupTextures(level, tm.resourceInfoID, tm.atlasTextureID);
+            renderer.setupTextures(level, tm.resourceInfoID, tm.atlasTextureID, tm.numberTextureID);
             
             currentLevel = level;
 
             renderer.setupLevelRendering(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+            renderer.setupThingUniforms(sm.programList["ThingRender"]);
 
             this.updateZoneList();
         }
 
         private void closeLevel()
         {
-            arc.closeResource();
+            //arc.closeResource();
+            currentLevel.disposeLevel();
         }
 
         private void updateZoneList()
@@ -213,11 +245,13 @@ namespace eced
 
                 if (ltag == 22)
                 {
+                    //TODO: Absolute path
                     currentLevel.saveToUWMFFile("c:/dev/textmap.txt");
                 }
 
                 if (ltag == 21)
                 {
+                    //TODO: Absolute path
                     CodeImp.DoomBuilder.IO.UniversalParser parser = new CodeImp.DoomBuilder.IO.UniversalParser("c:/dev/textmap.txt");
 
                     Console.WriteLine("Errors: {0}, line {1}", parser.ErrorDescription, parser.ErrorLine);
@@ -231,24 +265,29 @@ namespace eced
                     {
                         //try
                         {
+                            //TODO: Redundant code with level creation
                             closeLevel();
                             tm.cleanup();
+                            //TODO: Absolute path
                             ResourceFiles.ResourceArchive arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
 
                             Level newLevel = LevelIO.makeNewLevel(parser.Root);
                             newLevel.localThingList = this.thinglist;
 
                             tm.allocateAtlasTexture();
+                            tm.readyAtlasCreation();
                             tm.getTextureList(arc);
                             tm.createInfoTexture();
+                            tm.uploadNumberTexture();
 
                             newLevel.tm = this.tm;
 
-                            renderer.setupTextures(newLevel, tm.resourceInfoID, tm.atlasTextureID);
+                            renderer.setupTextures(newLevel, tm.resourceInfoID, tm.atlasTextureID, tm.numberTextureID);
 
                             currentLevel = newLevel;
 
                             renderer.setupLevelRendering(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+                            renderer.setupThingUniforms(sm.programList["ThingRender"]);
 
                             this.updateZoneList();
                         }
@@ -262,6 +301,7 @@ namespace eced
                 }
                 if (ltag == 20)
                 {
+                    doNewMapDialog();
                 }
             }
         }
@@ -376,6 +416,7 @@ namespace eced
                 {
                     this.currentLevel.deleteThing(this.currentLevel.highlighted);
                     this.currentLevel.highlighted = null;
+                    mainLevelPanel.Invalidate();
                 }
             }
         }
@@ -677,6 +718,11 @@ namespace eced
         private void nudNewTag_ValueChanged(object sender, EventArgs e)
         {
             this.tagBrush.tag = (int)nudNewTag.Value;
+        }
+
+        private void menuItem3_Click(object sender, EventArgs e)
+        {
+            this.doNewMapDialog();
         }
     }
 }

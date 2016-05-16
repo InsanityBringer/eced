@@ -30,10 +30,18 @@ namespace eced
         public List<int> idlist = new List<int>();
 
         private string filename;
+        private ThingDefinition unknownThing;
 
         public ThingManager(String filename)
         {
             this.filename = filename;
+            this.unknownThing = new ThingDefinition();
+            this.unknownThing.setData("16", "16", "UnknownThing", "Unknown", "-1");
+        }
+
+        public ThingDefinition getUnknownThing()
+        {
+            return this.unknownThing;
         }
 
         public void processData()

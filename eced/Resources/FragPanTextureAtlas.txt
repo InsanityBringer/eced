@@ -5,6 +5,7 @@ smooth in vec2 tileloc;
 out vec4 color;
 
 uniform sampler2D atlas;
+uniform sampler2D numbers;
 uniform isampler2D texInfo;
 uniform isampler2D mapPlane;
 
@@ -14,6 +15,7 @@ void main()
 	ivec2 itile = ivec2(tileloc);
 
 	int tileid = texelFetch(mapPlane, itile, 0).r;
+	int floorid = texelFetch(mapPlane, itile, 0).g;
 
 	float multiplier = 0.5f;
 
@@ -27,20 +29,46 @@ void main()
 		multiplier = 1.0f;
 	}
 
-	if (tileid < 0)
+	/*if (tileid < 0)
 	{
 		color = vec4(0.0, 0.0, 0.0, 1.0);
 		return;
+	}*/
+
+	ivec4 textureInfo;// = texelFetch(texInfo, ivec2(0, tileid), 0);
+
+	ivec2 cellpos;
+
+	if (tileid < 0)
+	{
+		ivec2 texOrigin = ivec2(floorid / 16, 0) * 8;
+		ivec2 texOrigin2 = ivec2(floorid % 16, 0) * 8;
+
+		vec2 cellposf = vec2((tileloc.x - itile.x) * 2 , tileloc.y - itile.y);
+		if (cellposf.x > 1)
+			cellpos = ivec2(texOrigin2.x + int((cellposf.x - 1) * 8), texOrigin.y + int(cellposf.y * 16));
+
+		else
+			cellpos = ivec2(texOrigin.x + int(cellposf.x * 8), texOrigin.y + int(cellposf.y * 16));
+	}
+	else
+	{
+		textureInfo = texelFetch(texInfo, ivec2(0, tileid), 0);
+		ivec2 textureRes = textureInfo.rg;
+		ivec2 texOrigin = textureInfo.ba;
+
+		vec2 cellposf = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
+		cellpos = ivec2(texOrigin.x + int(cellposf.x * textureRes.x), texOrigin.y + int(cellposf.y * textureRes.y));
 	}
 
-	ivec4 textureInfo = texelFetch(texInfo, ivec2(0, tileid), 0);
-	ivec2 textureRes = textureInfo.rg;
-	ivec2 texOrigin = textureInfo.ba;
-
-	vec2 cellposf = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
-	ivec2 cellpos = ivec2(texOrigin.x + int(cellposf.x * textureRes.x) /*% textureRes.x*/, texOrigin.y + int(cellposf.y * textureRes.y)/* % textureRes.y*/);
-
-	color = texelFetch(atlas, cellpos, 0) * multiplier;
+	if (tileid < 0)
+	{
+		color = texelFetch(numbers, cellpos, 0);
+	}
+	else
+	{
+		color = texelFetch(atlas, cellpos, 0) * multiplier;
+	}
 	//color = vec4(1.0 * cellposf.x, 1.0 * cellposf.y, 0.0, 1.0);
 	//color = vec4(clamp(tileloc.x, 0.0, 1.0), clamp(tileloc.y, 0.0, 1.0), 1.0, 1.0);
 	//color = texelFetch(atlas, itile, 0);

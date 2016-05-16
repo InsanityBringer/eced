@@ -63,7 +63,7 @@ namespace eced
 
             defaultBrush.ApplyToTile(src, 0, currentLevel, heldMouseButton);
 
-            while (dx > 0)
+            while (dx != 0)
             {
                 if (error >= 0)
                 {
@@ -90,18 +90,20 @@ namespace eced
 
             defaultBrush.ApplyToTile(src, 0, currentLevel, heldMouseButton);
 
-            while (dy > 0)
+            while (dy != 0)
             {
                 if (error >= 0)
                 {
-                    src.X++;
+                    //src.X++;
+                    src.X += direction;
                     error += doubledxmdoubledy;
                 }
                 else
                 {
                     error += doubledx;
                 }
-                src.Y += direction;
+                //src.Y += direction;
+                src.Y++;
                 defaultBrush.ApplyToTile(src, 0, currentLevel, heldMouseButton);
 
                 dy--;

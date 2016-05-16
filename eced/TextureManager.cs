@@ -57,6 +57,7 @@ namespace eced
 
         public int atlasTextureID;
         public int resourceInfoID;
+        public int numberTextureID;
         public int lastID = 0;
 
         public List<TextureCell> cells;
@@ -121,6 +122,12 @@ namespace eced
 
             return id;
         }
+
+        public void uploadNumberTexture()
+        {
+            this.numberTextureID = getTexture("./resources/floorfont.png");
+        }
+
         //atlasing algorthim lifted from Quake II GPL source release
         public int[] allocated;
         
@@ -152,7 +159,6 @@ namespace eced
                 }
                 if (j == width)
                 {
-                    //Console.WriteLine(".. oh dear! {0} {1}", i, best2);
                     result.x = i;
                     result.y = best = best2;
                 }
@@ -279,17 +285,24 @@ namespace eced
             return id;
         }
 
-        public void getTextureList(ResourceFiles.ResourceArchive archive)
+        public void readyAtlasCreation()
         {
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, atlasTextureID);
-            List<ResourceFiles.ResourceFile> lumps = archive.getResourceList(ResourceFiles.ResourceNamespace.NS_TEXTURE);
-
             Bitmap defTexture = new Bitmap("./resources/missingtex.png");
             addImageToCollection(defTexture);
             defTexture.Dispose();
 
-            textureIDList.Add("missingno", 0); lastID++;
+            textureIDList.Add("NULLTEX", 0); lastID++;
+        }
+
+        /// <summary>
+        /// Called for each archive open in the current map, adds its textures to the resource list and to the atlas
+        /// </summary>
+        /// <param name="archive"></param>
+        public void getTextureList(ResourceFiles.ResourceArchive archive)
+        {
+            List<ResourceFiles.ResourceFile> lumps = archive.getResourceList(ResourceFiles.ResourceNamespace.NS_TEXTURE);
 
             for (int i = 0; i < lumps.Count; i++)
             {
@@ -326,7 +339,7 @@ namespace eced
                 {
                 }
             }
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            //GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
         /// <summary>

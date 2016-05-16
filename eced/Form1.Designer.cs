@@ -197,6 +197,7 @@
             // 
             this.menuItem3.Index = 0;
             this.menuItem3.Text = "New";
+            this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click);
             // 
             // menuItem4
             // 

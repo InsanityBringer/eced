@@ -53,6 +53,11 @@ namespace eced
             {
                 switch (type)
                 {
+                    case "Unknown":
+                        r = 64;
+                        g = 64;
+                        b = 64;
+                        break;
                     case "Spawn":
                         r = 0;
                         g = 128;

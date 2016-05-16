@@ -11,12 +11,15 @@ namespace eced.ResourceFiles
         public List<ResourceFile> lumps = new List<ResourceFile>();
         public string saveToDirectory = "-";
 
-        BinaryReader filestream;
+        BinaryReader streamreader;
+        BinaryWriter streamwriter = null;
+        FileStream stream;
 
         public static ResourceArchive loadResourceFile(string filename)
         {
             WADResourceFile wad = new WADResourceFile();
-            BinaryReader br = new BinaryReader(File.Open(filename, FileMode.Open), Encoding.ASCII);
+            wad.stream = File.Open(filename, FileMode.Open);
+            BinaryReader br = new BinaryReader(wad.stream, Encoding.ASCII);
             int fourcc = br.ReadInt32();
             int lumps = br.ReadInt32();
             int directory = br.ReadInt32();
@@ -57,7 +60,7 @@ namespace eced.ResourceFiles
                 Console.WriteLine("{0}, {1} {2}", lump.fullname, lump.pointer, lump.size);
             }
 
-            wad.filestream = br;
+            wad.streamreader = br;
 
             Console.WriteLine("{0} lumps loaded", wad.lumps.Count);
 
@@ -108,15 +111,15 @@ namespace eced.ResourceFiles
 
         public override void closeResource()
         {
-            this.filestream.Close();
+            this.streamreader.Close();
         }
 
         public override byte[] loadResource(string name)
         {
             ResourceFile lump = findResource(name);
 
-            this.filestream.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
-            byte[] lumpdata = this.filestream.ReadBytes(lump.size);
+            this.streamreader.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
+            byte[] lumpdata = this.streamreader.ReadBytes(lump.size);
 
             return lumpdata;
         }
