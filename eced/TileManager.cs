@@ -43,6 +43,8 @@ namespace eced
             this.filename = filename;
         }
 
+        //old swatches system
+        /*
         public Bitmap fillOutTiles(Bitmap atlas)
         {
             Bitmap selection = new Bitmap(128, 192);
@@ -66,7 +68,7 @@ namespace eced
             }
 
             return selection;
-        }
+        }*/
 
         /// <summary>
         /// Loads the default tileset from an XML file

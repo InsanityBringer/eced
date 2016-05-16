@@ -37,6 +37,7 @@
             this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
             this.menuItem7 = new System.Windows.Forms.MenuItem();
+            this.menuItem14 = new System.Windows.Forms.MenuItem();
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this.menuItem9 = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
@@ -71,8 +72,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.pbTileList = new System.Windows.Forms.PictureBox();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.gbTriggerData = new System.Windows.Forms.GroupBox();
             this.ndParam5 = new System.Windows.Forms.NumericUpDown();
             this.ndParam4 = new System.Windows.Forms.NumericUpDown();
@@ -156,7 +155,6 @@
             this.label24 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbTileList)).BeginInit();
             this.gbTriggerData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ndParam5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ndParam4)).BeginInit();
@@ -189,6 +187,7 @@
             this.menuItem5,
             this.menuItem6,
             this.menuItem7,
+            this.menuItem14,
             this.menuItem8,
             this.menuItem9});
             this.menuItem1.Text = "File";
@@ -220,14 +219,19 @@
             this.menuItem7.Index = 4;
             this.menuItem7.Text = "Save As...";
             // 
+            // menuItem14
+            // 
+            this.menuItem14.Index = 5;
+            this.menuItem14.Text = "Save Into...";
+            // 
             // menuItem8
             // 
-            this.menuItem8.Index = 5;
+            this.menuItem8.Index = 6;
             this.menuItem8.Text = "-";
             // 
             // menuItem9
             // 
-            this.menuItem9.Index = 6;
+            this.menuItem9.Index = 7;
             this.menuItem9.Text = "Exit";
             // 
             // menuItem2
@@ -498,23 +502,6 @@
             this.button3.Text = "-";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // pbTileList
-            // 
-            this.pbTileList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbTileList.Location = new System.Drawing.Point(9, 390);
-            this.pbTileList.Name = "pbTileList";
-            this.pbTileList.Size = new System.Drawing.Size(130, 129);
-            this.pbTileList.TabIndex = 9;
-            this.pbTileList.TabStop = false;
-            this.pbTileList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbTileList_MouseClick);
-            // 
-            // vScrollBar1
-            // 
-            this.vScrollBar1.Location = new System.Drawing.Point(139, 390);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 129);
-            this.vScrollBar1.TabIndex = 10;
             // 
             // gbTriggerData
             // 
@@ -858,8 +845,6 @@
             this.gbTileSelection.Controls.Add(this.label12);
             this.gbTileSelection.Controls.Add(this.tbNorthTex);
             this.gbTileSelection.Controls.Add(this.label11);
-            this.gbTileSelection.Controls.Add(this.pbTileList);
-            this.gbTileSelection.Controls.Add(this.vScrollBar1);
             this.gbTileSelection.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.gbTileSelection.Location = new System.Drawing.Point(12, 32);
             this.gbTileSelection.Name = "gbTileSelection";
@@ -1452,10 +1437,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(850, 603);
+            this.Controls.Add(this.gbTileSelection);
             this.Controls.Add(this.gbTriggerData);
             this.Controls.Add(this.gbTag);
             this.Controls.Add(this.gbSectorPanel);
-            this.Controls.Add(this.gbTileSelection);
             this.Controls.Add(this.gbZoneList);
             this.Controls.Add(this.gbThingSelect);
             this.Controls.Add(this.button3);
@@ -1475,7 +1460,6 @@
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbTileList)).EndInit();
             this.gbTriggerData.ResumeLayout(false);
             this.gbTriggerData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ndParam5)).EndInit();
@@ -1530,8 +1514,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.PictureBox pbTileList;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ToolBarButton toolBarButton7;
         private System.Windows.Forms.GroupBox gbTriggerData;
@@ -1626,6 +1608,7 @@
         private System.Windows.Forms.GroupBox gbTag;
         private System.Windows.Forms.NumericUpDown nudNewTag;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.MenuItem menuItem14;
     }
 }
 

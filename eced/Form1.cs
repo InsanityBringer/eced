@@ -74,11 +74,11 @@ namespace eced
                 listBox1.Items.Add(thing.name);
             }
 
-            Bitmap atlas = new Bitmap("./resources/sneswolftiles.PNG");
+            /*Bitmap atlas = new Bitmap("./resources/sneswolftiles.PNG");
             tilelistimg = tilelist.fillOutTiles(atlas);
             atlas.Dispose();
 
-            pbTileList.Image = tilelistimg;
+            pbTileList.Image = tilelistimg;*/
 
             tbToolPanel.Buttons[5].Pushed = true;
             this.gbThingSelect.Visible = false;
@@ -443,13 +443,15 @@ namespace eced
 
         private void button2_Click(object sender, EventArgs e)
         {
-            zoom += .25f;
+            //zoom += .25f;
+            zoom *= 2.0f;
             updateZoom();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            zoom -= .25f;
+            //zoom -= .25f;
+            zoom *= 0.5f;
             if (zoom < .25f)
                 zoom = .25f;
             updateZoom();
@@ -539,7 +541,8 @@ namespace eced
 
         }
 
-        private void pbTileList_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        //old swatches system
+        /*private void pbTileList_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             int tx = e.X / 16;
             int ty = e.Y / 16;
@@ -569,7 +572,7 @@ namespace eced
                 locked = false;
             }
                 //selectedTile = tilelist.tileset[tile];
-        }
+        }*/
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
