@@ -118,6 +118,7 @@
     <Compile Include="ResourceFiles\ResourceArchiveHeader.cs" />
     <Compile Include="ResourceFiles\ResourceFile.cs" />
     <Compile Include="ResourceFiles\WADResourceFile.cs" />
+    <Compile Include="ResourceFiles\ZIPResourceFile.cs" />
     <Compile Include="SectorBrush.cs" />
     <Compile Include="ShaderManager.cs" />
     <Compile Include="TagTool.cs" />

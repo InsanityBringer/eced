@@ -280,7 +280,7 @@ namespace eced
         public int getTextureID(string name)
         {
             int id = 0;
-            textureIDList.TryGetValue(name, out id);
+            textureIDList.TryGetValue(name.ToUpper(), out id);
 
             return id;
         }
@@ -309,6 +309,7 @@ namespace eced
                 try
                 {
                     byte[] data = archive.loadResource(lumps[i].fullname);
+                    //Console.WriteLine(lumps[i].fullname);
                     if (data != null)
                     {
                         //Bitmap image = new Bitmap(
@@ -327,7 +328,7 @@ namespace eced
                             pngstr.Close();
                             pngstr.Dispose();
 
-                            textureIDList.Add(lumps[i].name, lastID); lastID++;
+                            textureIDList.Add(lumps[i].name.ToUpper(), lastID); lastID++;
                         }
                     }
                     //if it isn't known, don't add it, possibly add a warning texture if it gets used

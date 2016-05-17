@@ -2,7 +2,6 @@ Current tasks:
 
 For beta:
 	Resources:
-		-PK3 loading
 		-Load doom patches from archives
 		-Load doom flats from archives
 		
@@ -20,6 +19,7 @@ For beta:
 		-Rewrite swatches, do not show the SNES map tiles
 			-Load swatches from config file, give nicename
 		
+		-Add #ifdef _DEBUG to debug spew
 		
 For later:
 	Renderer:

@@ -153,6 +153,12 @@ namespace eced
                     tm.getTextureList(file);
                     level.loadedResources.Add(file);
                 }
+                else if (mapinfo.files[i].format == ResourceFiles.ResourceFormat.FORMAT_ZIP)
+                {
+                    file = ResourceFiles.ZIPResourceFile.loadResourceFile(mapinfo.files[i].filename);
+                    tm.getTextureList(file);
+                    level.loadedResources.Add(file);
+                }
             }
             tm.createInfoTexture();
             tm.uploadNumberTexture();
