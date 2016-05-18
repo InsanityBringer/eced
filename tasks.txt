@@ -2,7 +2,6 @@ Current tasks:
 
 For beta:
 	Resources:
-		-Load doom patches from archives
 		-Load doom flats from archives
 		
 		-Handle missing archive files gracefully

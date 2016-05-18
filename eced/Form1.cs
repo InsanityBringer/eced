@@ -530,6 +530,16 @@ namespace eced
 
             lastMousePos.X = e.X;
             lastMousePos.Y = e.Y;
+
+            if (tile.X >= 0 && tile.Y >= 0 && tile.X < currentLevel.width && tile.Y < currentLevel.height)
+            {
+                Cell cell = currentLevel.getCell((int)tile.X, (int)tile.Y, 0);
+                statusBarPanel1.Text = String.Format("tileid: {0}, zonenum: {1}, tag: {2}", currentLevel.getTileId(cell.tile), currentLevel.getZoneId(cell), cell.tag);
+            }
+            else
+            {
+                statusBarPanel1.Text = "-";
+            }
         }
 
         private void mainLevelPanel_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)

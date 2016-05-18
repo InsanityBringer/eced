@@ -35,12 +35,13 @@ namespace eced.ResourceFiles
                 ResourceNamespace ns = ResourceNamespace.NS_GENERIC;
                 //eat null bytes for convenience
                 name = name.Trim('\0', ' '); //maybe this will work
+                fullname = fullname.Trim('\0'); //try to cut off null bytes at end of fullname
 
-                if (name == "TX_START")
+                if (name == "TX_START" || name == "S_START")
                 {
                     wad.saveToDirectory = "TEXTURES";
                 }
-                else if (name == "TX_END")
+                else if (name == "TX_END" || name == "S_END")
                 {
                     //no more saving to textures dir
                     wad.saveToDirectory = "-";

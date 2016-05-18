@@ -38,6 +38,7 @@ namespace eced
     public enum TextureFormat
     {
         FORMAT_PNG,
+        FORMAT_PATCH,
         FORMAT_WOLFWALL,
         FORMAT_UNKNOWN
     }
@@ -62,6 +63,11 @@ namespace eced
 
         public List<TextureCell> cells;
         public Dictionary<String, int> textureIDList = new Dictionary<string, int>();
+
+        /// <summary>
+        /// The current palette for processing doom format patches
+        /// </summary>
+        public byte[] palette = new byte[768];
 
         public static int LookUpTextureID(String filename)
         {
@@ -121,6 +127,15 @@ namespace eced
             textureList.Add(filename, id);
 
             return id;
+        }
+
+        public TextureManager()
+        {
+            //Init the palette with grayscale by default
+            for (int i = 0; i < 256; i++)
+            {
+                palette[i*3] = palette[i*3+1] = palette[i*3+2] = (byte)i;
+            }
         }
 
         public void uploadNumberTexture()
@@ -234,6 +249,53 @@ namespace eced
         }
 
         /// <summary>
+        /// Uploads a doom patch to the texture atlas
+        /// </summary>
+        /// <param name="patch"></param>
+        /// <param name="cell"></param>
+        public void uploadPatchToAtlas(ref byte[] patch, TextureCell cell)
+        {
+            //Current offset in the patch
+            int offset = 8;
+
+            short w = (short)cell.w;
+            short h = (short)cell.h;
+            //No reason to store the pointers really
+            //short[] ptrtable = new short[w];
+
+            //Load the image data for each patch
+            for (int i = 0; i < w; i++)
+            {  
+                int pointer = BinaryHelper.getInt32(patch[offset], patch[offset + 1], patch[offset + 2], patch[offset + 3]);
+                offset += 4;
+
+                int newoffset = pointer;
+                //Load the offset and length of the patch
+                byte yoffs = patch[pointer]; pointer++;
+                while (yoffs != 255)
+                {
+                    byte len = patch[pointer]; pointer++;
+                    pointer++; //Garbage byte
+                    byte[] spandata = new byte[len];
+                    //Resultant 32bit span
+                    int[] finalspan = new int[len];
+                    //copy the span into the array
+                    Array.Copy(patch, pointer, spandata, 0, len);
+                    //Use the current palette to build a 32bit patch
+                    for (int p = 0; p < len; p++)
+                    {
+                        byte patchbyte = spandata[p];
+                        finalspan[p] = BinaryHelper.getInt32(palette[patchbyte * 3 + 2], palette[patchbyte * 3 + 1], palette[patchbyte * 3 + 0], 255);
+                    }
+                    pointer += len + 1;
+                    GL.TexSubImage2D(TextureTarget.Texture2D, 0, cell.x + i, cell.y + yoffs, 1, len, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, finalspan);
+
+                    yoffs = patch[pointer]; pointer++;
+                }
+            }
+        }
+
+        /// <summary>
         /// Adds an image to the texture atlas
         /// </summary>
         /// <param name="image">The image to upload</param>
@@ -245,6 +307,30 @@ namespace eced
             if (res)
             {
                 uploadImageToAtlas(image, newCell);
+                cells.Add(newCell);
+            }
+            else
+            {
+                throw new AtlasFullException("There are too many textures");
+            }
+        }
+
+        /// <summary>
+        /// Adds a Doom patch to the texture atlas
+        /// </summary>
+        /// <param name="patch">Data dump of the patch to upload</param>
+        public void addPatchToCollection(ref byte[] patch)
+        {
+            short patchw = BinaryHelper.getInt16(patch[0], patch[1]);
+            short patchh = BinaryHelper.getInt16(patch[2], patch[3]);
+
+            TextureCell newCell;
+            bool res = allocateAtlasSpace(patchw, patchh, out newCell);
+
+            if (res)
+            {
+                //uploadImageToAtlas(image, newCell);
+                uploadPatchToAtlas(ref patch, newCell);
                 cells.Add(newCell);
             }
             else
@@ -302,11 +388,16 @@ namespace eced
         /// <param name="archive"></param>
         public void getTextureList(ResourceFiles.ResourceArchive archive)
         {
+            //Try to load a palette from this resource
+            if (archive.findResource("PLAYPAL") != null)
+            {
+                palette = archive.loadResource("PLAYPAL");
+            }
             List<ResourceFiles.ResourceFile> lumps = archive.getResourceList(ResourceFiles.ResourceNamespace.NS_TEXTURE);
 
             for (int i = 0; i < lumps.Count; i++)
             {
-                try
+                //try
                 {
                     byte[] data = archive.loadResource(lumps[i].fullname);
                     //Console.WriteLine(lumps[i].fullname);
@@ -330,15 +421,26 @@ namespace eced
 
                             textureIDList.Add(lumps[i].name.ToUpper(), lastID); lastID++;
                         }
+                        //Load a doom patch
+                        else if (format == TextureFormat.FORMAT_PATCH)
+                        {
+                            byte[] patch = archive.loadResource(lumps[i].fullname);
+                            Console.WriteLine("adding patch {0}", lumps[i].name);
+                            addPatchToCollection(ref patch);
+                            textureIDList.Add(lumps[i].name.ToUpper(), lastID); lastID++;
+                        }
                     }
                     //if it isn't known, don't add it, possibly add a warning texture if it gets used
                     else
                     {
+                        Console.WriteLine("oh no");
                     }
                 }
-                catch (Exception exc)
+                /*catch (Exception exc)
                 {
-                }
+                    //TODO: Error handling
+                    Console.WriteLine("eh? {0}", exc.Message);
+                }*/
             }
             //GL.BindTexture(TextureTarget.Texture2D, 0);
         }
@@ -364,6 +466,16 @@ namespace eced
             {
                 return TextureFormat.FORMAT_PNG;
             }
+            //Attempt to detect patch through some heruistics
+            short w = BinaryHelper.getInt16(data[0], data[1]);
+            short h = BinaryHelper.getInt16(data[2], data[3]);
+            //Console.WriteLine("{0} {1}", w, h);
+            if (w > 0 && h > 0)
+            {
+                //Console.WriteLine("this is a patch");
+                return TextureFormat.FORMAT_PATCH;
+            }
+        
             return TextureFormat.FORMAT_UNKNOWN;
         }
     }

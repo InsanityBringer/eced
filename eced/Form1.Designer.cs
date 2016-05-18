@@ -1451,6 +1451,7 @@
             this.Controls.Add(this.tbToolPanel);
             this.KeyPreview = true;
             this.Menu = this.mainMenu1;
+            this.MinimumSize = new System.Drawing.Size(866, 663);
             this.Name = "Form1";
             this.Text = "eced";
             this.Load += new System.EventHandler(this.Form1_Load);

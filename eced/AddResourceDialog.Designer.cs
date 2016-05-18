@@ -194,6 +194,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddResourceDialog";
+            this.ShowInTaskbar = false;
             this.Text = "AddResourceDialog";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
