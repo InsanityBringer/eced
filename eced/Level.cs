@@ -404,6 +404,7 @@ namespace eced
             return zonedefs.Count;
         }
 
+        //why the crap did I write this function --IB
         public void saveToUWMFFile(string filename)
         {
             StreamWriter sw = new StreamWriter(File.Open(filename, FileMode.Create));
@@ -472,6 +473,78 @@ namespace eced
 
             sw.Flush();
             sw.Close();
+        }
+
+        /// <summary>
+        /// Gets a string representing the map in UWMF format
+        /// </summary>
+        /// <returns></returns>
+        public string writeUWMF()
+        {
+            StringBuilder sb = new StringBuilder(); 
+			
+            sb.Append("namespace = \"Wolf3D\";\n");
+            sb.Append("tilesize = 64;\n");
+            sb.Append("name = \"ecedtest\";\n");
+            sb.Append("width = " + width.ToString() + ";\n");
+            sb.Append("height = " + height.ToString() + ";\n");
+
+            //Plane plane = new Plane();
+
+            for (int x = 0; x < internalTileset.Count; x++)
+            {
+                sb.Append(internalTileset[x].getUWMFString());
+                sb.Append("\n");
+            }
+            sb.Append("\n");
+            for (int x = 0; x < zonedefs.Count; x++)
+            {
+                sb.Append(zonedefs[x].getUWMFString());
+                sb.Append("\n");
+            }
+            sb.Append("\n");
+            for (int x = 0; x < things.Count; x++)
+            {
+                sb.Append(things[x].getUWMFString());
+                sb.Append("\n");
+            }
+            sb.Append("\n");
+
+            for (int x = 0; x < sectors.Count; x++)
+            {
+                sb.Append(sectors[x].getUWMFString());
+                sb.Append("\n");
+            }
+            sb.Append("\n");
+
+            for (int x = 0; x < planes.Count; x++)
+            {
+                sb.Append(planes[x].makeUWMFString());
+                sb.Append("\n");
+            }
+            sb.Append("\n");
+
+            for (int x = 0; x < planes.Count; x++)
+            {
+                sb.Append(writePlaneDef(x));
+            }
+            sb.Append("\n");
+
+            for (int i = 0; i < width * height; i++)
+            {
+                for (int p = 0; p < this.depth; p++)
+                {
+                    int x = i % width;
+                    int y = i / width;
+                    for (int li = 0; li < planes[p].cells[x, y].triggerList.Count; li++)
+                    {
+                        sb.Append(planes[p].cells[x, y].triggerList[li].getUWMFString());
+                        sb.Append("\n");
+                    }
+                }
+            }
+            sb.Append("\n");
+			return sb.ToString();
         }
 
         public string writePlaneDef(int plane)

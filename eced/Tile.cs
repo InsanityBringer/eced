@@ -27,6 +27,7 @@ namespace eced
     public class Tile
     {
         public string texn = "-", texs = "-", texe = "-", texw = "-";
+        public string maptex = "-";
         public bool offh = false, offv = false;
         public bool blockn = true, blocks = true, blocke = true, blockw = true;
 

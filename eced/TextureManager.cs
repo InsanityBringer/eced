@@ -54,7 +54,7 @@ namespace eced
         private byte[] textureAtlasTexture;
         private int[] resourceInfoTexture;
 
-        const int baseAtlasSize = 2048;
+        const int baseAtlasSize = 4096;
 
         public int atlasTextureID;
         public int resourceInfoID;
@@ -98,7 +98,7 @@ namespace eced
             int id = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, id);
 
-            Console.WriteLine("Loading texture {0} from file {1}", id, filename);
+            //Console.WriteLine("Loading texture {0} from file {1}", id, filename);
 
             Bitmap bmp = new Bitmap(filename);
             BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
@@ -397,13 +397,12 @@ namespace eced
 
             for (int i = 0; i < lumps.Count; i++)
             {
-                //try
+                try
                 {
                     byte[] data = archive.loadResource(lumps[i].fullname);
                     //Console.WriteLine(lumps[i].fullname);
                     if (data != null)
                     {
-                        //Bitmap image = new Bitmap(
                         TextureFormat format = checkFormat(ref data);
 
                         //if its PNG, we can process it as a Windows bitmap
@@ -419,28 +418,29 @@ namespace eced
                             pngstr.Close();
                             pngstr.Dispose();
 
-                            textureIDList.Add(lumps[i].name.ToUpper(), lastID); lastID++;
+                            //textureIDList.Add(lumps[i].name.ToUpper(), lastID); lastID++;
+                            textureIDList[lumps[i].name.ToUpper()] = lastID; lastID++;
                         }
                         //Load a doom patch
                         else if (format == TextureFormat.FORMAT_PATCH)
                         {
                             byte[] patch = archive.loadResource(lumps[i].fullname);
-                            Console.WriteLine("adding patch {0}", lumps[i].name);
+                            //Console.WriteLine("adding patch {0}", lumps[i].name);
                             addPatchToCollection(ref patch);
-                            textureIDList.Add(lumps[i].name.ToUpper(), lastID); lastID++;
+                            textureIDList[lumps[i].name.ToUpper()] = lastID; lastID++;
                         }
                     }
                     //if it isn't known, don't add it, possibly add a warning texture if it gets used
                     else
                     {
-                        Console.WriteLine("oh no");
+                        Console.WriteLine("Error loading lump {0} from archive {1}", lumps[i].name, archive.archiveName);
                     }
                 }
-                /*catch (Exception exc)
+                catch (Exception exc)
                 {
                     //TODO: Error handling
-                    Console.WriteLine("eh? {0}", exc.Message);
-                }*/
+                    Console.WriteLine("Error while processing archive textures {0}: {1}",archive.archiveName,  exc.Message);
+                }
             }
             //GL.BindTexture(TextureTarget.Texture2D, 0);
         }

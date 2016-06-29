@@ -59,6 +59,9 @@ namespace eced
 
         private OpenTK.Vector2 lastMousePos = new Vector2();
 
+        //Empty when no current filename
+        private string currentFilename = "";
+
         private void Form1_Load(object sender, EventArgs e)
         {
             //statusBar1.Panels[1].Text =
@@ -150,14 +153,18 @@ namespace eced
                 if (mapinfo.files[i].format == ResourceFiles.ResourceFormat.FORMAT_WAD)
                 {
                     file = ResourceFiles.WADResourceFile.loadResourceFile(mapinfo.files[i].filename);
+                    file.openFile();
                     tm.getTextureList(file);
                     level.loadedResources.Add(file);
+                    file.closeFile();
                 }
                 else if (mapinfo.files[i].format == ResourceFiles.ResourceFormat.FORMAT_ZIP)
                 {
                     file = ResourceFiles.ZIPResourceFile.loadResourceFile(mapinfo.files[i].filename);
+                    file.openFile();
                     tm.getTextureList(file);
                     level.loadedResources.Add(file);
+                    file.closeFile();
                 }
             }
             tm.createInfoTexture();
@@ -252,11 +259,37 @@ namespace eced
                 if (ltag == 22)
                 {
                     //TODO: Absolute path
-                    currentLevel.saveToUWMFFile("c:/dev/textmap.txt");
+                    //currentLevel.saveToUWMFFile("c:/dev/textmap.txt");
+                    /*List<ResourceFiles.ResourceFile> boguslumps = new List<ResourceFiles.ResourceFile>();
+                    byte[] bogusdata = new byte[4];
+                    ((ResourceFiles.WADResourceFile)currentLevel.loadedResources[0]).updateToNewWad("c:/dev/flargh.wad", ref boguslumps, ref bogusdata);*/
+                    //TODO: Temp
+                    string mapstring = currentLevel.writeUWMF();
+
+                    Console.WriteLine(mapstring);
+
+                    //Get an ascii representation of the map
+                    byte[] mapdata = Encoding.ASCII.GetBytes(mapstring);
+
+                    Console.WriteLine(mapdata.Length);
+
+                    ResourceFiles.WADResourceFile savearchive = new ResourceFiles.WADResourceFile();
+
+                    List<ResourceFiles.ResourceFile> lumps = new List<ResourceFiles.ResourceFile>();
+
+                    ResourceFiles.ResourceFile mapheader = new ResourceFiles.ResourceFile("MAP01", ResourceFiles.ResourceType.RES_GENERIC, 0);
+                    mapheader.pointer = 0; lumps.Add(mapheader);
+                    ResourceFiles.ResourceFile mapdatal = new ResourceFiles.ResourceFile("TEXTMAP", ResourceFiles.ResourceType.RES_GENERIC, mapdata.Length);
+                    mapdatal.pointer = 0; lumps.Add(mapdatal);
+                    ResourceFiles.ResourceFile mapend = new ResourceFiles.ResourceFile("ENDMAP", ResourceFiles.ResourceType.RES_GENERIC, 0);
+                    mapend.pointer = 0; lumps.Add(mapend);
+
+                    savearchive.updateToNewWad("c:/dev/hehwad.wad", ref lumps, ref mapdata);
                 }
 
                 if (ltag == 21)
                 {
+                    /*
                     //TODO: Absolute path
                     CodeImp.DoomBuilder.IO.UniversalParser parser = new CodeImp.DoomBuilder.IO.UniversalParser("c:/dev/textmap.txt");
 
@@ -297,13 +330,13 @@ namespace eced
 
                             this.updateZoneList();
                         }
-                        /*catch (Exception exc)
+                        catch (Exception exc)
                         {
                             statusBar1.Panels[0].Text = "Error loading map: " + exc.Message;
                             Console.WriteLine(exc.ToString());
-                        }*/
+                        }
                     }
-                    Console.WriteLine("heh");
+                    Console.WriteLine("heh");*/
                 }
                 if (ltag == 20)
                 {
@@ -495,12 +528,17 @@ namespace eced
         {
             if (currentLevel == null)
                 return;
+
+            Console.WriteLine("placing brush");
             
-            brushmode = true;
             defaultBrush.normalTile = selectedTile;
 
             setMouseButton(e);
             defaultBrush.ApplyToTile(pick(new Vector2(e.X, e.Y)), 0, this.currentLevel, this.heldMouseButton);
+            if (defaultBrush.repeatable)
+            {
+                brushmode = true;
+            }
             mainLevelPanel.Invalidate();
         }
 
@@ -545,7 +583,9 @@ namespace eced
         private void mainLevelPanel_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (currentLevel == null)
-                return; 
+                return;
+
+            Console.WriteLine("lifting brush");
 
             brushmode = false;
             defaultBrush.EndBrush(currentLevel);

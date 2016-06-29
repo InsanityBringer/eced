@@ -19,6 +19,7 @@ namespace eced.ResourceFiles
             ZIPResourceFile zip = new ZIPResourceFile();
 
             zip.archive = new ZipFile(filename);
+            zip.archiveName = filename;
 
             foreach (ZipEntry entry in zip.archive)
             {

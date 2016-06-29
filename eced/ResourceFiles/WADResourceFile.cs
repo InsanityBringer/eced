@@ -10,14 +10,21 @@ namespace eced.ResourceFiles
     {
         public List<ResourceFile> lumps = new List<ResourceFile>();
         public string saveToDirectory = "-";
+        public string filename;
 
         BinaryReader streamreader;
         BinaryWriter streamwriter = null;
         FileStream stream;
 
+        public WADResourceFile()
+        {
+        }
+
         public static ResourceArchive loadResourceFile(string filename)
         {
             WADResourceFile wad = new WADResourceFile();
+            wad.archiveName = filename;
+            wad.filename = filename;
             wad.stream = File.Open(filename, FileMode.Open);
             BinaryReader br = new BinaryReader(wad.stream, Encoding.ASCII);
             int fourcc = br.ReadInt32();
@@ -60,8 +67,9 @@ namespace eced.ResourceFiles
                 wad.lumps.Add(lump);
                 Console.WriteLine("{0}, {1} {2}", lump.fullname, lump.pointer, lump.size);
             }
+            br.Close();
 
-            wad.streamreader = br;
+            //wad.streamreader = br;
 
             Console.WriteLine("{0} lumps loaded", wad.lumps.Count);
 
@@ -115,6 +123,17 @@ namespace eced.ResourceFiles
             this.streamreader.Close();
         }
 
+        public override void openFile()
+        {
+            this.streamreader = new BinaryReader(File.Open(filename, FileMode.Open));
+        }
+
+        //heh
+        public override void closeFile()
+        {
+            this.closeResource();
+        }
+
         public override byte[] loadResource(string name)
         {
             ResourceFile lump = findResource(name);
@@ -123,6 +142,149 @@ namespace eced.ResourceFiles
             byte[] lumpdata = this.streamreader.ReadBytes(lump.size);
 
             return lumpdata;
+        }
+
+        /// <summary>
+        /// Delete a map from the wad directory
+        /// </summary>
+        /// <param name="name"></param>
+        public void deleteMap(string name)
+        {
+            //Find the index of the first element
+            int firstelement = -1, lastelement = -1;
+            int i;
+            for (i = 0; i < lumps.Count; i++)
+            {
+                if (lumps[i].name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (i != (lumps.Count-1) && lumps[i+1].name.Equals("TEXTMAP", StringComparison.OrdinalIgnoreCase))
+                    firstelement = i;
+                    break;
+                }
+            }
+
+            //Map isn't present, so abort
+            if (firstelement == -1)
+            {
+                return;
+            }
+
+            //Find the index of the ENDMAP element from this map
+            for (; i < lumps.Count; i++)
+            {
+                if (lumps[i].name.Equals("ENDMAP", StringComparison.OrdinalIgnoreCase))
+                {
+                    lastelement = i;
+                }
+            }
+            //Delete from the directory
+            lumps.RemoveRange(firstelement, lastelement - firstelement);
+        }
+
+        public List<string> findAllMapNames()
+        {
+            List<string> maplumps = new List<string>();
+
+            //Count up to the amount of lumps - 2 since two additonal lumps are needed to define a map
+            for (int i = 0; i < lumps.Count - 2; i++)
+            {
+                //Check each luimp if a TEXTMAP follows it
+                string checkmap = lumps[i].name;
+                string nextlump = lumps[i+1].name;
+
+                if (nextlump.Equals("TEXTMAP", StringComparison.OrdinalIgnoreCase))
+                {
+                    maplumps.Add(checkmap);
+                }
+            }
+
+            return maplumps;
+        }
+
+        /// <summary>
+        /// Writes out a new wad, appending the new lumps onto the end of the stack. Expects pointer for each ResourceFile to point to the position of the data in the 
+        /// </summary>
+        /// <param name="destfilename">The destination to write the new file</param>
+        /// <param name="newLumps">The directory entries of the new lumps to add</param>
+        /// <param name="data"></param>
+        public void updateToNewWad(string destfilename, ref List<ResourceFile> newLumps, ref byte[] data)
+        {
+            BinaryWriter bw = new BinaryWriter(File.Open(destfilename, FileMode.Create), Encoding.ASCII);
+            
+            //Find how large the resultant WAD data will be
+            int numLumps = lumps.Count + newLumps.Count;
+            int directorySize = numLumps * 16;
+            int dataSize = 0;
+            foreach (ResourceFile lump in lumps)
+            {
+                dataSize += lump.size;
+            }
+            foreach (ResourceFile lump in newLumps)
+            {
+                dataSize += lump.size;
+            }
+            int finalSize = directorySize + dataSize + 12;
+
+            //Allocate a block of memory of the bytes
+            byte[] block = new byte[finalSize];
+            //Write magic number for header
+            byte[] intblock = new byte[4];
+            block[0] = (byte)'P';
+            block[1] = (byte)'W';
+            block[2] = (byte)'A';
+            block[3] = (byte)'D';
+
+            //Write number of lumps and pointer
+            BinaryHelper.getBytes(numLumps, ref intblock);
+            Array.Copy(intblock, 0, block, 4, 4);
+            BinaryHelper.getBytes(12, ref intblock);
+            Array.Copy(intblock, 0, block, 8, 4);
+
+            //Build the directory
+            int ptr = 12;
+            int dataptr = 12 + directorySize;
+            foreach (ResourceFile lump in lumps)
+            {
+                //copy the data into the data block
+                streamreader.BaseStream.Seek((long)lump.pointer, SeekOrigin.Begin);
+                byte[] lumpdata = streamreader.ReadBytes(lump.size);
+                if (lumpdata.Length != lump.size)
+                {
+                    //TODO: Report error more formally
+                    Console.WriteLine("ERROR: Loaded less bytes than expected reading lump {0}", lump.name);
+                }
+                Array.Copy(lumpdata, 0, block, dataptr, lump.size);
+                
+                BinaryHelper.getBytes(dataptr, ref intblock);
+                Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
+                BinaryHelper.getBytes(lump.size, ref intblock);
+                Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
+
+                byte[] name = Encoding.ASCII.GetBytes(lump.name);
+                Array.Copy(name, 0, block, ptr, name.Length); ptr += 8;
+
+                dataptr += lump.size;
+            }
+            foreach (ResourceFile lump in newLumps)
+            {
+                //copy the data into the data block
+                Array.Copy(data, lump.pointer, block, dataptr, lump.size);
+
+                BinaryHelper.getBytes(dataptr, ref intblock);
+                Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
+                BinaryHelper.getBytes(lump.size, ref intblock);
+                Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
+
+                byte[] name = Encoding.ASCII.GetBytes(lump.name);
+                Array.Copy(name, 0, block, ptr, name.Length); ptr += 8;
+
+                dataptr += lump.size;
+            }
+
+            //Write the wad
+            bw.Write(block);
+
+            bw.Close();
         }
     }
 }
