@@ -79,5 +79,22 @@ namespace eced
         public string lumpname = "MAP01";
 
         public List<ResourceFiles.ResourceArchiveHeader> files = new List<ResourceFiles.ResourceArchiveHeader>();
+
+        /// <summary>
+        /// Finds if the specified resource name exists in this map's resources
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool containsResource(string name)
+        {
+            foreach (ResourceFiles.ResourceArchiveHeader file in files)
+            {
+                if (file.filename.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

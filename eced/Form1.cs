@@ -35,6 +35,7 @@ namespace eced
         private TriggerTypeList triggerlist = new TriggerTypeList();
 
         private int toolid = 1, oldtoolid = 1;
+        private MapInformation currentMapinfo;
         private Level currentLevel;// = new Level(64, 64, 1);
         private GraphicsManager renderer = new GraphicsManager();
         private bool ready = false;
@@ -54,8 +55,6 @@ namespace eced
 
         private TextureManager tm = new TextureManager();
         private ShaderManager sm = new ShaderManager();
-
-        private ResourceFiles.ResourceArchive arc;
 
         private OpenTK.Vector2 lastMousePos = new Vector2();
 
@@ -137,14 +136,8 @@ namespace eced
             nmd.Dispose();
         }
 
-        private void createNewLevel(MapInformation mapinfo/*List<ResourceFiles.ResourceArchive> resources*/)
+        private void loadResources(MapInformation mapinfo, Level level)
         {
-            //TODO: Absolute path
-            //arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
-            Level level = new Level(mapinfo.sizex, mapinfo.sizey, mapinfo.layers, tilelist.tileset[0]);
-            level.localThingList = this.thinglist;
-            this.selectedTile = tilelist.tileset[0];
-
             tm.allocateAtlasTexture();
             tm.readyAtlasCreation();
             for (int i = 0; i < mapinfo.files.Count; i++)
@@ -173,6 +166,17 @@ namespace eced
             level.tm = this.tm;
 
             renderer.setupTextures(level, tm.resourceInfoID, tm.atlasTextureID, tm.numberTextureID);
+        }
+
+        private void createNewLevel(MapInformation mapinfo/*List<ResourceFiles.ResourceArchive> resources*/)
+        {
+            //TODO: Absolute path
+            //arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
+            Level level = new Level(mapinfo.sizex, mapinfo.sizey, mapinfo.layers, tilelist.tileset[0]);
+            level.localThingList = this.thinglist;
+            this.selectedTile = tilelist.tileset[0];
+
+            loadResources(mapinfo, level);
             
             currentLevel = level;
 
@@ -202,6 +206,87 @@ namespace eced
 
         private void menuItem5_Click(object sender, EventArgs e)
         {
+        }
+
+        /// <summary>
+        /// Saves a map a specified WAD file
+        /// </summary>
+        private void saveMapToFile(string filename)
+        {
+            //TODO: Absolute path
+            //currentLevel.saveToUWMFFile("c:/dev/textmap.txt");
+            /*List<ResourceFiles.ResourceFile> boguslumps = new List<ResourceFiles.ResourceFile>();
+            byte[] bogusdata = new byte[4];
+            ((ResourceFiles.WADResourceFile)currentLevel.loadedResources[0]).updateToNewWad("c:/dev/flargh.wad", ref boguslumps, ref bogusdata);*/
+            //TODO: Temp
+
+            bool destArchiveLoaded = this.currentMapinfo.containsResource(filename);
+
+            ResourceFiles.WADResourceFile savearchive;
+
+            if (destArchiveLoaded)
+            {
+                //find the resource file for this map
+                foreach (ResourceFiles.ResourceArchive file in currentLevel.loadedResources)
+                {
+                    if (file.archiveName == filename)
+                    {
+                        savearchive = (ResourceFiles.WADResourceFile)file;
+                        break;
+                    }
+                }
+                //can't find the resource somehow, so lets just give up
+                throw new Exception("The archive for the current save desination is not loaded");
+            }
+            else
+            {
+                savearchive = new ResourceFiles.WADResourceFile();
+            }
+
+            //Do some special things to save the map into the 
+            if (destArchiveLoaded)
+            {
+                List<int> idlist = savearchive.findSpecialMapLumps(this.currentMapinfo.lumpname);
+
+                //TODO: actually preserve special lumps
+
+                //Delete the current version of the map out of the archive
+                savearchive.deleteMap(currentMapinfo.lumpname);
+            }
+
+            string mapstring = currentLevel.writeUWMF();
+
+            Console.WriteLine(mapstring);
+
+            //Get an ascii representation of the map
+            byte[] mapdata = Encoding.ASCII.GetBytes(mapstring);
+
+            Console.WriteLine(mapdata.Length);
+
+            List<ResourceFiles.ResourceFile> lumps = new List<ResourceFiles.ResourceFile>();
+
+            ResourceFiles.ResourceFile mapheader = new ResourceFiles.ResourceFile(this.currentMapinfo.lumpname, ResourceFiles.ResourceType.RES_GENERIC, 0);
+            mapheader.pointer = 0; lumps.Add(mapheader);
+            ResourceFiles.ResourceFile mapdatal = new ResourceFiles.ResourceFile("TEXTMAP", ResourceFiles.ResourceType.RES_GENERIC, mapdata.Length);
+            mapdatal.pointer = 0; lumps.Add(mapdatal);
+            ResourceFiles.ResourceFile mapend = new ResourceFiles.ResourceFile("ENDMAP", ResourceFiles.ResourceType.RES_GENERIC, 0);
+            mapend.pointer = 0; lumps.Add(mapend);
+
+            savearchive.updateToNewWad(filename, ref lumps, ref mapdata);
+
+            if (!destArchiveLoaded)
+            {
+                //hock the new map onto the resource list
+                ResourceFiles.ResourceArchiveHeader head = new ResourceFiles.ResourceArchiveHeader();
+                head.filename = filename;
+                head.format = ResourceFiles.ResourceFormat.FORMAT_WAD;
+
+                this.currentMapinfo.files.Add(head);
+            }
+
+            //trash all the old resources to be sure we're up to date
+            currentLevel.disposeLevel();
+            loadResources(currentMapinfo, currentLevel);
         }
 
         private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)

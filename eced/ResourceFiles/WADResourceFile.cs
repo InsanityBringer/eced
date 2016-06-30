@@ -144,6 +144,64 @@ namespace eced.ResourceFiles
             return lumpdata;
         }
 
+        public byte[] loadResourceByIndex(int index)
+        {
+            ResourceFile lump = lumps[index];
+
+            this.streamreader.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
+            byte[] lumpdata = this.streamreader.ReadBytes(lump.size);
+
+            return lumpdata;
+        }
+
+        /// <summary>
+        /// Finds all special lumps associated with a map
+        /// </summary>
+        /// <param name="name">The mapname to find them for</param>
+        /// <returns>Lump indicies of all the special lumps</returns>
+        public List<int> findSpecialMapLumps(string name)
+        {
+            List<int> foundlumps = new List<int>();
+            int firstelement = -1, lastelement = -1;
+            int i;
+            for (i = 0; i < lumps.Count; i++)
+            {
+                if (lumps[i].name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (i != (lumps.Count - 1) && lumps[i + 1].name.Equals("TEXTMAP", StringComparison.OrdinalIgnoreCase))
+                        firstelement = i;
+                    break;
+                }
+            }
+
+            //Map isn't present, so abort
+            if (firstelement == -1)
+            {
+                return foundlumps;
+            }
+
+            //Find the index of the ENDMAP element from this map
+            for (; i < lumps.Count; i++)
+            {
+                if (lumps[i].name.Equals("ENDMAP", StringComparison.OrdinalIgnoreCase))
+                {
+                    lastelement = i;
+                }
+            }
+
+            //make sure there actually is a map
+            if (lastelement != -1)
+            {
+                for (int li = firstelement+2; li < lastelement; li++)
+                {
+                    //just add the index to the list
+                    foundlumps.Add(li);
+                }
+            }
+
+            return foundlumps;
+        }
+
         /// <summary>
         /// Delete a map from the wad directory
         /// </summary>
@@ -178,7 +236,11 @@ namespace eced.ResourceFiles
                 }
             }
             //Delete from the directory
-            lumps.RemoveRange(firstelement, lastelement - firstelement);
+            //Make sure the end is actually present
+            if (lastelement != -1)
+            {
+                lumps.RemoveRange(firstelement, lastelement - firstelement);
+            }
         }
 
         public List<string> findAllMapNames()
