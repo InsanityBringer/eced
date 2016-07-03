@@ -82,7 +82,7 @@ namespace eced
                 IEnumerable<XNode> nodelist = doc.Nodes();
                 foreach (XNode node in nodelist)
                 {
-                    Console.WriteLine("Node type: {0}", node.NodeType.ToString());
+                    //Console.WriteLine("Node type: {0}", node.NodeType.ToString());
                     if (node is XContainer)
                     {
                         XContainer container = (XContainer)node;
@@ -90,7 +90,7 @@ namespace eced
 
                         foreach (XNode subnode in sublist)
                         {
-                            Console.WriteLine("Sub Node type: {0}, Data: {1}", subnode.NodeType.ToString(), subnode.ToString());
+                            //Console.WriteLine("Sub Node type: {0}, Data: {1}", subnode.NodeType.ToString(), subnode.ToString());
                             if (subnode is XContainer)
                             {
                                 XContainer tiledata = (XContainer)subnode;

@@ -104,8 +104,6 @@ namespace eced
             }
 
             GL.Disable(EnableCap.DepthTest);
-
-            //createNewLevel(null); //heh
         }
 
         private void glInit()
@@ -145,6 +143,9 @@ namespace eced
                 ResourceFiles.ResourceArchive file;
                 if (mapinfo.files[i].format == ResourceFiles.ResourceFormat.FORMAT_WAD)
                 {
+                    string fixfilename = mapinfo.files[i].filename;
+                    //replace all slashes with backslashes to prevent issues
+                    fixfilename = fixfilename.Replace('/', '\\');
                     file = ResourceFiles.WADResourceFile.loadResourceFile(mapinfo.files[i].filename);
                     file.openFile();
                     tm.getTextureList(file);
@@ -166,6 +167,7 @@ namespace eced
             level.tm = this.tm;
 
             renderer.setupTextures(level, tm.resourceInfoID, tm.atlasTextureID, tm.numberTextureID);
+            this.currentMapinfo = mapinfo;
         }
 
         private void createNewLevel(MapInformation mapinfo/*List<ResourceFiles.ResourceArchive> resources*/)
@@ -210,8 +212,10 @@ namespace eced
 
         /// <summary>
         /// Saves a map a specified WAD file
+        /// <param name="filename">Filename to save to</param>
+        /// <param name="saveinto">Makes the save code put the WAD onto the resource stack before saving</param>
         /// </summary>
-        private void saveMapToFile(string filename)
+        private void saveMapToFile(string filename, bool saveinto)
         {
             //TODO: Absolute path
             //currentLevel.saveToUWMFFile("c:/dev/textmap.txt");
@@ -222,28 +226,54 @@ namespace eced
 
             bool destArchiveLoaded = this.currentMapinfo.containsResource(filename);
 
-            ResourceFiles.WADResourceFile savearchive;
+            //init it off the bat because Visual Studio is being lovely about detecting whether or not it was loaded
+            ResourceFiles.WADResourceFile savearchive = new ResourceFiles.WADResourceFile();
+
+            //make sure the save into archive actually exists
+            if (saveinto && !System.IO.File.Exists(filename))
+            {
+                //if it doesn't turn off save into
+                saveinto = false;
+            }
 
             if (destArchiveLoaded)
             {
                 //find the resource file for this map
+                bool found = false;
                 foreach (ResourceFiles.ResourceArchive file in currentLevel.loadedResources)
                 {
-                    if (file.archiveName == filename)
+                    if (file.archiveName.Equals(filename, StringComparison.OrdinalIgnoreCase))
                     {
                         savearchive = (ResourceFiles.WADResourceFile)file;
+                        found = true;
                         break;
                     }
                 }
-                //can't find the resource somehow, so lets just give up
-                throw new Exception("The archive for the current save desination is not loaded");
+                if (!found)
+                {
+                    throw new Exception("The archive for the current save desination is not loaded");
+                }
             }
             else
             {
-                savearchive = new ResourceFiles.WADResourceFile();
+                //add the resource onto the stack before doing anything
+                if (saveinto)
+                {
+                    savearchive = (ResourceFiles.WADResourceFile)ResourceFiles.WADResourceFile.loadResourceFile(filename);
+                    this.currentLevel.loadedResources.Add(savearchive);
+                    ResourceFiles.ResourceArchiveHeader lhead = new ResourceFiles.ResourceArchiveHeader();
+                    lhead.filename = filename;
+                    this.currentMapinfo.files.Add(lhead);
+                    destArchiveLoaded = true;
+                }
+                //make a new archive from scratch if not saving into
+                else
+                {
+                    savearchive = new ResourceFiles.WADResourceFile();
+                }
             }
 
-            //Do some special things to save the map into the 
+            //Do some special things to save the map special lumps
             if (destArchiveLoaded)
             {
                 List<int> idlist = savearchive.findSpecialMapLumps(this.currentMapinfo.lumpname);
@@ -256,12 +286,12 @@ namespace eced
 
             string mapstring = currentLevel.writeUWMF();
 
-            Console.WriteLine(mapstring);
+            //Console.WriteLine(mapstring);
 
             //Get an ascii representation of the map
             byte[] mapdata = Encoding.ASCII.GetBytes(mapstring);
 
-            Console.WriteLine(mapdata.Length);
+            //Console.WriteLine(mapdata.Length);
 
             List<ResourceFiles.ResourceFile> lumps = new List<ResourceFiles.ResourceFile>();
 
@@ -271,6 +301,7 @@ namespace eced
             mapdatal.pointer = 0; lumps.Add(mapdatal);
             ResourceFiles.ResourceFile mapend = new ResourceFiles.ResourceFile("ENDMAP", ResourceFiles.ResourceType.RES_GENERIC, 0);
             mapend.pointer = 0; lumps.Add(mapend);
+
 
             savearchive.updateToNewWad(filename, ref lumps, ref mapdata);
 
@@ -286,6 +317,7 @@ namespace eced
 
             //trash all the old resources to be sure we're up to date
             currentLevel.disposeLevel();
+            tm.cleanup();
             loadResources(currentMapinfo, currentLevel);
         }
 
@@ -344,32 +376,7 @@ namespace eced
                 if (ltag == 22)
                 {
                     //TODO: Absolute path
-                    //currentLevel.saveToUWMFFile("c:/dev/textmap.txt");
-                    /*List<ResourceFiles.ResourceFile> boguslumps = new List<ResourceFiles.ResourceFile>();
-                    byte[] bogusdata = new byte[4];
-                    ((ResourceFiles.WADResourceFile)currentLevel.loadedResources[0]).updateToNewWad("c:/dev/flargh.wad", ref boguslumps, ref bogusdata);*/
-                    //TODO: Temp
-                    string mapstring = currentLevel.writeUWMF();
-
-                    Console.WriteLine(mapstring);
-
-                    //Get an ascii representation of the map
-                    byte[] mapdata = Encoding.ASCII.GetBytes(mapstring);
-
-                    Console.WriteLine(mapdata.Length);
-
-                    ResourceFiles.WADResourceFile savearchive = new ResourceFiles.WADResourceFile();
-
-                    List<ResourceFiles.ResourceFile> lumps = new List<ResourceFiles.ResourceFile>();
-
-                    ResourceFiles.ResourceFile mapheader = new ResourceFiles.ResourceFile("MAP01", ResourceFiles.ResourceType.RES_GENERIC, 0);
-                    mapheader.pointer = 0; lumps.Add(mapheader);
-                    ResourceFiles.ResourceFile mapdatal = new ResourceFiles.ResourceFile("TEXTMAP", ResourceFiles.ResourceType.RES_GENERIC, mapdata.Length);
-                    mapdatal.pointer = 0; lumps.Add(mapdatal);
-                    ResourceFiles.ResourceFile mapend = new ResourceFiles.ResourceFile("ENDMAP", ResourceFiles.ResourceType.RES_GENERIC, 0);
-                    mapend.pointer = 0; lumps.Add(mapend);
-
-                    savearchive.updateToNewWad("c:/dev/hehwad.wad", ref lumps, ref mapdata);
+                    saveMapToFile("c:\\dev\\hehwad.wad", true);
                 }
 
                 if (ltag == 21)

@@ -81,12 +81,16 @@ namespace eced
             Console.WriteLine("tileset size: {0}", internalTileset.Count);
         }
 
+        /// <summary>
+        /// Closes and empties the loaded resource list
+        /// </summary>
         public void disposeLevel()
         {
             for (int i = 0; i < loadedResources.Count; i++)
             {
                 loadedResources[i].closeResource();
             }
+            loadedResources.Clear();
         }
 
         public Cell getCell(int x, int y, int z)

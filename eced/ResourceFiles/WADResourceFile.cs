@@ -123,12 +123,18 @@ namespace eced.ResourceFiles
             this.streamreader.Close();
         }
 
+        /// <summary>
+        /// Opens the resource file for reading, locking it
+        /// Close when done to avoid keeping the file exclusively loaded
+        /// </summary>
         public override void openFile()
         {
             this.streamreader = new BinaryReader(File.Open(filename, FileMode.Open));
         }
 
-        //heh
+        /// <summary>
+        /// Closes the resource file, releasing the lock on it
+        /// </summary>
         public override void closeFile()
         {
             this.closeResource();
@@ -264,15 +270,17 @@ namespace eced.ResourceFiles
         }
 
         /// <summary>
-        /// Writes out a new wad, appending the new lumps onto the end of the stack. Expects pointer for each ResourceFile to point to the position of the data in the 
+        /// Writes out a new wad, appending the new lumps onto the end of the stack. Expects pointer for each ResourceFile to point to the position of the data in the old archive
+        /// Opens and closes the old wad automatically
         /// </summary>
         /// <param name="destfilename">The destination to write the new file</param>
         /// <param name="newLumps">The directory entries of the new lumps to add</param>
         /// <param name="data"></param>
         public void updateToNewWad(string destfilename, ref List<ResourceFile> newLumps, ref byte[] data)
         {
-            BinaryWriter bw = new BinaryWriter(File.Open(destfilename, FileMode.Create), Encoding.ASCII);
-            
+            //Open the file for reading
+            openFile();
+
             //Find how large the resultant WAD data will be
             int numLumps = lumps.Count + newLumps.Count;
             int directorySize = numLumps * 16;
@@ -342,6 +350,12 @@ namespace eced.ResourceFiles
 
                 dataptr += lump.size;
             }
+
+            //Close for reading
+            closeFile();
+
+            //Open the wad for writing
+            BinaryWriter bw = new BinaryWriter(File.Open(destfilename, FileMode.Create), Encoding.ASCII);
 
             //Write the wad
             bw.Write(block);
