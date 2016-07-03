@@ -211,6 +211,22 @@ namespace eced
         }
 
         /// <summary>
+        /// Spawns the save file dialog to save the current map
+        /// </summary>
+        /// <param name="saveinto">Whether or not the map should be inserted into the wad, instead of destroying the wad beforehand</param>
+        private void doSaveDialog(bool saveinto)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (saveFileDialog1.FileName != "")
+                {
+                    string fixFilename = saveFileDialog1.FileName.Replace('/', '\\');
+                    saveMapToFile(fixFilename, saveinto);
+                }
+            }
+        }
+
+        /// <summary>
         /// Saves a map a specified WAD file
         /// <param name="filename">Filename to save to</param>
         /// <param name="saveinto">Makes the save code put the WAD onto the resource stack before saving</param>
@@ -266,11 +282,6 @@ namespace eced
                     this.currentMapinfo.files.Add(lhead);
                     destArchiveLoaded = true;
                 }
-                //make a new archive from scratch if not saving into
-                else
-                {
-                    savearchive = new ResourceFiles.WADResourceFile();
-                }
             }
 
             //Do some special things to save the map special lumps
@@ -303,7 +314,7 @@ namespace eced
             mapend.pointer = 0; lumps.Add(mapend);
 
 
-            savearchive.updateToNewWad(filename, ref lumps, ref mapdata);
+            savearchive.updateToNewWad(filename, ref lumps, ref mapdata, destArchiveLoaded);
 
             if (!destArchiveLoaded)
             {
@@ -375,8 +386,14 @@ namespace eced
 
                 if (ltag == 22)
                 {
-                    //TODO: Absolute path
-                    saveMapToFile("c:\\dev\\hehwad.wad", true);
+                    if (this.currentFilename != "")
+                    {
+                        saveMapToFile(this.currentFilename, true);
+                    }
+                    else
+                    {
+                        doSaveDialog(true);
+                    }
                 }
 
                 if (ltag == 21)
@@ -869,6 +886,27 @@ namespace eced
         private void nudNewTag_ValueChanged(object sender, EventArgs e)
         {
             this.tagBrush.tag = (int)nudNewTag.Value;
+        }
+
+        private void menuItem6_Click(object sender, EventArgs e)
+        {
+            //update current wad if you just click save
+            if (this.currentFilename != "")
+            {
+                saveMapToFile(this.currentFilename, true);
+            }
+        }
+
+        private void menuItem7_Click(object sender, EventArgs e)
+        {
+            //save as, delete all contents of the destination WAD
+            doSaveDialog(false);
+        }
+
+        private void menuItem14_Click(object sender, EventArgs e)
+        {
+            //save as, preserve all contents of the destination WAD
+            doSaveDialog(true);
         }
 
         private void menuItem3_Click(object sender, EventArgs e)

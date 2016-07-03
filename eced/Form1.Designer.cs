@@ -153,6 +153,7 @@
             this.gbTag = new System.Windows.Forms.GroupBox();
             this.nudNewTag = new System.Windows.Forms.NumericUpDown();
             this.label24 = new System.Windows.Forms.Label();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
             this.gbTriggerData.SuspendLayout();
@@ -213,16 +214,19 @@
             // 
             this.menuItem6.Index = 3;
             this.menuItem6.Text = "Save...";
+            this.menuItem6.Click += new System.EventHandler(this.menuItem6_Click);
             // 
             // menuItem7
             // 
             this.menuItem7.Index = 4;
             this.menuItem7.Text = "Save As...";
+            this.menuItem7.Click += new System.EventHandler(this.menuItem7_Click);
             // 
             // menuItem14
             // 
             this.menuItem14.Index = 5;
             this.menuItem14.Text = "Save Into...";
+            this.menuItem14.Click += new System.EventHandler(this.menuItem14_Click);
             // 
             // menuItem8
             // 
@@ -1611,6 +1615,7 @@
         private System.Windows.Forms.NumericUpDown nudNewTag;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.MenuItem menuItem14;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

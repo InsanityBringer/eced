@@ -276,10 +276,14 @@ namespace eced.ResourceFiles
         /// <param name="destfilename">The destination to write the new file</param>
         /// <param name="newLumps">The directory entries of the new lumps to add</param>
         /// <param name="data"></param>
-        public void updateToNewWad(string destfilename, ref List<ResourceFile> newLumps, ref byte[] data)
+        /// <param name="update">True if the wad should be updated, false if it should be done solely with the new data</param>
+        public void updateToNewWad(string destfilename, ref List<ResourceFile> newLumps, ref byte[] data, bool update)
         {
             //Open the file for reading
-            openFile();
+            if (update)
+            {
+                openFile();
+            }
 
             //Find how large the resultant WAD data will be
             int numLumps = lumps.Count + newLumps.Count;
@@ -313,27 +317,32 @@ namespace eced.ResourceFiles
             //Build the directory
             int ptr = 12;
             int dataptr = 12 + directorySize;
-            foreach (ResourceFile lump in lumps)
+
+            //only try to load old lumps when updating
+            if (update)
             {
-                //copy the data into the data block
-                streamreader.BaseStream.Seek((long)lump.pointer, SeekOrigin.Begin);
-                byte[] lumpdata = streamreader.ReadBytes(lump.size);
-                if (lumpdata.Length != lump.size)
+                foreach (ResourceFile lump in lumps)
                 {
-                    //TODO: Report error more formally
-                    Console.WriteLine("ERROR: Loaded less bytes than expected reading lump {0}", lump.name);
+                    //copy the data into the data block
+                    streamreader.BaseStream.Seek((long)lump.pointer, SeekOrigin.Begin);
+                    byte[] lumpdata = streamreader.ReadBytes(lump.size);
+                    if (lumpdata.Length != lump.size)
+                    {
+                        //TODO: Report error more formally
+                        Console.WriteLine("ERROR: Loaded less bytes than expected reading lump {0}", lump.name);
+                    }
+                    Array.Copy(lumpdata, 0, block, dataptr, lump.size);
+
+                    BinaryHelper.getBytes(dataptr, ref intblock);
+                    Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
+                    BinaryHelper.getBytes(lump.size, ref intblock);
+                    Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
+
+                    byte[] name = Encoding.ASCII.GetBytes(lump.name);
+                    Array.Copy(name, 0, block, ptr, name.Length); ptr += 8;
+
+                    dataptr += lump.size;
                 }
-                Array.Copy(lumpdata, 0, block, dataptr, lump.size);
-                
-                BinaryHelper.getBytes(dataptr, ref intblock);
-                Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
-                BinaryHelper.getBytes(lump.size, ref intblock);
-                Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
-
-                byte[] name = Encoding.ASCII.GetBytes(lump.name);
-                Array.Copy(name, 0, block, ptr, name.Length); ptr += 8;
-
-                dataptr += lump.size;
             }
             foreach (ResourceFile lump in newLumps)
             {
@@ -352,7 +361,10 @@ namespace eced.ResourceFiles
             }
 
             //Close for reading
-            closeFile();
+            if (update)
+            {
+                closeFile();
+            }
 
             //Open the wad for writing
             BinaryWriter bw = new BinaryWriter(File.Open(destfilename, FileMode.Create), Encoding.ASCII);
@@ -361,6 +373,11 @@ namespace eced.ResourceFiles
             bw.Write(block);
 
             bw.Close();
+
+            if (!update)
+            {
+                this.filename = destfilename;
+            }
         }
     }
 }
