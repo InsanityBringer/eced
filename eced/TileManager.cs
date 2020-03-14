@@ -30,8 +30,8 @@ namespace eced
         public List<Tile> tileset = new List<Tile>();
         //public Dictionary<int, Tile> tileset = new Dictionary<int, Tile>();
 
-        public static Tile tile1 = new Tile(0);
-        public static Tile tile2 = new Tile(7);
+        public static Tile tile1 = new Tile();
+        public static Tile tile2 = new Tile();
 
         /// <summary>
         /// The filename where the main XML data is stored.
@@ -73,7 +73,7 @@ namespace eced
         /// <summary>
         /// Loads the default tileset from an XML file
         /// </summary>
-        public void loadTileset()
+        public void LoadPalette()
         {
             StreamReader sr = new StreamReader(File.Open(filename, FileMode.Open));
             try
@@ -97,14 +97,8 @@ namespace eced
                                 int id = 0;
                                 try
                                 {
-                                    id = Int32.Parse(tiledata.Element("id").Value);
-
-                                    Tile tile = new Tile(id);
-
-                                    tile.processData(tiledata.Element("texn").Value, tiledata.Element("texs").Value, tiledata.Element("texe").Value, tiledata.Element("texw").Value,
-                                        tiledata.Element("offh").Value, tiledata.Element("offv").Value,
-                                        tiledata.Element("blockn").Value, tiledata.Element("blockn").Value, tiledata.Element("blockn").Value, tiledata.Element("blockn").Value);
-
+                                    //id = Int32.Parse(tiledata.Element("id").Value);
+                                    Tile tile = Tile.FromXMLContainer(tiledata);
                                     tileset.Add(tile);
                                 }
                                 catch (Exception exc)

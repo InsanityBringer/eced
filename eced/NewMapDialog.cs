@@ -11,7 +11,8 @@ namespace eced
 {
     public partial class NewMapDialog : Form
     {
-        private MapInformation currentMapInfo = new MapInformation();
+        //private MapInformation currentMapInfo = new MapInformation();
+        public MapInformation CurrentMap { get; } = new MapInformation();
         public NewMapDialog()
         {
             InitializeComponent();
@@ -19,17 +20,17 @@ namespace eced
 
         private void txtMapName_TextChanged(object sender, EventArgs e)
         {
-            currentMapInfo.lumpname = ((TextBox)sender).Text;
+            CurrentMap.lumpname = ((TextBox)sender).Text;
         }
 
         private void nudXSize_ValueChanged(object sender, EventArgs e)
         {
-            currentMapInfo.sizex = (int)((NumericUpDown)sender).Value;
+            CurrentMap.sizex = (int)((NumericUpDown)sender).Value;
         }
 
         private void nudYSize_ValueChanged(object sender, EventArgs e)
         {
-            currentMapInfo.sizey = (int)((NumericUpDown)sender).Value;
+            CurrentMap.sizey = (int)((NumericUpDown)sender).Value;
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -38,7 +39,7 @@ namespace eced
 
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
-                currentMapInfo.files.Add((ResourceFiles.ResourceArchiveHeader)listBox1.Items[i]);
+                CurrentMap.files.Add((ResourceFiles.ResourceArchiveHeader)listBox1.Items[i]);
             }
             this.Close();
         }
@@ -51,12 +52,7 @@ namespace eced
 
         private void nudLayerCount_ValueChanged(object sender, EventArgs e)
         {
-            currentMapInfo.layers = (int)((NumericUpDown)sender).Value;
-        }
-
-        public MapInformation getMapInfo()
-        {
-            return this.currentMapInfo;
+            CurrentMap.layers = (int)((NumericUpDown)sender).Value;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -85,7 +81,7 @@ namespace eced
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool containsResource(string name)
+        public bool ContainsResource(string name)
         {
             foreach (ResourceFiles.ResourceArchiveHeader file in files)
             {

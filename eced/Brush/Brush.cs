@@ -34,15 +34,15 @@ namespace eced
         {
             int tx = (int)pos.X;
             int ty = (int)pos.Y;
-            level.setTile(tx, ty, z, null);
-            if (level.getTile(tx - 1, ty, z) != null)
-                level.setTile(tx - 1, ty, z, normalTile);
-            if (level.getTile(tx + 1, ty, z) != null)
-                level.setTile(tx + 1, ty, z, normalTile);
-            if (level.getTile(tx, ty + 1, z) != null)
-                level.setTile(tx, ty + 1, z, normalTile);
-            if (level.getTile(tx, ty - 1, z) != null)
-                level.setTile(tx, ty - 1, z, normalTile);
+            level.SetTile(tx, ty, z, null);
+            if (level.GetTile(tx - 1, ty, z) != null)
+                level.SetTile(tx - 1, ty, z, normalTile);
+            if (level.GetTile(tx + 1, ty, z) != null)
+                level.SetTile(tx + 1, ty, z, normalTile);
+            if (level.GetTile(tx, ty + 1, z) != null)
+                level.SetTile(tx, ty + 1, z, normalTile);
+            if (level.GetTile(tx, ty - 1, z) != null)
+                level.SetTile(tx, ty - 1, z, normalTile);
         }
 
         /*public virtual void ApplyToTile(int x, int y, int z, int tilsize, Level level, int button)

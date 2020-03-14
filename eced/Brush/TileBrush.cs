@@ -16,25 +16,19 @@
  *  -------------------------------------------------------------------*/
 
 using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace eced
 {
-    static class Program
+    public class TileBrush : Brush
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {
-            OpenTK.ToolkitOptions options = new OpenTK.ToolkitOptions();
-            options.Backend = OpenTK.PlatformBackend.PreferNative;
-            OpenTK.Toolkit.Init(options);
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            int tx = (int)pos.X;
+            int ty = (int)pos.Y;
+            level.SetTile(tx, ty, z, this.normalTile);
         }
     }
 }

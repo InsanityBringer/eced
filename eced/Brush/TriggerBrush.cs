@@ -22,12 +22,10 @@ using System.Text;
 
 namespace eced
 {
-    public class FloodBrush : Brush
+    public class TriggerBrush : Brush
     {
-        private Level level;
-        private int code = 0;
-        public int setCode = -1;
-        public FloodBrush()
+        public Trigger trigger = new Trigger();
+        public TriggerBrush()
             : base()
         {
             this.repeatable = false;
@@ -35,33 +33,27 @@ namespace eced
 
         public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {
-            int tx = (int)pos.X;
-            int ty = (int)pos.Y;
+            int lx = (int)pos.X;
+            int ly = (int)pos.Y;
 
-            this.level = level;
-            if (setCode < 0)
-                code = level.getUniqueCode();
-            else code = setCode;
+            if (button == 0)
+            {
+                Trigger triggertoput = new Trigger(trigger);
 
-            flood(tx, ty);
+                triggertoput.x = lx;
+                triggertoput.y = ly;
+                triggertoput.z = 0;
 
-            this.level = null; //no need to let that linger
-        }
-
-        private void flood(int x, int y)
-        {
-            if (level.getTile(x, y, 0) != null)
-                return;
-
-            if (level.compareZoneID(x, y, 0, code))
-                return;
-
-            level.assignFloorCode(x, y, 0, code);
-
-            flood(x - 1, y);
-            flood(x + 1, y);
-            flood(x, y - 1);
-            flood(x, y + 1);
+                level.AddTrigger(lx, ly, z, triggertoput);
+            }
+            else
+            {
+                Cell cell = level.GetCell(lx, ly, z);
+                TriggerEditor editor = new TriggerEditor(ref cell, lx, ly, z);
+                editor.ShowDialog();
+                level.SetCell(lx, ly, z, editor.getNewCell());
+                editor.Dispose();
+            }
         }
     }
 }

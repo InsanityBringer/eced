@@ -26,16 +26,45 @@ namespace eced
 {
     public class Tile
     {
-        public string texn = "-", texs = "-", texe = "-", texw = "-";
-        public string maptex = "-";
-        public bool offh = false, offv = false;
-        public bool blockn = true, blocks = true, blocke = true, blockw = true;
+        public string NorthTex { get; private set; } = "-";
+        public string SouthTex { get; private set; } = "-";
+        public string EastTex { get; private set; } = "-";
+        public string WestTex { get; private set; } = "-";
+        public string MapTex { get; private set; } = "-";
+        public bool HorizOffset { get; private set; } = false;
+        public bool VerticalOffset { get; private set; } = false;
+        public bool NorthBlock { get; private set; } = true;
+        public bool SouthBlock { get; private set; } = true;
+        public bool EastBlock { get; private set; } = true;
+        public bool WestBlock { get; private set; } = true;
+        public string Name { get; private set; } = "-";
 
-        public int id;
-
-        public Tile(int id)
+        public Tile()
         {
-            this.id = id;
+        }
+
+        public Tile(Tile other)
+        {
+            NorthTex = other.NorthTex;
+            SouthTex = other.SouthTex;
+            EastTex = other.EastTex;
+            WestTex = other.WestTex;
+
+            HorizOffset = other.HorizOffset;
+            VerticalOffset = other.VerticalOffset;
+
+            NorthBlock = other.NorthBlock;
+            SouthBlock = other.SouthBlock;
+            EastBlock = other.EastBlock;
+            WestBlock = other.WestBlock;
+        }
+
+        public override int GetHashCode()
+        {
+            //TODO: godawful hack, fix
+            StringBuilder hack = new StringBuilder();
+            hack.Append(NorthTex); hack.Append(SouthTex); hack.Append(EastTex); hack.Append(WestTex);
+            return hack.ToString().GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -45,107 +74,149 @@ namespace eced
 
             Tile other = (Tile)obj;
 
-            bool truth = other.blocke == blocke;
-            truth = truth && other.blockn == blockn;
-            truth = truth && other.blocks == blocks;
-            truth = truth && other.blockw == blockw;
+            bool truth = other.EastBlock == EastBlock;
+            truth = truth && other.NorthBlock == NorthBlock;
+            truth = truth && other.SouthBlock == SouthBlock;
+            truth = truth && other.WestBlock == WestBlock;
 
-            truth = truth && other.offh == offh;
-            truth = truth && other.offv == offv;
+            truth = truth && other.HorizOffset == HorizOffset;
+            truth = truth && other.VerticalOffset == VerticalOffset;
 
-            truth = truth && other.texe == texe;
-            truth = truth && other.texn == texn;
-            truth = truth && other.texs == texs;
-            truth = truth && other.texw == texw;
+            truth = truth && other.EastTex == EastTex;
+            truth = truth && other.NorthTex == NorthTex;
+            truth = truth && other.SouthTex == SouthTex;
+            truth = truth && other.WestTex == WestTex;
             
             return truth;
         }
 
-        /// <summary>
-        /// Processes data from the XML tile configuration
-        /// </summary>
-        /// <param name="tex1">The north texture name</param>
-        /// <param name="tex2">The south texture name</param>
-        /// <param name="tex3">The east texture name</param>
-        /// <param name="tex4">The west texture name</param>
-        /// <param name="offh">Whether or not the tile is offset horizontally</param>
-        /// <param name="offv">Whether or not the tile is offset vertically</param>
-        /// <param name="block1">Block from the north side</param>
-        /// <param name="block2">Block from the south side</param>
-        /// <param name="block3">Block from the east side</param>
-        /// <param name="block4">Block from the west side</param>
-        public void processData(string tex1, string tex2, string tex3, string tex4, string offh
-            , string offv, string block1, string block2, string block3, string block4)
+        public static Tile FromXMLContainer(XContainer container)
         {
-            if (tex1 != null)
-                texn = tex1;
-            if (tex2 != null)
-                texs = tex2;
-            if (tex3 != null)
-                texe = tex3;
-            if (tex4 != null)
-                texw = tex4;
+            Tile newTile = new Tile();
 
-            if (offh != null)
-                this.offh = Boolean.Parse(offh);
+            foreach (XElement elem in container.Elements())
+            {
+                //Console.WriteLine(elem.Name.LocalName);
+                switch (elem.Name.LocalName)
+                {
+                    case "name":
+                        newTile.Name = (string)elem;
+                        break;
+                    case "texn":
+                        newTile.NorthTex = (string)elem;
+                        break;
+                    case "texs":
+                        newTile.SouthTex = (string)elem;
+                        break;
+                    case "texe":
+                        newTile.EastTex = (string)elem;
+                        break;
+                    case "texw":
+                        newTile.WestTex = (string)elem;
+                        break;
+                    case "offh":
+                        newTile.HorizOffset = (bool)elem;
+                        break;
+                    case "offv":
+                        newTile.VerticalOffset = (bool)elem;
+                        break;
+                    case "blockn":
+                        newTile.NorthBlock = (bool)elem;
+                        break;
+                    case "blocks":
+                        newTile.SouthBlock = (bool)elem;
+                        break;
+                    case "blocke":
+                        newTile.EastBlock = (bool)elem;
+                        break;
+                    case "blockw":
+                        newTile.WestBlock = (bool)elem;
+                        break;
+                }
+            }
 
-            if (offv != null)
-                this.offv = Boolean.Parse(offv);
-
-            if (block1 != null)
-                this.blockn = Boolean.Parse(block1);
-            if (block2 != null)
-                this.blocks = Boolean.Parse(block1);
-            if (block3 != null)
-                this.blocke = Boolean.Parse(block1);
-            if (block4 != null)
-                this.blockw = Boolean.Parse(block1);
+            return newTile;
         }
 
         /// <summary>
         /// Creates a string containing the uwmf data for this object
         /// </summary>
         /// <returns></returns>
-        public string getUWMFString()
+        public string Serialize()
         {
             StringBuilder stringmaker = new StringBuilder();
             stringmaker.Append("tile\n{\n");
-            stringmaker.Append("\ttexturenorth = \""); stringmaker.Append(texn); stringmaker.Append("\";");
-            stringmaker.Append("\n\ttexturesouth = \""); stringmaker.Append(texs); stringmaker.Append("\";");
-            stringmaker.Append("\n\ttextureeast = \""); stringmaker.Append(texe); stringmaker.Append("\";");
-            stringmaker.Append("\n\ttexturewest = \""); stringmaker.Append(texw); stringmaker.Append("\";");
+            stringmaker.Append("\ttexturenorth = \""); stringmaker.Append(NorthTex); stringmaker.Append("\";");
+            stringmaker.Append("\n\ttexturesouth = \""); stringmaker.Append(SouthTex); stringmaker.Append("\";");
+            stringmaker.Append("\n\ttextureeast = \""); stringmaker.Append(EastTex); stringmaker.Append("\";");
+            stringmaker.Append("\n\ttexturewest = \""); stringmaker.Append(WestTex); stringmaker.Append("\";");
 
-            stringmaker.Append("\n\toffsetvertical = "); stringmaker.Append(offv.ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\toffsethorizontal = "); stringmaker.Append(offh.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\toffsetvertical = "); stringmaker.Append(VerticalOffset.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\toffsethorizontal = "); stringmaker.Append(HorizOffset.ToString().ToLower()); stringmaker.Append(";");
 
-            stringmaker.Append("\n\tblockingnorth = "); stringmaker.Append(blockn.ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\tblockingsouth = "); stringmaker.Append(blocks.ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\tblockingeast = "); stringmaker.Append(blocke.ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\tblockingwest = "); stringmaker.Append(blockw.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tblockingnorth = "); stringmaker.Append(NorthBlock.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tblockingsouth = "); stringmaker.Append(SouthBlock.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tblockingeast = "); stringmaker.Append(EastBlock.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tblockingwest = "); stringmaker.Append(WestBlock.ToString().ToLower()); stringmaker.Append(";");
 
             stringmaker.Append("\n}");
 
             return stringmaker.ToString();
         }
 
-        public static Tile Reconstruct(UniversalCollection data)
+        public static Tile Deserialize(UniversalCollection data)
         {
-            Tile tile = new Tile(0);
+            Tile tile = new Tile();
 
-            tile.texn = UWMFSearch.getStringTag(data, "texturenorth", "#FF0000");
-            tile.texs = UWMFSearch.getStringTag(data, "texturesouth", "#FF0000");
-            tile.texe = UWMFSearch.getStringTag(data, "textureeast", "#A00000");
-            tile.texw = UWMFSearch.getStringTag(data, "texturewest", "#A00000");
+            tile.NorthTex = UWMFSearch.getStringTag(data, "texturenorth", "#FF0000");
+            tile.SouthTex = UWMFSearch.getStringTag(data, "texturesouth", "#FF0000");
+            tile.EastTex = UWMFSearch.getStringTag(data, "textureeast", "#A00000");
+            tile.WestTex = UWMFSearch.getStringTag(data, "texturewest", "#A00000");
 
-            tile.offh = UWMFSearch.getBoolTag(data, "offsethorizontal", false);
-            tile.offv = UWMFSearch.getBoolTag(data, "offsetvertical", false);
+            tile.HorizOffset = UWMFSearch.getBoolTag(data, "offsethorizontal", false);
+            tile.VerticalOffset = UWMFSearch.getBoolTag(data, "offsetvertical", false);
 
-            tile.blockn = UWMFSearch.getBoolTag(data, "blockingnorth", true);
-            tile.blocks = UWMFSearch.getBoolTag(data, "blockingsouth", true);
-            tile.blocke = UWMFSearch.getBoolTag(data, "blockingeast", true);
-            tile.blockw = UWMFSearch.getBoolTag(data, "blockingwest", true);
+            tile.NorthBlock = UWMFSearch.getBoolTag(data, "blockingnorth", true);
+            tile.SouthBlock = UWMFSearch.getBoolTag(data, "blockingsouth", true);
+            tile.EastBlock = UWMFSearch.getBoolTag(data, "blockingeast", true);
+            tile.WestBlock = UWMFSearch.getBoolTag(data, "blockingwest", true);
 
             return tile;
+        }
+
+        public Tile ChangeTextures(string north, string south, string east, string west, string map)
+        {
+            Tile newTile = new Tile(this);
+
+            newTile.NorthTex = north;
+            newTile.SouthTex = south;
+            newTile.EastTex = east;
+            newTile.WestTex = west;
+            newTile.MapTex = map;
+
+            return newTile;
+        }
+
+        public Tile ChangeBlocking(bool north, bool south, bool east, bool west)
+        {
+            Tile newTile = new Tile(this);
+
+            newTile.NorthBlock = north;
+            newTile.SouthBlock = south;
+            newTile.EastBlock = east;
+            newTile.WestBlock = west;
+
+            return newTile;
+        }
+
+        public Tile ChangeInset(bool horizontal, bool vertical)
+        {
+            Tile newTile = new Tile(this);
+
+            newTile.HorizOffset = horizontal;
+            newTile.VerticalOffset = vertical;
+
+            return newTile;
         }
     }
 }

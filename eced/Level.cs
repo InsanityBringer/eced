@@ -17,10 +17,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.IO;
-using OpenTK.Graphics.OpenGL;
 
 namespace eced
 {
@@ -84,7 +82,7 @@ namespace eced
         /// <summary>
         /// Closes and empties the loaded resource list
         /// </summary>
-        public void disposeLevel()
+        public void DisposeLevel()
         {
             for (int i = 0; i < loadedResources.Count; i++)
             {
@@ -93,17 +91,17 @@ namespace eced
             loadedResources.Clear();
         }
 
-        public Cell getCell(int x, int y, int z)
+        public Cell GetCell(int x, int y, int z)
         {
             return planes[z].cells[x, y];
         }
 
-        public int getZoneID(int x, int y, int z)
+        public int GetZoneID(int x, int y, int z)
         {
             return zonedefs.IndexOf(planes[z].cells[x, y].zone);
         }
 
-        public void setCell(int x, int y, int z, Cell cell)
+        public void SetCell(int x, int y, int z, Cell cell)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
@@ -123,14 +121,14 @@ namespace eced
             }
         }
 
-        public void addTile(Tile tile)
+        public void AddTile(Tile tile)
         {
             Console.WriteLine("adding tile to internal tileset");
             internalTileset.Add(tile);
             Console.WriteLine("tileset size: {0}", internalTileset.Count);
         }
 
-        public Tile getTile(int x, int y, int z)
+        public Tile GetTile(int x, int y, int z)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
                 return planes[z].cells[x, y].tile;
@@ -138,7 +136,7 @@ namespace eced
             return TileManager.tile1;
         }
 
-        public void setTile(int x, int y, int z, Tile tile)
+        public void SetTile(int x, int y, int z, Tile tile)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
@@ -159,7 +157,7 @@ namespace eced
             }
         }
 
-        public void setTag(int x, int y, int z, int tag)
+        public void SetTag(int x, int y, int z, int tag)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
@@ -167,12 +165,12 @@ namespace eced
             }
         }
 
-        public void addSector(Sector sector)
+        public void AddSector(Sector sector)
         {
             sectors.Add(sector);
         }
 
-        public void setSector(int x, int y, int z, Sector sector)
+        public void SetSector(int x, int y, int z, Sector sector)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
@@ -183,17 +181,17 @@ namespace eced
             }
         }
 
-        public void addThing(Thing thing)
+        public void AddThing(Thing thing)
         {
             this.things.Add(thing);
         }
 
-        public List<Thing> getThings()
+        public List<Thing> GetThings()
         {
             return things;
         }
 
-        public List<Thing> getThingsInRange(int sx, int sy, int w, int h)
+        public List<Thing> GetThingsInRange(int sx, int sy, int w, int h)
         {
             List<Thing> thinglist = new List<Thing>();
             int ex = sx + w;
@@ -210,16 +208,16 @@ namespace eced
             return thinglist;
         }
 
-        public ThingDefinition getThingDef(Thing thing)
+        public ThingDefinition GetThingDef(Thing thing)
         {
-            if (!localThingList.thinglist.ContainsKey(thing.typeid))
+            if (!localThingList.idToThingListMapping.ContainsKey(thing.typeid))
             {
-                return localThingList.getUnknownThing();
+                return localThingList.GetUnknownThing();
             }
-            return localThingList.thinglist[thing.typeid];
+            return localThingList.thingList[localThingList.idToThingListMapping[thing.typeid]];
         }
 
-        public void highlightThing(int x, int y)
+        public void HighlightThing(int x, int y)
         {
             if (this.highlighted != null)
                 return;
@@ -227,7 +225,7 @@ namespace eced
             for (int lx = 0; lx < this.things.Count; lx++)
             {
                 Thing thing = things[lx];
-                ThingDefinition def = getThingDef(thing);
+                ThingDefinition def = GetThingDef(thing);
                 int sx = (int)thing.getXCoord() - def.radius; int ex = (int)thing.getXCoord() + def.radius;
                 int sy = (int)thing.getYCoord() - def.radius; int ey = (int)thing.getYCoord() + def.radius;
                 if (x >= sx && x < ex && y >= sy && y < ey)
@@ -240,15 +238,15 @@ namespace eced
             }
         }
 
-        public void updateHighlight(int x, int y)
+        public void UpdateHighlight(int x, int y)
         {
             if (this.highlighted == null)
             {
-                highlightThing(x, y);
+                HighlightThing(x, y);
                 return;
             }
 
-            ThingDefinition def = getThingDef(highlighted);
+            ThingDefinition def = GetThingDef(highlighted);
             int sx = (int)highlighted.getXCoord() - def.radius; int ex = (int)highlighted.getXCoord() + def.radius;
             int sy = (int)highlighted.getYCoord() - def.radius; int ey = (int)highlighted.getYCoord() + def.radius;
             if ((x < sx || x >= ex || y < sy || y >= ey) && 
@@ -260,7 +258,7 @@ namespace eced
             }
         }
 
-        public void deleteThing(Thing thing)
+        public void DeleteThing(Thing thing)
         {
             if (this.things.Contains(thing))
             {
@@ -271,7 +269,7 @@ namespace eced
             }
         }
 
-        public void replaceThing(Thing thing, Thing newThing)
+        public void ReplaceThing(Thing thing, Thing newThing)
         {
             if (this.things.Contains(thing))
             {
@@ -282,7 +280,7 @@ namespace eced
             }
         }
 
-        public void addTrigger(int x, int y, int z, Trigger trigger)
+        public void AddTrigger(int x, int y, int z, Trigger trigger)
         {
             planes[z].cells[x, y].triggerList.Add(trigger);
             OpenTK.Vector2 triggerPos = new OpenTK.Vector2(x, y);
@@ -292,12 +290,12 @@ namespace eced
             }
         }
 
-        public List<Trigger> getTriggers(int x, int y, int z)
+        public List<Trigger> GetTriggers(int x, int y, int z)
         {
             return planes[z].cells[x, y].triggerList;
         }
 
-        public List<OpenTK.Vector2> getTriggerLocations()
+        public List<OpenTK.Vector2> GetTriggerLocations()
         {
             return planes[0].cellsWithTriggers;
         }
@@ -306,7 +304,7 @@ namespace eced
         /// Builds a 2-dimensional array representing the data of a single plane
         /// </summary>
         /// <param name="layer">The layer to make the plane from</param>
-        public short[] buildPlaneData(int layer)
+        public short[] BuildPlaneData(int layer)
         {
             short[] planeData = new short[this.width * this.height * 4];
 
@@ -316,7 +314,7 @@ namespace eced
                 {
                     //planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
                     if (planes[layer].cells[x, y].tile != null)
-                        planeData[(y * width + x) * 4] = (short)tm.getTextureID(planes[layer].cells[x, y].tile.texn);
+                        planeData[(y * width + x) * 4] = (short)tm.getTextureID(planes[layer].cells[x, y].tile.NorthTex);
                     else planeData[(y * width + x) * 4] = -1;
 
                     if (planes[layer].cells[x, y].tile == null)
@@ -327,37 +325,9 @@ namespace eced
             return planeData;
         }
 
-        /*/// <summary>
-        /// Builds a 1-dimensional array representing the data of all known resources
-        /// Required for the renderer. Intended to be uploaded as an RGBA32I texture
-        /// </summary>
-        /// <param name="numTextures">The amount of textures returned in this texture</param>
-        /// <returns></returns>
-        public short[] buildResourceData(ref int numTextures)
+        public void HighlightTrigger(int x, int y, int z)
         {
-            short[] textureData = new short[256 * 4];
-
-            //HACK: fills out with 256 8x8 texutres
-            //TODO: get real resource mangament
-
-            for (int i = 0; i < 256; i++)
-            {
-                textureData[i * 4 + 0] = 8;
-                textureData[i * 4 + 1] = 8;
-                textureData[i * 4 + 2] = (short)((i % 16) * 8);
-                textureData[i * 4 + 3] = (short)((i / 16) * 8);
-
-                Console.WriteLine("{0} {1} {2} {3}", textureData[i * 4 + 0], textureData[i * 4 + 1], textureData[i * 4 + 2], textureData[i * 4 + 3]);
-            }
-
-            numTextures = 256;
-
-            return textureData;
-        }*/
-
-        public void highlightTrigger(int x, int y, int z)
-        {
-            List<Trigger> trigger = getTriggers(x, y, z);
+            List<Trigger> trigger = GetTriggers(x, y, z);
             if (trigger.Count > 0)
             {
                 Console.WriteLine("highlighting!");
@@ -368,14 +338,14 @@ namespace eced
             }
         }
 
-        public void updateTriggerHighlight(int x, int y, int z)
+        public void UpdateTriggerHighlight(int x, int y, int z)
         {
             if (x < 0 || y < 0)
                 return;
 
             if (this.highlightedTrigger == null)
             {
-                highlightTrigger(x, y, z);
+                HighlightTrigger(x, y, z);
                 return;
             }
             else
@@ -389,7 +359,7 @@ namespace eced
             }
         }
 
-        public void assignFloorCode(int x, int y, int z, int code)
+        public void AssignFloorCode(int x, int y, int z, int code)
         {
             Console.WriteLine("setting code {0}", code);
             if (code == zonedefs.Count)
@@ -402,88 +372,17 @@ namespace eced
             updateCells.Add(new OpenTK.Vector2(x, y));
         }
 
-        public int getUniqueCode()
+        public int GetUniqueCode()
         {
             Console.WriteLine("getting code {0}", zonedefs.Count);
             return zonedefs.Count;
-        }
-
-        //why the crap did I write this function --IB
-        public void saveToUWMFFile(string filename)
-        {
-            StreamWriter sw = new StreamWriter(File.Open(filename, FileMode.Create));
-
-            sw.Write("namespace = \"Wolf3D\";\n");
-            sw.Write("tilesize = 64;\n");
-            sw.Write("name = \"ecedtest\";\n");
-            sw.Write("width = " + width.ToString() + ";\n");
-            sw.Write("height = " + height.ToString() + ";\n");
-            
-            //Plane plane = new Plane();
-
-            for (int x = 0; x < internalTileset.Count; x++)
-            {
-                sw.Write(internalTileset[x].getUWMFString());
-                sw.Write("\n");
-            }
-            sw.Write("\n");
-            for (int x = 0; x < zonedefs.Count; x++)
-            {
-                sw.Write(zonedefs[x].getUWMFString());
-                sw.Write("\n");
-            }
-            sw.Write("\n");
-            for (int x = 0; x < things.Count; x++)
-            {
-                sw.Write(things[x].getUWMFString());
-                sw.Write("\n");
-            }
-            sw.Write("\n");
-
-            for (int x = 0; x < sectors.Count; x++)
-            {
-                sw.Write(sectors[x].getUWMFString());
-                sw.Write("\n");
-            }
-            sw.Write("\n");
-
-            for (int x = 0; x < planes.Count; x++)
-            {
-                sw.Write(planes[x].makeUWMFString());
-                sw.Write("\n");
-            }
-            sw.Write("\n");
-
-            for (int x = 0; x < planes.Count; x++)
-            {
-                sw.Write(writePlaneDef(x));
-            }
-            sw.Write("\n");
-
-            for (int i = 0; i < width * height; i++)
-            {
-                for (int p = 0; p < this.depth; p++)
-                {
-                    int x = i % width;
-                    int y = i / width;
-                    for (int li = 0; li < planes[p].cells[x, y].triggerList.Count; li++)
-                    {
-                        sw.Write(planes[p].cells[x, y].triggerList[li].getUWMFString());
-                        sw.Write("\n");
-                    }
-                }
-            }
-            sw.Write("\n");
-
-            sw.Flush();
-            sw.Close();
         }
 
         /// <summary>
         /// Gets a string representing the map in UWMF format
         /// </summary>
         /// <returns></returns>
-        public string writeUWMF()
+        public string Serialize()
         {
             StringBuilder sb = new StringBuilder(); 
 			
@@ -497,7 +396,7 @@ namespace eced
 
             for (int x = 0; x < internalTileset.Count; x++)
             {
-                sb.Append(internalTileset[x].getUWMFString());
+                sb.Append(internalTileset[x].Serialize());
                 sb.Append("\n");
             }
             sb.Append("\n");
@@ -516,21 +415,21 @@ namespace eced
 
             for (int x = 0; x < sectors.Count; x++)
             {
-                sb.Append(sectors[x].getUWMFString());
+                sb.Append(sectors[x].Serialize());
                 sb.Append("\n");
             }
             sb.Append("\n");
 
             for (int x = 0; x < planes.Count; x++)
             {
-                sb.Append(planes[x].makeUWMFString());
+                sb.Append(planes[x].Serialize());
                 sb.Append("\n");
             }
             sb.Append("\n");
 
             for (int x = 0; x < planes.Count; x++)
             {
-                sb.Append(writePlaneDef(x));
+                sb.Append(SerializePlaneMap(x));
             }
             sb.Append("\n");
 
@@ -542,7 +441,7 @@ namespace eced
                     int y = i / width;
                     for (int li = 0; li < planes[p].cells[x, y].triggerList.Count; li++)
                     {
-                        sb.Append(planes[p].cells[x, y].triggerList[li].getUWMFString());
+                        sb.Append(planes[p].cells[x, y].triggerList[li].Serialize());
                         sb.Append("\n");
                     }
                 }
@@ -551,7 +450,7 @@ namespace eced
 			return sb.ToString();
         }
 
-        public string writePlaneDef(int plane)
+        public string SerializePlaneMap(int plane)
         {
             StringBuilder stringbuilder = new StringBuilder();
             stringbuilder.Append("planemap\n");
@@ -560,9 +459,9 @@ namespace eced
             {
                 int x = i % width;
                 int y = i / width;
-                stringbuilder.Append("\t{"); stringbuilder.Append(getTileId(planes[plane].cells[x, y].tile));
-                stringbuilder.Append(", "); stringbuilder.Append(getSectorID(x, y, plane));
-                stringbuilder.Append(", "); stringbuilder.Append(getZoneId(planes[plane].cells[x, y]));
+                stringbuilder.Append("\t{"); stringbuilder.Append(GetTileID(planes[plane].cells[x, y].tile));
+                stringbuilder.Append(", "); stringbuilder.Append(GetSectorID(x, y, plane));
+                stringbuilder.Append(", "); stringbuilder.Append(GetZoneID(planes[plane].cells[x, y]));
                 stringbuilder.Append(", "); stringbuilder.Append(planes[plane].cells[x, y].tag);
                 stringbuilder.Append("}");
                 if (i < ((width * height) - 1))
@@ -576,7 +475,7 @@ namespace eced
             return stringbuilder.ToString();
         }
 
-        public int getTileId(Tile tile)
+        public int GetTileID(Tile tile)
         {
             if (internalTileset.Contains(tile))
                 return internalTileset.IndexOf(tile);
@@ -584,7 +483,7 @@ namespace eced
             return -1;
         }
 
-        public int getSectorID(int x, int y, int z)
+        public int GetSectorID(int x, int y, int z)
         {
             if (sectors.Contains(planes[z].cells[x, y].sector))
                 return sectors.IndexOf(planes[z].cells[x, y].sector);
@@ -592,7 +491,7 @@ namespace eced
             return -1;
         }
 
-        public int getZoneId(Cell cell)
+        public int GetZoneID(Cell cell)
         {
             if (cell.zone == null)
             {
@@ -601,17 +500,17 @@ namespace eced
             return zonedefs.IndexOf(cell.zone);
         }
 
-        public bool compareZoneID(int x, int y, int z, int code)
+        public bool CompareZoneID(int x, int y, int z, int code)
         {
-            return getZoneId(planes[z].cells[x, y]) == code;
+            return GetZoneID(planes[z].cells[x, y]) == code;
         }
 
-        public Zone getZoneAt(int x, int y, int z)
+        public Zone GetZoneAt(int x, int y, int z)
         {
             return planes[z].cells[x, y].zone;
         }
 
-        public int getZoneIDAt(int x, int y, int z)
+        public int GetZoneIDAt(int x, int y, int z)
         {
             if (zonedefs.Contains(planes[z].cells[x, y].zone))
             {
@@ -620,27 +519,27 @@ namespace eced
             return -1;
         }
 
-        public void setTempPlaneMap(List<NumberCell> planemap)
+        public void SetTempPlaneMap(List<NumberCell> planemap)
         {
             this.tempPlanemap = planemap;
         }
 
-        public void addZone(Zone zone)
+        public void AddZone(Zone zone)
         {
             this.zonedefs.Add(zone);
         }
 
-        public List<Zone> getZones()
+        public List<Zone> GetZone()
         {
             return this.zonedefs;
         }
 
-        public bool isCellHighlighted(int x, int y, int z)
+        public bool IsCellHighlighted(int x, int y, int z)
         {
             return planes[z].cells[x, y].highlighted;
         }
 
-        public void processPlanemap()
+        public void ProcessPlanemap()
         {
             if (this.tempPlanemap == null)
                 return;

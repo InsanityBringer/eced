@@ -1,5 +1,7 @@
 <tileset>
 <tile>
+	<name>Gray Stone 1</name>
+	
 	<texn>GSTONEA1</texn>
 	<texs>GSTONEA1</texs>
 	<texe>GSTONEA2</texe>
@@ -17,6 +19,8 @@
 </tile>
 
 <tile>
+	<name>Gray Stone 2</name>
+	
 	<texn>GSTONEB1</texn>
 	<texs>GSTONEB1</texs>
 	<texe>GSTONEB2</texe>
@@ -34,6 +38,8 @@
 </tile>
 
 <tile>
+	<name>Gray Stone w/ flag</name>
+	
 	<texn>GSTFLAG1</texn>
 	<texs>GSTFLAG1</texs>
 	<texe>GSTFLAG2</texe>
@@ -51,6 +57,8 @@
 </tile>
 
 <tile>
+	<name>Gray Stone w/ portrait</name>
+	
 	<texn>GSTHTLR1</texn>
 	<texs>GSTHTLR1</texs>
 	<texe>GSTHTLR2</texe>
@@ -68,6 +76,8 @@
 </tile>
 
 <tile>
+	<name>Blue Stone w/ cell</name>
+	
 	<texn>BSTCELA1</texn>
 	<texs>BSTCELA1</texs>
 	<texe>BSTCELA2</texe>
@@ -85,6 +95,8 @@
 </tile>
 
 <tile>
+	<name>Gray Stone w/ eagle</name>
+	
 	<texn>GSTEAGL1</texn>
 	<texs>GSTEAGL1</texs>
 	<texe>GSTEAGL2</texe>
@@ -102,6 +114,8 @@
 </tile>
 
 <tile>
+	<name>Blue stone w/ skeleton</name>
+	
 	<texn>BSTCELB1</texn>
 	<texs>BSTCELB1</texs>
 	<texe>BSTCELB2</texe>
@@ -119,6 +133,8 @@
 </tile>
 
 <tile>
+	<name>Blue stone 1</name>
+
 	<texn>BSTONEA1</texn>
 	<texs>BSTONEA1</texs>
 	<texe>BSTONEA2</texe>
@@ -136,6 +152,8 @@
 </tile>
 
 <tile>
+	<name>Blue stone 2</name>
+	
 	<texn>BSTONEB1</texn>
 	<texs>BSTONEB1</texs>
 	<texe>BSTONEB2</texe>
@@ -153,6 +171,8 @@
 </tile>
 
 <tile>
+	<name>Wood w/ eagle</name>
+	
 	<texn>WODEAGL1</texn>
 	<texs>WODEAGL1</texs>
 	<texe>WODEAGL2</texe>
@@ -170,6 +190,8 @@
 </tile>
 
 <tile>
+	<name>Wood w/ portrait</name>
+	
 	<texn>WODHTLR1</texn>
 	<texs>WODHTLR1</texs>
 	<texe>WODHTLR2</texe>
@@ -187,6 +209,8 @@
 </tile>
 
 <tile>
+	<name>Wood wall</name>
+	
 	<texn>WOOD1</texn>
 	<texs>WOOD1</texs>
 	<texe>WOOD2</texe>
@@ -204,6 +228,8 @@
 </tile>
 
 <tile>
+	<name>Fake elevator door</name>
+	
 	<texn>FAKEDOR1</texn>
 	<texs>FAKEDOR1</texs>
 	<texe>FAKEDOR2</texe>
@@ -221,6 +247,8 @@
 </tile>
 
 <tile>
+	<name>Metal wall w/ sign</name>
+	
 	<texn>METLSGN1</texn>
 	<texs>METLSGN1</texs>
 	<texe>METLSGN2</texe>
@@ -238,6 +266,8 @@
 </tile>
 
 <tile>
+	<name>Metal wall</name>
+	
 	<texn>METAL1</texn>
 	<texs>METAL1</texs>
 	<texe>METAL2</texe>
@@ -255,6 +285,8 @@
 </tile>
 
 <tile>
+	<name>Sky wall</name>
+	
 	<texn>SKY1</texn>
 	<texs>SKY1</texs>
 	<texe>SKY2</texe>
@@ -272,6 +304,8 @@
 </tile>
 
 <tile>
+	<name>Red bricks</name>
+	
 	<texn>BRICK1</texn>
 	<texs>BRICK1</texs>
 	<texe>BRICK2</texe>
@@ -289,6 +323,8 @@
 </tile>
 
 <tile>
+	<name>Red bricks /w swastika</name>
+
 	<texn>BRIKWRT1</texn>
 	<texs>BRIKWRT1</texs>
 	<texe>BRIKWRT2</texe>
@@ -306,6 +342,8 @@
 </tile>
 
 <tile>
+	<name>Purple rock</name>
+	
 	<texn>PURPLE1</texn>
 	<texs>PURPLE1</texs>
 	<texe>PURPLE2</texe>
@@ -323,6 +361,8 @@
 </tile>
 
 <tile>
+	<name>Red brick w/ eagle</name>
+	
 	<texn>BRIKEGL1</texn>
 	<texs>BRIKEGL1</texs>
 	<texe>BRIKEGL2</texe>
@@ -340,6 +380,8 @@
 </tile>
 
 <tile>
+	<name>Elevator wall and switch</name>
+
 	<texn>ELEV1_1</texn>
 	<texs>ELEV1_1</texs>
 	<texe>ELEV1_2</texe>
@@ -357,6 +399,8 @@
 </tile>
 
 <tile>
+	<name>Elevator switch, flipped</name>
+	
 	<texn>ELEV2_1</texn>
 	<texs>ELEV2_1</texs>
 	<texe>ELEV2_2</texe>
@@ -374,6 +418,8 @@
 </tile>
 
 <tile>
+	<name>Wood w/ iron cross</name>
+	
 	<texn>WODCROS1</texn>
 	<texs>WODCROS1</texs>
 	<texe>WODCROS2</texe>
@@ -391,6 +437,8 @@
 </tile>
 
 <tile>
+	<name>Gray stone w/ slime</name>
+	
 	<texn>GSTSLME1</texn>
 	<texs>GSTSLME1</texs>
 	<texe>GSTSLME2</texe>
@@ -408,6 +456,8 @@
 </tile>
 
 <tile>
+	<name>Purple wall, bloody</name>
+	
 	<texn>PURPBLD1</texn>
 	<texs>PURPBLD1</texs>
 	<texe>PURPBLD2</texe>
@@ -425,6 +475,8 @@
 </tile>
 
 <tile>
+	<name>Gray stone w/ slime 2</name>
+
 	<texn>GSTLSLM1</texn>
 	<texs>GSTLSLM1</texs>
 	<texe>GSTLSLM2</texe>
@@ -442,6 +494,8 @@
 </tile>
 
 <tile>
+	<name>Gray stone 3</name>
+
 	<texn>GSTONEC1</texn>
 	<texs>GSTONEC1</texs>
 	<texe>GSTONEC2</texe>
@@ -459,6 +513,8 @@
 </tile>
 
 <tile>
+	<name>Gray stone w/ sign</name>
+
 	<texn>GSTSIGN1</texn>
 	<texs>GSTSIGN1</texs>
 	<texe>GSTSIGN2</texe>
@@ -476,6 +532,8 @@
 </tile>
 
 <tile>
+	<name>Tan rocks</name>
+
 	<texn>CHIP1</texn>
 	<texs>CHIP1</texs>
 	<texe>CHIP2</texe>
@@ -493,6 +551,8 @@
 </tile>
 
 <tile>
+	<name>Tan rocks, bloody</name>
+	
 	<texn>CHPBLDA1</texn>
 	<texs>CHPBLDA1</texs>
 	<texe>CHPBLDA2</texe>
@@ -510,6 +570,8 @@
 </tile>
 
 <tile>
+	<name>Tan rocks, bloody 2</name>
+
 	<texn>CHPBLDB1</texn>
 	<texs>CHPBLDB1</texs>
 	<texe>CHPBLDB2</texe>
@@ -527,6 +589,8 @@
 </tile>
 
 <tile>
+	<name>Tan rocks, bloody 3</name>
+	
 	<texn>CHPBLDC1</texn>
 	<texs>CHPBLDC1</texs>
 	<texe>CHPBLDC2</texe>
@@ -544,6 +608,8 @@
 </tile>
 
 <tile>
+	<name>Stained glass hitler portrait</name>
+	
 	<texn>GLASS1</texn>
 	<texs>GLASS1</texs>
 	<texe>GLASS2</texe>
@@ -561,6 +627,8 @@
 </tile>
 
 <tile>
+	<name>Blue wall w/ skull</name>
+	
 	<texn>BLUSKUL1</texn>
 	<texs>BLUSKUL1</texs>
 	<texe>BLUSKUL2</texe>
@@ -578,6 +646,8 @@
 </tile>
 
 <tile>
+	<name>Gray bricks</name>
+	
 	<texn>GRYBRIK1</texn>
 	<texs>GRYBRIK1</texs>
 	<texe>GRYBRIK2</texe>
@@ -595,6 +665,8 @@
 </tile>
 
 <tile>
+	<name>Blue wall w/ swastika</name>
+	
 	<texn>BLUSWAS1</texn>
 	<texs>BLUSWAS1</texs>
 	<texe>BLUSWAS2</texe>
@@ -612,6 +684,8 @@
 </tile>
 
 <tile>
+	<name>Gray brick w/ hole</name>
+	
 	<texn>GRYVENT1</texn>
 	<texs>GRYVENT1</texs>
 	<texe>GRYVENT2</texe>
@@ -629,6 +703,8 @@
 </tile>
 
 <tile>
+	<name>Red brick w/ variants</name>
+	
 	<texn>BRIKODD1</texn>
 	<texs>BRIKODD1</texs>
 	<texe>BRIKODD2</texe>
@@ -646,6 +722,8 @@
 </tile>
 
 <tile>
+	<name>Gray bricks, cracked</name>
+	
 	<texn>GRYCRAK1</texn>
 	<texs>GRYCRAK1</texs>
 	<texe>GRYCRAK2</texe>
@@ -663,6 +741,8 @@
 </tile>
 
 <tile>
+	<name>Blue wall</name>
+	
 	<texn>BLUWALL1</texn>
 	<texs>BLUWALL1</texs>
 	<texe>BLUWALL2</texe>
@@ -680,6 +760,7 @@
 </tile>
 
 <tile>
+	<name>Blue stone w/ sign</name>
 	<texn>BSTSIGN1</texn>
 	<texs>BSTSIGN1</texs>
 	<texe>BSTSIGN2</texe>
@@ -697,6 +778,7 @@
 </tile>
 
 <tile>
+	<name>Marble panels</name>
 	<texn>MARB1_1</texn>
 	<texs>MARB1_1</texs>
 	<texe>MARB1_2</texe>
@@ -714,6 +796,7 @@
 </tile>
 
 <tile>
+	<name>Gray bricks w/ map</name>
 	<texn>GRYMAPS1</texn>
 	<texs>GRYMAPS1</texs>
 	<texe>GRYMAPS2</texe>
@@ -731,6 +814,8 @@
 </tile>
 
 <tile>
+	<name>Brown panels</name>
+	
 	<texn>BRNSTNA1</texn>
 	<texs>BRNSTNA1</texs>
 	<texe>BRNSTNA2</texe>
@@ -748,6 +833,8 @@
 </tile>
 
 <tile>
+	<name>Brown panels 2</name>
+	
 	<texn>BRNSTNB1</texn>
 	<texs>BRNSTNB1</texs>
 	<texe>BRNSTNB2</texe>
@@ -765,6 +852,8 @@
 </tile>
 
 <tile>
+	<name>Marble panels 2</name>
+
 	<texn>MARB2_1</texn>
 	<texs>MARB2_1</texs>
 	<texe>MARB2_2</texe>
@@ -782,6 +871,8 @@
 </tile>
 
 <tile>
+	<name>Marble panels w/ flag</name>
+	
 	<texn>MARB3_1</texn>
 	<texs>MARB3_1</texs>
 	<texe>MARB3_2</texe>
@@ -799,6 +890,8 @@
 </tile>
 
 <tile>
+	<name>Plaster wall</name>
+
 	<texn>PLASTER1</texn>
 	<texs>PLASTER1</texs>
 	<texe>PLASTER2</texe>
@@ -816,6 +909,8 @@
 </tile>
 
 <tile>
+	<name>Gray bricks w/ portrait</name>
+	
 	<texn>GRYHTLR1</texn>
 	<texs>GRYHTLR1</texs>
 	<texe>GRYHTLR2</texe>
@@ -833,6 +928,8 @@
 </tile>
 
 <tile>
+	<name>Door east/west</name>
+	
 	<texn>SLOT1_1</texn>
 	<texs>SLOT1_1</texs>
 	<texe>DOOR1_2</texe>
@@ -850,6 +947,8 @@
 </tile>
 
 <tile>
+	<name>Door north/south</name>
+	
 	<texn>DOOR1_1</texn>
 	<texs>DOOR1_1</texs>
 	<texe>SLOT1_2</texe>

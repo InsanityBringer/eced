@@ -26,25 +26,25 @@ namespace eced
 {
     public class ThingManager
     {
-        public Dictionary<int, ThingDefinition> thinglist = new Dictionary<int, ThingDefinition>();
+        //public Dictionary<int, ThingDefinition> thinglist = new Dictionary<int, ThingDefinition>();
+        public List<ThingDefinition> thingList = new List<ThingDefinition>();
+        public Dictionary<int, int> idToThingListMapping = new Dictionary<int, int>();
         public List<int> idlist = new List<int>();
 
-        private string filename;
         private ThingDefinition unknownThing;
 
-        public ThingManager(String filename)
+        public ThingManager()
         {
-            this.filename = filename;
             this.unknownThing = new ThingDefinition();
             this.unknownThing.setData("16", "16", "UnknownThing", "Unknown", "-1");
         }
 
-        public ThingDefinition getUnknownThing()
+        public ThingDefinition GetUnknownThing()
         {
             return this.unknownThing;
         }
 
-        public void processData()
+        public void LoadThingDefintions(string filename)
         {
             //List<ThingListElement> list = new List<ThingListElement>();
 
@@ -77,12 +77,14 @@ namespace eced
                                     thing.setData(thingdata.Element("radius").Value, thingdata.Element("height").Value,
                                         thingdata.Element("name").Value, thingdata.Element("type").Value, thingdata.Element("id").Value);
 
-                                    thinglist.Add(id, thing);
+                                    //thinglist.Add(id, thing);
+                                    thingList.Add(thing);
+                                    idToThingListMapping.Add(id, thingList.Count - 1);
 
                                     //ThingListElement listelement;
                                     //listelement.thing = thing;
                                     //listelement.id = id;
-                                    idlist.Add(id);
+                                    //idlist.Add(id);
                                 }
                                 catch (Exception exc)
                                 {
@@ -102,7 +104,7 @@ namespace eced
             finally
             {
                 sr.Close();
-                Console.WriteLine("{0} thing types successfully registered", this.thinglist.Count);
+                Console.WriteLine("{0} thing types successfully registered", this.thingList.Count);
             }
 
             //return list;

@@ -66,7 +66,7 @@ namespace eced
                     lthing.flags = flags.getFlags();
                     lthing.angle = flags.angle;
 
-                    level.addThing(lthing);
+                    level.AddThing(lthing);
 
                     Console.WriteLine("adding thing at {0}, {1}", lthing.x, lthing.y);
                 }
@@ -88,7 +88,7 @@ namespace eced
                     {
                         Thing oldthing = level.highlighted;
                         level.highlighted = editor.thing;
-                        level.replaceThing(oldthing, editor.thing);
+                        level.ReplaceThing(oldthing, editor.thing);
                     }
                     editor.Dispose();
                 }

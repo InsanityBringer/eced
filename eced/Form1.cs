@@ -10,15 +10,12 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
+using eced.UIPanels;
+
 namespace eced
 {
     public partial class Form1 : Form
     {
-        public Form1()
-        {
-            InitializeComponent();
-        }
-
         private bool lockangle = false;
 
         private TileManager tilelist;
@@ -47,7 +44,6 @@ namespace eced
 
         private bool brushmode = false;
         private int heldMouseButton = 0;
-        private Bitmap tilelistimg;
         private bool locked = false;
 
         private int VAOid;
@@ -61,26 +57,73 @@ namespace eced
         //Empty when no current filename
         private string currentFilename = "";
 
+        private WallUIPanel gbTileSelection;
+        private ThingUIPanel gbThingSelect;
+        private ZoneUIPanel gbZoneList;
+        private TriggerUIPanel gbTriggerData;
+        private SectorUIPanel gbSectorPanel;
+        private TagUIPanel gbTag;
+
+        public Form1()
+        {
+            InitializeComponent();
+            this.SuspendLayout();
+            gbTileSelection = new WallUIPanel();
+            components.Add(gbTileSelection);
+            gbTileSelection.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom;
+            gbTileSelection.Location = SizeTemplatePanel.Location;
+            gbTileSelection.Size = SizeTemplatePanel.Size;
+            Controls.Add(gbTileSelection);
+
+            gbThingSelect = new ThingUIPanel();
+            components.Add(gbThingSelect);
+            gbThingSelect.Location = SizeTemplatePanel.Location;
+            gbThingSelect.Size = SizeTemplatePanel.Size;
+            gbThingSelect.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(gbThingSelect);
+
+            gbZoneList = new ZoneUIPanel();
+            components.Add(gbZoneList);
+            gbZoneList.Location = SizeTemplatePanel.Location;
+            gbZoneList.Size = SizeTemplatePanel.Size;
+            gbZoneList.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(gbZoneList);
+
+            gbTriggerData = new TriggerUIPanel();
+            components.Add(gbTriggerData);
+            gbTriggerData.Location = SizeTemplatePanel.Location;
+            gbTriggerData.Size = SizeTemplatePanel.Size;
+            gbTriggerData.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(gbTriggerData);
+
+            gbSectorPanel = new SectorUIPanel();
+            components.Add(gbSectorPanel);
+            gbSectorPanel.Location = SizeTemplatePanel.Location;
+            gbSectorPanel.Size = SizeTemplatePanel.Size;
+            gbSectorPanel.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(gbSectorPanel);
+
+            gbTag = new TagUIPanel();
+            components.Add(gbTag);
+            gbTag.Location = SizeTemplatePanel.Location;
+            gbTag.Size = SizeTemplatePanel.Size;
+            gbTag.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(gbTag);
+
+            this.ResumeLayout(false);
+            this.PerformLayout();
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             //statusBar1.Panels[1].Text =
-            updateZoom();
+            UpdateZoom();
             tilelist = new TileManager("./resources/wolftiles.xml");
-            tilelist.loadTileset();
-            thinglist = new ThingManager("./resources/wolfactors.xml");
-            thinglist.processData();
+            tilelist.LoadPalette();
+            thinglist = new ThingManager();
+            thinglist.LoadThingDefintions("./resources/wolfactors.xml");
 
-            for (int x = 0; x < thinglist.idlist.Count; x++)
-            {
-                ThingDefinition thing = thinglist.thinglist[thinglist.idlist[x]];
-                listBox1.Items.Add(thing.name);
-            }
-
-            /*Bitmap atlas = new Bitmap("./resources/sneswolftiles.PNG");
-            tilelistimg = tilelist.fillOutTiles(atlas);
-            atlas.Dispose();
-
-            pbTileList.Image = tilelistimg;*/
+            gbThingSelect.AddThings(thinglist.thingList);
 
             tbToolPanel.Buttons[5].Pushed = true;
             this.gbThingSelect.Visible = false;
@@ -90,7 +133,7 @@ namespace eced
             this.gbSectorPanel.Visible = false;
             this.gbTag.Visible = false;
 
-            this.thingBrush.thing = thinglist.thinglist[1];
+            this.thingBrush.thing = thinglist.thingList[0];
             this.thingBrush.thinglist = thinglist;
             VAOid = GL.GenVertexArray();
             GL.BindVertexArray(VAOid);
@@ -116,7 +159,7 @@ namespace eced
             renderer.setupLineRendering();
         }
 
-        private void doNewMapDialog()
+        private void DoNewMapDialog()
         {
             NewMapDialog nmd = new NewMapDialog();
             nmd.ShowDialog();
@@ -125,16 +168,16 @@ namespace eced
             {
                 if (this.currentLevel != null)
                 {
-                    closeLevel();
+                    CloseLevel();
                     tm.cleanup();
                 }
-                this.createNewLevel(nmd.getMapInfo());
+                this.CreateNewLevel(nmd.CurrentMap);
             }
 
             nmd.Dispose();
         }
 
-        private void loadResources(MapInformation mapinfo, Level level)
+        private void LoadResources(MapInformation mapinfo, Level level)
         {
             tm.allocateAtlasTexture();
             tm.readyAtlasCreation();
@@ -170,40 +213,33 @@ namespace eced
             this.currentMapinfo = mapinfo;
         }
 
-        private void createNewLevel(MapInformation mapinfo/*List<ResourceFiles.ResourceArchive> resources*/)
+        private void CreateNewLevel(MapInformation mapinfo)
         {
-            //TODO: Absolute path
-            //arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
             Level level = new Level(mapinfo.sizex, mapinfo.sizey, mapinfo.layers, tilelist.tileset[0]);
             level.localThingList = this.thinglist;
             this.selectedTile = tilelist.tileset[0];
 
-            loadResources(mapinfo, level);
+            LoadResources(mapinfo, level);
             
             currentLevel = level;
 
             renderer.setupLevelRendering(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
             renderer.setupThingUniforms(sm.programList["ThingRender"]);
 
-            this.updateZoneList();
+            this.UpdateCurrentZoneList();
+            gbTileSelection.SetPalette(tilelist.tileset);
         }
 
-        private void closeLevel()
+        private void CloseLevel()
         {
             //arc.closeResource();
-            currentLevel.disposeLevel();
+            currentLevel.DisposeLevel();
         }
 
-        private void updateZoneList()
+        private void UpdateCurrentZoneList()
         {
-            lbZoneList.Items.Clear();
-            lbZoneList.Items.Add("Automatic");
-            List<Zone> zonelist = currentLevel.getZones();
-
-            for (int x = 0; x < zonelist.Count; x++)
-            {
-                lbZoneList.Items.Add(String.Format("Zone {0}", x));
-            }
+            List<Zone> zonelist = currentLevel.GetZone();
+            gbZoneList.SetZones(zonelist);
         }
 
         private void menuItem5_Click(object sender, EventArgs e)
@@ -214,14 +250,14 @@ namespace eced
         /// Spawns the save file dialog to save the current map
         /// </summary>
         /// <param name="saveinto">Whether or not the map should be inserted into the wad, instead of destroying the wad beforehand</param>
-        private void doSaveDialog(bool saveinto)
+        private void DoSaveDialog(bool saveinto)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 if (saveFileDialog1.FileName != "")
                 {
                     string fixFilename = saveFileDialog1.FileName.Replace('/', '\\');
-                    saveMapToFile(fixFilename, saveinto);
+                    SaveMapToFile(fixFilename, saveinto);
                 }
             }
         }
@@ -231,16 +267,10 @@ namespace eced
         /// <param name="filename">Filename to save to</param>
         /// <param name="saveinto">Makes the save code put the WAD onto the resource stack before saving</param>
         /// </summary>
-        private void saveMapToFile(string filename, bool saveinto)
+        private void SaveMapToFile(string filename, bool saveinto)
         {
-            //TODO: Absolute path
-            //currentLevel.saveToUWMFFile("c:/dev/textmap.txt");
-            /*List<ResourceFiles.ResourceFile> boguslumps = new List<ResourceFiles.ResourceFile>();
-            byte[] bogusdata = new byte[4];
-            ((ResourceFiles.WADResourceFile)currentLevel.loadedResources[0]).updateToNewWad("c:/dev/flargh.wad", ref boguslumps, ref bogusdata);*/
             //TODO: Temp
-
-            bool destArchiveLoaded = this.currentMapinfo.containsResource(filename);
+            bool destArchiveLoaded = this.currentMapinfo.ContainsResource(filename);
 
             //init it off the bat because Visual Studio is being lovely about detecting whether or not it was loaded
             ResourceFiles.WADResourceFile savearchive = new ResourceFiles.WADResourceFile();
@@ -295,7 +325,7 @@ namespace eced
                 savearchive.deleteMap(currentMapinfo.lumpname);
             }
 
-            string mapstring = currentLevel.writeUWMF();
+            string mapstring = currentLevel.Serialize();
 
             //Console.WriteLine(mapstring);
 
@@ -327,9 +357,9 @@ namespace eced
             }
 
             //trash all the old resources to be sure we're up to date
-            currentLevel.disposeLevel();
+            currentLevel.DisposeLevel();
             tm.cleanup();
-            loadResources(currentMapinfo, currentLevel);
+            LoadResources(currentMapinfo, currentLevel);
         }
 
         private void toolBar1_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
@@ -388,11 +418,11 @@ namespace eced
                 {
                     if (this.currentFilename != "")
                     {
-                        saveMapToFile(this.currentFilename, true);
+                        SaveMapToFile(this.currentFilename, true);
                     }
                     else
                     {
-                        doSaveDialog(true);
+                        DoSaveDialog(true);
                     }
                 }
 
@@ -449,7 +479,7 @@ namespace eced
                 }
                 if (ltag == 20)
                 {
-                    doNewMapDialog();
+                    DoNewMapDialog();
                 }
             }
         }
@@ -486,14 +516,14 @@ namespace eced
                 }
 
                 GL.UseProgram(sm.programList["ThingRender"]);
-                List<Thing> thinglist = currentLevel.getThings();
+                List<Thing> thinglist = currentLevel.GetThings();
                 for (int i = 0; i < thinglist.Count; i++)
                 {
                     Thing thing = thinglist[i];
 
                     renderer.drawThing(thing, currentLevel, sm.programList["ThingRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
                 }
-                List<OpenTK.Vector2> triggerList = currentLevel.getTriggerLocations();
+                List<OpenTK.Vector2> triggerList = currentLevel.GetTriggerLocations();
 
                 for (int i = 0; i < triggerList.Count; i++)
                 {
@@ -562,7 +592,7 @@ namespace eced
             {
                 if (this.currentLevel.highlighted != null)
                 {
-                    this.currentLevel.deleteThing(this.currentLevel.highlighted);
+                    this.currentLevel.DeleteThing(this.currentLevel.highlighted);
                     this.currentLevel.highlighted = null;
                     mainLevelPanel.Invalidate();
                 }
@@ -581,7 +611,7 @@ namespace eced
         protected override bool ProcessDialogKey(Keys keyData) { return false; }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) { return false; }
 
-        private void updateZoom()
+        private void UpdateZoom()
         {
             statusBar1.Panels[1].Text = String.Format("Zoom: {0:P}", zoom);
             renderer.zoom = zoom;
@@ -593,7 +623,7 @@ namespace eced
         {
             //zoom += .25f;
             zoom *= 2.0f;
-            updateZoom();
+            UpdateZoom();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -602,10 +632,10 @@ namespace eced
             zoom *= 0.5f;
             if (zoom < .25f)
                 zoom = .25f;
-            updateZoom();
+            UpdateZoom();
         }
 
-        private void setMouseButton(System.Windows.Forms.MouseEventArgs e)
+        private void SetMouseButton(System.Windows.Forms.MouseEventArgs e)
         {
             switch (e.Button)
             {
@@ -621,7 +651,7 @@ namespace eced
             }
         }
 
-        public Vector2 pick(Vector2 mouseCoords)
+        public Vector2 Pick(Vector2 mouseCoords)
         {
             float sizex = currentLevel.width / 2f;
             float sizey = currentLevel.height / 2f;
@@ -642,8 +672,8 @@ namespace eced
             
             defaultBrush.normalTile = selectedTile;
 
-            setMouseButton(e);
-            defaultBrush.ApplyToTile(pick(new Vector2(e.X, e.Y)), 0, this.currentLevel, this.heldMouseButton);
+            SetMouseButton(e);
+            defaultBrush.ApplyToTile(Pick(new Vector2(e.X, e.Y)), 0, this.currentLevel, this.heldMouseButton);
             if (defaultBrush.repeatable)
             {
                 brushmode = true;
@@ -656,16 +686,16 @@ namespace eced
             if (currentLevel == null)
                 return;
 
-            Vector2 tile = pick(new Vector2(e.X, e.Y));
+            Vector2 tile = Pick(new Vector2(e.X, e.Y));
 
             //Console.WriteLine("{0} {1}, center {2} {3}", tile.X, tile.Y, pan.X, pan.Y);
 
-            currentLevel.updateHighlight((int)((tile.X + .5) * 64), (int)((tile.Y + .5) * 64));
+            currentLevel.UpdateHighlight((int)((tile.X + .5) * 64), (int)((tile.Y + .5) * 64));
 
             if (brushmode && defaultBrush.repeatable)
             {
                 //defaultBrush.ApplyToTile(pick(new Vector2(e.X, e.Y)), 0, this.currentLevel, this.heldMouseButton);
-                Vector2 src = pick(lastMousePos);
+                Vector2 src = Pick(lastMousePos);
                 LineDrawer.applyBrushOverLine(src, tile, ref this.currentLevel, heldMouseButton, this.defaultBrush);
             }
 
@@ -680,8 +710,8 @@ namespace eced
 
             if (tile.X >= 0 && tile.Y >= 0 && tile.X < currentLevel.width && tile.Y < currentLevel.height)
             {
-                Cell cell = currentLevel.getCell((int)tile.X, (int)tile.Y, 0);
-                statusBarPanel1.Text = String.Format("tileid: {0}, zonenum: {1}, tag: {2}", currentLevel.getTileId(cell.tile), currentLevel.getZoneId(cell), cell.tag);
+                Cell cell = currentLevel.GetCell((int)tile.X, (int)tile.Y, 0);
+                statusBarPanel1.Text = String.Format("tileid: {0}, zonenum: {1}, tag: {2}", currentLevel.GetTileID(cell.tile), currentLevel.GetZoneID(cell), cell.tag);
             }
             else
             {
@@ -698,7 +728,7 @@ namespace eced
 
             brushmode = false;
             defaultBrush.EndBrush(currentLevel);
-            this.updateZoneList();
+            this.UpdateCurrentZoneList();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -706,47 +736,14 @@ namespace eced
 
         }
 
-        //old swatches system
-        /*private void pbTileList_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            int tx = e.X / 16;
-            int ty = e.Y / 16;
-
-            //Console.WriteLine("hit {0}, {1}", tx, ty);
-
-            int tile = tx + (ty * 8);
-
-            if (tile < tilelist.tileset.Count)
-            {
-                locked = true;
-                Tile newTile = tilelist.tileset[tile];
-                cbTileNorth.Checked = newTile.blockn;
-                cbTileSouth.Checked = newTile.blocks;
-                cbTileEast.Checked = newTile.blocke;
-                cbTileWest.Checked = newTile.blockw;
-
-                tbNorthTex.Text = newTile.texn;
-                tbSouthTex.Text = newTile.texs;
-                tbEastTex.Text = newTile.texe;
-                tbWestTex.Text = newTile.texw;
-
-                cbCenterHoriz.Checked = newTile.offh;
-                cbCenterVert.Checked = newTile.offv;
-
-                selectedTile = tilelist.tileset[tile];
-                locked = false;
-            }
-                //selectedTile = tilelist.tileset[tile];
-        }*/
-
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            thingBrush.thing = thinglist.thinglist[thinglist.idlist[listBox1.SelectedIndex]];
+            //thingBrush.thing = thinglist.thinglist[thinglist.idlist[listBox1.SelectedIndex]];
         }
 
-        private void triggerFlagChange(object sender, EventArgs e)
+        private void TriggerFlagChange(object sender, EventArgs e)
         {
-            triggerBrush.trigger.acte = cbTrigEast.Checked;
+            /*triggerBrush.trigger.acte = cbTrigEast.Checked;
             //triggerBrush.trigger.action = cbTriggerType.SelectedIndex;
             triggerBrush.trigger.actn = cbTrigNorth.Checked;
             triggerBrush.trigger.acts = cbTrigSouth.Checked;
@@ -755,36 +752,36 @@ namespace eced
             triggerBrush.trigger.repeat = cbRepeat.Checked;
             triggerBrush.trigger.secret = cbSecret.Checked;
             triggerBrush.trigger.usemonster = cbUseMonst.Checked;
-            triggerBrush.trigger.useplayer = cbUse.Checked;
+            triggerBrush.trigger.useplayer = cbUse.Checked;*/
         }
 
         private void triggerParamChange(object sender, EventArgs e)
         {
-            triggerBrush.trigger.arg0 = (int)ndParam1.Value;
+            /*triggerBrush.trigger.arg0 = (int)ndParam1.Value;
             triggerBrush.trigger.arg1 = (int)ndParam2.Value;
             triggerBrush.trigger.arg2 = (int)ndParam3.Value;
             triggerBrush.trigger.arg3 = (int)ndParam4.Value;
-            triggerBrush.trigger.arg4 = (int)ndParam5.Value;
+            triggerBrush.trigger.arg4 = (int)ndParam5.Value;*/
         }
 
         private void cbTriggerType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            triggerBrush.trigger.action = cbTriggerType.SelectedIndex+1;
+            //triggerBrush.trigger.action = cbTriggerType.SelectedIndex+1;
         }
 
         private void thingBitChange(object sender, EventArgs e)
         {
-            thingBrush.flags.ambush = this.cbThingAmbush.Checked;
+            /*thingBrush.flags.ambush = this.cbThingAmbush.Checked;
             thingBrush.flags.patrol = this.cbThingPatrol.Checked;
             thingBrush.flags.skill1 = this.cbThingSkill1.Checked;
             thingBrush.flags.skill2 = this.cbThingSkill2.Checked;
             thingBrush.flags.skill3 = this.cbThingSkill3.Checked;
-            thingBrush.flags.skill4 = this.cbThingSkill4.Checked;
+            thingBrush.flags.skill4 = this.cbThingSkill4.Checked;*/
         }
 
         private void ndThingAngle_ValueChanged(object sender, EventArgs e)
         {
-            if (this.ndThingAngle.Value == 360)
+            /*if (this.ndThingAngle.Value == 360)
                 this.ndThingAngle.Value = 0;
 
             thingBrush.flags.angle = (int)this.ndThingAngle.Value;
@@ -823,13 +820,13 @@ namespace eced
                 this.rbThingSE.Checked = true;
             else this.rbThingSE.Checked = false;
             
-            lockangle = false;
+            lockangle = false;*/
         }
 
         private void rbThingEast_CheckedChanged(object sender, EventArgs e)
         {
             if (lockangle) return;
-            if (rbThingEast.Checked)
+            /*if (rbThingEast.Checked)
                 this.ndThingAngle.Value = 0;
             if (rbThingNorth.Checked)
                 this.ndThingAngle.Value = 90;
@@ -845,47 +842,47 @@ namespace eced
             if (rbThingSW.Checked)
                 this.ndThingAngle.Value = 225;
             if (rbThingSE.Checked)
-                this.ndThingAngle.Value = 315;
+                this.ndThingAngle.Value = 315;*/
         }
 
         private void lbZoneList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.zoneBrush.setCode = lbZoneList.SelectedIndex - 1;
+            //this.zoneBrush.setCode = lbZoneList.SelectedIndex - 1;
         }
 
         private void createTile_Events(object sender, EventArgs e)
         {
             if (locked) return;
-            Tile newTile = new Tile(0);
+            /*Tile newTile = new Tile();
 
-            newTile.texn = tbNorthTex.Text;
-            newTile.texs = tbSouthTex.Text;
-            newTile.texe = tbEastTex.Text;
-            newTile.texw = tbWestTex.Text;
+            newTile.NorthTex = tbNorthTex.Text;
+            newTile.SouthTex = tbSouthTex.Text;
+            newTile.EastTex = tbEastTex.Text;
+            newTile.WestTex = tbWestTex.Text;
 
-            newTile.blockn = cbTileNorth.Checked;
-            newTile.blocks = cbTileSouth.Checked;
-            newTile.blocke = cbTileEast.Checked;
-            newTile.blockw = cbTileWest.Checked;
+            newTile.NorthBlock = cbTileNorth.Checked;
+            newTile.SouthBlock = cbTileSouth.Checked;
+            newTile.EastBlock = cbTileEast.Checked;
+            newTile.WestBlock = cbTileWest.Checked;
 
-            newTile.offh = cbCenterHoriz.Checked;
-            newTile.offv = cbCenterVert.Checked;
+            newTile.HorizOffset = cbCenterHoriz.Checked;
+            newTile.VerticalOffset = cbCenterVert.Checked;
 
-            this.selectedTile = newTile;
+            this.selectedTile = newTile;*/
         }
 
         private void tbFloorTex_TextChanged(object sender, EventArgs e)
         {
             Sector newSector = new Sector();
-            newSector.texceil = tbCeilingTex.Text;
-            newSector.texfloor = tbFloorTex.Text;
+            //newSector.texceil = tbCeilingTex.Text;
+            //newSector.texfloor = tbFloorTex.Text;
 
             this.sectorBrush.currentSector = newSector;
         }
 
         private void nudNewTag_ValueChanged(object sender, EventArgs e)
         {
-            this.tagBrush.tag = (int)nudNewTag.Value;
+            //this.tagBrush.tag = (int)nudNewTag.Value;
         }
 
         private void menuItem6_Click(object sender, EventArgs e)
@@ -893,25 +890,25 @@ namespace eced
             //update current wad if you just click save
             if (this.currentFilename != "")
             {
-                saveMapToFile(this.currentFilename, true);
+                SaveMapToFile(this.currentFilename, true);
             }
         }
 
         private void menuItem7_Click(object sender, EventArgs e)
         {
             //save as, delete all contents of the destination WAD
-            doSaveDialog(false);
+            DoSaveDialog(false);
         }
 
         private void menuItem14_Click(object sender, EventArgs e)
         {
             //save as, preserve all contents of the destination WAD
-            doSaveDialog(true);
+            DoSaveDialog(true);
         }
 
         private void menuItem3_Click(object sender, EventArgs e)
         {
-            this.doNewMapDialog();
+            this.DoNewMapDialog();
         }
     }
 }

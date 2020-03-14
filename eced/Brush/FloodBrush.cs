@@ -19,41 +19,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CodeImp.DoomBuilder.IO;
 
 namespace eced
 {
-    public class Plane
+    public class FloodBrush : Brush
     {
-        int height = 64;
-
-        public Cell[,] cells;
-        public List<OpenTK.Vector2> cellsWithTriggers = new List<OpenTK.Vector2>();
-
-        int w = 64, h = 64;
-        
-        public Plane(int w, int h)
+        private Level level;
+        private int code = 0;
+        public int setCode = -1;
+        public FloodBrush()
+            : base()
         {
-            this.w = w;
-            this.h = h;
-
-            cells = new Cell[w, h];
+            this.repeatable = false;
         }
 
-        public String Serialize()
+        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {
-            String str = "plane\n{\n";
-            str += "\theight = " + height.ToString() + ";\n";
-            str += "}";
+            int tx = (int)pos.X;
+            int ty = (int)pos.Y;
 
-            return str;
+            this.level = level;
+            if (setCode < 0)
+                code = level.GetUniqueCode();
+            else code = setCode;
+
+            flood(tx, ty);
+
+            this.level = null; //no need to let that linger
         }
 
-        public static Plane Reconstruct(Level level, UniversalCollection data)
+        private void flood(int x, int y)
         {
-            Plane plane = new Plane(level.width, level.depth);
-            plane.height = UWMFSearch.getIntTag(data, "height", 64);
-            return plane;
+            if (level.GetTile(x, y, 0) != null)
+                return;
+
+            if (level.CompareZoneID(x, y, 0, code))
+                return;
+
+            level.AssignFloorCode(x, y, 0, code);
+
+            flood(x - 1, y);
+            flood(x + 1, y);
+            flood(x, y - 1);
+            flood(x, y + 1);
         }
     }
 }

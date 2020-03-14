@@ -29,7 +29,7 @@ namespace eced
 
         public int id;
 
-        public String getUWMFString()
+        public String Serialize()
         {
             String output = "sector\n{\n";
             output += "\ttexturefloor = \"" + texfloor + "\";\n";
@@ -39,7 +39,7 @@ namespace eced
             return output;
         }
 
-        public static Sector Reconstruct(UniversalCollection data)
+        public static Sector Deserialize(UniversalCollection data)
         {
             Sector newSector = new Sector();
 

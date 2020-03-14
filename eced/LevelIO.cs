@@ -38,12 +38,12 @@ namespace eced
                 {
                     case "tile":
                         Console.WriteLine("processing tile");
-                        Tile tile = Tile.Reconstruct((UniversalCollection)entry.Value);
-                        level.addTile(tile);
+                        Tile tile = Tile.Deserialize((UniversalCollection)entry.Value);
+                        level.AddTile(tile);
                         break;
                     case "sector":
                         Console.WriteLine("processing sector");
-                        Sector sector = Sector.Reconstruct((UniversalCollection)entry.Value);
+                        Sector sector = Sector.Deserialize((UniversalCollection)entry.Value);
                         //no sector management, heh
                         break;
                     case "plane":
@@ -53,26 +53,26 @@ namespace eced
                         break;
                     case "zone":
                         Console.WriteLine("processing zone");
-                        level.addZone(new Zone());
+                        level.AddZone(new Zone());
                         break;
                     case "thing":
                         Console.WriteLine("processing thing");
                         Thing thing = Thing.Reconstruct((UniversalCollection)entry.Value);
-                        level.addThing(thing);
+                        level.AddThing(thing);
                         break;
                     case "trigger":
                         Console.WriteLine("processing trigger");
                         Trigger trigger = Trigger.Reconstruct((UniversalCollection)entry.Value);
-                        level.addTrigger(trigger.x, trigger.y, trigger.z, trigger);
+                        level.AddTrigger(trigger.x, trigger.y, trigger.z, trigger);
                         break;
                     case "planemap": //special handling ahoy
                         Console.WriteLine("processing planemap");
-                        level.setTempPlaneMap((List<NumberCell>)UWMFSearch.findElement("planedata", (UniversalCollection)entry.Value).Value);
+                        level.SetTempPlaneMap((List<NumberCell>)UWMFSearch.findElement("planedata", (UniversalCollection)entry.Value).Value);
                         break;
                 }
             }
 
-            level.processPlanemap();
+            level.ProcessPlanemap();
 
             return level;
         }

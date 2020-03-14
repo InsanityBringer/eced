@@ -92,7 +92,7 @@
       <DependentUpon>AddResourceDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="BinaryHelper.cs" />
-    <Compile Include="Brush.cs" />
+    <Compile Include="Brush\Brush.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\ClippedStream.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\DirectoryFileEntry.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalParser.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\WAD.cs" />
     <Compile Include="LevelIO.cs" />
-    <Compile Include="LineDrawer.cs" />
+    <Compile Include="Renderer\LineDrawer.cs" />
     <Compile Include="NewMapDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,24 +117,24 @@
     <Compile Include="ResourceFiles\ResourceFile.cs" />
     <Compile Include="ResourceFiles\WADResourceFile.cs" />
     <Compile Include="ResourceFiles\ZIPResourceFile.cs" />
-    <Compile Include="SectorBrush.cs" />
-    <Compile Include="ShaderManager.cs" />
-    <Compile Include="TagTool.cs" />
+    <Compile Include="Brush\SectorBrush.cs" />
+    <Compile Include="Renderer\ShaderManager.cs" />
+    <Compile Include="Brush\TagTool.cs" />
     <Compile Include="ThingEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ThingEditor.Designer.cs">
       <DependentUpon>ThingEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="TriggerBrush.cs" />
-    <Compile Include="FloodBrush.cs" />
+    <Compile Include="Brush\TriggerBrush.cs" />
+    <Compile Include="Brush\FloodBrush.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GraphicsManager.cs" />
+    <Compile Include="Renderer\GraphicsManager.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Plane.cs" />
     <Compile Include="Program.cs" />
@@ -165,6 +165,24 @@
     <EmbeddedResource Include="TriggerEditor.resx">
       <DependentUpon>TriggerEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UIPanels\SectorUIPanel.resx">
+      <DependentUpon>SectorUIPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIPanels\TagUIPanel.resx">
+      <DependentUpon>TagUIPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIPanels\ThingUIPanel.resx">
+      <DependentUpon>ThingUIPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIPanels\TriggerUIPanel.resx">
+      <DependentUpon>TriggerUIPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIPanels\WallUIPanel.resx">
+      <DependentUpon>WallUIPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIPanels\ZoneUIPanel.resx">
+      <DependentUpon>ZoneUIPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
@@ -178,13 +196,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Sector.cs" />
-    <Compile Include="TextureManager.cs" />
+    <Compile Include="Renderer\TextureManager.cs" />
     <Compile Include="Thing.cs" />
     <Compile Include="ThingBrush.cs" />
     <Compile Include="ThingDefinition.cs" />
     <Compile Include="ThingManager.cs" />
     <Compile Include="Tile.cs" />
-    <Compile Include="TileBrush.cs" />
+    <Compile Include="Brush\TileBrush.cs" />
     <Compile Include="TileManager.cs" />
     <Compile Include="Trigger.cs" />
     <Compile Include="TriggerEditor.cs">
@@ -194,6 +212,42 @@
       <DependentUpon>TriggerEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="TriggerTypeList.cs" />
+    <Compile Include="UIPanels\SectorUIPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIPanels\SectorUIPanel.Designer.cs">
+      <DependentUpon>SectorUIPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIPanels\TagUIPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIPanels\TagUIPanel.Designer.cs">
+      <DependentUpon>TagUIPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIPanels\ThingUIPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIPanels\ThingUIPanel.Designer.cs">
+      <DependentUpon>ThingUIPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIPanels\TriggerUIPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIPanels\TriggerUIPanel.Designer.cs">
+      <DependentUpon>TriggerUIPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIPanels\WallUIPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIPanels\WallUIPanel.Designer.cs">
+      <DependentUpon>WallUIPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIPanels\ZoneUIPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIPanels\ZoneUIPanel.Designer.cs">
+      <DependentUpon>ZoneUIPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="UWMFSearch.cs" />
     <Compile Include="Zone.cs" />
   </ItemGroup>
@@ -280,6 +334,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

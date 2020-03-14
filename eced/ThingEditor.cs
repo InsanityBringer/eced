@@ -33,7 +33,7 @@ namespace eced
 
             for (int x = 0; x < thinglist.idlist.Count; x++)
             {
-                ThingDefinition lthing = thinglist.thinglist[thinglist.idlist[x]];
+                ThingDefinition lthing = thinglist.thingList[x];
                 listBox1.Items.Add(lthing.name);
             }
 

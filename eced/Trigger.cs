@@ -49,7 +49,7 @@ namespace eced
             this.secret = clone.secret;
         }
 
-        public string getUWMFString()
+        public string Serialize()
         {
             StringBuilder stringmaker = new StringBuilder();
             stringmaker.Append("trigger\n{\n");
