@@ -20,29 +20,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace eced
+namespace eced.Brushes
 {
-    public class Brush
+    public class EditorBrush
     {
         public bool repeatable = true;
         public Tile normalTile = TileManager.tile1;
-        public Brush()
+        public EditorBrush()
         {
         }
 
         public virtual void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {
-            int tx = (int)pos.X;
-            int ty = (int)pos.Y;
-            level.SetTile(tx, ty, z, null);
-            if (level.GetTile(tx - 1, ty, z) != null)
-                level.SetTile(tx - 1, ty, z, normalTile);
-            if (level.GetTile(tx + 1, ty, z) != null)
-                level.SetTile(tx + 1, ty, z, normalTile);
-            if (level.GetTile(tx, ty + 1, z) != null)
-                level.SetTile(tx, ty + 1, z, normalTile);
-            if (level.GetTile(tx, ty - 1, z) != null)
-                level.SetTile(tx, ty - 1, z, normalTile);
         }
 
         /*public virtual void ApplyToTile(int x, int y, int z, int tilsize, Level level, int button)

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace eced
+namespace eced.Brushes
 {
-    public class TagTool : Brush
+    public class TagTool : EditorBrush
     {
         public int tag;
 

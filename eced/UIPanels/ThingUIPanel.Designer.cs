@@ -43,11 +43,11 @@
             this.cbThingPatrol = new System.Windows.Forms.CheckBox();
             this.cbThingAmbush = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.ndThingAngle = new System.Windows.Forms.NumericUpDown();
+            this.ThingAngleSpinner = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.ndThingAngle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ThingAngleSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // rbThingNW
@@ -58,8 +58,10 @@
             this.rbThingNW.Size = new System.Drawing.Size(50, 17);
             this.rbThingNW.TabIndex = 28;
             this.rbThingNW.TabStop = true;
+            this.rbThingNW.Tag = "135";
             this.rbThingNW.Text = "N.W.";
             this.rbThingNW.UseVisualStyleBackColor = true;
+            this.rbThingNW.CheckedChanged += new System.EventHandler(this.AngleRadioBox_CheckedChanged);
             // 
             // rbThingNE
             // 
@@ -69,8 +71,10 @@
             this.rbThingNE.Size = new System.Drawing.Size(49, 17);
             this.rbThingNE.TabIndex = 27;
             this.rbThingNE.TabStop = true;
+            this.rbThingNE.Tag = "45";
             this.rbThingNE.Text = "N. E.";
             this.rbThingNE.UseVisualStyleBackColor = true;
+            this.rbThingNE.CheckedChanged += new System.EventHandler(this.AngleRadioBox_CheckedChanged);
             // 
             // rbThingSW
             // 
@@ -80,8 +84,10 @@
             this.rbThingSW.Size = new System.Drawing.Size(49, 17);
             this.rbThingSW.TabIndex = 26;
             this.rbThingSW.TabStop = true;
+            this.rbThingSW.Tag = "225";
             this.rbThingSW.Text = "S.W.";
             this.rbThingSW.UseVisualStyleBackColor = true;
+            this.rbThingSW.CheckedChanged += new System.EventHandler(this.AngleRadioBox_CheckedChanged);
             // 
             // rbThingSE
             // 
@@ -91,8 +97,10 @@
             this.rbThingSE.Size = new System.Drawing.Size(48, 17);
             this.rbThingSE.TabIndex = 25;
             this.rbThingSE.TabStop = true;
+            this.rbThingSE.Tag = "315";
             this.rbThingSE.Text = "S. E.";
             this.rbThingSE.UseVisualStyleBackColor = true;
+            this.rbThingSE.CheckedChanged += new System.EventHandler(this.AngleRadioBox_CheckedChanged);
             // 
             // rbThingSouth
             // 
@@ -102,8 +110,10 @@
             this.rbThingSouth.Size = new System.Drawing.Size(53, 17);
             this.rbThingSouth.TabIndex = 24;
             this.rbThingSouth.TabStop = true;
+            this.rbThingSouth.Tag = "270";
             this.rbThingSouth.Text = "South";
             this.rbThingSouth.UseVisualStyleBackColor = true;
+            this.rbThingSouth.CheckedChanged += new System.EventHandler(this.AngleRadioBox_CheckedChanged);
             // 
             // rbThingNorth
             // 
@@ -113,8 +123,10 @@
             this.rbThingNorth.Size = new System.Drawing.Size(51, 17);
             this.rbThingNorth.TabIndex = 23;
             this.rbThingNorth.TabStop = true;
+            this.rbThingNorth.Tag = "90";
             this.rbThingNorth.Text = "North";
             this.rbThingNorth.UseVisualStyleBackColor = true;
+            this.rbThingNorth.CheckedChanged += new System.EventHandler(this.AngleRadioBox_CheckedChanged);
             // 
             // rbThingWest
             // 
@@ -124,8 +136,10 @@
             this.rbThingWest.Size = new System.Drawing.Size(50, 17);
             this.rbThingWest.TabIndex = 22;
             this.rbThingWest.TabStop = true;
+            this.rbThingWest.Tag = "180";
             this.rbThingWest.Text = "West";
             this.rbThingWest.UseVisualStyleBackColor = true;
+            this.rbThingWest.CheckedChanged += new System.EventHandler(this.AngleRadioBox_CheckedChanged);
             // 
             // rbThingEast
             // 
@@ -135,8 +149,10 @@
             this.rbThingEast.Size = new System.Drawing.Size(46, 17);
             this.rbThingEast.TabIndex = 16;
             this.rbThingEast.TabStop = true;
+            this.rbThingEast.Tag = "0";
             this.rbThingEast.Text = "East";
             this.rbThingEast.UseVisualStyleBackColor = true;
+            this.rbThingEast.CheckedChanged += new System.EventHandler(this.AngleRadioBox_CheckedChanged);
             // 
             // cbThingSkill4
             // 
@@ -147,6 +163,7 @@
             this.cbThingSkill4.Name = "cbThingSkill4";
             this.cbThingSkill4.Size = new System.Drawing.Size(54, 17);
             this.cbThingSkill4.TabIndex = 21;
+            this.cbThingSkill4.Tag = "skill4";
             this.cbThingSkill4.Text = "Skill 4";
             this.cbThingSkill4.UseVisualStyleBackColor = true;
             // 
@@ -159,6 +176,7 @@
             this.cbThingSkill3.Name = "cbThingSkill3";
             this.cbThingSkill3.Size = new System.Drawing.Size(54, 17);
             this.cbThingSkill3.TabIndex = 20;
+            this.cbThingSkill3.Tag = "skill3";
             this.cbThingSkill3.Text = "Skill 3";
             this.cbThingSkill3.UseVisualStyleBackColor = true;
             // 
@@ -171,6 +189,7 @@
             this.cbThingSkill2.Name = "cbThingSkill2";
             this.cbThingSkill2.Size = new System.Drawing.Size(54, 17);
             this.cbThingSkill2.TabIndex = 19;
+            this.cbThingSkill2.Tag = "skill2";
             this.cbThingSkill2.Text = "Skill 2";
             this.cbThingSkill2.UseVisualStyleBackColor = true;
             // 
@@ -183,6 +202,7 @@
             this.cbThingSkill1.Name = "cbThingSkill1";
             this.cbThingSkill1.Size = new System.Drawing.Size(54, 17);
             this.cbThingSkill1.TabIndex = 18;
+            this.cbThingSkill1.Tag = "skill1";
             this.cbThingSkill1.Text = "Skill 1";
             this.cbThingSkill1.UseVisualStyleBackColor = true;
             // 
@@ -193,6 +213,7 @@
             this.cbThingPatrol.Name = "cbThingPatrol";
             this.cbThingPatrol.Size = new System.Drawing.Size(53, 17);
             this.cbThingPatrol.TabIndex = 17;
+            this.cbThingPatrol.Tag = "patrol";
             this.cbThingPatrol.Text = "Patrol";
             this.cbThingPatrol.UseVisualStyleBackColor = true;
             // 
@@ -203,6 +224,7 @@
             this.cbThingAmbush.Name = "cbThingAmbush";
             this.cbThingAmbush.Size = new System.Drawing.Size(64, 17);
             this.cbThingAmbush.TabIndex = 16;
+            this.cbThingAmbush.Tag = "ambush";
             this.cbThingAmbush.Text = "Ambush";
             this.cbThingAmbush.UseVisualStyleBackColor = true;
             // 
@@ -215,17 +237,18 @@
             this.label10.TabIndex = 16;
             this.label10.Text = "Bits:";
             // 
-            // ndThingAngle
+            // ThingAngleSpinner
             // 
-            this.ndThingAngle.Location = new System.Drawing.Point(62, 79);
-            this.ndThingAngle.Maximum = new decimal(new int[] {
+            this.ThingAngleSpinner.Location = new System.Drawing.Point(62, 79);
+            this.ThingAngleSpinner.Maximum = new decimal(new int[] {
             360,
             0,
             0,
             0});
-            this.ndThingAngle.Name = "ndThingAngle";
-            this.ndThingAngle.Size = new System.Drawing.Size(39, 20);
-            this.ndThingAngle.TabIndex = 16;
+            this.ThingAngleSpinner.Name = "ThingAngleSpinner";
+            this.ThingAngleSpinner.Size = new System.Drawing.Size(39, 20);
+            this.ThingAngleSpinner.TabIndex = 16;
+            this.ThingAngleSpinner.ValueChanged += new System.EventHandler(this.ThingAngleSpinner_ValueChanged);
             // 
             // label9
             // 
@@ -245,6 +268,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(159, 21);
             this.comboBox1.TabIndex = 29;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -267,7 +291,7 @@
             this.Controls.Add(this.rbThingSW);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.rbThingSE);
-            this.Controls.Add(this.ndThingAngle);
+            this.Controls.Add(this.ThingAngleSpinner);
             this.Controls.Add(this.rbThingSouth);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.rbThingNorth);
@@ -280,7 +304,7 @@
             this.Controls.Add(this.cbThingSkill3);
             this.Name = "ThingUIPanel";
             this.Size = new System.Drawing.Size(168, 275);
-            ((System.ComponentModel.ISupportInitialize)(this.ndThingAngle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ThingAngleSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -303,7 +327,7 @@
         private System.Windows.Forms.CheckBox cbThingPatrol;
         private System.Windows.Forms.CheckBox cbThingAmbush;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.NumericUpDown ndThingAngle;
+        private System.Windows.Forms.NumericUpDown ThingAngleSpinner;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;

@@ -20,9 +20,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace eced
+namespace eced.Brushes
 {
-    public class FloodBrush : Brush
+    public class FloodBrush : EditorBrush
     {
         private Level level;
         private int code = 0;

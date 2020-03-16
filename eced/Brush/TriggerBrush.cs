@@ -20,9 +20,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace eced
+namespace eced.Brushes
 {
-    public class TriggerBrush : Brush
+    public class TriggerBrush : EditorBrush
     {
         public Trigger trigger = new Trigger();
         public TriggerBrush()

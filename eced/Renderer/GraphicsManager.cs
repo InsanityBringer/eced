@@ -71,22 +71,25 @@ namespace eced
         BasicRenderUniforms uniformsBasicRender = new BasicRenderUniforms();
         BasicThingUniforms uniformsThingRender = new BasicThingUniforms();
 
+        public TextureManager Textures { get; } = new TextureManager();
+        public EditorState CurrentState { get; private set; }
+
         public float zoom = 2.0f;
 
         float[] levelVBO = {   0.0f, 0.0f, 0.0f, 1.0f,
-                          1.0f, 0.0f, 0.0f, 1.0f, 
-                          1.0f, 1.0f, 0.0f, 1.0f, 
-                          
-                          1.0f, 1.0f, 0.0f, 1.0f, 
-                          0.0f, 1.0f, 0.0f, 1.0f, 
+                          1.0f, 0.0f, 0.0f, 1.0f,
+                          1.0f, 1.0f, 0.0f, 1.0f,
+
+                          1.0f, 1.0f, 0.0f, 1.0f,
+                          0.0f, 1.0f, 0.0f, 1.0f,
                           0.0f, 0.0f, 0.0f, 1.0f };
 
         float[] bodyVBO = {   -0.5f, -0.5f, 0.0f, 1.0f,
-                          0.5f, -0.5f, 0.0f, 1.0f, 
-                          0.5f, 0.5f, 0.0f, 1.0f, 
-                          
-                          0.5f, 0.5f, 0.0f, 1.0f, 
-                         -0.5f, 0.5f, 0.0f, 1.0f, 
+                          0.5f, -0.5f, 0.0f, 1.0f,
+                          0.5f, 0.5f, 0.0f, 1.0f,
+
+                          0.5f, 0.5f, 0.0f, 1.0f,
+                         -0.5f, 0.5f, 0.0f, 1.0f,
                          -0.5f,-0.5f, 0.0f, 1.0f };
 
         float[] arrowVBO = {  0.25f, 0.5f, 0.0f, 1.0f,
@@ -107,6 +110,11 @@ namespace eced
         int frames = 0;
 
         private int arrowVBOID, bodyVBOID, triggersVBOID, lineVBOID;
+
+        public GraphicsManager(EditorState editorState)
+        {
+            CurrentState = editorState;
+        }
 
         public void setupLevelRendering(Level level, uint program, OpenTK.Vector2 winsize)
         {
@@ -161,16 +169,41 @@ namespace eced
             }
         }
 
-        public void setupTextures(Level level, int resourceID, int atlasID, int numberID)
+        /// <summary>
+        /// Builds a 2-dimensional array representing the data of a single plane
+        /// </summary>
+        /// <param name="layer">The layer to make the plane from</param>
+        public short[] BuildPlaneData(int layer)
         {
-            short[] mapTexture = level.BuildPlaneData(0);
+            short[] planeData = new short[CurrentState.CurrentLevel.width * CurrentState.CurrentLevel.height * 4];
+
+            for (int x = 0; x < CurrentState.CurrentLevel.width; x++)
+            {
+                for (int y = 0; y < CurrentState.CurrentLevel.height; y++)
+                {
+                    //planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
+                    if (CurrentState.CurrentLevel.Planes[layer].cells[x, y].tile != null)
+                        planeData[(y * CurrentState.CurrentLevel.width + x) * 4] = (short)Textures.getTextureID(CurrentState.CurrentLevel.Planes[layer].cells[x, y].tile.NorthTex);
+                    else planeData[(y * CurrentState.CurrentLevel.width + x) * 4] = -1;
+
+                    if (CurrentState.CurrentLevel.Planes[layer].cells[x, y].tile == null)
+                        planeData[(y * CurrentState.CurrentLevel.width + x) * 4 + 1] = (short)CurrentState.CurrentLevel.ZoneDefs.IndexOf(CurrentState.CurrentLevel.Planes[layer].cells[x, y].zone);
+                }
+            }
+
+            return planeData;
+        }
+
+        public void setupTextures(Level level)
+        {
+            short[] mapTexture = BuildPlaneData(0);
 
             //int[] tids = new int[4]; GL.GenTextures(4, tids);
             GL.ActiveTexture(TextureUnit.Texture0);
-            atlasTextureID = atlasID;
+            atlasTextureID = Textures.atlasTextureID;
             worldTextureID = GL.GenTexture();
-            resourceTextureID = resourceID;
-            numberTextureID = numberID;
+            resourceTextureID = Textures.resourceInfoID;
+            numberTextureID = Textures.numberTextureID;
 
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, worldTextureID);
@@ -197,6 +230,10 @@ namespace eced
             }
 
             GL.UseProgram(program);
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine("DRAW PROGRAM GL Error: {0}", error.ToString());
+            }
 
             GL.Uniform2(uniformsBasicRender.panUL, pan);
             GL.Uniform1(uniformsBasicRender.zoomUL, zoom);
@@ -266,7 +303,7 @@ namespace eced
                 
                 if (tile != null)
                 {
-                    id[0] = id[1] = id[2] = id[3] = (short)level.tm.getTextureID(tile.NorthTex);
+                    id[0] = id[1] = id[2] = id[3] = (short)Textures.getTextureID(tile.NorthTex);
                 }
                 else
                 {

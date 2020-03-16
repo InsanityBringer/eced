@@ -20,9 +20,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace eced
+namespace eced.Brushes
 {
-    public class TileBrush : Brush
+    public class TileBrush : EditorBrush
     {
         public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {

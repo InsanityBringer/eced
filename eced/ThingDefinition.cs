@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace eced
 {
@@ -34,6 +35,21 @@ namespace eced
 
         public ThingDefinition()
         {
+        }
+
+        public static ThingDefinition FromXContainer(XContainer container)
+        {
+            ThingDefinition def = new ThingDefinition();
+
+            foreach (XElement elem in container.Elements())
+            {
+                //Console.WriteLine(elem.Name.LocalName);
+                switch (elem.Name.LocalName)
+                {
+                }
+            }
+
+            return def;
         }
 
         public void setData(string radius, string height, string name, string type, string id)

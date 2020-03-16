@@ -92,7 +92,8 @@
       <DependentUpon>AddResourceDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="BinaryHelper.cs" />
-    <Compile Include="Brush\Brush.cs" />
+    <Compile Include="Brush\EditorBrush.cs" />
+    <Compile Include="Brush\RoomBrush.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\ClippedStream.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\DirectoryFileEntry.cs" />
@@ -102,14 +103,16 @@
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalEntry.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalParser.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\WAD.cs" />
+    <Compile Include="EditorState.cs" />
     <Compile Include="LevelIO.cs" />
-    <Compile Include="Renderer\LineDrawer.cs" />
+    <Compile Include="Brush\LineDrawer.cs" />
     <Compile Include="NewMapDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NewMapDialog.Designer.cs">
       <DependentUpon>NewMapDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Renderer\WorldRenderer.cs" />
     <Compile Include="ResourceFiles\DirectoryResource.cs" />
     <Compile Include="ResourceFiles\ImageResource.cs" />
     <Compile Include="ResourceFiles\ResourceArchive.cs" />
@@ -198,7 +201,7 @@
     <Compile Include="Sector.cs" />
     <Compile Include="Renderer\TextureManager.cs" />
     <Compile Include="Thing.cs" />
-    <Compile Include="ThingBrush.cs" />
+    <Compile Include="Brush\ThingBrush.cs" />
     <Compile Include="ThingDefinition.cs" />
     <Compile Include="ThingManager.cs" />
     <Compile Include="Tile.cs" />

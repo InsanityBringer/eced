@@ -62,7 +62,7 @@ namespace eced
         public int lastID = 0;
 
         public List<TextureCell> cells;
-        public Dictionary<String, int> textureIDList = new Dictionary<string, int>();
+        public Dictionary<string, int> textureIDList = new Dictionary<string, int>();
 
         /// <summary>
         /// The current palette for processing doom format patches
@@ -451,8 +451,11 @@ namespace eced
         public void cleanup()
         {
             allocated = null;
-            GL.DeleteTexture(atlasTextureID);
-            GL.DeleteTexture(resourceInfoID);
+            if (atlasTextureID != 0)
+            {
+                GL.DeleteTexture(atlasTextureID);
+                GL.DeleteTexture(resourceInfoID);
+            }
 
             this.lastID = 0;
             this.textureIDList = new Dictionary<string, int>();

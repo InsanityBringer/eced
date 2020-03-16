@@ -23,6 +23,7 @@ using CodeImp.DoomBuilder.IO;
 
 namespace eced
 {
+    [Flags]
     public enum ThingFlagsBits
     {
         FLAG_AMBUSH = 1,
@@ -43,12 +44,12 @@ namespace eced
 
         public void getFlagsFromInt(int flags)
         {
-            ambush = checkFlag(ThingFlagsBits.FLAG_AMBUSH, flags);
-            patrol = checkFlag(ThingFlagsBits.FLAG_PATROL, flags);
-            skill1 = checkFlag(ThingFlagsBits.FLAG_SKILL1, flags);
-            skill2 = checkFlag(ThingFlagsBits.FLAG_SKILL2, flags);
-            skill3 = checkFlag(ThingFlagsBits.FLAG_SKILL3, flags);
-            skill4 = checkFlag(ThingFlagsBits.FLAG_SKILL4, flags);
+            ambush = CheckFlags(ThingFlagsBits.FLAG_AMBUSH, flags);
+            patrol = CheckFlags(ThingFlagsBits.FLAG_PATROL, flags);
+            skill1 = CheckFlags(ThingFlagsBits.FLAG_SKILL1, flags);
+            skill2 = CheckFlags(ThingFlagsBits.FLAG_SKILL2, flags);
+            skill3 = CheckFlags(ThingFlagsBits.FLAG_SKILL3, flags);
+            skill4 = CheckFlags(ThingFlagsBits.FLAG_SKILL4, flags);
         }
 
         public int getFlags()
@@ -70,9 +71,9 @@ namespace eced
             return flags;
         }
 
-        public bool checkFlag(ThingFlagsBits flag, int value)
+        public bool CheckFlags(ThingFlagsBits flag, int value)
         {
-            return (value & (int)flag) == (int)flag;
+            return (value & (int)flag) != 0;
         }
     }
 
@@ -89,7 +90,7 @@ namespace eced
         public bool highlighted = false;
         public bool moving = false;
 
-        public string getUWMFString()
+        public string Serialize()
         {
             StringBuilder stringmaker = new StringBuilder();
             stringmaker.Append("thing\n{\n");
@@ -113,7 +114,7 @@ namespace eced
 
         public bool checkFlag(ThingFlagsBits flag)
         {
-            return (flags & (int)flag) == (int)flag;
+            return (flags & (int)flag) != 0;
         }
 
         public float getXCoord()

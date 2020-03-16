@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenTK;
 
-namespace eced
+namespace eced.Brushes
 {
     public class LineDrawer
     {
@@ -13,7 +13,7 @@ namespace eced
         /// </summary>
         /// <param name="src">The picked src point</param>
         /// <param name="dst">The picked destination point</param>
-        public static void applyBrushOverLine(Vector2 src, Vector2 dst, ref Level currentLevel, int heldMouseButton, Brush defaultBrush)
+        public static void DrawLineWithBrush(Vector2 src, Vector2 dst, Level currentLevel, int heldMouseButton, EditorBrush defaultBrush)
         {
             //Vector2 srct = pick(src);
             //Vector2 dstt = pick(dst);
@@ -37,24 +37,24 @@ namespace eced
             if (dx > 0)
             {
                 if (dx > dy)
-                    lineOctant0(src, dx, dy, 1, ref currentLevel, heldMouseButton, defaultBrush);
+                    LineOctant0(src, dx, dy, 1, currentLevel, heldMouseButton, defaultBrush);
                 else
-                    lineOctant1(src, dx, dy, 1, ref currentLevel, heldMouseButton, defaultBrush);
+                    LineOctant1(src, dx, dy, 1, currentLevel, heldMouseButton, defaultBrush);
             }
             else
             {
                 dx = -dx;
                 if (dx > dy)
-                    lineOctant0(src, dx, dy, -1, ref currentLevel, heldMouseButton, defaultBrush);
+                    LineOctant0(src, dx, dy, -1, currentLevel, heldMouseButton, defaultBrush);
                 else
-                    lineOctant1(src, dx, dy, -1, ref currentLevel, heldMouseButton, defaultBrush);
+                    LineOctant1(src, dx, dy, -1, currentLevel, heldMouseButton, defaultBrush);
             }
 
             //apply brush to tile
             //defaultBrush.ApplyToTile(srct, 0, this.currentLevel, this.heldMouseButton);
         }
 
-        private static void lineOctant0(Vector2 src, int dx, int dy, int direction, ref Level currentLevel, int heldMouseButton, Brush defaultBrush)
+        private static void LineOctant0(Vector2 src, int dx, int dy, int direction, Level currentLevel, int heldMouseButton, EditorBrush defaultBrush)
         {
             //Console.WriteLine("octant 0 line");
             int doubledy = dy * 2;
@@ -81,7 +81,7 @@ namespace eced
             }
         }
 
-        private static void lineOctant1(Vector2 src, int dx, int dy, int direction, ref Level currentLevel, int heldMouseButton, Brush defaultBrush)
+        private static void LineOctant1(Vector2 src, int dx, int dy, int direction, Level currentLevel, int heldMouseButton, EditorBrush defaultBrush)
         {
             //Console.WriteLine("octant 1 line");
             int doubledx = dx * 2;

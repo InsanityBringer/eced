@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace eced
+namespace eced.Brushes
 {
-    public class SectorBrush : Brush
+    public class SectorBrush : EditorBrush
     {
         public Sector currentSector;
 

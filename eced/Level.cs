@@ -28,12 +28,12 @@ namespace eced
 
         //public Cell[, ,] cells;
 
-        private List<Plane> planes = new List<Plane>();
+        public List<Plane> Planes { get; } = new List<Plane>();
 
-        private List<Tile> internalTileset = new List<Tile>();
-        private List<Thing> things = new List<Thing>();
-        private List<Zone> zonedefs = new List<Zone>();
-        private List<Sector> sectors = new List<Sector>();
+        public List<Tile> InternalTileset { get; } = new List<Tile>();
+        public List<Thing> Things { get; } = new List<Thing>();
+        public List<Zone> ZoneDefs { get; } = new List<Zone>();
+        public List<Sector> Sectors { get; } = new List<Sector>();
         //private Dictionary<int, Trigger> triggerList = new Dictionary<int, Trigger>();
         //private List<int> triggerKeys = new List<int>();
 
@@ -51,8 +51,6 @@ namespace eced
 
         public List<ResourceFiles.ResourceArchive> loadedResources = new List<ResourceFiles.ResourceArchive>();
 
-        public TextureManager tm;
-
         public Level(int w, int h, int d, Tile defaultTile)
         {
             Random r = new Random();
@@ -62,21 +60,21 @@ namespace eced
 
             //cells = new Cell[width, height, depth];
 
-            planes.Add(new Plane(w, h));
-            sectors.Add(new Sector());
+            Planes.Add(new Plane(w, h));
+            Sectors.Add(new Sector());
 
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    planes[0].cells[x, y] = new Cell();
-                    planes[0].cells[x, y].tile = defaultTile;
-                    planes[0].cells[x, y].sector = sectors[0];
+                    Planes[0].cells[x, y] = new Cell();
+                    Planes[0].cells[x, y].tile = defaultTile;
+                    Planes[0].cells[x, y].sector = Sectors[0];
                 }
             }
             if (defaultTile != null)
-                internalTileset.Add(defaultTile);
-            Console.WriteLine("tileset size: {0}", internalTileset.Count);
+                InternalTileset.Add(defaultTile);
+            Console.WriteLine("tileset size: {0}", InternalTileset.Count);
         }
 
         /// <summary>
@@ -93,30 +91,30 @@ namespace eced
 
         public Cell GetCell(int x, int y, int z)
         {
-            return planes[z].cells[x, y];
+            return Planes[z].cells[x, y];
         }
 
         public int GetZoneID(int x, int y, int z)
         {
-            return zonedefs.IndexOf(planes[z].cells[x, y].zone);
+            return ZoneDefs.IndexOf(Planes[z].cells[x, y].zone);
         }
 
         public void SetCell(int x, int y, int z, Cell cell)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
-                planes[z].cells[x, y] = cell;
+                Planes[z].cells[x, y] = cell;
                 OpenTK.Vector2 triggerPos = new OpenTK.Vector2(x, y);
                 if (cell.triggerList.Count > 0)
                 {
-                    if (!planes[z].cellsWithTriggers.Contains(triggerPos))
+                    if (!Planes[z].cellsWithTriggers.Contains(triggerPos))
                     {
-                        planes[z].cellsWithTriggers.Add(triggerPos);
+                        Planes[z].cellsWithTriggers.Add(triggerPos);
                     }
                 }
-                else if (cell.triggerList.Count == 0 && planes[z].cellsWithTriggers.Contains(triggerPos))
+                else if (cell.triggerList.Count == 0 && Planes[z].cellsWithTriggers.Contains(triggerPos))
                 {
-                    planes[z].cellsWithTriggers.Remove(triggerPos);
+                    Planes[z].cellsWithTriggers.Remove(triggerPos);
                 }
             }
         }
@@ -124,14 +122,14 @@ namespace eced
         public void AddTile(Tile tile)
         {
             Console.WriteLine("adding tile to internal tileset");
-            internalTileset.Add(tile);
-            Console.WriteLine("tileset size: {0}", internalTileset.Count);
+            InternalTileset.Add(tile);
+            Console.WriteLine("tileset size: {0}", InternalTileset.Count);
         }
 
         public Tile GetTile(int x, int y, int z)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
-                return planes[z].cells[x, y].tile;
+                return Planes[z].cells[x, y].tile;
 
             return TileManager.tile1;
         }
@@ -140,17 +138,17 @@ namespace eced
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
-                if (tile != planes[z].cells[x, y].tile)
+                if (tile != Planes[z].cells[x, y].tile)
                 {
                     //cells[x, y, z].tile = tile;
                     //cells[x, y, z].zone = null;
-                    planes[z].cells[x, y].tile = tile;
-                    planes[z].cells[x, y].zone = null;
-                    if (!internalTileset.Contains(tile) && tile != null)
+                    Planes[z].cells[x, y].tile = tile;
+                    Planes[z].cells[x, y].zone = null;
+                    if (!InternalTileset.Contains(tile) && tile != null)
                     {
                         Console.WriteLine("adding tile to internal tileset");
-                        internalTileset.Add(tile);
-                        Console.WriteLine("tileset size: {0}", internalTileset.Count);
+                        InternalTileset.Add(tile);
+                        Console.WriteLine("tileset size: {0}", InternalTileset.Count);
                     }
                     updateCells.Add(new OpenTK.Vector2(x, y));
                 }
@@ -161,34 +159,34 @@ namespace eced
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
-                planes[z].cells[x, y].tag = tag;
+                Planes[z].cells[x, y].tag = tag;
             }
         }
 
         public void AddSector(Sector sector)
         {
-            sectors.Add(sector);
+            Sectors.Add(sector);
         }
 
         public void SetSector(int x, int y, int z, Sector sector)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
-                planes[z].cells[x, y].sector = sector;
+                Planes[z].cells[x, y].sector = sector;
 
-                if (!sectors.Contains(sector))
-                    sectors.Add(sector);
+                if (!Sectors.Contains(sector))
+                    Sectors.Add(sector);
             }
         }
 
         public void AddThing(Thing thing)
         {
-            this.things.Add(thing);
+            this.Things.Add(thing);
         }
 
         public List<Thing> GetThings()
         {
-            return things;
+            return Things;
         }
 
         public List<Thing> GetThingsInRange(int sx, int sy, int w, int h)
@@ -196,9 +194,9 @@ namespace eced
             List<Thing> thinglist = new List<Thing>();
             int ex = sx + w;
             int ey = sy + h;
-            for (int x = 0; x < this.things.Count; x++)
+            for (int x = 0; x < this.Things.Count; x++)
             {
-                Thing thing = things[x];
+                Thing thing = Things[x];
                 if (thing.x >= sx && thing.x < ex && thing.y >= sy && thing.y < ey)
                 {
                     thinglist.Add(thing);
@@ -222,9 +220,9 @@ namespace eced
             if (this.highlighted != null)
                 return;
 
-            for (int lx = 0; lx < this.things.Count; lx++)
+            for (int lx = 0; lx < this.Things.Count; lx++)
             {
-                Thing thing = things[lx];
+                Thing thing = Things[lx];
                 ThingDefinition def = GetThingDef(thing);
                 int sx = (int)thing.getXCoord() - def.radius; int ex = (int)thing.getXCoord() + def.radius;
                 int sy = (int)thing.getYCoord() - def.radius; int ey = (int)thing.getYCoord() + def.radius;
@@ -260,69 +258,44 @@ namespace eced
 
         public void DeleteThing(Thing thing)
         {
-            if (this.things.Contains(thing))
+            if (this.Things.Contains(thing))
             {
                 int lx = (int)thing.x;
                 int ly = (int)thing.y;
 
-                this.things.Remove(thing);
+                this.Things.Remove(thing);
             }
         }
 
         public void ReplaceThing(Thing thing, Thing newThing)
         {
-            if (this.things.Contains(thing))
+            if (this.Things.Contains(thing))
             {
                 int lx = (int)newThing.x;
                 int ly = (int)newThing.y;
 
-                this.things[this.things.IndexOf(thing)] = newThing;
+                this.Things[this.Things.IndexOf(thing)] = newThing;
             }
         }
 
         public void AddTrigger(int x, int y, int z, Trigger trigger)
         {
-            planes[z].cells[x, y].triggerList.Add(trigger);
+            Planes[z].cells[x, y].triggerList.Add(trigger);
             OpenTK.Vector2 triggerPos = new OpenTK.Vector2(x, y);
-            if (!planes[z].cellsWithTriggers.Contains(triggerPos))
+            if (!Planes[z].cellsWithTriggers.Contains(triggerPos))
             {
-                planes[z].cellsWithTriggers.Add(triggerPos);
+                Planes[z].cellsWithTriggers.Add(triggerPos);
             }
         }
 
         public List<Trigger> GetTriggers(int x, int y, int z)
         {
-            return planes[z].cells[x, y].triggerList;
+            return Planes[z].cells[x, y].triggerList;
         }
 
         public List<OpenTK.Vector2> GetTriggerLocations()
         {
-            return planes[0].cellsWithTriggers;
-        }
-
-        /// <summary>
-        /// Builds a 2-dimensional array representing the data of a single plane
-        /// </summary>
-        /// <param name="layer">The layer to make the plane from</param>
-        public short[] BuildPlaneData(int layer)
-        {
-            short[] planeData = new short[this.width * this.height * 4];
-
-            for (int x = 0; x < this.width; x++)
-            {
-                for (int y = 0; y < this.height; y++)
-                {
-                    //planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
-                    if (planes[layer].cells[x, y].tile != null)
-                        planeData[(y * width + x) * 4] = (short)tm.getTextureID(planes[layer].cells[x, y].tile.NorthTex);
-                    else planeData[(y * width + x) * 4] = -1;
-
-                    if (planes[layer].cells[x, y].tile == null)
-                        planeData[(y * width + x) * 4 + 1] = (short)zonedefs.IndexOf(planes[layer].cells[x, y].zone);
-                }
-            }
-
-            return planeData;
+            return Planes[0].cellsWithTriggers;
         }
 
         public void HighlightTrigger(int x, int y, int z)
@@ -331,8 +304,8 @@ namespace eced
             if (trigger.Count > 0)
             {
                 Console.WriteLine("highlighting!");
-                planes[z].cells[x, y].highlighted = true;
-                this.highlightedTrigger = planes[z].cells[x, y];
+                Planes[z].cells[x, y].highlighted = true;
+                this.highlightedTrigger = Planes[z].cells[x, y];
                 this.highlightedPos[0] = x;
                 this.highlightedPos[1] = y;
             }
@@ -362,20 +335,20 @@ namespace eced
         public void AssignFloorCode(int x, int y, int z, int code)
         {
             Console.WriteLine("setting code {0}", code);
-            if (code == zonedefs.Count)
+            if (code == ZoneDefs.Count)
             {
-                zonedefs.Add(new Zone());
+                ZoneDefs.Add(new Zone());
                 Console.WriteLine("adding a zone");
             }
 
-            planes[z].cells[x, y].zone = zonedefs[code];
+            Planes[z].cells[x, y].zone = ZoneDefs[code];
             updateCells.Add(new OpenTK.Vector2(x, y));
         }
 
         public int GetUniqueCode()
         {
-            Console.WriteLine("getting code {0}", zonedefs.Count);
-            return zonedefs.Count;
+            Console.WriteLine("getting code {0}", ZoneDefs.Count);
+            return ZoneDefs.Count;
         }
 
         /// <summary>
@@ -394,40 +367,40 @@ namespace eced
 
             //Plane plane = new Plane();
 
-            for (int x = 0; x < internalTileset.Count; x++)
+            for (int x = 0; x < InternalTileset.Count; x++)
             {
-                sb.Append(internalTileset[x].Serialize());
+                sb.Append(InternalTileset[x].Serialize());
                 sb.Append("\n");
             }
             sb.Append("\n");
-            for (int x = 0; x < zonedefs.Count; x++)
+            for (int x = 0; x < ZoneDefs.Count; x++)
             {
-                sb.Append(zonedefs[x].getUWMFString());
+                sb.Append(ZoneDefs[x].getUWMFString());
                 sb.Append("\n");
             }
             sb.Append("\n");
-            for (int x = 0; x < things.Count; x++)
+            for (int x = 0; x < Things.Count; x++)
             {
-                sb.Append(things[x].getUWMFString());
-                sb.Append("\n");
-            }
-            sb.Append("\n");
-
-            for (int x = 0; x < sectors.Count; x++)
-            {
-                sb.Append(sectors[x].Serialize());
+                sb.Append(Things[x].Serialize());
                 sb.Append("\n");
             }
             sb.Append("\n");
 
-            for (int x = 0; x < planes.Count; x++)
+            for (int x = 0; x < Sectors.Count; x++)
             {
-                sb.Append(planes[x].Serialize());
+                sb.Append(Sectors[x].Serialize());
                 sb.Append("\n");
             }
             sb.Append("\n");
 
-            for (int x = 0; x < planes.Count; x++)
+            for (int x = 0; x < Planes.Count; x++)
+            {
+                sb.Append(Planes[x].Serialize());
+                sb.Append("\n");
+            }
+            sb.Append("\n");
+
+            for (int x = 0; x < Planes.Count; x++)
             {
                 sb.Append(SerializePlaneMap(x));
             }
@@ -439,9 +412,9 @@ namespace eced
                 {
                     int x = i % width;
                     int y = i / width;
-                    for (int li = 0; li < planes[p].cells[x, y].triggerList.Count; li++)
+                    for (int li = 0; li < Planes[p].cells[x, y].triggerList.Count; li++)
                     {
-                        sb.Append(planes[p].cells[x, y].triggerList[li].Serialize());
+                        sb.Append(Planes[p].cells[x, y].triggerList[li].Serialize());
                         sb.Append("\n");
                     }
                 }
@@ -459,10 +432,10 @@ namespace eced
             {
                 int x = i % width;
                 int y = i / width;
-                stringbuilder.Append("\t{"); stringbuilder.Append(GetTileID(planes[plane].cells[x, y].tile));
+                stringbuilder.Append("\t{"); stringbuilder.Append(GetTileID(Planes[plane].cells[x, y].tile));
                 stringbuilder.Append(", "); stringbuilder.Append(GetSectorID(x, y, plane));
-                stringbuilder.Append(", "); stringbuilder.Append(GetZoneID(planes[plane].cells[x, y]));
-                stringbuilder.Append(", "); stringbuilder.Append(planes[plane].cells[x, y].tag);
+                stringbuilder.Append(", "); stringbuilder.Append(GetZoneID(Planes[plane].cells[x, y]));
+                stringbuilder.Append(", "); stringbuilder.Append(Planes[plane].cells[x, y].tag);
                 stringbuilder.Append("}");
                 if (i < ((width * height) - 1))
                 {
@@ -477,16 +450,16 @@ namespace eced
 
         public int GetTileID(Tile tile)
         {
-            if (internalTileset.Contains(tile))
-                return internalTileset.IndexOf(tile);
+            if (InternalTileset.Contains(tile))
+                return InternalTileset.IndexOf(tile);
 
             return -1;
         }
 
         public int GetSectorID(int x, int y, int z)
         {
-            if (sectors.Contains(planes[z].cells[x, y].sector))
-                return sectors.IndexOf(planes[z].cells[x, y].sector);
+            if (Sectors.Contains(Planes[z].cells[x, y].sector))
+                return Sectors.IndexOf(Planes[z].cells[x, y].sector);
 
             return -1;
         }
@@ -497,24 +470,24 @@ namespace eced
             {
                 return -1;
             }
-            return zonedefs.IndexOf(cell.zone);
+            return ZoneDefs.IndexOf(cell.zone);
         }
 
         public bool CompareZoneID(int x, int y, int z, int code)
         {
-            return GetZoneID(planes[z].cells[x, y]) == code;
+            return GetZoneID(Planes[z].cells[x, y]) == code;
         }
 
         public Zone GetZoneAt(int x, int y, int z)
         {
-            return planes[z].cells[x, y].zone;
+            return Planes[z].cells[x, y].zone;
         }
 
         public int GetZoneIDAt(int x, int y, int z)
         {
-            if (zonedefs.Contains(planes[z].cells[x, y].zone))
+            if (ZoneDefs.Contains(Planes[z].cells[x, y].zone))
             {
-                return zonedefs.IndexOf(planes[z].cells[x, y].zone);
+                return ZoneDefs.IndexOf(Planes[z].cells[x, y].zone);
             }
             return -1;
         }
@@ -526,17 +499,17 @@ namespace eced
 
         public void AddZone(Zone zone)
         {
-            this.zonedefs.Add(zone);
+            this.ZoneDefs.Add(zone);
         }
 
-        public List<Zone> GetZone()
+        public List<Zone> GetZones()
         {
-            return this.zonedefs;
+            return this.ZoneDefs;
         }
 
         public bool IsCellHighlighted(int x, int y, int z)
         {
-            return planes[z].cells[x, y].highlighted;
+            return Planes[z].cells[x, y].highlighted;
         }
 
         public void ProcessPlanemap()
@@ -555,14 +528,14 @@ namespace eced
                         Cell cell = new Cell();
                         if (tempPlanemap[index].tile >= 0)
                         {
-                            cell.tile = this.internalTileset[tempPlanemap[index].tile];
+                            cell.tile = this.InternalTileset[tempPlanemap[index].tile];
                             tilesadded++;
                         }
                         cell.sector = new Sector(); //no sector management
                         if (tempPlanemap[index].zone >= 0)
-                            cell.zone = this.zonedefs[tempPlanemap[index].zone];
+                            cell.zone = this.ZoneDefs[tempPlanemap[index].zone];
 
-                        planes[z].cells[x, y] = cell;
+                        Planes[z].cells[x, y] = cell;
                     }
 
                     index++;
