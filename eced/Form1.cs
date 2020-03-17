@@ -19,7 +19,8 @@ namespace eced
     public partial class Form1 : Form
     {
         private int toolid = 1, oldtoolid = 1;
-        private GraphicsManager renderer;
+        private RendererState renderer;
+        private WorldRenderer worldRenderer;
         private bool ready = false;
 
         //private int panx = 0, pany = 0;
@@ -114,9 +115,12 @@ namespace eced
             VAOid = GL.GenVertexArray();
             GL.BindVertexArray(VAOid);
 
-            renderer = new GraphicsManager(editorState);
+            renderer = new RendererState(editorState);
+            renderer.Init();
+            renderer.SetViewSize(mainLevelPanel.Width, mainLevelPanel.Height);
             glInit();
             UpdateZoom();
+            worldRenderer = new WorldRenderer(renderer);
 
             ErrorCode error = GL.GetError();
             if (error != ErrorCode.NoError)
@@ -150,10 +154,11 @@ namespace eced
                     renderer.Textures.cleanup();
                 }
                 editorState.CreateNewLevel(nmd.CurrentMap);
-                renderer.setupLevelRendering(editorState.CurrentLevel, (uint)sm.programList["WorldRender"], new Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
-                renderer.setupThingUniforms(sm.programList["ThingRender"]);
+                //renderer.setupLevelRendering(editorState.CurrentLevel, (uint)sm.programList["WorldRender"], new Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
+                //renderer.setupThingUniforms(sm.programList["ThingRender"]);
                 RebuildResources();
                 SelectTool(1);
+                worldRenderer.LevelChanged();
             }
 
             nmd.Dispose();
@@ -174,7 +179,7 @@ namespace eced
             renderer.Textures.createInfoTexture();
             renderer.Textures.uploadNumberTexture();
 
-            renderer.setupTextures(editorState.CurrentLevel);
+            //world.setupTextures(editorState.CurrentLevel);
         }
 
         private void UpdateCurrentZoneList()
@@ -358,7 +363,7 @@ namespace eced
             if (editorState.CurrentLevel != null)
             {
                 //renderer.renderLevel(currentLevel);
-                renderer.updateWorldTexture(editorState.CurrentLevel);
+                /*renderer.updateWorldTexture(editorState.CurrentLevel);
                 renderer.drawLevel(editorState.CurrentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
                 renderer.drawGrid(editorState.CurrentLevel, sm.programList["BasicRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
 
@@ -384,7 +389,8 @@ namespace eced
                 }
 
                 //renderer.drawTrigger(new Vector2(2.0f, 2.0f), currentLevel, sm.programList["ThingRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
-                GL.UseProgram(0);
+                GL.UseProgram(0);*/
+                worldRenderer.DrawLevel();
             }
             GL.Flush();
             mainLevelPanel.SwapBuffers();
@@ -415,29 +421,29 @@ namespace eced
             Console.WriteLine("input");
             if (e.KeyCode == Keys.Down)
             {
-                pan.Y -= .05f;
-                renderer.setpan(pan);
+                pan.Y -= 32f;
+                renderer.SetPan(pan);
                 mainLevelPanel.Invalidate();
             }
 
             if (e.KeyCode == Keys.Up)
             {
-                pan.Y += .05f; 
-                renderer.setpan(pan);
+                pan.Y += 32f; 
+                renderer.SetPan(pan);
                 mainLevelPanel.Invalidate();
             }
 
             if (e.KeyCode == Keys.Left)
             {
-                pan.X += .05f;
-                renderer.setpan(pan);
+                pan.X += 32f;
+                renderer.SetPan(pan);
                 mainLevelPanel.Invalidate();
             }
 
             if (e.KeyCode == Keys.Right)
             {
-                pan.X -= .05f;
-                renderer.setpan(pan);
+                pan.X -= 32f;
+                renderer.SetPan(pan);
                 mainLevelPanel.Invalidate();
             }
 
@@ -468,7 +474,8 @@ namespace eced
         private void UpdateZoom()
         {
             statusBar1.Panels[1].Text = String.Format("Zoom: {0:P}", zoom);
-            renderer.zoom = zoom;
+            renderer.SetZoom(zoom);
+            //renderer.zoom = zoom;
 
             mainLevelPanel.Invalidate();
         }
@@ -476,16 +483,14 @@ namespace eced
         private void button2_Click(object sender, EventArgs e)
         {
             //zoom += .25f;
-            zoom *= 2.0f;
+            zoom *= 1.111111111111f;
             UpdateZoom();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             //zoom -= .25f;
-            zoom *= 0.5f;
-            if (zoom < .25f)
-                zoom = .25f;
+            zoom *= 0.9f;
             UpdateZoom();
         }
 
@@ -507,8 +512,8 @@ namespace eced
 
         public Vector2 Pick(Vector2 mouseCoords)
         {
-            float sizex = editorState.CurrentLevel.width / 2f;
-            float sizey = editorState.CurrentLevel.height / 2f;
+            float sizex = editorState.CurrentLevel.Width / 2f;
+            float sizey = editorState.CurrentLevel.Height / 2f;
             Vector2 center = new Vector2(mainLevelPanel.Width / 2, mainLevelPanel.Height / 2);
             Vector2 bstart = new Vector2(center.X - (sizex * 8 * zoom) + (pan.X * 64 * 8 * zoom), center.Y - (sizey * 8 * zoom) + (pan.Y * 64 * 8 * zoom));
             Vector2 curpos = new Vector2(mouseCoords.X - bstart.X, mouseCoords.Y - bstart.Y);

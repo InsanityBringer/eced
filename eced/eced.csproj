@@ -112,6 +112,8 @@
     <Compile Include="NewMapDialog.Designer.cs">
       <DependentUpon>NewMapDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Renderer\RendererDrawer.cs" />
+    <Compile Include="Renderer\Shader.cs" />
     <Compile Include="Renderer\WorldRenderer.cs" />
     <Compile Include="ResourceFiles\DirectoryResource.cs" />
     <Compile Include="ResourceFiles\ImageResource.cs" />
@@ -137,7 +139,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Renderer\GraphicsManager.cs" />
+    <Compile Include="Renderer\RendererState.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Plane.cs" />
     <Compile Include="Program.cs" />

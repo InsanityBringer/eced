@@ -22,9 +22,17 @@ using System.IO;
 
 namespace eced
 {
+    public struct DirtyRectangle
+    {
+        public int x1, y1;
+        public int x2, y2;
+    }
     public class Level
     {
-        public int width = 64, height = 64, depth = 1;
+        //public int width = 64, height = 64, depth = 1;
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public int Depth { get; private set; }
 
         //public Cell[, ,] cells;
 
@@ -36,6 +44,10 @@ namespace eced
         public List<Sector> Sectors { get; } = new List<Sector>();
         //private Dictionary<int, Trigger> triggerList = new Dictionary<int, Trigger>();
         //private List<int> triggerKeys = new List<int>();
+
+        //Dirty rectangle properties
+        public bool Dirty { get; private set; } = false;
+        public DirtyRectangle dirtyRectangle; //could be property but the structure nature makes that useless... TODO make better
 
         private List<NumberCell> tempPlanemap;
 
@@ -54,18 +66,18 @@ namespace eced
         public Level(int w, int h, int d, Tile defaultTile)
         {
             Random r = new Random();
-            this.width = w;
-            this.height = h;
-            this.depth = d;
+            this.Width = w;
+            this.Height = h;
+            this.Depth = d;
 
             //cells = new Cell[width, height, depth];
 
             Planes.Add(new Plane(w, h));
             Sectors.Add(new Sector());
 
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (int y = 0; y < height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     Planes[0].cells[x, y] = new Cell();
                     Planes[0].cells[x, y].tile = defaultTile;
@@ -75,6 +87,7 @@ namespace eced
             if (defaultTile != null)
                 InternalTileset.Add(defaultTile);
             Console.WriteLine("tileset size: {0}", InternalTileset.Count);
+            ClearDirty();
         }
 
         /// <summary>
@@ -89,6 +102,25 @@ namespace eced
             loadedResources.Clear();
         }
 
+        public void ClearDirty()
+        {
+            dirtyRectangle.x1 = int.MaxValue;
+            dirtyRectangle.y1 = int.MaxValue;
+            dirtyRectangle.x2 = 0;
+            dirtyRectangle.y2 = 0;
+            Dirty = false;
+        }
+
+        private void SetDirty(int x, int y)
+        {
+            if (x < dirtyRectangle.x1) dirtyRectangle.x1 = x;
+            if (y < dirtyRectangle.y1) dirtyRectangle.y1 = y;
+
+            if (x > dirtyRectangle.x2) dirtyRectangle.x2 = x;
+            if (y > dirtyRectangle.y2) dirtyRectangle.y2 = y;
+            Dirty = true;
+        }
+
         public Cell GetCell(int x, int y, int z)
         {
             return Planes[z].cells[x, y];
@@ -101,7 +133,7 @@ namespace eced
 
         public void SetCell(int x, int y, int z, Cell cell)
         {
-            if (x >= 0 && y >= 0 && x < width && y < height)
+            if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
                 Planes[z].cells[x, y] = cell;
                 OpenTK.Vector2 triggerPos = new OpenTK.Vector2(x, y);
@@ -128,7 +160,7 @@ namespace eced
 
         public Tile GetTile(int x, int y, int z)
         {
-            if (x >= 0 && y >= 0 && x < width && y < height)
+            if (x >= 0 && y >= 0 && x < Width && y < Height)
                 return Planes[z].cells[x, y].tile;
 
             return TileManager.tile1;
@@ -136,7 +168,7 @@ namespace eced
 
         public void SetTile(int x, int y, int z, Tile tile)
         {
-            if (x >= 0 && y >= 0 && x < width && y < height)
+            if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
                 if (tile != Planes[z].cells[x, y].tile)
                 {
@@ -157,7 +189,7 @@ namespace eced
 
         public void SetTag(int x, int y, int z, int tag)
         {
-            if (x >= 0 && y >= 0 && x < width && y < height)
+            if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
                 Planes[z].cells[x, y].tag = tag;
             }
@@ -170,7 +202,7 @@ namespace eced
 
         public void SetSector(int x, int y, int z, Sector sector)
         {
-            if (x >= 0 && y >= 0 && x < width && y < height)
+            if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
                 Planes[z].cells[x, y].sector = sector;
 
@@ -362,8 +394,8 @@ namespace eced
             sb.Append("namespace = \"Wolf3D\";\n");
             sb.Append("tilesize = 64;\n");
             sb.Append("name = \"ecedtest\";\n");
-            sb.Append("width = " + width.ToString() + ";\n");
-            sb.Append("height = " + height.ToString() + ";\n");
+            sb.Append("width = " + Width.ToString() + ";\n");
+            sb.Append("height = " + Height.ToString() + ";\n");
 
             //Plane plane = new Plane();
 
@@ -406,12 +438,12 @@ namespace eced
             }
             sb.Append("\n");
 
-            for (int i = 0; i < width * height; i++)
+            for (int i = 0; i < Width * Height; i++)
             {
-                for (int p = 0; p < this.depth; p++)
+                for (int p = 0; p < this.Depth; p++)
                 {
-                    int x = i % width;
-                    int y = i / width;
+                    int x = i % Width;
+                    int y = i / Width;
                     for (int li = 0; li < Planes[p].cells[x, y].triggerList.Count; li++)
                     {
                         sb.Append(Planes[p].cells[x, y].triggerList[li].Serialize());
@@ -428,16 +460,16 @@ namespace eced
             StringBuilder stringbuilder = new StringBuilder();
             stringbuilder.Append("planemap\n");
             stringbuilder.Append("{\n");
-            for (int i = 0; i < width * height; i++)
+            for (int i = 0; i < Width * Height; i++)
             {
-                int x = i % width;
-                int y = i / width;
+                int x = i % Width;
+                int y = i / Width;
                 stringbuilder.Append("\t{"); stringbuilder.Append(GetTileID(Planes[plane].cells[x, y].tile));
                 stringbuilder.Append(", "); stringbuilder.Append(GetSectorID(x, y, plane));
                 stringbuilder.Append(", "); stringbuilder.Append(GetZoneID(Planes[plane].cells[x, y]));
                 stringbuilder.Append(", "); stringbuilder.Append(Planes[plane].cells[x, y].tag);
                 stringbuilder.Append("}");
-                if (i < ((width * height) - 1))
+                if (i < ((Width * Height) - 1))
                 {
                     stringbuilder.Append(",");
                 }
@@ -519,11 +551,11 @@ namespace eced
 
             int index = 0;
             int tilesadded = 0;
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < Width; x++)
                 {
-                    for (int z = 0; z < depth; z++)
+                    for (int z = 0; z < Depth; z++)
                     {
                         Cell cell = new Cell();
                         if (tempPlanemap[index].tile >= 0)

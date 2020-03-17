@@ -1,7 +1,7 @@
 ﻿#version 330 core
 
 layout(location=0) in vec4 point;
-layout(location=1) in vec2 uvcoord;
+layout(location=1) in vec2 uvCoord;
 
 smooth out vec2 tileloc;
 
@@ -13,10 +13,9 @@ uniform ivec2 mapsize;
 
 void main()
 {
-	float mapScaleX = float(mapsize.x) / 64.0f;
-	float mapScaleY = float(mapsize.y) / 64.0f;
-	vec4 scaledPt = vec4(point.x * mapScaleX, point.y * mapScaleY, point.z, point.w);
-    vec4 pannedPt = scaledPt - vec4(mapScaleX / 2.0f, mapScaleY / 2.0f, 0.0, 0.0) + vec4(pan.x, pan.y, 0.0, 0.0);
-	gl_Position = vec4(pannedPt.x * zoom, -pannedPt.y * zoom, pannedPt.z, pannedPt.w) * project;
-	tileloc = scaledPt.xy * tilesize; 
+	vec4 scale = vec4(tilesize * (float(mapsize.x) / 2), tilesize * (float(mapsize.y) / 2), 1.0, 1.0);
+	vec4 scaledPt = point * scale;
+	scaledPt += vec4(pan.x, pan.y, 0.0, 0.0);
+	gl_Position = project * vec4(scaledPt.x * zoom, scaledPt.y * zoom, scaledPt.z, scaledPt.w);
+	tileloc = uvCoord * mapsize; 
 }

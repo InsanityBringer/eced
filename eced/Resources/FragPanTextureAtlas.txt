@@ -69,9 +69,12 @@ void main()
 	{
 		color = texelFetch(atlas, cellpos, 0) * multiplier;
 	}
-	//color = vec4(1.0 * cellposf.x, 1.0 * cellposf.y, 0.0, 1.0);
+	//vec2 hack = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
+	//color = vec4(1.0 * hack.x, 1.0 * hack.y, 0.5, 1.0);
 	//color = vec4(clamp(tileloc.x, 0.0, 1.0), clamp(tileloc.y, 0.0, 1.0), 1.0, 1.0);
 	//color = texelFetch(atlas, itile, 0);
 	//color = vec4(textureRes.x / 256.0, textureRes.y / 256.0, 0.0, 0.0);
 	//color = texelFetch(texInfo, itile, 0);
+	//color = vec4(itile.x / 64.0, itile.y / 64.0, 0.0, 1.0);
+	//color = vec4(tileid / 40.0, 0.0, 0.0, 1.0);
 }
