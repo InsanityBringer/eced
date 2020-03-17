@@ -16,10 +16,6 @@
  *  -------------------------------------------------------------------*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -169,7 +165,6 @@ namespace eced.Renderer
 
         public void DrawTilemap()
         {
-            state.TileMapShader.UseShader();
             GL.BindVertexArray(vaoNames[(int)VAOInidices.Tilemap]);
             GL.DrawArrays(PrimitiveType.TriangleFan, 0, 4);
         }

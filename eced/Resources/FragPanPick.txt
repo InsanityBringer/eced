@@ -1,0 +1,13 @@
+﻿#version 330 core
+
+smooth in vec2 tileloc;
+
+layout (location=0) out ivec4 color;
+
+void main()
+{
+	//gross hack
+	ivec2 itile = ivec2(tileloc);
+	//color = itile;
+	color = ivec4(itile.xy, 0, 0);
+}

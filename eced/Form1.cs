@@ -390,6 +390,7 @@ namespace eced
 
                 //renderer.drawTrigger(new Vector2(2.0f, 2.0f), currentLevel, sm.programList["ThingRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
                 GL.UseProgram(0);*/
+                worldRenderer.UpdateLevel();
                 worldRenderer.DrawLevel();
             }
             GL.Flush();
@@ -528,7 +529,7 @@ namespace eced
                 return;
 
             Console.WriteLine("placing brush");
-            Vector2 tile = Pick(new Vector2(e.X, e.Y));
+            Vector2 tile = worldRenderer.PickOrtho(e.X, e.Y);
 
             SetMouseButton(e);
             brushmode = editorState.BrushDown(tile, heldMouseButton);
@@ -540,13 +541,14 @@ namespace eced
             if (editorState.CurrentLevel == null)
                 return;
 
-            Vector2 tile = Pick(new Vector2(e.X, e.Y));
+            Vector2 tile = worldRenderer.PickOrtho(e.X, e.Y);
+            statusBar1.Panels[0].Text = string.Format("{0} {1}", tile.X, tile.Y);
 
             editorState.CurrentLevel.UpdateHighlight((int)((tile.X + .5) * 64), (int)((tile.Y + .5) * 64));
 
             if (brushmode)
             {
-                Vector2 src = Pick(lastMousePos);
+                Vector2 src = worldRenderer.PickOrtho((int)lastMousePos.X, (int)lastMousePos.Y);
                 editorState.BrushFromTo(src, tile, heldMouseButton);
             }
             mainLevelPanel.Invalidate();

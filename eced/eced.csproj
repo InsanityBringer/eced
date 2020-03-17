@@ -112,6 +112,7 @@
     <Compile Include="NewMapDialog.Designer.cs">
       <DependentUpon>NewMapDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Renderer\PickBuffer.cs" />
     <Compile Include="Renderer\RendererDrawer.cs" />
     <Compile Include="Renderer\Shader.cs" />
     <Compile Include="Renderer\WorldRenderer.cs" />
@@ -270,6 +271,9 @@
     </Content>
     <Content Include="Resources\floorfont.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\FragPanPick.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\FragPanTextureAtlas.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -182,7 +182,8 @@ namespace eced
                         InternalTileset.Add(tile);
                         Console.WriteLine("tileset size: {0}", InternalTileset.Count);
                     }
-                    updateCells.Add(new OpenTK.Vector2(x, y));
+                    //updateCells.Add(new OpenTK.Vector2(x, y));
+                    SetDirty(x, y);
                 }
             }
         }

@@ -111,8 +111,11 @@ namespace eced.Renderer
         public Shader TileMapShader { get; private set; }
         public Shader ThingShader { get; private set; }
         public Shader LineShader { get; private set; }
+        public Shader TileMapPickShader { get; private set; }
 
         public RendererDrawer Drawer { get; private set; }
+
+        public PickBuffer PickFB { get; private set; }
 
         public RendererState(EditorState editorState)
         {
@@ -124,6 +127,7 @@ namespace eced.Renderer
             CreateShaderPrograms();
             Drawer = new RendererDrawer(this);
             Drawer.Init();
+            PickFB = new PickBuffer();
         }
 
         private void CreateShaderPrograms()
@@ -142,6 +146,17 @@ namespace eced.Renderer
             TileMapShader.AddUniform("numbers");
             TileMapShader.AddUniform("texInfo");
             TileMapShader.AddUniform("mapPlane");
+
+            TileMapPickShader = new Shader("tileMapPickShader");
+            TileMapPickShader.Init();
+            TileMapPickShader.AddShader("./resources/VertexPanTexture.txt", ShaderType.VertexShader);
+            TileMapPickShader.AddShader("./resources/FragPanPick.txt", ShaderType.FragmentShader);
+            TileMapPickShader.LinkShader();
+            TileMapPickShader.AddUniform("pan");
+            TileMapPickShader.AddUniform("zoom");
+            TileMapPickShader.AddUniform("tilesize");
+            TileMapPickShader.AddUniform("project");
+            TileMapPickShader.AddUniform("mapsize");
 
             ThingShader = new Shader("thingShader");
             ThingShader.Init();
@@ -184,9 +199,12 @@ namespace eced.Renderer
             GL.UniformMatrix4(ThingShader.UniformLocations["project"], false, ref projectionMatrix);
             LineShader.UseShader();
             GL.UniformMatrix4(LineShader.UniformLocations["project"], false, ref projectionMatrix);
+            TileMapPickShader.UseShader();
+            GL.UniformMatrix4(TileMapPickShader.UniformLocations["project"], false, ref projectionMatrix);
             ErrorCheck("RendererState::SetViewSize: Setting viewport");
 
             screenSize.X = w; screenSize.Y = h;
+            PickFB.Create(w, h);
         }
 
         /// <summary>
@@ -198,6 +216,9 @@ namespace eced.Renderer
             TileMapShader.UseShader();
             GL.Uniform1(TileMapShader.UniformLocations["tilesize"], (float)64); //TODO
             GL.Uniform2(TileMapShader.UniformLocations["mapsize"], level.Width, level.Height);
+            TileMapPickShader.UseShader();
+            GL.Uniform1(TileMapPickShader.UniformLocations["tilesize"], (float)64); //TODO
+            GL.Uniform2(TileMapPickShader.UniformLocations["mapsize"], level.Width, level.Height);
             /*ThingShader.UseShader();
             GL.Uniform1(ThingShader.UniformLocations["tilesize"], (float)64); //TODO
             GL.Uniform2(ThingShader.UniformLocations["mapsize"], level.Width, level.Height);*/
@@ -215,6 +236,8 @@ namespace eced.Renderer
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
             TileMapShader.UseShader();
             GL.Uniform2(TileMapShader.UniformLocations["pan"], ref newPan);
+            TileMapPickShader.UseShader();
+            GL.Uniform2(TileMapPickShader.UniformLocations["pan"], ref newPan);
             ThingShader.UseShader();
             GL.Uniform2(ThingShader.UniformLocations["pan"], ref newPan);
             LineShader.UseShader();
@@ -227,6 +250,8 @@ namespace eced.Renderer
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
             TileMapShader.UseShader();
             GL.Uniform1(TileMapShader.UniformLocations["zoom"], zoom);
+            TileMapPickShader.UseShader();
+            GL.Uniform1(TileMapPickShader.UniformLocations["zoom"], zoom);
             ThingShader.UseShader();
             GL.Uniform1(ThingShader.UniformLocations["zoom"], zoom);
             LineShader.UseShader();
