@@ -17,6 +17,8 @@
 
 using System;
 using System.Windows.Forms;
+using eced.ResourceFiles.Formats;
+using eced.ResourceFiles.Images;
 
 namespace eced
 {
@@ -31,6 +33,9 @@ namespace eced
             OpenTK.ToolkitOptions options = new OpenTK.ToolkitOptions();
             options.Backend = OpenTK.PlatformBackend.PreferNative;
             OpenTK.Toolkit.Init(options);
+
+            LumpClassifier.Init();
+            ImageDecoder.Init();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

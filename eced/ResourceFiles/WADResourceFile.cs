@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using eced.ResourceFiles.Formats;
 
 namespace eced.ResourceFiles
 {
@@ -39,7 +40,7 @@ namespace eced.ResourceFiles
                 int size = br.ReadInt32();
                 string name = new String(br.ReadChars(8));
                 string fullname = name;
-                ResourceNamespace ns = ResourceNamespace.NS_GENERIC;
+                ResourceNamespace ns = ResourceNamespace.Global;
                 //eat null bytes for convenience
                 name = name.Trim('\0', ' '); //maybe this will work
                 fullname = fullname.Trim('\0'); //try to cut off null bytes at end of fullname
@@ -56,10 +57,10 @@ namespace eced.ResourceFiles
                 else if (wad.saveToDirectory == "TEXTURES")
                 {
                     fullname = wad.saveToDirectory + "/" + name;
-                    ns = ResourceNamespace.NS_TEXTURE;
+                    ns = ResourceNamespace.Texture;
                 }
 
-                ResourceFile lump = new ResourceFile(name, ResourceType.RES_GENERIC, size);
+                ResourceFile lump = new ResourceFile(name, size);
                 lump.fullname = fullname;
                 lump.pointer = ptr;
                 lump.ns = ns;
@@ -67,13 +68,14 @@ namespace eced.ResourceFiles
                 wad.lumps.Add(lump);
                 Console.WriteLine("{0}, {1} {2}", lump.fullname, lump.pointer, lump.size);
             }
-            br.Close();
 
-            //wad.streamreader = br;
+            wad.streamreader = br;
 
             Console.WriteLine("{0} lumps loaded", wad.lumps.Count);
+            wad.ClassifyArchiveLumps();
+            wad.CloseFile();
 
-            return (ResourceArchive)wad;
+            return wad;
         }
 
         public override ResourceFile FindResource(string fullname)
@@ -93,7 +95,7 @@ namespace eced.ResourceFiles
         
         public override List<ResourceFile> GetResourceList(ResourceNamespace ns)
         {
-            if (ns == ResourceNamespace.NS_GENERIC)
+            if (ns == ResourceNamespace.Global)
                 return lumps;
 
             List<ResourceFile> lumplist = new List<ResourceFile>();
@@ -121,6 +123,7 @@ namespace eced.ResourceFiles
         public override void CloseResource()
         {
             this.streamreader.Close();
+            this.streamreader.Dispose();
         }
 
         /// <summary>
@@ -150,7 +153,7 @@ namespace eced.ResourceFiles
             return lumpdata;
         }
 
-        public byte[] loadResourceByIndex(int index)
+        public byte[] LoadLumpByIndex(int index)
         {
             ResourceFile lump = lumps[index];
 
@@ -158,6 +161,17 @@ namespace eced.ResourceFiles
             byte[] lumpdata = this.streamreader.ReadBytes(lump.size);
 
             return lumpdata;
+        }
+
+        public override void ClassifyArchiveLumps()
+        {
+            byte[] data;
+            for (int i = 0; i < lumps.Count; i++)
+            {
+                //TODO: This should be done more cleanly to avoid having to load every lump
+                data = LoadLumpByIndex(i);
+                LumpClassifier.Classify(lumps[i], data);
+            }
         }
 
         /// <summary>

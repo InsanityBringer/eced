@@ -27,5 +27,9 @@ namespace eced.ResourceFiles
         public virtual void CloseFile()
         {
         }
+
+        public virtual void ClassifyArchiveLumps()
+        {
+        }
     }
 }

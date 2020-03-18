@@ -390,7 +390,7 @@ namespace eced
             {
                 palette = archive.LoadResource("PLAYPAL");
             }
-            List<ResourceFiles.ResourceFile> lumps = archive.GetResourceList(ResourceFiles.ResourceNamespace.NS_TEXTURE);
+            List<ResourceFiles.ResourceFile> lumps = archive.GetResourceList(ResourceFiles.ResourceNamespace.Texture);
 
             for (int i = 0; i < lumps.Count; i++)
             {

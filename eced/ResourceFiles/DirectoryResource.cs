@@ -9,6 +9,6 @@ namespace eced.ResourceFiles
     {
         public List<ResourceFile> resources;
 
-        public DirectoryResource(string name, ResourceType type, int size) : base(name, type, size) { }
+        public DirectoryResource(string name, int size) : base(name, size) { }
     }
 }

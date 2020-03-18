@@ -9,6 +9,6 @@ namespace eced.ResourceFiles
     {
         public int width, height;
 
-        public ImageResource(string name, ResourceType type, int size) : base(name, type, size) { }
+        public ImageResource(string name, int size) : base(name, size) { }
     }
 }

@@ -19,26 +19,52 @@ using System.Collections.Generic;
 
 namespace eced.ResourceFiles.Formats
 {
+    public enum LumpFormatType
+    {
+        Generic,
+        VSwapTexture,
+        VSwapSprite,
+        DoomPatch,
+        DoomFlat,
+        PNG,
+    }
+
+    public class LumpClassifierEntry
+    {
+        public LumpFormat classifier;
+        public LumpFormatType format;
+
+        public LumpClassifierEntry(LumpFormat classifier, LumpFormatType format)
+        {
+            this.classifier = classifier;
+            this.format = format;
+        }
+    }
+
     public static class LumpClassifier
     {
-        static List<LumpFormat> formats;
+        static List<LumpClassifierEntry> formats;
 
         public static void Init()
         {
-            formats = new List<LumpFormat>();
+            formats = new List<LumpClassifierEntry>();
 
             //This serves as the registry of detected lump formats.
             //For the moment, this is just image formats used by ImageDecoder.
-            formats.Add(new PNGLumpFormat());
-            formats.Add(new PatchLumpFormat());
+            formats.Add(new LumpClassifierEntry(new PNGLumpFormat(), LumpFormatType.PNG));
+            formats.Add(new LumpClassifierEntry(new PatchLumpFormat(), LumpFormatType.DoomPatch));
         }
 
         public static void Classify(ResourceFile lump, byte[] data)
         {
-            foreach (LumpFormat format in formats)
+            foreach (LumpClassifierEntry format in formats)
             {
-                if (format.Classify(lump, data))
+                if (format.classifier.Classify(lump, data))
+                {
+                    lump.format = format.format;
                     return;
+                }
+                lump.format = LumpFormatType.Generic;
             }
         }
     }

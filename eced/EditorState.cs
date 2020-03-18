@@ -183,11 +183,11 @@ namespace eced
 
             List<ResourceFiles.ResourceFile> lumps = new List<ResourceFiles.ResourceFile>();
 
-            ResourceFiles.ResourceFile mapheader = new ResourceFiles.ResourceFile(this.CurrentMapInfo.lumpname, ResourceFiles.ResourceType.RES_GENERIC, 0);
+            ResourceFiles.ResourceFile mapheader = new ResourceFiles.ResourceFile(this.CurrentMapInfo.lumpname, 0);
             mapheader.pointer = 0; lumps.Add(mapheader);
-            ResourceFiles.ResourceFile mapdatal = new ResourceFiles.ResourceFile("TEXTMAP", ResourceFiles.ResourceType.RES_GENERIC, mapdata.Length);
+            ResourceFiles.ResourceFile mapdatal = new ResourceFiles.ResourceFile("TEXTMAP", mapdata.Length);
             mapdatal.pointer = 0; lumps.Add(mapdatal);
-            ResourceFiles.ResourceFile mapend = new ResourceFiles.ResourceFile("ENDMAP", ResourceFiles.ResourceType.RES_GENERIC, 0);
+            ResourceFiles.ResourceFile mapend = new ResourceFiles.ResourceFile("ENDMAP", 0);
             mapend.pointer = 0; lumps.Add(mapend);
 
 

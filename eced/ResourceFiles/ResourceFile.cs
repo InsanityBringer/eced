@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using eced.ResourceFiles.Formats;
 
 namespace eced.ResourceFiles
 {
@@ -14,21 +15,12 @@ namespace eced.ResourceFiles
         RES_DIRECTORY
     }
 
-    public enum LumpFormatType
-    {
-        Generic,
-        VSwapTexture,
-        VSwapSprite,
-        DoomPatch,
-        DoomFlat,
-        PNG,
-    }
-
     public enum ResourceNamespace
     {
-        NS_GENERIC,
-        NS_SPRITE,
-        NS_TEXTURE
+        Global,
+        Sprite,
+        Texture,
+        Flat
     }
 
     public class ResourceFile
@@ -50,10 +42,9 @@ namespace eced.ResourceFiles
         public LumpFormatType format;
         //public ResourceType type;
 
-        public ResourceFile(string name, ResourceType type, int size)
+        public ResourceFile(string name, int size)
         {
             this.name = name;
-            this.type = type;
             this.size = size;
 
             format = LumpFormatType.Generic;

@@ -29,19 +29,18 @@ namespace eced.ResourceFiles
                     //TODO: Should I be a good boy and use 64bit values
                     int size = (int)entry.Size;
 
-                    ResourceNamespace type = ResourceNamespace.NS_GENERIC;
+                    ResourceNamespace type = ResourceNamespace.Global;
 
                     //Find the directory
                     string[] splitname = name.Split('/');
                     string finalname = (splitname[splitname.Length - 1].Split('.'))[0];
                     if (splitname[0].Equals("TEXTURES", StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine("this is a texture");
-                        type = ResourceNamespace.NS_TEXTURE;
+                        type = ResourceNamespace.Texture;
                     }
 
                     Console.WriteLine("{0} {1} {2}", name, splitname[0], finalname);
-                    ResourceFile lump = new ResourceFile(finalname, ResourceType.RES_GENERIC, size);
+                    ResourceFile lump = new ResourceFile(finalname, size);
                     //lump.internalObject = (Object)entry;
                     lump.fullname = name;
                     lump.pointer = (int)entry.ZipFileIndex;
@@ -71,7 +70,7 @@ namespace eced.ResourceFiles
 
         public override List<ResourceFile> GetResourceList(ResourceNamespace ns)
         {
-            if (ns == ResourceNamespace.NS_GENERIC)
+            if (ns == ResourceNamespace.Global)
                 return lumps;
 
             List<ResourceFile> lumplist = new List<ResourceFile>();

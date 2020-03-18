@@ -24,7 +24,7 @@ namespace eced.ResourceFiles.Formats
         public override bool Classify(ResourceFile header, byte[] data)
         {
             //Attempt to detect patch through some heruistics
-            if (data.Length < 8) return false;
+            if (header.size < 8) return false;
             short w = BinaryHelper.getInt16(data[0], data[1]);
             short h = BinaryHelper.getInt16(data[2], data[3]);
             if (w > 0 && h > 0)

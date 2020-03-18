@@ -8,5 +8,8 @@ namespace eced.ResourceFiles.Images
 {
     public static class ImageDecoder
     {
+        public static void Init()
+        {
+        }
     }
 }
