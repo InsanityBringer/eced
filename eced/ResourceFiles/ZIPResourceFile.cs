@@ -1,9 +1,25 @@
-﻿using System;
+﻿/*  ---------------------------------------------------------------------
+ *  Copyright (c) 2020 ISB
+ *
+ *  eced is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *   eced is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
+ *  -------------------------------------------------------------------*/
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
+using eced.ResourceFiles.Formats;
 
 namespace eced.ResourceFiles
 {
@@ -50,7 +66,21 @@ namespace eced.ResourceFiles
                 }
             }
 
+            zip.ClassifyArchiveLumps();
             return zip;
+        }
+
+        public override void ClassifyArchiveLumps()
+        {
+            byte[] data;
+            Stream stream;
+            for (int i = 0; i < lumps.Count; i++)
+            {
+                stream = archive.GetInputStream(lumps[i].pointer);
+                data = new byte[lumps[i].size];
+                stream.Read(data, 0, lumps[i].size);
+                LumpClassifier.Classify(lumps[i], data);
+            }
         }
 
         public override ResourceFile FindResource(string fullname)
