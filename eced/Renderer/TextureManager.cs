@@ -17,11 +17,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace eced
@@ -389,17 +386,17 @@ namespace eced
         public void getTextureList(ResourceFiles.ResourceArchive archive)
         {
             //Try to load a palette from this resource
-            if (archive.findResource("PLAYPAL") != null)
+            if (archive.FindResource("PLAYPAL") != null)
             {
-                palette = archive.loadResource("PLAYPAL");
+                palette = archive.LoadResource("PLAYPAL");
             }
-            List<ResourceFiles.ResourceFile> lumps = archive.getResourceList(ResourceFiles.ResourceNamespace.NS_TEXTURE);
+            List<ResourceFiles.ResourceFile> lumps = archive.GetResourceList(ResourceFiles.ResourceNamespace.NS_TEXTURE);
 
             for (int i = 0; i < lumps.Count; i++)
             {
                 try
                 {
-                    byte[] data = archive.loadResource(lumps[i].fullname);
+                    byte[] data = archive.LoadResource(lumps[i].fullname);
                     //Console.WriteLine(lumps[i].fullname);
                     if (data != null)
                     {
@@ -424,7 +421,7 @@ namespace eced
                         //Load a doom patch
                         else if (format == TextureFormat.FORMAT_PATCH)
                         {
-                            byte[] patch = archive.loadResource(lumps[i].fullname);
+                            byte[] patch = archive.LoadResource(lumps[i].fullname);
                             //Console.WriteLine("adding patch {0}", lumps[i].name);
                             addPatchToCollection(ref patch);
                             textureIDList[lumps[i].name.ToUpper()] = lastID; lastID++;

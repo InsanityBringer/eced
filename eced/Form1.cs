@@ -172,9 +172,9 @@ namespace eced
             for (int i = 0; i < editorState.CurrentLevel.loadedResources.Count; i++)
             {
                 ResourceFiles.ResourceArchive file = editorState.CurrentLevel.loadedResources[i];
-                file.openFile();
+                file.OpenFile();
                 renderer.Textures.getTextureList(file);
-                file.closeFile();
+                file.CloseFile();
             }
             renderer.Textures.createInfoTexture();
             renderer.Textures.uploadNumberTexture();

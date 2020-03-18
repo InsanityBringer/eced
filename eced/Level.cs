@@ -97,7 +97,7 @@ namespace eced
         {
             for (int i = 0; i < loadedResources.Count; i++)
             {
-                loadedResources[i].closeResource();
+                loadedResources[i].CloseResource();
             }
             loadedResources.Clear();
         }

@@ -117,7 +117,15 @@
     <Compile Include="Renderer\Shader.cs" />
     <Compile Include="Renderer\WorldRenderer.cs" />
     <Compile Include="ResourceFiles\DirectoryResource.cs" />
+    <Compile Include="ResourceFiles\Formats\LumpClassifier.cs" />
+    <Compile Include="ResourceFiles\Formats\LumpFormat.cs" />
+    <Compile Include="ResourceFiles\Formats\PatchLumpFormat.cs" />
+    <Compile Include="ResourceFiles\Formats\PNGLumpFormat.cs" />
     <Compile Include="ResourceFiles\ImageResource.cs" />
+    <Compile Include="ResourceFiles\Images\DoomPatchCodec.cs" />
+    <Compile Include="ResourceFiles\Images\ImageCodec.cs" />
+    <Compile Include="ResourceFiles\Images\ImageDecoder.cs" />
+    <Compile Include="ResourceFiles\Images\PNGPatchCodec.cs" />
     <Compile Include="ResourceFiles\ResourceArchive.cs" />
     <Compile Include="ResourceFiles\ResourceArchiveHeader.cs" />
     <Compile Include="ResourceFiles\ResourceFile.cs" />
@@ -256,6 +264,7 @@
     </Compile>
     <Compile Include="UWMFSearch.cs" />
     <Compile Include="Zone.cs" />
+    <None Include="Resources\wolfpalette.pal" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FloorTool.bmp" />

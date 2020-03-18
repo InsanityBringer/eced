@@ -76,7 +76,7 @@ namespace eced.ResourceFiles
             return (ResourceArchive)wad;
         }
 
-        public override ResourceFile findResource(string fullname)
+        public override ResourceFile FindResource(string fullname)
         {
             //string[] parts = name.Split('\\', '/');
             //return recursiveFind(parts, 0, this.lumps);
@@ -91,7 +91,7 @@ namespace eced.ResourceFiles
             
         }
         
-        public override List<ResourceFile> getResourceList(ResourceNamespace ns)
+        public override List<ResourceFile> GetResourceList(ResourceNamespace ns)
         {
             if (ns == ResourceNamespace.NS_GENERIC)
                 return lumps;
@@ -107,18 +107,18 @@ namespace eced.ResourceFiles
             return lumplist;
         }
 
-        public override void pushResource(ResourceFile resource)
+        public override void PushResource(ResourceFile resource)
         {
             if (saveToDirectory != "-")
             {
-                DirectoryResource directory = (DirectoryResource)findResource(saveToDirectory);
+                DirectoryResource directory = (DirectoryResource)FindResource(saveToDirectory);
                 directory.resources.Add(resource);
             }
             else
                 lumps.Add(resource);
         }
 
-        public override void closeResource()
+        public override void CloseResource()
         {
             this.streamreader.Close();
         }
@@ -127,7 +127,7 @@ namespace eced.ResourceFiles
         /// Opens the resource file for reading, locking it
         /// Close when done to avoid keeping the file exclusively loaded
         /// </summary>
-        public override void openFile()
+        public override void OpenFile()
         {
             this.streamreader = new BinaryReader(File.Open(filename, FileMode.Open));
         }
@@ -135,14 +135,14 @@ namespace eced.ResourceFiles
         /// <summary>
         /// Closes the resource file, releasing the lock on it
         /// </summary>
-        public override void closeFile()
+        public override void CloseFile()
         {
-            this.closeResource();
+            this.CloseResource();
         }
 
-        public override byte[] loadResource(string name)
+        public override byte[] LoadResource(string name)
         {
-            ResourceFile lump = findResource(name);
+            ResourceFile lump = FindResource(name);
 
             this.streamreader.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
             byte[] lumpdata = this.streamreader.ReadBytes(lump.size);
@@ -282,7 +282,7 @@ namespace eced.ResourceFiles
             //Open the file for reading
             if (update)
             {
-                openFile();
+                OpenFile();
             }
 
             //Find how large the resultant WAD data will be
@@ -363,7 +363,7 @@ namespace eced.ResourceFiles
             //Close for reading
             if (update)
             {
-                closeFile();
+                CloseFile();
             }
 
             //Open the wad for writing

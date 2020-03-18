@@ -72,16 +72,16 @@ namespace eced
                     //replace all slashes with backslashes to prevent issues
                     fixfilename = fixfilename.Replace('/', '\\');
                     file = ResourceFiles.WADResourceFile.loadResourceFile(mapinfo.files[i].filename);
-                    file.openFile();
+                    file.OpenFile();
                     level.loadedResources.Add(file);
-                    file.closeFile();
+                    file.CloseFile();
                 }
                 else if (mapinfo.files[i].format == ResourceFiles.ResourceFormat.FORMAT_ZIP)
                 {
                     file = ResourceFiles.ZIPResourceFile.loadResourceFile(mapinfo.files[i].filename);
-                    file.openFile();
+                    file.OpenFile();
                     level.loadedResources.Add(file);
-                    file.closeFile();
+                    file.CloseFile();
                 }
             }
         }

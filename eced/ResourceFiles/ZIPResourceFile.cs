@@ -54,7 +54,7 @@ namespace eced.ResourceFiles
             return zip;
         }
 
-        public override ResourceFile findResource(string fullname)
+        public override ResourceFile FindResource(string fullname)
         {
             //string[] parts = name.Split('\\', '/');
             //return recursiveFind(parts, 0, this.lumps);
@@ -69,7 +69,7 @@ namespace eced.ResourceFiles
 
         }
 
-        public override List<ResourceFile> getResourceList(ResourceNamespace ns)
+        public override List<ResourceFile> GetResourceList(ResourceNamespace ns)
         {
             if (ns == ResourceNamespace.NS_GENERIC)
                 return lumps;
@@ -85,26 +85,26 @@ namespace eced.ResourceFiles
             return lumplist;
         }
 
-        public override void pushResource(ResourceFile resource)
+        public override void PushResource(ResourceFile resource)
         {
             if (saveToDirectory != "-")
             {
-                DirectoryResource directory = (DirectoryResource)findResource(saveToDirectory);
+                DirectoryResource directory = (DirectoryResource)FindResource(saveToDirectory);
                 directory.resources.Add(resource);
             }
             else
                 lumps.Add(resource);
         }
 
-        public override void closeResource()
+        public override void CloseResource()
         {
             //this.streamreader.Close();
             this.archive.Close();
         }
 
-        public override byte[] loadResource(string name)
+        public override byte[] LoadResource(string name)
         {
-            ResourceFile lump = findResource(name);
+            ResourceFile lump = FindResource(name);
 
             //this.streamreader.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
             //ZipEntry entry = (ZipEntry)lump.internalObject;

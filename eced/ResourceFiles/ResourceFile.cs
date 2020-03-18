@@ -14,6 +14,16 @@ namespace eced.ResourceFiles
         RES_DIRECTORY
     }
 
+    public enum LumpFormatType
+    {
+        Generic,
+        VSwapTexture,
+        VSwapSprite,
+        DoomPatch,
+        DoomFlat,
+        PNG,
+    }
+
     public enum ResourceNamespace
     {
         NS_GENERIC,
@@ -37,6 +47,7 @@ namespace eced.ResourceFiles
         public int pointer;
         public int size;
         public ResourceArchive host;
+        public LumpFormatType format;
         //public ResourceType type;
 
         public ResourceFile(string name, ResourceType type, int size)
@@ -44,15 +55,8 @@ namespace eced.ResourceFiles
             this.name = name;
             this.type = type;
             this.size = size;
-        }
 
-        public byte[] loadFromHost()
-        {
-            /*byte[] data;
-            data = host.loadResource(this);
-
-            return data;*/
-            return null;
+            format = LumpFormatType.Generic;
         }
     }
 }
