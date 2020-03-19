@@ -15,24 +15,15 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-namespace eced.ResourceFiles.Formats
+using System.Collections.Generic;
+
+namespace eced.ResourceFiles
 {
-    public class PatchLumpFormat : LumpFormat
+    //todo delete
+    public class DirectoryLump : Lump
     {
-        //TODO: This test needs to be reworked if VSWAP sprites are allowed in non-VSWAP archives
-        //since the simplicity of this check will include VSWAP sprites. 
-        public override bool Classify(Lump header, byte[] data)
-        {
-            //Attempt to detect patch through some heruistics
-            if (header.size < 8) return false;
-            short w = BinaryHelper.getInt16(data[0], data[1]);
-            short h = BinaryHelper.getInt16(data[2], data[3]);
-            if (w > 0 && h > 0)
-            {
-                header.format = LumpFormatType.DoomPatch;
-                return true;
-            }
-            return false;
-        }
+        public List<Lump> resources;
+
+        public DirectoryLump(string name, int size) : base(name, size) { }
     }
 }

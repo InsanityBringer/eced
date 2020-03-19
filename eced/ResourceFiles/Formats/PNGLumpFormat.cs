@@ -19,7 +19,7 @@ namespace eced.ResourceFiles.Formats
 {
     public class PNGLumpFormat : LumpFormat
     {
-        public override bool Classify(ResourceFile lump, byte[] data)
+        public override bool Classify(Lump lump, byte[] data)
         {
             if (lump.size < 4) return false;
             if (data[0] == 137 && data[1] == 80 && data[2] == 78 && data[3] == 71)

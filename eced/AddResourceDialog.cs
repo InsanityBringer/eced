@@ -12,70 +12,74 @@ namespace eced
 {
     public partial class AddResourceDialog : Form
     {
-        ResourceFiles.ResourceArchiveHeader resfile = new ResourceFiles.ResourceArchiveHeader();
+        public ArchiveHeader CurrentArchive { get; } = new ResourceFiles.ArchiveHeader();
         public AddResourceDialog()
         {
             InitializeComponent();
         }
 
-        public ResourceArchiveHeader getResource()
-        {
-            return resfile;
-        }
-
         private void button3_Click(object sender, EventArgs e)
         {
-            ofdResource.Filter = ".WAD files|*.wad";
+            ArchiveOpenFileDialog.Filter = ".WAD files|*.wad";
 
-            DialogResult res = ofdResource.ShowDialog();
+            DialogResult res = ArchiveOpenFileDialog.ShowDialog();
 
             if (res == DialogResult.OK)
             {
-                if (ofdResource.FileName != "")
+                if (ArchiveOpenFileDialog.FileName != "")
                 {
-                    txtWadPath.Text = ofdResource.FileName;
+                    txtWadPath.Text = ArchiveOpenFileDialog.FileName;
                 }
             }
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            ofdResource.Filter = ".PK3/.ZIP files|*.PK3;*.ZIP;*.PKZ;*.PKW";
+            ArchiveOpenFileDialog.Filter = ".PK3/.ZIP files|*.PK3;*.ZIP;*.PKZ;*.PKW";
 
-            DialogResult res = ofdResource.ShowDialog();
+            DialogResult res = ArchiveOpenFileDialog.ShowDialog();
 
             if (res == DialogResult.OK)
             {
-                if (ofdResource.FileName != "")
+                if (ArchiveOpenFileDialog.FileName != "")
                 {
-                    txtPK3Path.Text = ofdResource.FileName;
+                    txtPK3Path.Text = ArchiveOpenFileDialog.FileName;
                 }
             }
         }
 
+        //what a horrible hack
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            resfile.filename = txtWadPath.Text;
-            resfile.format = ResourceFiles.ResourceFormat.FORMAT_WAD;
+            CurrentArchive.filename = txtWadPath.Text;
+            CurrentArchive.format = ResourceFiles.ResourceFormat.Wad;
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            resfile.filename = txtPK3Path.Text;
-            resfile.format = ResourceFiles.ResourceFormat.FORMAT_ZIP;        
+            CurrentArchive.filename = txtPK3Path.Text;
+            CurrentArchive.format = ResourceFiles.ResourceFormat.Zip;        
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button7_Click(object sender, EventArgs e)
         {
-            if (resfile.filename == "")
+            ArchiveOpenFileDialog.Filter = "VSWAP Files|VSWAP.WL6;VSWAP.SOD";
+
+            DialogResult res = ArchiveOpenFileDialog.ShowDialog();
+
+            if (res == DialogResult.OK)
             {
-                this.DialogResult = DialogResult.Cancel;
+                if (ArchiveOpenFileDialog.FileName != "")
+                {
+                    VSwapPathTextBox.Text = ArchiveOpenFileDialog.FileName;
+                }
             }
-            else
-            {
-                this.DialogResult = DialogResult.OK;
-            }
-            this.Close();
+        }
+
+        private void VSwapPathTextBox_TextChanged(object sender, EventArgs e)
+        {
+            CurrentArchive.filename = VSwapPathTextBox.Text;
+            CurrentArchive.format = ResourceFormat.VSwap;
         }
     }
 }

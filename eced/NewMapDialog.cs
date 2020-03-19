@@ -18,6 +18,8 @@
 using System;
 using System.Windows.Forms;
 
+using eced.ResourceFiles;
+
 namespace eced
 {
     public partial class NewMapDialog : Form
@@ -50,7 +52,7 @@ namespace eced
 
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
-                CurrentMap.files.Add((ResourceFiles.ResourceArchiveHeader)listBox1.Items[i]);
+                CurrentMap.files.Add((ResourceFiles.ArchiveHeader)listBox1.Items[i]);
             }
             this.Close();
         }
@@ -69,9 +71,13 @@ namespace eced
         private void button1_Click(object sender, EventArgs e)
         {
             AddResourceDialog resourceDialog = new AddResourceDialog();
+            ArchiveHeader resource;
+            
             if (resourceDialog.ShowDialog() == DialogResult.OK)
             {
-                listBox1.Items.Add(resourceDialog.getResource());
+                resource = resourceDialog.CurrentArchive;
+                if (resource.filename != "")
+                    listBox1.Items.Add(resource);
             }
 
             resourceDialog.Dispose();

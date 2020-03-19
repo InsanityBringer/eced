@@ -1,0 +1,89 @@
+<triggers>
+	<trigger>
+		<name>Door_Open</name>
+		
+		<arg1>tag</arg1>
+		<arg1type>tag</arg1type>
+		<arg2>speed</arg2>
+		<arg3>delay</arg3>
+		<arg4>lock</arg4>
+		<arg5>type</arg5>
+	</trigger>
+	
+	<trigger>
+		<name>Pushwall_Move</name>
+		
+		<arg1>tag</arg1>
+		<arg1type>tag</arg1type>
+		<arg2>speed</arg2>
+		<arg3>direction</arg3>
+		<arg3type>dir</arg3type>
+		<arg4>distance</arg4>
+	</trigger>
+	
+	<trigger>
+		<name>Exit_Normal</name>
+		
+		<arg1>pos</arg1>
+		<arg1type>tid</arg1type>
+	</trigger>
+	
+	<trigger>
+		<name>Exit_Secret</name>
+		
+		<arg1>pos</arg1>
+		<arg1type>tid</arg1type>
+	</trigger>
+	
+	<trigger>
+		<name>Teleport_NewMap</name>
+		
+		<arg1>map</arg1>
+		<arg2>pos</arg2>
+		<arg2type>tid</arg2type>
+		<arg3>flags</arg3>
+	</trigger>
+	
+	<trigger>
+		<name>Exit_VictorySpin</name>
+	</trigger>
+	
+	<trigger>
+		<name>Trigger_Execute</name>
+		
+		<arg1>x</arg1>
+		<arg2>y</arg2>
+		<arg3>z</arg3>
+	</trigger>
+	
+	<trigger>
+		<name>StartConversation</name>
+		
+		<arg1>tid</arg1>
+		<arg1type>tag</arg1type>
+		<arg2>faceTalker</arg2>
+	</trigger>
+	
+	<trigger>
+		<name>Door_Elevator</name>
+		
+		<arg1>switchTag</arg1>
+		<arg1type>tag</arg1type>
+		<arg2>speed</arg2>
+		<arg3>delay</arg3>
+		<arg4>lock</arg4>
+		<arg5>type</arg5>
+	</trigger>
+	
+	<trigger>
+		<name>Elevator_SwitchFloor</name>
+		
+		<arg1>elevTag</arg1>
+		<arg1type>tag</arg1type>
+		<arg2>doorTag</arg2>
+		<arg2type>tag</arg2type>
+		<arg3>callSpeed</arg3>
+		<arg4>nextTag</arg4>
+		<arg4type>tag</arg4type>
+	</trigger>
+</triggers>

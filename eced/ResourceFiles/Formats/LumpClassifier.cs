@@ -55,7 +55,7 @@ namespace eced.ResourceFiles.Formats
             formats.Add(new LumpClassifierEntry(new PatchLumpFormat(), LumpFormatType.DoomPatch));
         }
 
-        public static void Classify(ResourceFile lump, byte[] data)
+        public static void Classify(Lump lump, byte[] data)
         {
             foreach (LumpClassifierEntry format in formats)
             {

@@ -15,25 +15,42 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-using System.Collections.Generic;
+using System;
 using eced.ResourceFiles.Formats;
 
-namespace eced.ResourceFiles.Images
+namespace eced.ResourceFiles
 {
-    public static class ImageDecoder
+    [Flags] //make flags so you can ask for multiple namespaces at once
+    public enum LumpNamespace
     {
-        private static Dictionary<LumpFormatType, ImageCodec> decoderMap;
-        public static void Init()
-        {
-            decoderMap = new Dictionary<LumpFormatType, ImageCodec>();
-            decoderMap.Add(LumpFormatType.DoomPatch, new DoomPatchCodec());
-            decoderMap.Add(LumpFormatType.PNG, new PNGCodec());
-            decoderMap.Add(LumpFormatType.VSwapTexture, new VSwapWallCodec());
-        }
+        Global = 0,
+        Sprite = 1,
+        Texture = 2,
+        Flat = 4
+    }
 
-        public static BasicImage DecodeLump(Lump lump, byte[] data, byte[] palette)
+    public class Lump
+    {
+        /// <summary>
+        /// The filename of the individual lump, minus the path
+        /// </summary>
+        public string name;
+        /// <summary>
+        /// The full filename of the lump, with the actual path. 
+        /// </summary>
+        public string fullname;
+        public LumpNamespace @namespace;
+        public int pointer;
+        public int size;
+        public Archive host;
+        public LumpFormatType format;
+
+        public Lump(string name, int size)
         {
-            return decoderMap[lump.format].DecodeImage(lump, data, palette);
+            this.name = name;
+            this.size = size;
+
+            format = LumpFormatType.Generic;
         }
     }
 }

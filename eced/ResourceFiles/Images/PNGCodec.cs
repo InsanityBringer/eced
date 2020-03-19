@@ -11,7 +11,7 @@ namespace eced.ResourceFiles.Images
 {
     public class PNGCodec : ImageCodec
     {
-        public override BasicImage DecodeImage(ResourceFile lump, byte[] data, byte[] palette)
+        public override BasicImage DecodeImage(Lump lump, byte[] data, byte[] palette)
         {
             MemoryStream stream = new MemoryStream(data);
             Bitmap bitmap = new Bitmap(stream); //godawful hack #1

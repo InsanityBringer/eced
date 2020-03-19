@@ -29,7 +29,7 @@ namespace eced
 
         public byte[] Palette { get; } = new byte[768];
 
-        public List<ResourceFiles.ResourceArchiveHeader> files = new List<ResourceFiles.ResourceArchiveHeader>();
+        public List<ResourceFiles.ArchiveHeader> files = new List<ResourceFiles.ArchiveHeader>();
 
         /// <summary>
         /// Finds if the specified resource name exists in this map's resources
@@ -38,7 +38,7 @@ namespace eced
         /// <returns></returns>
         public bool ContainsResource(string name)
         {
-            foreach (ResourceFiles.ResourceArchiveHeader file in files)
+            foreach (ResourceFiles.ArchiveHeader file in files)
             {
                 if (file.filename.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {

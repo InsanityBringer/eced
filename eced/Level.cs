@@ -18,7 +18,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.IO;
+
+using eced.GameConfig;
 
 namespace eced
 {
@@ -61,7 +62,7 @@ namespace eced
 
         public List<OpenTK.Vector2> updateCells = new List<OpenTK.Vector2>();
 
-        public List<ResourceFiles.ResourceArchive> loadedResources = new List<ResourceFiles.ResourceArchive>();
+        public List<ResourceFiles.Archive> loadedResources = new List<ResourceFiles.Archive>();
 
         public Level(int w, int h, int d, Tile defaultTile)
         {
@@ -163,7 +164,7 @@ namespace eced
             if (x >= 0 && y >= 0 && x < Width && y < Height)
                 return Planes[z].cells[x, y].tile;
 
-            return TileManager.tile1;
+            return null; //need to find a better return value
         }
 
         public void SetTile(int x, int y, int z, Tile tile)

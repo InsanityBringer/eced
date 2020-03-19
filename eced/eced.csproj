@@ -104,6 +104,8 @@
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalParser.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\WAD.cs" />
     <Compile Include="EditorState.cs" />
+    <Compile Include="GameConfig\GameConfiguration.cs" />
+    <Compile Include="GameConfig\VSwapNames.cs" />
     <Compile Include="LevelIO.cs" />
     <Compile Include="Brush\LineDrawer.cs" />
     <Compile Include="MapInformation.cs" />
@@ -117,7 +119,7 @@
     <Compile Include="Renderer\RendererDrawer.cs" />
     <Compile Include="Renderer\Shader.cs" />
     <Compile Include="Renderer\WorldRenderer.cs" />
-    <Compile Include="ResourceFiles\DirectoryResource.cs" />
+    <Compile Include="ResourceFiles\DirectoryLump.cs" />
     <Compile Include="ResourceFiles\Formats\LumpClassifier.cs" />
     <Compile Include="ResourceFiles\Formats\LumpFormat.cs" />
     <Compile Include="ResourceFiles\Formats\PatchLumpFormat.cs" />
@@ -126,11 +128,13 @@
     <Compile Include="ResourceFiles\Images\ImageCodec.cs" />
     <Compile Include="ResourceFiles\Images\ImageDecoder.cs" />
     <Compile Include="ResourceFiles\Images\PNGCodec.cs" />
-    <Compile Include="ResourceFiles\ResourceArchive.cs" />
-    <Compile Include="ResourceFiles\ResourceArchiveHeader.cs" />
-    <Compile Include="ResourceFiles\ResourceFile.cs" />
-    <Compile Include="ResourceFiles\WADResourceFile.cs" />
-    <Compile Include="ResourceFiles\ZIPResourceFile.cs" />
+    <Compile Include="ResourceFiles\Archive.cs" />
+    <Compile Include="ResourceFiles\ArchiveHeader.cs" />
+    <Compile Include="ResourceFiles\Images\VSwapWallCodec.cs" />
+    <Compile Include="ResourceFiles\Lump.cs" />
+    <Compile Include="ResourceFiles\VSwapArchive.cs" />
+    <Compile Include="ResourceFiles\WADArchive.cs" />
+    <Compile Include="ResourceFiles\ZIPArchive.cs" />
     <Compile Include="Brush\SectorBrush.cs" />
     <Compile Include="Renderer\ShaderManager.cs" />
     <Compile Include="Brush\TagTool.cs" />
@@ -214,10 +218,10 @@
     <Compile Include="Thing.cs" />
     <Compile Include="Brush\ThingBrush.cs" />
     <Compile Include="ThingDefinition.cs" />
-    <Compile Include="ThingManager.cs" />
+    <Compile Include="GameConfig\ThingManager.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Brush\TileBrush.cs" />
-    <Compile Include="TileManager.cs" />
+    <Compile Include="GameConfig\TileManager.cs" />
     <Compile Include="Trigger.cs" />
     <Compile Include="TriggerEditor.cs">
       <SubType>Form</SubType>
@@ -225,7 +229,7 @@
     <Compile Include="TriggerEditor.Designer.cs">
       <DependentUpon>TriggerEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="TriggerTypeList.cs" />
+    <Compile Include="GameConfig\TriggerTypeList.cs" />
     <Compile Include="UIPanels\SectorUIPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -312,6 +316,10 @@
     </Content>
     <Content Include="Resources\wolftiles.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\wolftriggers.xml" />
+    <Content Include="Resources\wolfvswap.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SaveIcon.bmp" />
     <Content Include="SectorPaintBrush.bmp" />

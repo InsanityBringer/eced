@@ -238,6 +238,7 @@
             this.MinimizeBox = false;
             this.Name = "NewMapDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Create New Map";
             ((System.ComponentModel.ISupportInitialize)(this.nudXSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudYSize)).EndInit();

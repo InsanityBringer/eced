@@ -171,7 +171,7 @@ namespace eced
             renderer.Textures.InitAtlas();
             for (int i = 0; i < editorState.CurrentLevel.loadedResources.Count; i++)
             {
-                ResourceFiles.ResourceArchive file = editorState.CurrentLevel.loadedResources[i];
+                ResourceFiles.Archive file = editorState.CurrentLevel.loadedResources[i];
                 file.OpenFile();
                 renderer.Textures.AddArchiveTextures(file);
                 file.CloseFile();

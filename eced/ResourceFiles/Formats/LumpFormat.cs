@@ -19,6 +19,6 @@ namespace eced.ResourceFiles.Formats
 {
     public abstract class LumpFormat
     {
-        public abstract bool Classify(ResourceFile header, byte[] data);
+        public abstract bool Classify(Lump header, byte[] data);
     }
 }

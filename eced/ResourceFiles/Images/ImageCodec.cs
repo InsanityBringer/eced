@@ -15,6 +15,6 @@ namespace eced.ResourceFiles.Images
     //codec makes these classes sound more involved than they actually are, but I can't think of a better name when the thing that manages these is already ImageDecoder
     public abstract class ImageCodec
     {
-        public abstract BasicImage DecodeImage(ResourceFile lump, byte[] data, byte[] palette);
+        public abstract BasicImage DecodeImage(Lump lump, byte[] data, byte[] palette);
     }
 }
