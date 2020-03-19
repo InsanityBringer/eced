@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 using eced.Brushes;
 
@@ -58,6 +59,11 @@ namespace eced
             TileList.LoadPalette();
             ThingList = new ThingManager();
             ThingList.LoadThingDefintions("./resources/wolfactors.xml");
+            byte[] defaultPalette = new byte[768];
+            Stream str = File.Open("./resources/wolfpalette.pal", FileMode.Open);
+            str.Read(defaultPalette, 0, 768);
+            str.Close(); str.Dispose();
+            CurrentMapInfo.SetPalette(defaultPalette);
         }
 
         private void LoadResources(MapInformation mapinfo, Level level)
@@ -88,6 +94,7 @@ namespace eced
 
         public void CreateNewLevel(MapInformation mapinfo)
         {
+            CurrentMapInfo = mapinfo;
             LoadGameConfiguration();
             Level level = new Level(mapinfo.sizex, mapinfo.sizey, mapinfo.layers, TileList.tileset[0]);
             level.localThingList = this.ThingList;

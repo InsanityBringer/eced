@@ -58,19 +58,10 @@ namespace eced.Renderer
         public Matrix4 project = Matrix4.Identity;
         public Vector2 screenSize;
 
-        int vboindex = 0;
-
-        int worldTextureID;
-        int resourceTextureID;
-        int atlasTextureID;
-        int numberTextureID;
-
-        Random r = new Random();
-
         BasicRenderUniforms uniformsBasicRender = new BasicRenderUniforms();
         BasicThingUniforms uniformsThingRender = new BasicThingUniforms();
 
-        public TextureManager Textures { get; } = new TextureManager();
+        public TextureManager Textures { get; }
         public EditorState CurrentState { get; private set; }
 
         float[] levelVBO = {   0.0f, 0.0f, 0.0f, 1.0f,
@@ -120,6 +111,7 @@ namespace eced.Renderer
         public RendererState(EditorState editorState)
         {
             CurrentState = editorState;
+            Textures = new TextureManager(this);
         }
 
         public void Init()

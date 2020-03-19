@@ -151,7 +151,7 @@ namespace eced
                 if (editorState.CurrentLevel != null)
                 {
                     editorState.CloseLevel();
-                    renderer.Textures.cleanup();
+                    renderer.Textures.DestroyAtlas();
                 }
                 editorState.CreateNewLevel(nmd.CurrentMap);
                 //renderer.setupLevelRendering(editorState.CurrentLevel, (uint)sm.programList["WorldRender"], new Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
@@ -166,18 +166,18 @@ namespace eced
 
         private void RebuildResources()
         {
-            renderer.Textures.cleanup();
-            renderer.Textures.allocateAtlasTexture();
-            renderer.Textures.readyAtlasCreation();
+            renderer.Textures.DestroyAtlas();
+            renderer.Textures.AllocateAtlasTexture();
+            renderer.Textures.InitAtlas();
             for (int i = 0; i < editorState.CurrentLevel.loadedResources.Count; i++)
             {
                 ResourceFiles.ResourceArchive file = editorState.CurrentLevel.loadedResources[i];
                 file.OpenFile();
-                renderer.Textures.getTextureList(file);
+                renderer.Textures.AddArchiveTextures(file);
                 file.CloseFile();
             }
-            renderer.Textures.createInfoTexture();
-            renderer.Textures.uploadNumberTexture();
+            renderer.Textures.GenerateAtlasInfoTexture();
+            renderer.Textures.CreateZoneNumberTexture();
 
             //world.setupTextures(editorState.CurrentLevel);
         }

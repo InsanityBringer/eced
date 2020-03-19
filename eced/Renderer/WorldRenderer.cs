@@ -66,7 +66,7 @@ namespace eced.Renderer
                     coord = (y * w + x) * 4;
                     //planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
                     if (editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile != null)
-                        planeData[coord] = (short)state.Textures.getTextureID(editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile.NorthTex);
+                        planeData[coord] = (short)state.Textures.GetTextureID(editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile.NorthTex);
                     else
                     {
                         planeData[coord] = -1;

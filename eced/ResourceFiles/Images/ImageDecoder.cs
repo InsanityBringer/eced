@@ -15,18 +15,24 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using eced.ResourceFiles.Formats;
 
 namespace eced.ResourceFiles.Images
 {
     public static class ImageDecoder
     {
+        private static Dictionary<LumpFormatType, ImageCodec> decoderMap;
         public static void Init()
         {
+            decoderMap = new Dictionary<LumpFormatType, ImageCodec>();
+            decoderMap.Add(LumpFormatType.DoomPatch, new DoomPatchCodec());
+            decoderMap.Add(LumpFormatType.PNG, new PNGCodec());
+        }
+
+        public static BasicImage DecodeLump(ResourceFile lump, byte[] data, byte[] palette)
+        {
+            return decoderMap[lump.format].DecodeImage(lump, data, palette);
         }
     }
 }

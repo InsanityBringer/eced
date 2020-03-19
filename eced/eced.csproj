@@ -106,6 +106,7 @@
     <Compile Include="EditorState.cs" />
     <Compile Include="LevelIO.cs" />
     <Compile Include="Brush\LineDrawer.cs" />
+    <Compile Include="MapInformation.cs" />
     <Compile Include="NewMapDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,7 +125,7 @@
     <Compile Include="ResourceFiles\Images\DoomPatchCodec.cs" />
     <Compile Include="ResourceFiles\Images\ImageCodec.cs" />
     <Compile Include="ResourceFiles\Images\ImageDecoder.cs" />
-    <Compile Include="ResourceFiles\Images\PNGPatchCodec.cs" />
+    <Compile Include="ResourceFiles\Images\PNGCodec.cs" />
     <Compile Include="ResourceFiles\ResourceArchive.cs" />
     <Compile Include="ResourceFiles\ResourceArchiveHeader.cs" />
     <Compile Include="ResourceFiles\ResourceFile.cs" />
@@ -263,7 +264,9 @@
     </Compile>
     <Compile Include="UWMFSearch.cs" />
     <Compile Include="Zone.cs" />
-    <None Include="Resources\wolfpalette.pal" />
+    <None Include="Resources\wolfpalette.pal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="FloorTool.bmp" />
