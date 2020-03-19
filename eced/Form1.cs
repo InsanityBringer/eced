@@ -482,20 +482,6 @@ namespace eced
             mainLevelPanel.Invalidate();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //zoom += .25f;
-            zoom *= 1.111111111111f;
-            UpdateZoom();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            //zoom -= .25f;
-            zoom *= 0.9f;
-            UpdateZoom();
-        }
-
         private void SetMouseButton(System.Windows.Forms.MouseEventArgs e)
         {
             switch (e.Button)
@@ -510,18 +496,6 @@ namespace eced
                     this.heldMouseButton = 2;
                     break;
             }
-        }
-
-        public Vector2 Pick(Vector2 mouseCoords)
-        {
-            float sizex = editorState.CurrentLevel.Width / 2f;
-            float sizey = editorState.CurrentLevel.Height / 2f;
-            Vector2 center = new Vector2(mainLevelPanel.Width / 2, mainLevelPanel.Height / 2);
-            Vector2 bstart = new Vector2(center.X - (sizex * 8 * zoom) + (pan.X * 64 * 8 * zoom), center.Y - (sizey * 8 * zoom) + (pan.Y * 64 * 8 * zoom));
-            Vector2 curpos = new Vector2(mouseCoords.X - bstart.X, mouseCoords.Y - bstart.Y);
-            Vector2 tile = new Vector2((curpos.X / (8 * zoom)), (curpos.Y / (8 * zoom)));
-
-            return tile;
         }
 
         private void mainLevelPanel_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -590,55 +564,10 @@ namespace eced
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void mainLevelPanel_MouseEnter(object sender, EventArgs e)
         {
-            //thingBrush.thing = thinglist.thinglist[thinglist.idlist[listBox1.SelectedIndex]];
-        }
-
-        private void TriggerFlagChange(object sender, EventArgs e)
-        {
-            /*triggerBrush.trigger.acte = cbTrigEast.Checked;
-            //triggerBrush.trigger.action = cbTriggerType.SelectedIndex;
-            triggerBrush.trigger.actn = cbTrigNorth.Checked;
-            triggerBrush.trigger.acts = cbTrigSouth.Checked;
-            triggerBrush.trigger.actw = cbTrigWest.Checked;
-            triggerBrush.trigger.cross = cbCross.Checked;
-            triggerBrush.trigger.repeat = cbRepeat.Checked;
-            triggerBrush.trigger.secret = cbSecret.Checked;
-            triggerBrush.trigger.usemonster = cbUseMonst.Checked;
-            triggerBrush.trigger.useplayer = cbUse.Checked;*/
-        }
-
-        private void triggerParamChange(object sender, EventArgs e)
-        {
-            /*triggerBrush.trigger.arg0 = (int)ndParam1.Value;
-            triggerBrush.trigger.arg1 = (int)ndParam2.Value;
-            triggerBrush.trigger.arg2 = (int)ndParam3.Value;
-            triggerBrush.trigger.arg3 = (int)ndParam4.Value;
-            triggerBrush.trigger.arg4 = (int)ndParam5.Value;*/
-        }
-
-        private void cbTriggerType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //triggerBrush.trigger.action = cbTriggerType.SelectedIndex+1;
-        }
-
-        private void lbZoneList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //this.zoneBrush.setCode = lbZoneList.SelectedIndex - 1;
-        }
-
-        private void tbFloorTex_TextChanged(object sender, EventArgs e)
-        {
-            Sector newSector = new Sector();
-            //newSector.texceil = tbCeilingTex.Text;
-            //newSector.texfloor = tbFloorTex.Text;
-
-        }
-
-        private void nudNewTag_ValueChanged(object sender, EventArgs e)
-        {
-            //this.tagBrush.tag = (int)nudNewTag.Value;
+            //The GL control should be where any hotkeys are passed, so focus immediately when hovered over
+            mainLevelPanel.Focus();
         }
 
         private void menuItem6_Click(object sender, EventArgs e)

@@ -374,6 +374,7 @@
             this.mainLevelPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mainLevelPanel_Paint);
             this.mainLevelPanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.mainLevelPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseDown);
+            this.mainLevelPanel.MouseEnter += new System.EventHandler(this.mainLevelPanel_MouseEnter);
             this.mainLevelPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseMove);
             this.mainLevelPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseUp);
             // 
