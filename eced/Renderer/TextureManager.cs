@@ -247,7 +247,7 @@ namespace eced.Renderer
 
             for (int i = 0; i < lumps.Count; i++)
             {
-                try
+                //try
                 {
                     byte[] data = archive.LoadResource(lumps[i].fullname);
                     //Console.WriteLine(lumps[i].fullname);
@@ -262,11 +262,11 @@ namespace eced.Renderer
                         Console.WriteLine("Error loading lump {0} from archive {1}", lumps[i].name, archive.archiveName);
                     }
                 }
-                catch (Exception exc)
+                /*catch (Exception exc)
                 {
                     //TODO: Error handling
                     Console.WriteLine("Error while processing archive textures {0}: {1}", archive.archiveName, exc.Message);
-                }
+                }*/
             }
             //GL.BindTexture(TextureTarget.Texture2D, 0);
         }

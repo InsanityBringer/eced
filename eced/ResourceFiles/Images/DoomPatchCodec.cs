@@ -37,7 +37,7 @@ namespace eced.ResourceFiles.Images
                     for (int p = 0; p < len; p++)
                     {
                         byte patchbyte = data[pointer + p];
-                        output[i * w + yoffs + p] = BinaryHelper.getInt32(palette[patchbyte * 3 + 2], palette[patchbyte * 3 + 1], palette[patchbyte * 3 + 0], 255);
+                        output[i + (yoffs + p) * w] = BinaryHelper.getInt32(palette[patchbyte * 3 + 2], palette[patchbyte * 3 + 1], palette[patchbyte * 3 + 0], 255);
                     }
                     pointer += len + 1;
 
