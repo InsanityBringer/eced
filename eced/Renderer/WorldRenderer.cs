@@ -118,40 +118,34 @@ namespace eced.Renderer
             }
         }
 
+        public void DrawLevelGrid()
+        {
+            Vector4 color = new Vector4(0.0f, 0.5f, 0.5f, 1.0f);
+            int w = state.CurrentState.CurrentLevel.Width;
+            int h = state.CurrentState.CurrentLevel.Height;
+
+            float coord;
+            for (int x = 0; x <= w; x++)
+            {
+                coord = ((float)x / w) * 2f - 1f;
+                state.Drawer.DrawLine(new Vector3(coord, -1.0f, 0), new Vector3(coord, 1.0f, 0), color, color);
+            }
+
+            for (int y = 0; y <= h; y++)
+            {
+                coord = ((float)y / w) * 2f - 1f;
+                state.Drawer.DrawLine(new Vector3(-1.0f, coord, 0), new Vector3(1.0f, coord, 0), color, color);
+            }
+        }
+
         public void DrawLevel()
         {
-            Random random = new Random(1);
-            for (int i = 0; i < 100; i++)
-            {
-                state.Drawer.DrawLine(new Vector3((float)(random.NextDouble() * 2.0 - 1.0), (float)(random.NextDouble() * 2.0 - 1.0), 0),
-                    new Vector3((float)(random.NextDouble() * 2.0 - 1.0), (float)(random.NextDouble() * 2.0 - 1.0), 0),
-                    new Vector4((float)(random.NextDouble()), (float)(random.NextDouble()), (float)(random.NextDouble()), 1.0f),
-                    new Vector4((float)(random.NextDouble()), (float)(random.NextDouble()), (float)(random.NextDouble()), 1.0f));
-            }
-            state.Drawer.FlushLines();
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, currentTilemapTexture);
             state.TileMapShader.UseShader();
             state.Drawer.DrawTilemap();
-        }
-
-        public Vector2 PickOrtho(int mousex, int mousey)
-        {
-            if (mousex < 0 || mousey < 0 || mousex >= (int)state.screenSize.X || mousey >= (int)state.screenSize.Y) return new Vector2(32767, 32767);
-            state.PickFB.Use();
-            short[] buffer = new short[2];
-            state.TileMapPickShader.UseShader();
-            state.Drawer.DrawTilemap();
-            GL.Finish(); //godawful hack
-            RendererState.ErrorCheck("WorldRenderer::PickOrtho: drawing to buffer");
-            GL.ReadBuffer(ReadBufferMode.ColorAttachment0);
-            //GL.PixelStore(PixelStoreParameter.PackAlignment, 1);
-            GL.ReadPixels(mousex, mousey, 1, 1, PixelFormat.RgInteger, PixelType.Short, buffer);
-            RendererState.ErrorCheck("WorldRenderer::PickOrtho: reading pixels");
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            RendererState.ErrorCheck("WorldRenderer::PickOrtho: unbinding");
-
-            return new Vector2(buffer[0], buffer[1]);
+            DrawLevelGrid();
+            state.Drawer.FlushLines();
         }
     }
 }

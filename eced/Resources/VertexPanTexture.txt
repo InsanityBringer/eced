@@ -15,7 +15,8 @@ void main()
 {
 	vec4 scale = vec4(tilesize * (float(mapsize.x) / 2), tilesize * (float(mapsize.y) / 2), 1.0, 1.0);
 	vec4 scaledPt = point * scale;
+	scaledPt *= vec4(zoom, zoom, 1.0, 1.0);
 	scaledPt += vec4(pan.x, pan.y, 0.0, 0.0);
-	gl_Position = project * vec4(scaledPt.x * zoom, scaledPt.y * zoom, scaledPt.z, scaledPt.w);
+	gl_Position = project * scaledPt;
 	tileloc = uvCoord * mapsize; 
 }

@@ -102,11 +102,8 @@ namespace eced.Renderer
         public Shader TileMapShader { get; private set; }
         public Shader ThingShader { get; private set; }
         public Shader LineShader { get; private set; }
-        public Shader TileMapPickShader { get; private set; }
 
         public RendererDrawer Drawer { get; private set; }
-
-        public PickBuffer PickFB { get; private set; }
 
         public RendererState(EditorState editorState)
         {
@@ -119,7 +116,6 @@ namespace eced.Renderer
             CreateShaderPrograms();
             Drawer = new RendererDrawer(this);
             Drawer.Init();
-            PickFB = new PickBuffer();
         }
 
         private void CreateShaderPrograms()
@@ -138,17 +134,6 @@ namespace eced.Renderer
             TileMapShader.AddUniform("numbers");
             TileMapShader.AddUniform("texInfo");
             TileMapShader.AddUniform("mapPlane");
-
-            TileMapPickShader = new Shader("tileMapPickShader");
-            TileMapPickShader.Init();
-            TileMapPickShader.AddShader("./resources/VertexPanTexture.txt", ShaderType.VertexShader);
-            TileMapPickShader.AddShader("./resources/FragPanPick.txt", ShaderType.FragmentShader);
-            TileMapPickShader.LinkShader();
-            TileMapPickShader.AddUniform("pan");
-            TileMapPickShader.AddUniform("zoom");
-            TileMapPickShader.AddUniform("tilesize");
-            TileMapPickShader.AddUniform("project");
-            TileMapPickShader.AddUniform("mapsize");
 
             ThingShader = new Shader("thingShader");
             ThingShader.Init();
@@ -182,7 +167,7 @@ namespace eced.Renderer
         {
             int halfWidth = w / 2;
             int halfHeight = h / 2;
-            Matrix4 projectionMatrix = Matrix4.CreateOrthographicOffCenter(-halfWidth, halfWidth, -halfHeight, halfHeight, -16, 16);
+            Matrix4 projectionMatrix = Matrix4.CreateOrthographicOffCenter(-halfWidth, halfWidth, halfHeight, -halfHeight, -16, 16);
             GL.Viewport(0, 0, w, h);
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
             TileMapShader.UseShader();
@@ -191,12 +176,8 @@ namespace eced.Renderer
             GL.UniformMatrix4(ThingShader.UniformLocations["project"], false, ref projectionMatrix);
             LineShader.UseShader();
             GL.UniformMatrix4(LineShader.UniformLocations["project"], false, ref projectionMatrix);
-            TileMapPickShader.UseShader();
-            GL.UniformMatrix4(TileMapPickShader.UniformLocations["project"], false, ref projectionMatrix);
-            ErrorCheck("RendererState::SetViewSize: Setting viewport");
 
             screenSize.X = w; screenSize.Y = h;
-            PickFB.Create(w, h);
         }
 
         /// <summary>
@@ -206,16 +187,13 @@ namespace eced.Renderer
         public void SetLevelStaticUniforms(Level level)
         {
             TileMapShader.UseShader();
-            GL.Uniform1(TileMapShader.UniformLocations["tilesize"], (float)64); //TODO
+            GL.Uniform1(TileMapShader.UniformLocations["tilesize"], (float)CurrentState.CurrentLevel.TileSize); 
             GL.Uniform2(TileMapShader.UniformLocations["mapsize"], level.Width, level.Height);
-            TileMapPickShader.UseShader();
-            GL.Uniform1(TileMapPickShader.UniformLocations["tilesize"], (float)64); //TODO
-            GL.Uniform2(TileMapPickShader.UniformLocations["mapsize"], level.Width, level.Height);
             /*ThingShader.UseShader();
             GL.Uniform1(ThingShader.UniformLocations["tilesize"], (float)64); //TODO
             GL.Uniform2(ThingShader.UniformLocations["mapsize"], level.Width, level.Height);*/
             LineShader.UseShader();
-            GL.Uniform1(LineShader.UniformLocations["tilesize"], (float)64); //TODO
+            GL.Uniform1(LineShader.UniformLocations["tilesize"], (float)CurrentState.CurrentLevel.TileSize); 
             GL.Uniform2(LineShader.UniformLocations["mapsize"], level.Width, level.Height);
             ErrorCheck("RendererState::SetLevelStaticUniforms: Setting level uniforms");
 
@@ -228,8 +206,6 @@ namespace eced.Renderer
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
             TileMapShader.UseShader();
             GL.Uniform2(TileMapShader.UniformLocations["pan"], ref newPan);
-            TileMapPickShader.UseShader();
-            GL.Uniform2(TileMapPickShader.UniformLocations["pan"], ref newPan);
             ThingShader.UseShader();
             GL.Uniform2(ThingShader.UniformLocations["pan"], ref newPan);
             LineShader.UseShader();
@@ -237,13 +213,17 @@ namespace eced.Renderer
             ErrorCheck("RendererState::SetPan: Setting pan");
         }
 
+        public void AddPan(int x, int y)
+        {
+            SetPan(pan + new Vector2(x, y));
+        }
+
         public void SetZoom(float zoom)
         {
+            this.zoom = zoom;
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
             TileMapShader.UseShader();
             GL.Uniform1(TileMapShader.UniformLocations["zoom"], zoom);
-            TileMapPickShader.UseShader();
-            GL.Uniform1(TileMapPickShader.UniformLocations["zoom"], zoom);
             ThingShader.UseShader();
             GL.Uniform1(ThingShader.UniformLocations["zoom"], zoom);
             LineShader.UseShader();
@@ -264,6 +244,37 @@ namespace eced.Renderer
             GL.BindTexture(TextureTarget.Texture2D, Textures.numberTextureID);
             GL.Uniform1(TileMapShader.UniformLocations["numbers"], 3);
             GL.ActiveTexture(TextureUnit.Texture0);
+        }
+
+        public PickResult Pick(int mousex, int mousey)
+        {
+            PickResult res = new PickResult();
+
+            float halfScreenWidth = screenSize.X / 2;
+            float halfScreenHeight = screenSize.Y / 2;
+            float mouseCoordX = mousex - halfScreenWidth - (pan.X);
+            float mouseCoordY = mousey - halfScreenHeight - (pan.Y);
+
+            float halfTileWidth = CurrentState.CurrentLevel.Width / 2f;
+            float halfTileHeight = CurrentState.CurrentLevel.Height / 2f;
+            float leftBound = -1.0f * halfTileWidth * CurrentState.CurrentLevel.TileSize * zoom;
+            float rightBound = 1.0f * halfTileWidth * CurrentState.CurrentLevel.TileSize * zoom;
+            float lowerBound = -1.0f * halfTileHeight * CurrentState.CurrentLevel.TileSize * zoom;
+            float upperBound = 1.0f * halfTileHeight * CurrentState.CurrentLevel.TileSize * zoom;
+
+            rightBound -= leftBound;
+            mouseCoordX -= leftBound;
+
+            upperBound -= lowerBound;
+            mouseCoordY -= lowerBound;
+
+            float xTile = mouseCoordX / rightBound;
+            float yTile = mouseCoordY / upperBound;
+
+            res.x = (int)(xTile * CurrentState.CurrentLevel.Width);
+            res.y = (int)(yTile * CurrentState.CurrentLevel.Height);
+
+            return res;
         }
 
         /// <summary>

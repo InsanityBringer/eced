@@ -34,6 +34,7 @@ namespace eced
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int Depth { get; private set; }
+        public int TileSize { get; private set; } = 64;
 
         //public Cell[, ,] cells;
 

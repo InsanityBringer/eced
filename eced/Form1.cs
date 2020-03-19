@@ -129,6 +129,7 @@ namespace eced
             }
 
             GL.Disable(EnableCap.DepthTest);
+            mainLevelPanel.MouseWheel += MainLevelPanel_MouseWheel;
         }
 
         private void glInit()
@@ -528,11 +529,13 @@ namespace eced
             if (editorState.CurrentLevel == null)
                 return;
 
-            Console.WriteLine("placing brush");
-            Vector2 tile = worldRenderer.PickOrtho(e.X, e.Y);
+            if ((e.Button & (MouseButtons.Left | MouseButtons.Right)) != 0)
+            {
+                PickResult pickTest = renderer.Pick(e.X, e.Y);
+                SetMouseButton(e);
+                brushmode = editorState.BrushDown(new Vector2(pickTest.x, pickTest.y), heldMouseButton);
+            }
 
-            SetMouseButton(e);
-            brushmode = editorState.BrushDown(tile, heldMouseButton);
             mainLevelPanel.Invalidate();
         }
 
@@ -541,15 +544,18 @@ namespace eced
             if (editorState.CurrentLevel == null)
                 return;
 
-            Vector2 tile = worldRenderer.PickOrtho(e.X, e.Y);
-            statusBar1.Panels[0].Text = string.Format("{0} {1}", tile.X, tile.Y);
-
-            editorState.CurrentLevel.UpdateHighlight((int)((tile.X + .5) * 64), (int)((tile.Y + .5) * 64));
+            PickResult pickTest = renderer.Pick(e.X, e.Y);
+            statusBar1.Panels[0].Text = string.Format("({0} {1})", pickTest.x, pickTest.y);
+            //editorState.CurrentLevel.UpdateHighlight((int)((tile.X + .5) * 64), (int)((tile.Y + .5) * 64));
 
             if (brushmode)
             {
-                Vector2 src = worldRenderer.PickOrtho((int)lastMousePos.X, (int)lastMousePos.Y);
-                editorState.BrushFromTo(src, tile, heldMouseButton);
+                PickResult src = renderer.Pick((int)lastMousePos.X, (int)lastMousePos.Y);
+                editorState.BrushFromTo(new Vector2(src.x, src.y), new Vector2(pickTest.x, pickTest.y), heldMouseButton);
+            }
+            else if ((e.Button & MouseButtons.Middle) != 0) //middle click to pan
+            {
+                renderer.AddPan(e.X - (int)lastMousePos.X, e.Y - (int)lastMousePos.Y);
             }
             mainLevelPanel.Invalidate();
 
@@ -569,9 +575,19 @@ namespace eced
             this.UpdateCurrentZoneList();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void MainLevelPanel_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-
+            int numClicks = Math.Abs(e.Delta / 120);
+            if (e.Delta < 0)
+            {
+                zoom *= (0.9f * numClicks);
+                UpdateZoom();
+            }
+            else if (e.Delta > 0)
+            {
+                zoom *= (1.11111111111f * numClicks);
+                UpdateZoom();
+            }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)

@@ -115,7 +115,7 @@
     <Compile Include="NewMapDialog.Designer.cs">
       <DependentUpon>NewMapDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Renderer\PickBuffer.cs" />
+    <Compile Include="PickResult.cs" />
     <Compile Include="Renderer\RendererDrawer.cs" />
     <Compile Include="Renderer\Shader.cs" />
     <Compile Include="Renderer\WorldRenderer.cs" />

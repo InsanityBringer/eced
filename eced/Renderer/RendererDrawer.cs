@@ -89,7 +89,7 @@ namespace eced.Renderer
 
             GL.BufferSubData(BufferTarget.ArrayBuffer, (IntPtr)0, sizeof(float) * 8 * lastLinePoint, lineBuffer);
             RendererState.ErrorCheck("RendererDrawer::FlushLines: Creating line VBO");
-            GL.DrawArrays(PrimitiveType.Lines, 0, lastLinePoint / 2);
+            GL.DrawArrays(PrimitiveType.Lines, 0, lastLinePoint);
             RendererState.ErrorCheck("RendererDrawer::FlushLines: Drawing lines");
 
             lastLinePoint = 0;
@@ -127,28 +127,28 @@ namespace eced.Renderer
             tilemapBuffer[2] = 0f;
             tilemapBuffer[3] = 1.0f;
             tilemapBuffer[4] = 0.0f;
-            tilemapBuffer[5] = 0.0f;
+            tilemapBuffer[5] = 1.0f;
 
             tilemapBuffer[6 + 0] = -1.0f;
             tilemapBuffer[6 + 1] = -1.0f;
             tilemapBuffer[6 + 2] = 0f;
             tilemapBuffer[6 + 3] = 1.0f;
             tilemapBuffer[6 + 4] = 0.0f;
-            tilemapBuffer[6 + 5] = 1.0f;
+            tilemapBuffer[6 + 5] = 0.0f;
 
             tilemapBuffer[12 + 0] = 1.0f;
             tilemapBuffer[12 + 1] = -1.0f;
             tilemapBuffer[12 + 2] = 0f;
             tilemapBuffer[12 + 3] = 1.0f;
             tilemapBuffer[12 + 4] = 1.0f;
-            tilemapBuffer[12 + 5] = 1.0f;
+            tilemapBuffer[12 + 5] = 0.0f;
 
             tilemapBuffer[18 + 0] = 1.0f;
             tilemapBuffer[18 + 1] = 1.0f;
             tilemapBuffer[18 + 2] = 0f;
             tilemapBuffer[18 + 3] = 1.0f;
             tilemapBuffer[18 + 4] = 1.0f;
-            tilemapBuffer[18 + 5] = 0.0f;
+            tilemapBuffer[18 + 5] = 1.0f;
 
             tilemapBufferName = GL.GenBuffer();
             GL.BindVertexArray(vaoNames[(int)VAOInidices.Tilemap]);
