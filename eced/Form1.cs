@@ -116,7 +116,6 @@ namespace eced
             renderer = new RendererState(editorState);
             renderer.Init();
             renderer.SetViewSize(mainLevelPanel.Width, mainLevelPanel.Height);
-            glInit();
             UpdateZoom();
             worldRenderer = new WorldRenderer(renderer);
 
@@ -128,13 +127,6 @@ namespace eced
 
             GL.Disable(EnableCap.DepthTest);
             mainLevelPanel.MouseWheel += MainLevelPanel_MouseWheel;
-        }
-
-        private void glInit()
-        {
-            renderer.setupThingRendering();
-            renderer.setupTriggerRendering();
-            renderer.setupLineRendering();
         }
 
         private void DoNewMapDialog()
@@ -356,34 +348,6 @@ namespace eced
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             if (editorState.CurrentLevel != null)
             {
-                //renderer.renderLevel(currentLevel);
-                /*renderer.updateWorldTexture(editorState.CurrentLevel);
-                renderer.drawLevel(editorState.CurrentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
-                renderer.drawGrid(editorState.CurrentLevel, sm.programList["BasicRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
-
-                ErrorCode error = GL.GetError();
-                if (error != ErrorCode.NoError)
-                {
-                    Console.WriteLine("DRAW GL Error: {0}", error.ToString());
-                }
-
-                GL.UseProgram(sm.programList["ThingRender"]);
-                List<Thing> thinglist = editorState.CurrentLevel.Things;
-                for (int i = 0; i < thinglist.Count; i++)
-                {
-                    Thing thing = thinglist[i];
-
-                    renderer.drawThing(thing, editorState.CurrentLevel, sm.programList["ThingRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
-                }
-                List<OpenTK.Vector2> triggerList = editorState.CurrentLevel.GetTriggerLocations();
-
-                for (int i = 0; i < triggerList.Count; i++)
-                {
-                    renderer.drawTrigger(triggerList[i], editorState.CurrentLevel, sm.programList["ThingRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
-                }
-
-                //renderer.drawTrigger(new Vector2(2.0f, 2.0f), currentLevel, sm.programList["ThingRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
-                GL.UseProgram(0);*/
                 worldRenderer.UpdateLevel();
                 worldRenderer.DrawLevel();
             }
@@ -396,7 +360,7 @@ namespace eced
             if (ready)
             {
                 SetupViewport();
-                //renderer.pan(panx, pany, mainLevelPanel.Width, mainLevelPanel.Height);
+                renderer.SetViewSize(mainLevelPanel.Width, mainLevelPanel.Height);
                 mainLevelPanel.Invalidate();
             }
             if (statusBar1.Width > 0)

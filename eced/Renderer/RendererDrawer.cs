@@ -52,6 +52,7 @@ namespace eced.Renderer
         private int thingBufferName;
         private float[] thingBuffer = new float[12 * NUM_THING_POINTS];
         private int lastThingNum;
+        private int thingArrowTexture;
 
         public RendererDrawer(RendererState state)
         {
@@ -184,6 +185,8 @@ namespace eced.Renderer
 
             GL.BindBufferRange(BufferRangeTarget.ShaderStorageBuffer, 0, thingBufferName, (IntPtr)0, sizeof(float) * NUM_THING_POINTS * 12);
             RendererState.ErrorCheck("RendererDrawer::InitThingBuffer: Creating thing shader storage block");
+
+            thingArrowTexture = TextureManager.GetTexture("./Resources/thingarrow.png");
         }
 
         public void FlushThings()
@@ -196,6 +199,7 @@ namespace eced.Renderer
             RendererState.ErrorCheck("RendererDrawer::FlushThings: Uploading thing buffer data");
 
             GL.BindVertexArray(vaoNames[(int)VAOInidices.Tilemap]);
+            GL.BindTexture(TextureTarget.Texture2D, thingArrowTexture);
             GL.DrawArraysInstanced(PrimitiveType.TriangleFan, 0, 4, lastThingNum);
             RendererState.ErrorCheck("RendererDrawer::FlushThings: Drawing things");
 
@@ -218,6 +222,7 @@ namespace eced.Renderer
             thingBuffer[lastThingNum * 12 + 7] = alpha;
 
             thingBuffer[lastThingNum * 12 + 8] = def.radius;
+            thingBuffer[lastThingNum * 12 + 9] = thing.angle;
 
             lastThingNum++;
         }

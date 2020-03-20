@@ -193,12 +193,13 @@
             this.toolBarButton15,
             this.toolBarButton16,
             this.toolBarButton17});
+            this.tbToolPanel.Divider = false;
             this.tbToolPanel.DropDownArrows = true;
             this.tbToolPanel.ImageList = this.imageList1;
             this.tbToolPanel.Location = new System.Drawing.Point(0, 0);
             this.tbToolPanel.Name = "tbToolPanel";
             this.tbToolPanel.ShowToolTips = true;
-            this.tbToolPanel.Size = new System.Drawing.Size(853, 28);
+            this.tbToolPanel.Size = new System.Drawing.Size(853, 26);
             this.tbToolPanel.TabIndex = 5;
             this.tbToolPanel.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar1_ButtonClick);
             // 
@@ -363,8 +364,10 @@
             // 
             // mainLevelPanel
             // 
+            this.mainLevelPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.mainLevelPanel.BackColor = System.Drawing.Color.Black;
-            this.mainLevelPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.mainLevelPanel.Location = new System.Drawing.Point(178, 28);
             this.mainLevelPanel.Name = "mainLevelPanel";
             this.mainLevelPanel.Size = new System.Drawing.Size(675, 574);
@@ -386,9 +389,9 @@
             // SizeTemplatePanel
             // 
             this.SizeTemplatePanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.SizeTemplatePanel.Location = new System.Drawing.Point(0, 28);
+            this.SizeTemplatePanel.Location = new System.Drawing.Point(0, 26);
             this.SizeTemplatePanel.Name = "SizeTemplatePanel";
-            this.SizeTemplatePanel.Size = new System.Drawing.Size(172, 574);
+            this.SizeTemplatePanel.Size = new System.Drawing.Size(172, 576);
             this.SizeTemplatePanel.TabIndex = 9;
             this.SizeTemplatePanel.Visible = false;
             // 

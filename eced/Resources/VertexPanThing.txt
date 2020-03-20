@@ -16,12 +16,14 @@ layout(binding=0, std140) buffer thingBlock
 };
 
 smooth out vec4 acolor;
+smooth out vec2 uv;
+
+flat out vec2 sincos;
 
 uniform vec2 pan;
 uniform float zoom;
 uniform float tilesize;
 uniform mat4 project;
-uniform mat4 rotate;
 uniform ivec2 mapsize;
 
 void main()
@@ -43,4 +45,7 @@ void main()
 	//Project to view volume
 	gl_Position = project * scaledPt;
 	acolor = thingDefs[gl_InstanceID].color;
+	uv = uvCoord;
+	sincos.x = cos(thingDefs[gl_InstanceID].extra.y * 3.1415927 / 180);
+	sincos.y = -sin(thingDefs[gl_InstanceID].extra.y * 3.1415927 / 180);
 }
