@@ -41,6 +41,7 @@ namespace eced
         public List<Plane> Planes { get; } = new List<Plane>();
 
         public List<Tile> InternalTileset { get; } = new List<Tile>();
+        public Dictionary<Tile, int> InternalTilesetMap { get; } = new Dictionary<Tile, int>();
         public List<Thing> Things { get; } = new List<Thing>();
         public List<Zone> ZoneDefs { get; } = new List<Zone>();
         public List<Sector> Sectors { get; } = new List<Sector>();
@@ -82,13 +83,15 @@ namespace eced
                 for (int y = 0; y < Height; y++)
                 {
                     Planes[0].cells[x, y] = new Cell();
-                    Planes[0].cells[x, y].tile = defaultTile;
+                    Planes[0].cells[x, y].tile = 0;
                     Planes[0].cells[x, y].sector = Sectors[0];
                 }
             }
             if (defaultTile != null)
+            {
                 InternalTileset.Add(defaultTile);
-            Console.WriteLine("tileset size: {0}", InternalTileset.Count);
+                InternalTilesetMap.Add(defaultTile, 0);
+            }
             ClearDirty();
         }
 
@@ -156,6 +159,7 @@ namespace eced
         public void AddTile(Tile tile)
         {
             Console.WriteLine("adding tile to internal tileset");
+            InternalTilesetMap.Add(tile, InternalTileset.Count);
             InternalTileset.Add(tile);
             Console.WriteLine("tileset size: {0}", InternalTileset.Count);
         }
@@ -163,20 +167,24 @@ namespace eced
         public Tile GetTile(int x, int y, int z)
         {
             if (x >= 0 && y >= 0 && x < Width && y < Height)
-                return Planes[z].cells[x, y].tile;
+                return InternalTileset[Planes[z].cells[x, y].tile];
 
             return null; //need to find a better return value
         }
 
         public void SetTile(int x, int y, int z, Tile tile)
         {
+            int tileid;
             if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
-                if (tile != Planes[z].cells[x, y].tile)
+                if (!InternalTilesetMap.ContainsKey(tile))
                 {
-                    //cells[x, y, z].tile = tile;
-                    //cells[x, y, z].zone = null;
-                    Planes[z].cells[x, y].tile = tile;
+                    AddTile(tile);
+                }
+                tileid = InternalTilesetMap[tile];
+                if (tileid != Planes[z].cells[x, y].tile)
+                {
+                    Planes[z].cells[x, y].tile = tileid;
                     Planes[z].cells[x, y].zone = null;
                     if (!InternalTileset.Contains(tile) && tile != null)
                     {
@@ -184,7 +192,6 @@ namespace eced
                         InternalTileset.Add(tile);
                         Console.WriteLine("tileset size: {0}", InternalTileset.Count);
                     }
-                    //updateCells.Add(new OpenTK.Vector2(x, y));
                     SetDirty(x, y);
                 }
             }
@@ -467,7 +474,7 @@ namespace eced
             {
                 int x = i % Width;
                 int y = i / Width;
-                stringbuilder.Append("\t{"); stringbuilder.Append(GetTileID(Planes[plane].cells[x, y].tile));
+                stringbuilder.Append("\t{"); stringbuilder.Append(Planes[plane].cells[x, y].tile);
                 stringbuilder.Append(", "); stringbuilder.Append(GetSectorID(x, y, plane));
                 stringbuilder.Append(", "); stringbuilder.Append(GetZoneID(Planes[plane].cells[x, y]));
                 stringbuilder.Append(", "); stringbuilder.Append(Planes[plane].cells[x, y].tag);
@@ -563,7 +570,7 @@ namespace eced
                         Cell cell = new Cell();
                         if (tempPlanemap[index].tile >= 0)
                         {
-                            cell.tile = this.InternalTileset[tempPlanemap[index].tile];
+                            cell.tile = tempPlanemap[index].tile;
                             tilesadded++;
                         }
                         cell.sector = new Sector(); //no sector management

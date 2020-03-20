@@ -56,7 +56,6 @@ namespace eced.Renderer
         public short[] BuildPlaneData(int layer, int xPos, int yPos, int w, int h)
         {
             short[] planeData = new short[w * h * 4];
-            Random random = new Random();
 
             int coord;
             for (int x = 0; x < w; x++)
@@ -64,15 +63,13 @@ namespace eced.Renderer
                 for (int y = 0; y < h; y++)
                 {
                     coord = (y * w + x) * 4;
-                    //planeData[(x * width + y) * 4] = (short)planes[layer].cells[x, y].tile.id;
-                    if (editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile != null)
-                        planeData[coord] = (short)state.Textures.GetTextureID(editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile.NorthTex);
+                    if (editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile != -1)
+                        planeData[coord] = (short)state.Textures.GetTextureID(editorState.CurrentLevel.InternalTileset[editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile].NorthTex);
                     else
                     {
                         planeData[coord] = -1;
                         planeData[coord + 1] = (short)editorState.CurrentLevel.ZoneDefs.IndexOf(editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone);
                     }
-                    //planeData[coord] = (short)random.Next(0, 40);
                 }
             }
 

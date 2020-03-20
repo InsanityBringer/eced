@@ -7,7 +7,7 @@ namespace eced
 {
     public class Cell
     {
-        public Tile tile;
+        public int tile;
         public Sector sector;
         public Zone zone;
         public int tag;
