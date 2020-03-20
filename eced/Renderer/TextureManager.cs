@@ -83,10 +83,10 @@ namespace eced.Renderer
 
         public static int GetTexture(String filename)
         {
-            return GetTexture(filename, false);
+            return GetTexture(filename, false, false);
         }
 
-        public static int GetTexture(String filename, bool linear)
+        public static int GetTexture(String filename, bool linear, bool clamp)
         {
             if (textureList.ContainsKey(filename))
             {
@@ -124,8 +124,11 @@ namespace eced.Renderer
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, FilterSParam);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, FilterMParam);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+            if (clamp)
+            {
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+            }
 
             textureList.Add(filename, id);
 

@@ -186,7 +186,7 @@ namespace eced.Renderer
             GL.BindBufferRange(BufferRangeTarget.ShaderStorageBuffer, 0, thingBufferName, (IntPtr)0, sizeof(float) * NUM_THING_POINTS * 12);
             RendererState.ErrorCheck("RendererDrawer::InitThingBuffer: Creating thing shader storage block");
 
-            thingArrowTexture = TextureManager.GetTexture("./Resources/thingarrow.png");
+            thingArrowTexture = TextureManager.GetTexture("./Resources/thingarrow.png", false, true);
         }
 
         public void FlushThings()
