@@ -136,7 +136,6 @@
     <Compile Include="ResourceFiles\WADArchive.cs" />
     <Compile Include="ResourceFiles\ZIPArchive.cs" />
     <Compile Include="Brush\SectorBrush.cs" />
-    <Compile Include="Renderer\ShaderManager.cs" />
     <Compile Include="Brush\TagTool.cs" />
     <Compile Include="ThingEditor.cs">
       <SubType>Form</SubType>

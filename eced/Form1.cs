@@ -34,8 +34,6 @@ namespace eced
         private int VAOid;
         //int program;
 
-        private ShaderManager sm = new ShaderManager();
-
         private OpenTK.Vector2 lastMousePos = new Vector2();
 
         //Empty when no current filename
@@ -134,9 +132,6 @@ namespace eced
 
         private void glInit()
         {
-            sm.makeProgram("./resources/VertexPanTexture.txt", "./resources/FragPanTextureAtlas.txt", "WorldRender");
-            sm.makeProgram("./resources/VertexPanThing.txt", "./resources/FragPanThing.txt", "ThingRender");
-            sm.makeProgram("./resources/VertexPanBasic.txt", "./resources/FragPanThing.txt", "BasicRender");
             renderer.setupThingRendering();
             renderer.setupTriggerRendering();
             renderer.setupLineRendering();
@@ -155,8 +150,6 @@ namespace eced
                     renderer.Textures.DestroyAtlas();
                 }
                 editorState.CreateNewLevel(nmd.CurrentMap);
-                //renderer.setupLevelRendering(editorState.CurrentLevel, (uint)sm.programList["WorldRender"], new Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
-                //renderer.setupThingUniforms(sm.programList["ThingRender"]);
                 RebuildResources();
                 SelectTool(1);
                 worldRenderer.LevelChanged();
