@@ -37,6 +37,7 @@ namespace eced.Renderer
     public class RendererDrawer
     {
         private const int NUM_LINE_POINTS = 250;
+        private const int NUM_THING_POINTS = 150;
         private RendererState state;
         //Drawing VAO Names
         private int[] vaoNames = new int[(int)VAOInidices.NumVAOs];
@@ -47,6 +48,10 @@ namespace eced.Renderer
         //Tilemap data
         private int tilemapBufferName;
         private float[] tilemapBuffer = new float[6 * 6];
+        //Thing data
+        private int thingBufferName;
+        private float[] thingBuffer = new float[12 * NUM_THING_POINTS];
+        private int lastThingNum;
 
         public RendererDrawer(RendererState state)
         {
@@ -60,6 +65,7 @@ namespace eced.Renderer
 
             InitLineBuffer();
             InitTilemapBuffer();
+            InitThingBuffer();
         }
 
         public void InitLineBuffer()
@@ -167,6 +173,53 @@ namespace eced.Renderer
         {
             GL.BindVertexArray(vaoNames[(int)VAOInidices.Tilemap]);
             GL.DrawArrays(PrimitiveType.TriangleFan, 0, 4);
+        }
+
+        public void InitThingBuffer()
+        {
+            thingBufferName = GL.GenBuffer();
+
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, thingBufferName);
+            GL.BufferData(BufferTarget.ShaderStorageBuffer, 12 * NUM_THING_POINTS * sizeof(float), (IntPtr)0, BufferUsageHint.DynamicRead);
+
+            GL.BindBufferRange(BufferRangeTarget.ShaderStorageBuffer, 0, thingBufferName, (IntPtr)0, sizeof(float) * NUM_THING_POINTS * 12);
+            RendererState.ErrorCheck("RendererDrawer::InitThingBuffer: Creating thing shader storage block");
+        }
+
+        public void FlushThings()
+        {
+            if (lastThingNum == 0) return;
+
+            state.ThingShader.UseShader();
+
+            GL.BufferSubData<float>(BufferTarget.ShaderStorageBuffer, (IntPtr)0, sizeof(float) * 12 * lastThingNum, thingBuffer);
+            RendererState.ErrorCheck("RendererDrawer::FlushThings: Uploading thing buffer data");
+
+            GL.BindVertexArray(vaoNames[(int)VAOInidices.Tilemap]);
+            GL.DrawArraysInstanced(PrimitiveType.TriangleFan, 0, 4, lastThingNum);
+            RendererState.ErrorCheck("RendererDrawer::FlushThings: Drawing things");
+
+            lastThingNum = 0;
+        }
+
+        public void DrawThingBase(Thing thing, ThingDefinition def, float alpha)
+        {
+            if (lastThingNum == NUM_THING_POINTS)
+                FlushThings();
+
+            thingBuffer[lastThingNum * 12 + 0] = thing.x;
+            thingBuffer[lastThingNum * 12 + 1] = thing.y;
+            thingBuffer[lastThingNum * 12 + 2] = thing.z;
+            thingBuffer[lastThingNum * 12 + 3] = 0f;
+
+            thingBuffer[lastThingNum * 12 + 4] = def.r / 255f;
+            thingBuffer[lastThingNum * 12 + 5] = def.g / 255f;
+            thingBuffer[lastThingNum * 12 + 6] = def.b / 255f;
+            thingBuffer[lastThingNum * 12 + 7] = alpha;
+
+            thingBuffer[lastThingNum * 12 + 8] = def.radius;
+
+            lastThingNum++;
         }
     }
 }

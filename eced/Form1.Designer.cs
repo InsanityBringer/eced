@@ -408,6 +408,7 @@
             this.Text = "eced";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.Leave += new System.EventHandler(this.Form1_Leave);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.Move += new System.EventHandler(this.Form1_Move);
             this.Resize += new System.EventHandler(this.Form1_Resize);

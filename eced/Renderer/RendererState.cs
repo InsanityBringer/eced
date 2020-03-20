@@ -142,9 +142,7 @@ namespace eced.Renderer
             ThingShader.LinkShader();
             ThingShader.AddUniform("pan");
             ThingShader.AddUniform("zoom");
-            ThingShader.AddUniform("thingpos");
             ThingShader.AddUniform("thingrad");
-            ThingShader.AddUniform("thingColor");
             ThingShader.AddUniform("project");
             ThingShader.AddUniform("rotate");
             ThingShader.AddUniform("mapsize");
@@ -189,9 +187,9 @@ namespace eced.Renderer
             TileMapShader.UseShader();
             GL.Uniform1(TileMapShader.UniformLocations["tilesize"], (float)CurrentState.CurrentLevel.TileSize); 
             GL.Uniform2(TileMapShader.UniformLocations["mapsize"], level.Width, level.Height);
-            /*ThingShader.UseShader();
+            ThingShader.UseShader();
             GL.Uniform1(ThingShader.UniformLocations["tilesize"], (float)64); //TODO
-            GL.Uniform2(ThingShader.UniformLocations["mapsize"], level.Width, level.Height);*/
+            GL.Uniform2(ThingShader.UniformLocations["mapsize"], level.Width, level.Height);
             LineShader.UseShader();
             GL.Uniform1(LineShader.UniformLocations["tilesize"], (float)CurrentState.CurrentLevel.TileSize); 
             GL.Uniform2(LineShader.UniformLocations["mapsize"], level.Width, level.Height);

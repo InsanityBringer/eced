@@ -98,7 +98,7 @@ namespace eced.Renderer
             if (location != -1)
                 UniformLocations[uniformName] = location;
             else
-                Console.Error.WriteLine("Shader::AddUniform: Uniform added to shader doesn't exist");
+                Console.Error.WriteLine("Shader::AddUniform: Uniform {0} added to shader doesn't exist", uniformName);
         }
     }
 }

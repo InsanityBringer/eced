@@ -1,30 +1,46 @@
 ﻿#version 330 core
 
 layout(location=0) in vec4 point;
+layout(location=1) in vec2 uvCoord;
+
+struct thingDef
+{
+	vec4 pos;
+	vec4 color;
+	vec4 extra;
+};
+
+layout(binding=0, std140) buffer thingBlock
+{
+	thingDef thingDefs[];
+};
 
 smooth out vec4 acolor;
 
 uniform vec2 pan;
-uniform vec2 thingpos;
-uniform float thingrad;
 uniform float zoom;
 uniform float tilesize;
-uniform float fov; 
 uniform mat4 project;
 uniform mat4 rotate;
-uniform vec4 thingColor;
 uniform ivec2 mapsize;
 
 void main()
 { 
-	float mapScaleX = float(mapsize.x) / 64.0f;
-	float mapScaleY = float(mapsize.y) / 64.0f;
-	vec4 scaledPt = vec4(point.x * mapScaleX, point.y * mapScaleY, point.z, point.w);
-    vec4 pannedPt = vec4(scaledPt.x - (mapScaleX / 2), scaledPt.y - (mapScaleY / 2), point.z, point.w) / vec4(mapsize.x, mapsize.y, 1.0, 1.0) * vec4(thingrad / 32, thingrad / 32, 1.0, 1.0);
-	pannedPt *= rotate;
-	//pannedPt += vec4(0.5, 0.5, 0.0, 0.0);
-	pannedPt += vec4(pan.x, pan.y, 0.0, 0.0);
-	pannedPt += vec4(thingpos.x - (32 * mapScaleX), thingpos.y - (32 * mapScaleY), 0.0, 0.0) / 64;
-	gl_Position = vec4(pannedPt.x * zoom, -pannedPt.y * zoom, pannedPt.z, pannedPt.w) * project;
-	acolor = thingColor;
+	//Scale the geometry in the range -1.0 to 1.0 to the thing size
+	vec4 scale = vec4(thingDefs[gl_InstanceID].extra.x, thingDefs[gl_InstanceID].extra.x, 1.0, 1.0);
+	vec4 scaledPt = point * scale;
+
+	//Apply the current tile location
+	scaledPt += vec4(thingDefs[gl_InstanceID].pos.xy * tilesize, 0.0, 0.0);
+
+	//Pan to match the centered view of the tilemap
+	scaledPt -= vec4(float(mapsize.x * tilesize) / 2, float(mapsize.y * tilesize) / 2, 0.0, 0.0);
+
+	//Apply viewport zoom and pan
+	scaledPt *= vec4(zoom, zoom, 1.0, 1.0);
+	scaledPt += vec4(pan.xy, 0.0, 0.0);
+
+	//Project to view volume
+	gl_Position = project * scaledPt;
+	acolor = thingDefs[gl_InstanceID].color;
 }

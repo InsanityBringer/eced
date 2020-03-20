@@ -143,6 +143,15 @@ namespace eced.Renderer
             state.Drawer.DrawTilemap();
             DrawLevelGrid();
             state.Drawer.FlushLines();
+
+            ThingDefinition def;
+            foreach (Thing thing in state.CurrentState.CurrentLevel.Things)
+            {
+                def = state.CurrentState.CurrentLevel.GetThingDef(thing);
+
+                state.Drawer.DrawThingBase(thing, def, 1.0f);
+            }
+            state.Drawer.FlushThings();
         }
     }
 }

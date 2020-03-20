@@ -559,8 +559,10 @@ namespace eced
 
         private void mainLevelPanel_MouseEnter(object sender, EventArgs e)
         {
-            //The GL control should be where any hotkeys are passed, so focus immediately when hovered over
-            mainLevelPanel.Focus();
+            {
+                //The GL control should be where any hotkeys are passed, so focus immediately when hovered over
+                mainLevelPanel.Focus();
+            }
         }
 
         private void menuItem6_Click(object sender, EventArgs e)
@@ -583,6 +585,11 @@ namespace eced
         {
             //save as, preserve all contents of the destination WAD
             DoSaveDialog(true);
+        }
+
+        private void Form1_Leave(object sender, EventArgs e)
+        {
+            //this was needed for an experiment, but it turned out not to be needed
         }
 
         private void menuItem3_Click(object sender, EventArgs e)

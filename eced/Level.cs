@@ -167,7 +167,11 @@ namespace eced
         public Tile GetTile(int x, int y, int z)
         {
             if (x >= 0 && y >= 0 && x < Width && y < Height)
+            {
+                if (Planes[z].cells[x, y].tile == -1) return null;
+
                 return InternalTileset[Planes[z].cells[x, y].tile];
+            }
 
             return null; //need to find a better return value
         }
@@ -177,23 +181,30 @@ namespace eced
             int tileid;
             if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
-                if (!InternalTilesetMap.ContainsKey(tile))
+                if (tile == null)
                 {
-                    AddTile(tile);
+                    Planes[z].cells[x, y].tile = -1;
                 }
-                tileid = InternalTilesetMap[tile];
-                if (tileid != Planes[z].cells[x, y].tile)
+                else
                 {
-                    Planes[z].cells[x, y].tile = tileid;
-                    Planes[z].cells[x, y].zone = null;
-                    if (!InternalTileset.Contains(tile) && tile != null)
+                    if (!InternalTilesetMap.ContainsKey(tile))
                     {
-                        Console.WriteLine("adding tile to internal tileset");
-                        InternalTileset.Add(tile);
-                        Console.WriteLine("tileset size: {0}", InternalTileset.Count);
+                        AddTile(tile);
                     }
-                    SetDirty(x, y);
+                    tileid = InternalTilesetMap[tile];
+                    if (tileid != Planes[z].cells[x, y].tile)
+                    {
+                        Planes[z].cells[x, y].tile = tileid;
+                        Planes[z].cells[x, y].zone = null;
+                        if (!InternalTileset.Contains(tile) && tile != null)
+                        {
+                            Console.WriteLine("adding tile to internal tileset");
+                            InternalTileset.Add(tile);
+                            Console.WriteLine("tileset size: {0}", InternalTileset.Count);
+                        }
+                    }
                 }
+                SetDirty(x, y);
             }
         }
 
