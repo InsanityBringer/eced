@@ -26,10 +26,17 @@ namespace eced.Renderer
         private RendererState state;
         private EditorState editorState;
         private int currentTilemapTexture = 0;
+        private int currentViewMode = 1;
+
         public WorldRenderer(RendererState state)
         {
             this.state = state;
             this.editorState = state.CurrentState;
+        }
+
+        public void SetViewMode(int mode)
+        {
+            currentViewMode = mode;
         }
         public void LevelChanged()
         {
@@ -49,6 +56,28 @@ namespace eced.Renderer
             UpdateTilemapRegion(currentTilemapTexture, 0, 0, editorState.CurrentLevel.Width, editorState.CurrentLevel.Height, BuildPlaneData(layer, 0, 0, editorState.CurrentLevel.Width, editorState.CurrentLevel.Height));
         }
 
+        private int TranslateCharacter(char c)
+        {
+            //are there any practical .net implementations that don't use unicode BMP codepoints?
+            //todo: validation
+            if (c >= '0' && c <= '9')
+                return c - '0';
+            else if (c >= 'A' && c <= 'Z')
+                return c - 'A' + 10;
+            else if (c >= 'a' && c <= 'z')
+                return c - 'a' + 10;
+
+            return 0;
+        }
+
+        private void GetColorFromTexture(string name, short[] data, int offset)
+        {
+            if (name.Length < 7) return;
+            data[offset + 1] = (short)((TranslateCharacter(name[1]) << 4) + TranslateCharacter(name[2]));
+            data[offset + 2] = (short)((TranslateCharacter(name[3]) << 4) + TranslateCharacter(name[4]));
+            data[offset + 3] = (short)((TranslateCharacter(name[5]) << 4) + TranslateCharacter(name[6]));
+        }
+
         /// <summary>
         /// Builds a 2-dimensional array representing the data of a single plane
         /// </summary>
@@ -58,18 +87,54 @@ namespace eced.Renderer
             short[] planeData = new short[w * h * 4];
 
             int coord;
+            string name;
+            int mode, type;
             for (int x = 0; x < w; x++)
             {
                 for (int y = 0; y < h; y++)
                 {
                     coord = (y * w + x) * 4;
                     if (editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile != -1)
-                        planeData[coord] = (short)state.Textures.GetTextureID(editorState.CurrentLevel.InternalTileset[editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile].NorthTex);
+                    {
+                        type = 1;
+                        name = editorState.CurrentLevel.InternalTileset[editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile].NorthTex;
+                        if (name[0] == '#') //solid color
+                        {
+                            GetColorFromTexture(name, planeData, coord);
+                            mode = 2;
+                        }
+                        else
+                        {
+                            planeData[coord+1] = (short)state.Textures.GetTextureID(name);
+                            mode = 1;
+                        }
+                    }
                     else
                     {
-                        planeData[coord] = -1;
-                        planeData[coord + 1] = (short)editorState.CurrentLevel.ZoneDefs.IndexOf(editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone);
+                        type = 2;
+                        if (currentViewMode == 1)
+                        {
+                            mode = 0;
+                            planeData[coord + 1] = (short)editorState.CurrentLevel.ZoneDefs.IndexOf(editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone);
+                        }
+                        else
+                        {
+                            if (currentViewMode == 3) name = editorState.CurrentLevel.GetSector(x + xPos, y + yPos, layer).CeilingTexture;
+                            else name = editorState.CurrentLevel.GetSector(x + xPos, y + yPos, layer).FloorTexture;
+
+                            if (name[0] == '#') //solid color
+                            {
+                                GetColorFromTexture(name, planeData, coord);
+                                mode = 2;
+                            }
+                            else
+                            {
+                                planeData[coord + 1] = (short)state.Textures.GetTextureID(name);
+                                mode = 1;
+                            }
+                        }
                     }
+                    planeData[coord] = (short)((mode << 8) + type);
                 }
             }
 
@@ -98,7 +163,6 @@ namespace eced.Renderer
 
         private void UpdateTilemapRegion(int textureID, int x, int y, int w, int h, short[] data)
         {
-            Console.WriteLine("pushing region {0} {1}, {2} {3}", x, y, w, h);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, textureID);
             GL.TexSubImage2D(TextureTarget.Texture2D, 0, x, y, w, h, PixelFormat.RgbaInteger, PixelType.Short, data);

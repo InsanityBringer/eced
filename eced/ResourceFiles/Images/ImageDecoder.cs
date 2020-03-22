@@ -27,6 +27,7 @@ namespace eced.ResourceFiles.Images
         {
             decoderMap = new Dictionary<LumpFormatType, ImageCodec>();
             decoderMap.Add(LumpFormatType.DoomPatch, new DoomPatchCodec());
+            decoderMap.Add(LumpFormatType.DoomFlat, new DoomFlatCodec());
             decoderMap.Add(LumpFormatType.PNG, new PNGCodec());
             decoderMap.Add(LumpFormatType.VSwapTexture, new VSwapWallCodec());
         }

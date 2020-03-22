@@ -233,6 +233,7 @@ namespace eced
                     break;
                 case 6:
                     this.gbSectorPanel.Visible = true;
+                    gbSectorPanel.pairedBrush = (SectorBrush)editorState.BrushList[toolID];
                     break;
                 case 7:
                     this.gbZoneList.Visible = true;
@@ -250,7 +251,11 @@ namespace eced
             {
                 oldtoolid = toolid;
                 int ltag = Int32.Parse((String)e.Button.Tag);
-                if (ltag < 20)
+                if (ltag >= 100)
+                {
+                    SetViewMode(ltag - 100);
+                }
+                else if (ltag < 20)
                 {
                     toolid = ltag;
                     SelectTool(toolid);
@@ -331,6 +336,15 @@ namespace eced
         private void SetupViewport()
         {
             GL.Viewport(0, 0, mainLevelPanel.Width, mainLevelPanel.Height); // Use all of the glControl painting area
+        }
+
+        private void SetViewMode(int mode)
+        {
+            worldRenderer.SetViewMode(mode);
+            if (editorState.CurrentLevel != null)
+                editorState.CurrentLevel.Invalidate();
+
+            mainLevelPanel.Invalidate();
         }
 
         private void mainLevelPanel_Load(object sender, EventArgs e)

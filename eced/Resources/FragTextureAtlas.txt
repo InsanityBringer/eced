@@ -14,60 +14,98 @@ void main()
 	//gross hack
 	ivec2 itile = ivec2(tileloc);
 
-	int tileid = texelFetch(mapPlane, itile, 0).r;
-	int floorid = texelFetch(mapPlane, itile, 0).g;
+	ivec4 tilemapInfo = texelFetch(mapPlane, itile, 0);
+	int type = tilemapInfo.r & 255;
+	int mode = (tilemapInfo.r >> 8) & 255;
+	int tileid = tilemapInfo.g;
+	int floorid = tilemapInfo.g;
 
-	float multiplier = 0.5f;
+	float multiplier = 0.5;
 
-	int neighbornx = texelFetch(mapPlane, ivec2(itile.x - 1, itile.y), 0).r;
-	int neighborpx = texelFetch(mapPlane, ivec2(itile.x + 1, itile.y), 0).r;
-	int neighborny = texelFetch(mapPlane, ivec2(itile.x, itile.y - 1), 0).r;
-	int neighborpy = texelFetch(mapPlane, ivec2(itile.x, itile.y + 1), 0).r;
-
-	if (neighbornx == -1 || neighborny == -1 || neighborpx == -1 || neighborpy == -1)
+	int neighbors = 0;
+	//Check if neighbors are empty (id 2) instead of tile (id 1)
+	if (type == 1)
 	{
-		multiplier = 1.0f;
+		if ((texelFetch(mapPlane, ivec2(itile.x - 1, itile.y), 0).r & 255) == 2)
+		{
+			neighbors |= 1;
+		}
+		if ((texelFetch(mapPlane, ivec2(itile.x + 1, itile.y), 0).r & 255) == 2)
+		{
+			neighbors |= 2;
+		}
+		if ((texelFetch(mapPlane, ivec2(itile.x, itile.y - 1), 0).r & 255) == 2)
+		{
+			neighbors |= 4;
+		}
+		if ((texelFetch(mapPlane, ivec2(itile.x, itile.y + 1), 0).r & 255) == 2)
+		{
+			neighbors |= 8;
+		}
 	}
+	else
+		multiplier = 1.0;
 
-	/*if (tileid < 0)
-	{
-		color = vec4(0.0, 0.0, 0.0, 1.0);
-		return;
-	}*/
-
-	ivec4 textureInfo;// = texelFetch(texInfo, ivec2(0, tileid), 0);
+	ivec4 textureInfo;
 
 	ivec2 cellpos;
+	vec2 cellposf;
 
-	if (tileid < 0)
+	if (mode == 0) //Show floor code
 	{
 		ivec2 texOrigin = ivec2(floorid / 16, 0) * 8;
 		ivec2 texOrigin2 = ivec2(floorid % 16, 0) * 8;
 
-		vec2 cellposf = vec2((tileloc.x - itile.x) * 2 , tileloc.y - itile.y);
+		cellposf = vec2((tileloc.x - itile.x) * 2 , tileloc.y - itile.y);
 		if (cellposf.x > 1)
 			cellpos = ivec2(texOrigin2.x + int((cellposf.x - 1) * 8), texOrigin.y + int(cellposf.y * 16));
 
 		else
 			cellpos = ivec2(texOrigin.x + int(cellposf.x * 8), texOrigin.y + int(cellposf.y * 16));
 	}
-	else
+	else if (mode == 1) //Show textured wall
 	{
 		textureInfo = texelFetch(texInfo, ivec2(0, tileid), 0);
 		ivec2 textureRes = textureInfo.rg;
 		ivec2 texOrigin = textureInfo.ba;
 
-		vec2 cellposf = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
+		cellposf = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
 		cellpos = ivec2(texOrigin.x + int(cellposf.x * textureRes.x), texOrigin.y + int(cellposf.y * textureRes.y));
 	}
 
-	if (tileid < 0)
+	//Darken the edges of tiles with neighboring empty cells
+	if (neighbors != 0)
+	{
+		multiplier = 1.0;
+		if (neighbors & 1)
+		{
+			multiplier *= (clamp(cellposf.x * 5.0, 0.0, 1.0));
+		}
+		if (neighbors & 2)
+		{
+			multiplier *= (clamp((1.0 - cellposf.x) * 5.0, 0.0, 1.0));
+		}
+		if (neighbors & 4)
+		{
+			multiplier *= (clamp(cellposf.y * 5.0, 0.0, 1.0));
+		}
+		if (neighbors & 8)
+		{
+			multiplier *= (clamp((1.0 - cellposf.y) * 5.0, 0.0, 1.0));
+		}
+	}
+
+	if (mode == 0) //Show floor code
 	{
 		color = texelFetch(numbers, cellpos, 0);
 	}
-	else
+	else if (mode == 1) //Normal tile
 	{
 		color = texelFetch(atlas, cellpos, 0) * multiplier;
+	}
+	else if (mode == 2) //Solid color tile
+	{
+		color = vec4(tilemapInfo.g / 255.0, tilemapInfo.b / 255.0, tilemapInfo.a / 255.0, 1.0f) * multiplier;
 	}
 	//vec2 hack = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
 	//color = vec4(1.0 * hack.x, 1.0 * hack.y, 0.5, 1.0);

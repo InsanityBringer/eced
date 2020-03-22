@@ -30,8 +30,8 @@
         {
             this.nudSectorLight = new System.Windows.Forms.NumericUpDown();
             this.label23 = new System.Windows.Forms.Label();
-            this.tbCeilingTex = new System.Windows.Forms.TextBox();
-            this.tbFloorTex = new System.Windows.Forms.TextBox();
+            this.CeilTexTextBox = new System.Windows.Forms.TextBox();
+            this.FloorTexTextBox = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudSectorLight)).BeginInit();
@@ -53,21 +53,23 @@
             this.label23.TabIndex = 2;
             this.label23.Text = "Light Level";
             // 
-            // tbCeilingTex
+            // CeilTexTextBox
             // 
-            this.tbCeilingTex.Location = new System.Drawing.Point(5, 57);
-            this.tbCeilingTex.Name = "tbCeilingTex";
-            this.tbCeilingTex.Size = new System.Drawing.Size(100, 20);
-            this.tbCeilingTex.TabIndex = 1;
-            this.tbCeilingTex.Text = "#383838";
+            this.CeilTexTextBox.Location = new System.Drawing.Point(5, 57);
+            this.CeilTexTextBox.Name = "CeilTexTextBox";
+            this.CeilTexTextBox.Size = new System.Drawing.Size(100, 20);
+            this.CeilTexTextBox.TabIndex = 1;
+            this.CeilTexTextBox.Text = "#383838";
+            this.CeilTexTextBox.TextChanged += new System.EventHandler(this.FloorTexTextBox_TextChanged);
             // 
-            // tbFloorTex
+            // FloorTexTextBox
             // 
-            this.tbFloorTex.Location = new System.Drawing.Point(5, 17);
-            this.tbFloorTex.Name = "tbFloorTex";
-            this.tbFloorTex.Size = new System.Drawing.Size(100, 20);
-            this.tbFloorTex.TabIndex = 1;
-            this.tbFloorTex.Text = "#717171";
+            this.FloorTexTextBox.Location = new System.Drawing.Point(5, 17);
+            this.FloorTexTextBox.Name = "FloorTexTextBox";
+            this.FloorTexTextBox.Size = new System.Drawing.Size(100, 20);
+            this.FloorTexTextBox.TabIndex = 1;
+            this.FloorTexTextBox.Text = "#717171";
+            this.FloorTexTextBox.TextChanged += new System.EventHandler(this.FloorTexTextBox_TextChanged);
             // 
             // label22
             // 
@@ -94,9 +96,9 @@
             this.Controls.Add(this.nudSectorLight);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.label21);
-            this.Controls.Add(this.tbCeilingTex);
+            this.Controls.Add(this.CeilTexTextBox);
             this.Controls.Add(this.label22);
-            this.Controls.Add(this.tbFloorTex);
+            this.Controls.Add(this.FloorTexTextBox);
             this.Name = "SectorUIPanel";
             this.Size = new System.Drawing.Size(118, 133);
             ((System.ComponentModel.ISupportInitialize)(this.nudSectorLight)).EndInit();
@@ -109,8 +111,8 @@
 
         private System.Windows.Forms.NumericUpDown nudSectorLight;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox tbCeilingTex;
-        private System.Windows.Forms.TextBox tbFloorTex;
+        private System.Windows.Forms.TextBox CeilTexTextBox;
+        private System.Windows.Forms.TextBox FloorTexTextBox;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label21;
     }

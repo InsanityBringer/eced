@@ -124,6 +124,7 @@
     <Compile Include="ResourceFiles\Formats\LumpFormat.cs" />
     <Compile Include="ResourceFiles\Formats\PatchLumpFormat.cs" />
     <Compile Include="ResourceFiles\Formats\PNGLumpFormat.cs" />
+    <Compile Include="ResourceFiles\Images\DoomFlatCodec.cs" />
     <Compile Include="ResourceFiles\Images\DoomPatchCodec.cs" />
     <Compile Include="ResourceFiles\Images\ImageCodec.cs" />
     <Compile Include="ResourceFiles\Images\ImageDecoder.cs" />

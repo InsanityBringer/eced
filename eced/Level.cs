@@ -107,6 +107,13 @@ namespace eced
             loadedResources.Clear();
         }
 
+        public void Invalidate()
+        {
+            dirtyRectangle.x1 = 0; dirtyRectangle.y1 = 0;
+            dirtyRectangle.x2 = Width-1; dirtyRectangle.y2 = Height-1;
+            Dirty = true;
+        }
+
         public void ClearDirty()
         {
             dirtyRectangle.x1 = int.MaxValue;
@@ -221,6 +228,11 @@ namespace eced
             Sectors.Add(sector);
         }
 
+        public Sector GetSector(int x, int y, int z)
+        {
+            return Planes[z].cells[x, y].sector;
+        }
+
         public void SetSector(int x, int y, int z, Sector sector)
         {
             if (x >= 0 && y >= 0 && x < Width && y < Height)
@@ -229,6 +241,8 @@ namespace eced
 
                 if (!Sectors.Contains(sector))
                     Sectors.Add(sector);
+
+                SetDirty(x, y);
             }
         }
 

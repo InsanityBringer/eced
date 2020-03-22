@@ -15,9 +15,6 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using CodeImp.DoomBuilder.IO;
 
@@ -25,15 +22,22 @@ namespace eced
 {
     public class Sector
     {
-        public string texfloor = "#717171", texceil = "#383838";
+        public string FloorTexture { get; private set; } = "#717171";
+        public string CeilingTexture { get; private set; } = "#383838";
 
-        public int id;
+        public Sector() { }
 
-        public String Serialize()
+        public Sector(Sector other)
         {
-            String output = "sector\n{\n";
-            output += "\ttexturefloor = \"" + texfloor + "\";\n";
-            output += "\ttextureceiling = \"" + texceil + "\";\n";
+            FloorTexture = other.FloorTexture;
+            CeilingTexture = other.CeilingTexture;
+        }
+
+        public string Serialize()
+        {
+            string output = "sector\n{\n";
+            output += "\ttexturefloor = \"" + FloorTexture + "\";\n";
+            output += "\ttextureceiling = \"" + CeilingTexture + "\";\n";
             output += "}";
 
             return output;
@@ -43,17 +47,35 @@ namespace eced
         {
             Sector newSector = new Sector();
 
-            newSector.texfloor = UWMFSearch.getStringTag(data, "texturefloor", "#717171");
-            newSector.texceil = UWMFSearch.getStringTag(data, "textureceiling", "#383838");
+            newSector.FloorTexture = UWMFSearch.getStringTag(data, "texturefloor", "#717171");
+            newSector.CeilingTexture = UWMFSearch.getStringTag(data, "textureceiling", "#383838");
             
             return newSector;
+        }
+
+        public Sector ChangeTextures(string floor, string ceil)
+        {
+            Sector newSector = new Sector(this);
+
+            newSector.FloorTexture = floor;
+            newSector.CeilingTexture = ceil;
+
+            return newSector;
+        }
+
+        public override int GetHashCode()
+        {
+            //TODO: OPTIMIZE
+            StringBuilder hack = new StringBuilder();
+            hack.Append(FloorTexture); hack.Append(CeilingTexture);
+            return hack.ToString().GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
             Sector t = (Sector)obj;
 
-            return t.texfloor == this.texfloor && t.texceil == this.texceil;
+            return t.FloorTexture == this.FloorTexture && t.CeilingTexture == this.CeilingTexture;
         }
     }
 }

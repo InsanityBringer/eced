@@ -61,19 +61,30 @@ namespace eced.ResourceFiles
                 name = name.Trim('\0', ' '); //maybe this will work
                 fullname = fullname.Trim('\0'); //try to cut off null bytes at end of fullname
 
-                if (name == "TX_START" || name == "S_START")
+                //TODO: Better namespacing system
+                if (name == "TX_START")
                 {
-                    wad.saveToDirectory = "TEXTURES";
-                }
-                else if (name == "TX_END" || name == "S_END")
-                {
-                    //no more saving to textures dir
-                    wad.saveToDirectory = "-";
-                }
-                else if (wad.saveToDirectory == "TEXTURES")
-                {
-                    fullname = wad.saveToDirectory + "/" + name;
                     ns = LumpNamespace.Texture;
+                }
+                else if (name == "TX_END")
+                {
+                    ns = LumpNamespace.Global;
+                }
+                else if (name == "S_START")
+                {
+                    ns = LumpNamespace.Sprite;
+                }
+                else if (name == "S_END")
+                {
+                    ns = LumpNamespace.Global;
+                }
+                else if (name == "F_START")
+                {
+                    ns = LumpNamespace.Flat;
+                }
+                else if (name == "F_END")
+                {
+                    ns = LumpNamespace.Global;
                 }
 
                 Lump lump = new Lump(name, size);
@@ -82,12 +93,12 @@ namespace eced.ResourceFiles
                 lump.@namespace = ns;
                 lump.size = size;
                 wad.lumps.Add(lump);
-                Console.WriteLine("{0}, {1} {2}", lump.fullname, lump.pointer, lump.size);
+                //Console.WriteLine("{0}, {1} {2}", lump.fullname, lump.pointer, lump.size);
             }
 
             wad.streamreader = br;
 
-            Console.WriteLine("{0} lumps loaded", wad.lumps.Count);
+            //Console.WriteLine("{0} lumps loaded", wad.lumps.Count);
             wad.ClassifyArchiveLumps();
             wad.CloseFile();
 
