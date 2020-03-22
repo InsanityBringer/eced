@@ -67,6 +67,7 @@ namespace eced.Renderer
             InitLineBuffer();
             InitTilemapBuffer();
             InitThingBuffer();
+            InitThingTextures();
         }
 
         public void InitLineBuffer()
@@ -189,6 +190,37 @@ namespace eced.Renderer
             thingArrowTexture = TextureManager.GetTexture("./Resources/thingarrow.png", false, true);
         }
 
+        public void InitThingTextures()
+        {
+            int[] buffer = new int[17 * 17 * 8];
+            ResourceFiles.Images.BasicImage hack;
+            thingArrowTexture = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2DArray, thingArrowTexture);
+            //hideous hack
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingarrow.png"));
+            Array.Copy(hack.data, 0, buffer, 0, 17 * 17);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingammo.png"));
+            Array.Copy(hack.data, 0, buffer, 17*17, 17 * 17);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingweapon.png"));
+            Array.Copy(hack.data, 0, buffer, 17 * 17 * 2, 17 * 17);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thinghealth.png"));
+            Array.Copy(hack.data, 0, buffer, 17 * 17 * 3, 17 * 17);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingkey.png"));
+            Array.Copy(hack.data, 0, buffer, 17 * 17 * 4, 17 * 17);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingtreasure.png"));
+            Array.Copy(hack.data, 0, buffer, 17 * 17 * 5, 17 * 17);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingpowerup.png"));
+            Array.Copy(hack.data, 0, buffer, 17 * 17 * 6, 17 * 17);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thinglight.png"));
+            Array.Copy(hack.data, 0, buffer, 17 * 17 * 7, 17 * 17);
+
+            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, 17, 17, 8, 0, PixelFormat.Bgra, PixelType.UnsignedByte, buffer);
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+        }
+
         public void FlushThings()
         {
             if (lastThingNum == 0) return;
@@ -199,7 +231,7 @@ namespace eced.Renderer
             RendererState.ErrorCheck("RendererDrawer::FlushThings: Uploading thing buffer data");
 
             GL.BindVertexArray(vaoNames[(int)VAOInidices.Tilemap]);
-            GL.BindTexture(TextureTarget.Texture2D, thingArrowTexture);
+            GL.BindTexture(TextureTarget.Texture2DArray, thingArrowTexture);
             GL.DrawArraysInstanced(PrimitiveType.TriangleFan, 0, 4, lastThingNum);
             RendererState.ErrorCheck("RendererDrawer::FlushThings: Drawing things");
 
@@ -216,13 +248,14 @@ namespace eced.Renderer
             thingBuffer[lastThingNum * 12 + 2] = thing.z;
             thingBuffer[lastThingNum * 12 + 3] = 0f;
 
-            thingBuffer[lastThingNum * 12 + 4] = def.r / 255f;
-            thingBuffer[lastThingNum * 12 + 5] = def.g / 255f;
-            thingBuffer[lastThingNum * 12 + 6] = def.b / 255f;
+            thingBuffer[lastThingNum * 12 + 4] = def.R / 255f;
+            thingBuffer[lastThingNum * 12 + 5] = def.G / 255f;
+            thingBuffer[lastThingNum * 12 + 6] = def.B / 255f;
             thingBuffer[lastThingNum * 12 + 7] = alpha;
 
-            thingBuffer[lastThingNum * 12 + 8] = def.radius;
+            thingBuffer[lastThingNum * 12 + 8] = def.Radius;
             thingBuffer[lastThingNum * 12 + 9] = thing.angle;
+            thingBuffer[lastThingNum * 12 + 10] = (float)def.Icon;
 
             lastThingNum++;
         }

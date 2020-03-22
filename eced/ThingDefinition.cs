@@ -23,15 +23,30 @@ using System.Xml.Linq;
 
 namespace eced
 {
+    public enum ThingIcon
+    {
+        Arrow,
+        Ammo,
+        Weapon,
+        Cross,
+        Key,
+        Treasure,
+        Powerup,
+        Decoration
+    }
     public class ThingDefinition
     {
-        public int radius = 16, height = 64;
+        public int Radius { get; private set; } = 16;
+        public int Height { get; private set; } = 64;
 
-        public int r = 0, g = 0, b = 0;
+        public int R { get; private set; } = 0;
+        public int G { get; private set; } = 0;
+        public int B { get; private set; } = 0;
 
-        public string name = "Dummy";
+        public string Name { get; private set; } = "Dummy";
 
-        public int id = -1;
+        public string Type { get; private set; } = "";
+        public ThingIcon Icon { get; private set; } = 0;
 
         public ThingDefinition()
         {
@@ -46,61 +61,50 @@ namespace eced
                 //Console.WriteLine(elem.Name.LocalName);
                 switch (elem.Name.LocalName)
                 {
+                    case "radius":
+                        def.Radius = (int)elem;
+                        break;
+                    case "height":
+                        def.Height = (int)elem;
+                        break;
+                    case "name":
+                        def.Name = (string)elem;
+                        break;
+                    case "id":
+                        def.Type = (string)elem;
+                        break;
+                    case "r":
+                        def.R = (int)elem;
+                        break;
+                    case "g":
+                        def.G = (int)elem;
+                        break;
+                    case "b":
+                        def.B = (int)elem;
+                        break;
+                    case "icon":
+                        def.Icon = (ThingIcon)((int)elem);
+                        break;
                 }
             }
 
             return def;
         }
 
-        public void setData(string radius, string height, string name, string type, string id)
+        public void SetData(string radius, string height, string name, string id, int r, int g, int b)
         {
             if (radius != null)
-                this.radius = Int32.Parse(radius);
+                this.Radius = Int32.Parse(radius);
             if (height != null)
-                this.height = Int32.Parse(height);
+                this.Height = Int32.Parse(height);
 
             if (name != null)
-                this.name = name;
+                this.Name = name;
 
             if (id != null)
-                this.id = Int32.Parse(id);
+                this.Type = id;
 
-            if (type != null)
-            {
-                switch (type)
-                {
-                    case "Unknown":
-                        r = 64;
-                        g = 64;
-                        b = 64;
-                        break;
-                    case "Spawn":
-                        r = 0;
-                        g = 128;
-                        b = 0;
-                        break;
-                    case "Internal":
-                        r = 128;
-                        g = 128;
-                        b = 128;
-                        break;
-                    case "Enemy":
-                        r = 128;
-                        g = 0;
-                        b = 0;
-                        break;
-                    case "Treasure":
-                        r = 128;
-                        g = 128;
-                        b = 0;
-                        break;
-                    case "Powerup":
-                        r = 0;
-                        g = 128;
-                        b = 128;
-                        break;
-                }
-            }
+            this.R = r; this.G = g; this.B = b;
         }
     }
 }

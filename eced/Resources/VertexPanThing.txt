@@ -19,6 +19,7 @@ smooth out vec4 acolor;
 smooth out vec2 uv;
 
 flat out vec2 sincos;
+flat out int icon;
 
 uniform vec2 pan;
 uniform float zoom;
@@ -48,4 +49,5 @@ void main()
 	uv = uvCoord;
 	sincos.x = cos(thingDefs[gl_InstanceID].extra.y * 3.1415927 / 180);
 	sincos.y = -sin(thingDefs[gl_InstanceID].extra.y * 3.1415927 / 180);
+	icon = int(thingDefs[gl_InstanceID].extra.z);
 }

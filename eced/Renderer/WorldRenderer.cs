@@ -97,7 +97,7 @@ namespace eced.Renderer
                     if (editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile != -1)
                     {
                         type = 1;
-                        name = editorState.CurrentLevel.InternalTileset[editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile].NorthTex;
+                        name = editorState.CurrentLevel.Tileset[editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].tile].NorthTex;
                         if (name[0] == '#') //solid color
                         {
                             GetColorFromTexture(name, planeData, coord);

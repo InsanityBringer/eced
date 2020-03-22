@@ -31,7 +31,7 @@ namespace eced.UIPanels
             string[] names = new string[things.Count];
             for (int i = 0; i < things.Count; i++)
             {
-                names[i] = things[i].name;
+                names[i] = things[i].Type;
             }
             comboBox1.Items.AddRange(names);
             comboBox1.SelectedIndex = 0;

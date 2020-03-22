@@ -25,7 +25,7 @@ namespace eced.GameConfig
     public class ThingManager
     {
         public List<ThingDefinition> thingList = new List<ThingDefinition>();
-        public Dictionary<int, int> idToThingListMapping = new Dictionary<int, int>();
+        public Dictionary<string, int> idToThingListMapping = new Dictionary<string, int>();
         public List<int> idlist = new List<int>();
 
         private ThingDefinition unknownThing;
@@ -33,12 +33,18 @@ namespace eced.GameConfig
         public ThingManager()
         {
             this.unknownThing = new ThingDefinition();
-            this.unknownThing.setData("16", "16", "UnknownThing", "Unknown", "-1");
+            this.unknownThing.SetData("16", "16", "Unknown thing", "Unknown", 64, 64, 64);
         }
 
         public ThingDefinition GetUnknownThing()
         {
             return this.unknownThing;
+        }
+
+        public ThingDefinition GetThingDef(string type)
+        {
+            if (idToThingListMapping.ContainsKey(type)) return thingList[idToThingListMapping[type]];
+            return unknownThing;
         }
 
         public void LoadThingDefintions(string filename)
@@ -60,18 +66,11 @@ namespace eced.GameConfig
                             if (subnode is XContainer)
                             {
                                 XContainer thingdata = (XContainer)subnode;
-                                int id = 0;
                                 try
                                 {
-                                    id = Int32.Parse(thingdata.Element("id").Value);
-
-                                    ThingDefinition thing = new ThingDefinition();
-
-                                    thing.setData(thingdata.Element("radius").Value, thingdata.Element("height").Value,
-                                        thingdata.Element("name").Value, thingdata.Element("type").Value, thingdata.Element("id").Value);
-
+                                    ThingDefinition thing = ThingDefinition.FromXContainer(thingdata);
                                     thingList.Add(thing);
-                                    idToThingListMapping.Add(id, thingList.Count - 1);
+                                    idToThingListMapping.Add(thing.Type, thingList.Count - 1);
                                 }
                                 catch (Exception exc)
                                 {

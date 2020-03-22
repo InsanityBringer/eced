@@ -82,7 +82,7 @@ namespace eced
         public float x, y, z;
 
         public int angle;
-        public int typeid;
+        public string type;
         public int flags;
 
         public UniversalCollection allkeys;
@@ -99,7 +99,7 @@ namespace eced
             stringmaker.Append("\n\tz = "); stringmaker.Append(z); stringmaker.Append(";");
 
             stringmaker.Append("\n\tangle = "); stringmaker.Append(angle); stringmaker.Append(";");
-            stringmaker.Append("\n\ttype = "); stringmaker.Append(typeid); stringmaker.Append(";");
+            stringmaker.Append("\n\ttype = \""); stringmaker.Append(type); stringmaker.Append("\";");
             stringmaker.Append("\n\tambush = "); stringmaker.Append(checkFlag(ThingFlagsBits.FLAG_AMBUSH).ToString().ToLower()); stringmaker.Append(";");
             stringmaker.Append("\n\tpatrol = "); stringmaker.Append(checkFlag(ThingFlagsBits.FLAG_PATROL).ToString().ToLower()); stringmaker.Append(";");
             stringmaker.Append("\n\tskill1 = "); stringmaker.Append(checkFlag(ThingFlagsBits.FLAG_SKILL1).ToString().ToLower()); stringmaker.Append(";");
@@ -139,7 +139,7 @@ namespace eced
 
             thing.angle = UWMFSearch.getIntTag(data, "angle", 0);
 
-            thing.typeid = UWMFSearch.getIntTag(data, "type", 10); //default to harmless path node
+            thing.type = UWMFSearch.getStringTag(data, "type", "Unknown"); 
 
             ThingFlags flags = new ThingFlags();
             flags.ambush = UWMFSearch.getBoolTag(data, "ambush", false);

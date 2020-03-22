@@ -226,7 +226,7 @@ namespace eced
                 case 4:
                     this.gbThingSelect.Visible = true;
                     gbThingSelect.AddThings(editorState.ThingList.thingList);
-                    gbThingSelect.pairedBrush = (ThingBrush)editorState.BrushList[toolID];
+                    gbThingSelect.SetPairedBrush((ThingBrush)editorState.BrushList[toolID]);
                     break;
                 case 5:
                     this.gbTriggerData.Visible = true;

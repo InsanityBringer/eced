@@ -47,7 +47,7 @@ namespace eced
             for (int x = 0; x < thinglist.idlist.Count; x++)
             {
                 ThingDefinition lthing = thinglist.thingList[x];
-                listBox1.Items.Add(lthing.name);
+                listBox1.Items.Add(lthing.Type);
             }
 
             this.ndThingAngle.Value = thing.angle;
@@ -133,7 +133,7 @@ namespace eced
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.thing.typeid = thinglist.idlist[listBox1.SelectedIndex];
+            this.thing.type = listBox1.Text;
         }
 
         private void button1_Click(object sender, EventArgs e)

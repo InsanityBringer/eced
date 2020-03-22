@@ -15,19 +15,15 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace eced
 {
-    //TODO: Add zone features
+    //The only reason why this class exists is so that I'm ready in case
+    //there are ever zone properties added, I guess?
     public class Zone
     {
         public int id;
 
-        public string getUWMFString()
+        public string Serialize()
         {
             return "zone\n{\n}";
         }

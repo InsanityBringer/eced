@@ -56,7 +56,7 @@ namespace eced.Brushes
                     //Console.WriteLine("placing thing at {0}, {1}", lx, ly);
 
                     Thing lthing = new Thing();
-                    lthing.typeid = thing.id;
+                    lthing.type = thing.Type;
 
                     lthing.x = (int)pos.X + .5f;
                     lthing.y = (int)pos.Y + .5f;

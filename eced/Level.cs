@@ -40,13 +40,14 @@ namespace eced
 
         public List<Plane> Planes { get; } = new List<Plane>();
 
-        public List<Tile> InternalTileset { get; } = new List<Tile>();
-        public Dictionary<Tile, int> InternalTilesetMap { get; } = new Dictionary<Tile, int>();
+        //Data management
+        public List<Tile> Tileset { get; } = new List<Tile>();
+        public Dictionary<Tile, int> TilesetMap { get; } = new Dictionary<Tile, int>();
+        public List<Sector> Sectorset { get; } = new List<Sector>();
+        public Dictionary<Sector, int> SectorsetMap { get; } = new Dictionary<Sector, int>();
+
         public List<Thing> Things { get; } = new List<Thing>();
         public List<Zone> ZoneDefs { get; } = new List<Zone>();
-        public List<Sector> Sectors { get; } = new List<Sector>();
-        //private Dictionary<int, Trigger> triggerList = new Dictionary<int, Trigger>();
-        //private List<int> triggerKeys = new List<int>();
 
         //Dirty rectangle properties
         public bool Dirty { get; private set; } = false;
@@ -73,10 +74,8 @@ namespace eced
             this.Height = h;
             this.Depth = d;
 
-            //cells = new Cell[width, height, depth];
-
             Planes.Add(new Plane(w, h));
-            Sectors.Add(new Sector());
+            Sectorset.Add(new Sector());
 
             for (int x = 0; x < Width; x++)
             {
@@ -84,13 +83,12 @@ namespace eced
                 {
                     Planes[0].cells[x, y] = new Cell();
                     Planes[0].cells[x, y].tile = 0;
-                    Planes[0].cells[x, y].sector = Sectors[0];
+                    Planes[0].cells[x, y].sector = 0;
                 }
             }
             if (defaultTile != null)
             {
-                InternalTileset.Add(defaultTile);
-                InternalTilesetMap.Add(defaultTile, 0);
+                AddTile(defaultTile);
             }
             ClearDirty();
         }
@@ -166,9 +164,9 @@ namespace eced
         public void AddTile(Tile tile)
         {
             Console.WriteLine("adding tile to internal tileset");
-            InternalTilesetMap.Add(tile, InternalTileset.Count);
-            InternalTileset.Add(tile);
-            Console.WriteLine("tileset size: {0}", InternalTileset.Count);
+            TilesetMap.Add(tile, Tileset.Count);
+            Tileset.Add(tile);
+            Console.WriteLine("tileset size: {0}", Tileset.Count);
         }
 
         public Tile GetTile(int x, int y, int z)
@@ -177,7 +175,7 @@ namespace eced
             {
                 if (Planes[z].cells[x, y].tile == -1) return null;
 
-                return InternalTileset[Planes[z].cells[x, y].tile];
+                return Tileset[Planes[z].cells[x, y].tile];
             }
 
             return null; //need to find a better return value
@@ -194,11 +192,11 @@ namespace eced
                 }
                 else
                 {
-                    if (!InternalTilesetMap.ContainsKey(tile))
+                    if (!TilesetMap.ContainsKey(tile))
                     {
                         AddTile(tile);
                     }
-                    tileid = InternalTilesetMap[tile];
+                    tileid = TilesetMap[tile];
                     if (tileid != Planes[z].cells[x, y].tile)
                     {
                         Planes[z].cells[x, y].tile = tileid;
@@ -219,23 +217,23 @@ namespace eced
 
         public void AddSector(Sector sector)
         {
-            Sectors.Add(sector);
+            SectorsetMap.Add(sector, Sectorset.Count);
+            Sectorset.Add(sector);
         }
 
         public Sector GetSector(int x, int y, int z)
         {
-            return Planes[z].cells[x, y].sector;
+            return Sectorset[Planes[z].cells[x, y].sector];
         }
 
         public void SetSector(int x, int y, int z, Sector sector)
         {
             if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
-                Planes[z].cells[x, y].sector = sector;
+                if (!SectorsetMap.ContainsKey(sector))
+                    AddSector(sector);
 
-                if (!Sectors.Contains(sector))
-                    Sectors.Add(sector);
-
+                Planes[z].cells[x, y].sector = SectorsetMap[sector];
                 SetDirty(x, y);
             }
         }
@@ -269,11 +267,7 @@ namespace eced
 
         public ThingDefinition GetThingDef(Thing thing)
         {
-            if (!localThingList.idToThingListMapping.ContainsKey(thing.typeid))
-            {
-                return localThingList.GetUnknownThing();
-            }
-            return localThingList.thingList[localThingList.idToThingListMapping[thing.typeid]];
+            return localThingList.GetThingDef(thing.type);
         }
 
         public void HighlightThing(int x, int y)
@@ -285,8 +279,8 @@ namespace eced
             {
                 Thing thing = Things[lx];
                 ThingDefinition def = GetThingDef(thing);
-                int sx = (int)thing.getXCoord() - def.radius; int ex = (int)thing.getXCoord() + def.radius;
-                int sy = (int)thing.getYCoord() - def.radius; int ey = (int)thing.getYCoord() + def.radius;
+                int sx = (int)thing.getXCoord() - def.Radius; int ex = (int)thing.getXCoord() + def.Radius;
+                int sy = (int)thing.getYCoord() - def.Radius; int ey = (int)thing.getYCoord() + def.Radius;
                 if (x >= sx && x < ex && y >= sy && y < ey)
                 {
                     this.highlighted = thing;
@@ -306,8 +300,8 @@ namespace eced
             }
 
             ThingDefinition def = GetThingDef(highlighted);
-            int sx = (int)highlighted.getXCoord() - def.radius; int ex = (int)highlighted.getXCoord() + def.radius;
-            int sy = (int)highlighted.getYCoord() - def.radius; int ey = (int)highlighted.getYCoord() + def.radius;
+            int sx = (int)highlighted.getXCoord() - def.Radius; int ex = (int)highlighted.getXCoord() + def.Radius;
+            int sy = (int)highlighted.getYCoord() - def.Radius; int ey = (int)highlighted.getYCoord() + def.Radius;
             if ((x < sx || x >= ex || y < sy || y >= ey) && 
                 !this.highlighted.moving)
             {
@@ -428,15 +422,15 @@ namespace eced
 
             //Plane plane = new Plane();
 
-            for (int x = 0; x < InternalTileset.Count; x++)
+            for (int x = 0; x < Tileset.Count; x++)
             {
-                sb.Append(InternalTileset[x].Serialize());
+                sb.Append(Tileset[x].Serialize());
                 sb.Append("\n");
             }
             sb.Append("\n");
             for (int x = 0; x < ZoneDefs.Count; x++)
             {
-                sb.Append(ZoneDefs[x].getUWMFString());
+                sb.Append(ZoneDefs[x].Serialize());
                 sb.Append("\n");
             }
             sb.Append("\n");
@@ -447,9 +441,9 @@ namespace eced
             }
             sb.Append("\n");
 
-            for (int x = 0; x < Sectors.Count; x++)
+            for (int x = 0; x < Sectorset.Count; x++)
             {
-                sb.Append(Sectors[x].Serialize());
+                sb.Append(Sectorset[x].Serialize());
                 sb.Append("\n");
             }
             sb.Append("\n");
@@ -511,18 +505,15 @@ namespace eced
 
         public int GetTileID(Tile tile)
         {
-            if (InternalTileset.Contains(tile))
-                return InternalTileset.IndexOf(tile);
+            if (Tileset.Contains(tile))
+                return Tileset.IndexOf(tile);
 
             return -1;
         }
 
         public int GetSectorID(int x, int y, int z)
         {
-            if (Sectors.Contains(Planes[z].cells[x, y].sector))
-                return Sectors.IndexOf(Planes[z].cells[x, y].sector);
-
-            return -1;
+            return Planes[z].cells[x, y].sector;
         }
 
         public int GetZoneID(Cell cell)
@@ -592,7 +583,8 @@ namespace eced
                             cell.tile = tempPlanemap[index].tile;
                             tilesadded++;
                         }
-                        cell.sector = new Sector(); //no sector management
+                        //TODO: This is REALLY BAD
+                        //cell.sector = new Sector(); //no sector management
                         if (tempPlanemap[index].zone >= 0)
                             cell.zone = this.ZoneDefs[tempPlanemap[index].zone];
 
