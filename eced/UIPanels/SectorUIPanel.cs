@@ -37,5 +37,13 @@ namespace eced.UIPanels
                 pairedBrush.currentSector = pairedBrush.currentSector.ChangeTextures(FloorTexTextBox.Text, CeilTexTextBox.Text);
             }
         }
+
+        private void nudSectorLight_ValueChanged(object sender, EventArgs e)
+        {
+            if (pairedBrush != null)
+            {
+                pairedBrush.currentSector = pairedBrush.currentSector.ChangeLight((int)nudSectorLight.Value);
+            }
+        }
     }
 }

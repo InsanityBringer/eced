@@ -39,22 +39,6 @@ namespace eced.Brushes
             {
                 if (level.highlighted == null)
                 {
-                    //int lx = (int)((double)x / ((double)tilsize / 64d));
-                    //int ly = (int)((double)y / ((double)tilsize / 64d));
-
-                    /*int lx = (x / tilsize);
-                    int ly = (y / tilsize);
-
-                    lx *= tilsize * 2;
-                    ly *= tilsize * 2;
-
-                    lx += tilsize; ly += tilsize;*/
-
-                    //int lx = x / tilsize;
-                    //int ly = y / tilsize;
-
-                    //Console.WriteLine("placing thing at {0}, {1}", lx, ly);
-
                     Thing lthing = new Thing();
                     lthing.type = thing.Type;
 

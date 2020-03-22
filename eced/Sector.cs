@@ -24,6 +24,7 @@ namespace eced
     {
         public string FloorTexture { get; private set; } = "#717171";
         public string CeilingTexture { get; private set; } = "#383838";
+        public int Light { get; private set; } = 255;
 
         public Sector() { }
 
@@ -31,16 +32,19 @@ namespace eced
         {
             FloorTexture = other.FloorTexture;
             CeilingTexture = other.CeilingTexture;
+            Light = other.Light;
         }
 
         public string Serialize()
         {
-            string output = "sector\n{\n";
-            output += "\ttexturefloor = \"" + FloorTexture + "\";\n";
-            output += "\ttextureceiling = \"" + CeilingTexture + "\";\n";
-            output += "}";
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("sector\n{\n");
+            stringBuilder.AppendFormat("\ttexturefloor = \"{0}\";\n",FloorTexture);
+            stringBuilder.AppendFormat("\ttextureceiling = \"{0}\";\n", CeilingTexture);
+            stringBuilder.AppendFormat("\tlight = \"{0}\";\n", Light);
+            stringBuilder.Append("}");
 
-            return output;
+            return stringBuilder.ToString();
         }
 
         public static Sector Deserialize(UniversalCollection data)
@@ -63,6 +67,14 @@ namespace eced
             return newSector;
         }
 
+        public Sector ChangeLight(int light)
+        {
+            Sector newSector = new Sector(this);
+            newSector.Light = light;
+
+            return newSector;
+        }
+
         public override int GetHashCode()
         {
             //TODO: OPTIMIZE
@@ -75,7 +87,7 @@ namespace eced
         {
             Sector t = (Sector)obj;
 
-            return t.FloorTexture == this.FloorTexture && t.CeilingTexture == this.CeilingTexture;
+            return t.FloorTexture == this.FloorTexture && t.CeilingTexture == this.CeilingTexture && t.Light == Light;
         }
     }
 }

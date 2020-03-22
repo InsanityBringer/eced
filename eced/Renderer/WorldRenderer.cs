@@ -70,25 +70,27 @@ namespace eced.Renderer
             return 0;
         }
 
-        private void GetColorFromTexture(string name, short[] data, int offset)
+        private void GetColorFromTexture(string name, ushort[] data, int offset)
         {
             if (name.Length < 7) return;
-            data[offset + 1] = (short)((TranslateCharacter(name[1]) << 4) + TranslateCharacter(name[2]));
-            data[offset + 2] = (short)((TranslateCharacter(name[3]) << 4) + TranslateCharacter(name[4]));
-            data[offset + 3] = (short)((TranslateCharacter(name[5]) << 4) + TranslateCharacter(name[6]));
+            data[offset + 1] = (ushort)((TranslateCharacter(name[1]) << 4) + TranslateCharacter(name[2]));
+            data[offset + 1] += (ushort)((TranslateCharacter(name[3]) << 12) + (TranslateCharacter(name[4]) << 8));
+            data[offset + 2] = (ushort)((TranslateCharacter(name[5]) << 4) + TranslateCharacter(name[6]));
         }
 
         /// <summary>
         /// Builds a 2-dimensional array representing the data of a single plane
         /// </summary>
         /// <param name="layer">The layer to make the plane from</param>
-        public short[] BuildPlaneData(int layer, int xPos, int yPos, int w, int h)
+        public ushort[] BuildPlaneData(int layer, int xPos, int yPos, int w, int h)
         {
-            short[] planeData = new short[w * h * 4];
+            ushort[] planeData = new ushort[w * h * 4];
 
             int coord;
             string name;
             int mode, type;
+            Sector sector;
+
             for (int x = 0; x < w; x++)
             {
                 for (int y = 0; y < h; y++)
@@ -105,7 +107,7 @@ namespace eced.Renderer
                         }
                         else
                         {
-                            planeData[coord+1] = (short)state.Textures.GetTextureID(name);
+                            planeData[coord+1] = (ushort)state.Textures.GetTextureID(name);
                             mode = 1;
                         }
                     }
@@ -115,12 +117,13 @@ namespace eced.Renderer
                         if (currentViewMode == 1)
                         {
                             mode = 0;
-                            planeData[coord + 1] = (short)editorState.CurrentLevel.ZoneDefs.IndexOf(editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone);
+                            planeData[coord + 1] = (ushort)editorState.CurrentLevel.ZoneDefs.IndexOf(editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone);
                         }
                         else
                         {
-                            if (currentViewMode == 3) name = editorState.CurrentLevel.GetSector(x + xPos, y + yPos, layer).CeilingTexture;
-                            else name = editorState.CurrentLevel.GetSector(x + xPos, y + yPos, layer).FloorTexture;
+                            sector = editorState.CurrentLevel.GetSector(x + xPos, y + yPos, layer);
+                            if (currentViewMode == 3) name = sector.CeilingTexture;
+                            else name = sector.FloorTexture;
 
                             if (name[0] == '#') //solid color
                             {
@@ -129,12 +132,13 @@ namespace eced.Renderer
                             }
                             else
                             {
-                                planeData[coord + 1] = (short)state.Textures.GetTextureID(name);
+                                planeData[coord + 1] = (ushort)state.Textures.GetTextureID(name);
                                 mode = 1;
                             }
+                            planeData[coord + 3] = (ushort)sector.Light;
                         }
                     }
-                    planeData[coord] = (short)((mode << 8) + type);
+                    planeData[coord] = (ushort)((mode << 8) + type);
                 }
             }
 
@@ -161,7 +165,7 @@ namespace eced.Renderer
             return worldTextureID;
         }
 
-        private void UpdateTilemapRegion(int textureID, int x, int y, int w, int h, short[] data)
+        private void UpdateTilemapRegion(int textureID, int x, int y, int w, int h, ushort[] data)
         {
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, textureID);

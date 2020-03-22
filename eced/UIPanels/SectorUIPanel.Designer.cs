@@ -39,10 +39,26 @@
             // 
             // nudSectorLight
             // 
+            this.nudSectorLight.Increment = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
             this.nudSectorLight.Location = new System.Drawing.Point(6, 103);
+            this.nudSectorLight.Maximum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
             this.nudSectorLight.Name = "nudSectorLight";
             this.nudSectorLight.Size = new System.Drawing.Size(99, 20);
             this.nudSectorLight.TabIndex = 3;
+            this.nudSectorLight.Value = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.nudSectorLight.ValueChanged += new System.EventHandler(this.nudSectorLight_ValueChanged);
             // 
             // label23
             // 
