@@ -203,12 +203,6 @@ namespace eced
                     {
                         Planes[z].cells[x, y].tile = tileid;
                         Planes[z].cells[x, y].zone = null;
-                        if (!InternalTileset.Contains(tile) && tile != null)
-                        {
-                            Console.WriteLine("adding tile to internal tileset");
-                            InternalTileset.Add(tile);
-                            Console.WriteLine("tileset size: {0}", InternalTileset.Count);
-                        }
                     }
                 }
                 SetDirty(x, y);
