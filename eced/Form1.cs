@@ -226,6 +226,7 @@ namespace eced
                     break;
                 case 7:
                     this.gbZoneList.Visible = true;
+                    this.gbZoneList.SetPairedBrush((FloodBrush)editorState.BrushList[toolID]);
                     break;
                 case 8:
                     this.gbTag.Visible = true;

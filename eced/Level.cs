@@ -60,8 +60,6 @@ namespace eced
         public Cell highlightedTrigger = null;
         public int[] highlightedPos = new int[2];
 
-        public List<OpenTK.Vector2> updateCells = new List<OpenTK.Vector2>();
-
         public List<ResourceFiles.Archive> loadedResources = new List<ResourceFiles.Archive>();
 
         public Level(int w, int h, int d, Tile defaultTile)
@@ -81,6 +79,7 @@ namespace eced
                     Planes[0].cells[x, y] = new Cell();
                     Planes[0].cells[x, y].tile = 0;
                     Planes[0].cells[x, y].sector = 0;
+                    Planes[0].cells[x, y].zone = -1;
                 }
             }
             if (defaultTile != null)
@@ -135,7 +134,7 @@ namespace eced
 
         public int GetZoneID(int x, int y, int z)
         {
-            return ZoneDefs.IndexOf(Planes[z].cells[x, y].zone);
+            return Planes[z].cells[x, y].zone;
         }
 
         public void AddTile(Tile tile)
@@ -177,7 +176,7 @@ namespace eced
                     if (tileid != Planes[z].cells[x, y].tile)
                     {
                         Planes[z].cells[x, y].tile = tileid;
-                        Planes[z].cells[x, y].zone = null;
+                        Planes[z].cells[x, y].zone = -1;
                     }
                 }
                 SetDirty(x, y);
@@ -371,22 +370,19 @@ namespace eced
             }
         }
 
-        public void AssignFloorCode(int x, int y, int z, int code)
+        public void SetZone(int x, int y, int z, int code)
         {
-            Console.WriteLine("setting code {0}", code);
-            if (code == ZoneDefs.Count)
+            while (code >= ZoneDefs.Count) //heeh
             {
                 ZoneDefs.Add(new Zone());
-                Console.WriteLine("adding a zone");
             }
 
-            Planes[z].cells[x, y].zone = ZoneDefs[code];
-            updateCells.Add(new OpenTK.Vector2(x, y));
+            Planes[z].cells[x, y].zone = code;
+            SetDirty(x, y);
         }
 
-        public int GetUniqueCode()
+        public int GetUniqueZone()
         {
-            Console.WriteLine("getting code {0}", ZoneDefs.Count);
             return ZoneDefs.Count;
         }
 
@@ -464,8 +460,8 @@ namespace eced
                 int x = i % Width;
                 int y = i / Width;
                 stringbuilder.Append("\t{"); stringbuilder.Append(Planes[plane].cells[x, y].tile);
-                stringbuilder.Append(", "); stringbuilder.Append(GetSectorID(x, y, plane));
-                stringbuilder.Append(", "); stringbuilder.Append(GetZoneID(Planes[plane].cells[x, y]));
+                stringbuilder.Append(", "); stringbuilder.Append(Planes[plane].cells[x, y].sector);
+                stringbuilder.Append(", "); stringbuilder.Append(Planes[plane].cells[x, y].zone);
                 stringbuilder.Append(", "); stringbuilder.Append(Planes[plane].cells[x, y].tag);
                 stringbuilder.Append("}");
                 if (i < ((Width * Height) - 1))
@@ -492,32 +488,14 @@ namespace eced
             return Planes[z].cells[x, y].sector;
         }
 
-        public int GetZoneID(Cell cell)
-        {
-            if (cell.zone == null)
-            {
-                return -1;
-            }
-            return ZoneDefs.IndexOf(cell.zone);
-        }
-
         public bool CompareZoneID(int x, int y, int z, int code)
         {
-            return GetZoneID(Planes[z].cells[x, y]) == code;
+            return GetZoneID(x, y, z) == code;
         }
 
         public Zone GetZoneAt(int x, int y, int z)
         {
-            return Planes[z].cells[x, y].zone;
-        }
-
-        public int GetZoneIDAt(int x, int y, int z)
-        {
-            if (ZoneDefs.Contains(Planes[z].cells[x, y].zone))
-            {
-                return ZoneDefs.IndexOf(Planes[z].cells[x, y].zone);
-            }
-            return -1;
+            return ZoneDefs[Planes[z].cells[x, y].zone];
         }
 
         public void SetTempPlaneMap(List<NumberCell> planemap)
@@ -560,9 +538,10 @@ namespace eced
                             tilesadded++;
                         }
                         //TODO: This is REALLY BAD
+                        //TODO: LIKE SERIOUSLY WHY DID I THINK ANYTHING HERE WAS A GOOD IDEA
                         //cell.sector = new Sector(); //no sector management
                         if (tempPlanemap[index].zone >= 0)
-                            cell.zone = this.ZoneDefs[tempPlanemap[index].zone];
+                            cell.zone = tempPlanemap[index].zone;
 
                         Planes[z].cells[x, y] = cell;
                     }

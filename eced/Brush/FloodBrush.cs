@@ -40,7 +40,7 @@ namespace eced.Brushes
 
             this.level = level;
             if (setCode < 0)
-                code = level.GetUniqueCode();
+                code = level.GetUniqueZone();
             else code = setCode;
 
             flood(tx, ty);
@@ -56,7 +56,7 @@ namespace eced.Brushes
             if (level.CompareZoneID(x, y, 0, code))
                 return;
 
-            level.AssignFloorCode(x, y, 0, code);
+            level.SetZone(x, y, 0, code);
 
             flood(x - 1, y);
             flood(x + 1, y);

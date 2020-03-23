@@ -117,7 +117,7 @@ namespace eced.Renderer
                         if (currentViewMode == 1)
                         {
                             mode = 0;
-                            planeData[coord + 1] = (ushort)editorState.CurrentLevel.ZoneDefs.IndexOf(editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone);
+                            planeData[coord + 1] = (ushort)editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone;
                         }
                         else
                         {

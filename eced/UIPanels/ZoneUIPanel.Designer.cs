@@ -28,20 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbZoneList = new System.Windows.Forms.ListBox();
+            this.ZoneListBox = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // lbZoneList
+            // ZoneListBox
             // 
-            this.lbZoneList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.ZoneListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbZoneList.FormattingEnabled = true;
-            this.lbZoneList.Location = new System.Drawing.Point(6, 16);
-            this.lbZoneList.Name = "lbZoneList";
-            this.lbZoneList.Size = new System.Drawing.Size(150, 290);
-            this.lbZoneList.TabIndex = 0;
+            this.ZoneListBox.FormattingEnabled = true;
+            this.ZoneListBox.Location = new System.Drawing.Point(6, 16);
+            this.ZoneListBox.Name = "ZoneListBox";
+            this.ZoneListBox.Size = new System.Drawing.Size(150, 290);
+            this.ZoneListBox.TabIndex = 0;
+            this.ZoneListBox.SelectedIndexChanged += new System.EventHandler(this.ZoneListBox_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -57,7 +58,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.lbZoneList);
+            this.Controls.Add(this.ZoneListBox);
             this.Name = "ZoneUIPanel";
             this.Size = new System.Drawing.Size(163, 312);
             this.ResumeLayout(false);
@@ -67,7 +68,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox lbZoneList;
+        private System.Windows.Forms.ListBox ZoneListBox;
         private System.Windows.Forms.Label label1;
     }
 }

@@ -14,16 +14,13 @@
  *   You should have received a copy of the GNU General Public License
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
-
-using System.Collections.Generic;
-
 namespace eced
 {
     public class Cell
     {
         public int tile;
         public int sector;
-        public Zone zone;
+        public int zone;
         public int tag;
 
         public bool highlighted = false;
