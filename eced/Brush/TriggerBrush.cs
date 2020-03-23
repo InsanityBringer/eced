@@ -15,18 +15,13 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace eced.Brushes
 {
     public class TriggerBrush : EditorBrush
     {
         public Trigger trigger = new Trigger();
-        public TriggerBrush()
-            : base()
+        public TriggerBrush(EditorState state)
+            : base(state)
         {
             this.repeatable = false;
         }
@@ -42,17 +37,19 @@ namespace eced.Brushes
 
                 triggertoput.x = lx;
                 triggertoput.y = ly;
-                triggertoput.z = 0;
+                triggertoput.z = z;
 
                 level.AddTrigger(lx, ly, z, triggertoput);
             }
             else
             {
-                Cell cell = level.GetCell(lx, ly, z);
-                TriggerEditor editor = new TriggerEditor(ref cell, lx, ly, z);
-                editor.ShowDialog();
-                level.SetCell(lx, ly, z, editor.getNewCell());
-                editor.Dispose();
+                TriggerList list = state.CurrentLevel.GetTriggers(lx, ly, z);
+                if (list != null)
+                {
+                    TriggerEditor editor = new TriggerEditor(list, state.TriggerList);
+                    editor.ShowDialog();
+                    editor.Dispose();
+                }
             }
         }
     }

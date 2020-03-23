@@ -27,8 +27,8 @@ namespace eced.Brushes
         private Level level;
         private int code = 0;
         public int setCode = -1;
-        public FloodBrush()
-            : base()
+        public FloodBrush(EditorState state)
+            : base(state)
         {
             this.repeatable = false;
         }

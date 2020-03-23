@@ -185,21 +185,120 @@ namespace eced.Renderer
 
         public void DrawLevelGrid()
         {
-            Vector4 color = new Vector4(0.0f, 0.5f, 0.5f, 1.0f);
+            Vector4 color = new Vector4(0.3f, 0.4f, 0.5f, 1.0f);
             int w = state.CurrentState.CurrentLevel.Width;
             int h = state.CurrentState.CurrentLevel.Height;
 
             float coord;
             for (int x = 0; x <= w; x++)
             {
-                coord = ((float)x / w) * 2f - 1f;
-                state.Drawer.DrawLine(new Vector3(coord, -1.0f, 0), new Vector3(coord, 1.0f, 0), color, color);
+                coord = (float)x;
+                state.Drawer.DrawLine(new Vector3(coord, 0, 0), new Vector3(coord, h, 0), color, color);
             }
 
             for (int y = 0; y <= h; y++)
             {
-                coord = ((float)y / w) * 2f - 1f;
-                state.Drawer.DrawLine(new Vector3(-1.0f, coord, 0), new Vector3(1.0f, coord, 0), color, color);
+                coord = (float)y;
+                state.Drawer.DrawLine(new Vector3(0, coord, 0), new Vector3(w, coord, 0), color, color);
+            }
+        }
+
+        public void DrawTrigger(TriggerList triggerList)
+        {
+            int triggerActivation = 0;
+            int tilesize = state.CurrentState.CurrentLevel.TileSize;
+            Vector4 color = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+            Vector3 src = new Vector3(), dest = new Vector3();
+            //i've made some mistakes with coordinate specification...
+            float baseX = (float)triggerList.pos.x;
+            float baseY = (float)triggerList.pos.y;
+            foreach (Trigger trigger in triggerList.Triggers)
+            {
+                if (trigger.actn) triggerActivation |= 1 | 4;
+                if (trigger.acts) triggerActivation |= 1 | 16;
+                if (trigger.acte) triggerActivation |= 2 | 8;
+                if (trigger.actw) triggerActivation |= 2 | 32;
+            }
+
+            if ((triggerActivation & 3) == 3) //activatable in more than one axis
+            {
+                src.X = baseX + 0.2f;
+                src.Y = baseY + 0.2f;
+                dest.X = baseX + 0.8f;
+                dest.Y = baseY + 0.2f;
+                state.Drawer.DrawLine(src, dest, color, color);
+
+                src.Y = baseY + 0.8f;
+                dest.Y = baseY + 0.8f;
+                state.Drawer.DrawLine(src, dest, color, color);
+
+                src.X = baseX + 0.2f;
+                src.Y = baseY + 0.2f;
+                dest.X = baseX + 0.2f;
+                dest.Y = baseY + 0.8f;
+                state.Drawer.DrawLine(src, dest, color, color);
+
+                src.X = baseX + 0.8f;
+                dest.X = baseX + 0.8f;
+                state.Drawer.DrawLine(src, dest, color, color);
+
+                src.X = baseX + .5f;
+                src.Y = baseY + (((triggerActivation & 4) != 0) ? 0.0f : .2f);
+                dest.X = baseX + .5f;
+                dest.Y = baseY + (((triggerActivation & 16) != 0) ? 1.0f : .8f);
+                state.Drawer.DrawLine(src, dest, color, color);
+
+                src.X = baseX + (((triggerActivation & 32) != 0) ? 0.0f : .2f);
+                src.Y = baseY + .5f;
+                dest.X = baseX + (((triggerActivation & 8) != 0) ? 1.0f : .8f);
+                dest.Y = baseY + .5f;
+                state.Drawer.DrawLine(src, dest, color, color);
+            }
+            else if ((triggerActivation & 1) != 0)
+            {
+                src.X = baseX;
+                src.Y = baseY;
+                dest.X = baseX;
+                dest.Y = baseY + 1f;
+                state.Drawer.DrawLine(src, dest, color, color);
+                src.X = baseX + 1f;
+                dest.X = baseX + 1f;
+                state.Drawer.DrawLine(src, dest, color, color);
+
+                src.X = baseX;
+                src.Y = baseY + 0.5f;
+                dest.X = baseX + 1f;
+                dest.Y = baseY + 0.5f;
+                state.Drawer.DrawLine(src, dest, color, color);
+
+                src.X = baseX + .5f;
+                src.Y = baseY + (((triggerActivation & 4) != 0) ? .25f : .5f);
+                dest.X = baseX + .5f;
+                dest.Y = baseY + (((triggerActivation & 16) != 0) ? .75f : .5f);
+                state.Drawer.DrawLine(src, dest, color, color);
+            }
+            else
+            {
+                src.X = baseX;
+                src.Y = baseY;
+                dest.X = baseX + 1f;
+                dest.Y = baseY;
+                state.Drawer.DrawLine(src, dest, color, color);
+                src.Y = baseY + 1f;
+                dest.Y = baseY + 1f;
+                state.Drawer.DrawLine(src, dest, color, color);
+
+                src.X = baseX + 0.5f;
+                src.Y = baseY;
+                dest.X = baseX + 0.5f;
+                dest.Y = baseY + 1f;
+                state.Drawer.DrawLine(src, dest, color, color);
+
+                src.X = baseX + (((triggerActivation & 32) != 0) ? .25f : .5f);
+                src.Y = baseY + .5f;
+                dest.X = baseX + (((triggerActivation & 8) != 0) ? .75f : .5f);
+                dest.Y = baseY + .5f;
+                state.Drawer.DrawLine(src, dest, color, color);
             }
         }
 
@@ -211,6 +310,13 @@ namespace eced.Renderer
             state.Drawer.DrawTilemap();
             DrawLevelGrid();
             state.Drawer.FlushLines();
+            GL.LineWidth(3);
+            foreach (TriggerList triggerList in state.CurrentState.CurrentLevel.Triggers)
+            {
+                DrawTrigger(triggerList);
+            }
+            state.Drawer.FlushLines();
+            GL.LineWidth(1);
 
             ThingDefinition def;
             foreach (Thing thing in state.CurrentState.CurrentLevel.Things)

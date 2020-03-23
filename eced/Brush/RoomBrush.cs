@@ -19,6 +19,7 @@ namespace eced.Brushes
 {
     public class RoomBrush : EditorBrush
     {
+        public RoomBrush(EditorState state) : base(state) { }
         public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {
             int tx = (int)pos.X;

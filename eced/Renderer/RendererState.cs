@@ -150,8 +150,13 @@ namespace eced.Renderer
             SetPan(pan + new Vector2(x, y));
         }
 
-        public void SetZoom(float zoom)
+        public void SetZoom(float zoom, int mx, int my)
         {
+            mx -= (int)(screenSize.X / 2); my -= (int)(screenSize.Y / 2);
+            mx -= (int)pan.X; my -= (int)pan.Y;
+            int panOffX = (int)(mx * (zoom / this.zoom)) - mx;
+            int panOffY = (int)(my * (zoom / this.zoom)) - my;
+            AddPan(-panOffX, -panOffY);
             this.zoom = zoom;
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
             TileMapShader.UseShader();

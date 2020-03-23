@@ -15,15 +15,11 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace eced.Brushes
 {
     public class TileBrush : EditorBrush
     {
+        public TileBrush(EditorState state) : base(state) { }
         public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
         {
             int tx = (int)pos.X;

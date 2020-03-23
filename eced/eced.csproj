@@ -222,6 +222,7 @@
     <Compile Include="Tile.cs" />
     <Compile Include="Brush\TileBrush.cs" />
     <Compile Include="GameConfig\TileManager.cs" />
+    <Compile Include="TilePosition.cs" />
     <Compile Include="Trigger.cs" />
     <Compile Include="TriggerEditor.cs">
       <SubType>Form</SubType>
@@ -229,7 +230,7 @@
     <Compile Include="TriggerEditor.Designer.cs">
       <DependentUpon>TriggerEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameConfig\TriggerTypeList.cs" />
+    <Compile Include="GameConfig\TriggerManager.cs" />
     <Compile Include="UIPanels\SectorUIPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -344,7 +345,9 @@
     <Content Include="Resources\wolftiles.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\wolftriggers.xml" />
+    <Content Include="Resources\wolftriggers.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\wolfvswap.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

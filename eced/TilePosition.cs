@@ -1,5 +1,5 @@
 ﻿/*  ---------------------------------------------------------------------
- *  Copyright (c) 2013 ISB
+ *  Copyright (c) 2020 ISB
  *
  *  eced is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,24 +15,30 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-namespace eced.Brushes
+namespace eced
 {
-    public class SectorBrush : EditorBrush
+    //this should have existed years ago
+    public struct TilePosition
     {
-        public Sector currentSector = new Sector();
+        public int x, y, z;
 
-        public SectorBrush(EditorState state)
-            : base(state)
+        public override bool Equals(object obj)
         {
-            this.repeatable = true;
+            TilePosition pos = (TilePosition)obj;
+            return pos.x == x && pos.y == y && pos.z == z;
         }
 
-        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
+        public override int GetHashCode()
         {
-            int tx = (int)pos.X;
-            int ty = (int)pos.Y;
+            int res = x;
+            int t = y >> 30;
+            t |= (y << 2);
+            res ^= t;
+            t = z >> 28;
+            t |= (y << 4);
+            res ^= t;
 
-            level.SetSector(tx, ty, z, currentSector);
+            return res;
         }
     }
 }

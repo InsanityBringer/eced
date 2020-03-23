@@ -9,8 +9,8 @@ namespace eced.Brushes
     {
         public int tag;
 
-        public TagTool()
-            : base()
+        public TagTool(EditorState state)
+            : base(state)
         {
             this.repeatable = true;
         }

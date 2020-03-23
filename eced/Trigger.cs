@@ -1,17 +1,37 @@
-﻿using System;
+﻿/*  ---------------------------------------------------------------------
+ *  Copyright (c) 2020 ISB
+ *
+ *  eced is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *   eced is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
+ *  -------------------------------------------------------------------*/
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using CodeImp.DoomBuilder.IO;
 
 namespace eced
 {
+    public class TriggerList
+    {
+        public TilePosition pos;
+        public List<Trigger> Triggers { get; } = new List<Trigger>();
+    }
     public class Trigger
     {
         public int x, y, z;
 
         public bool actn, acts, acte, actw;
-        public int action;
+        public string type;
 
         public int arg0, arg1, arg2, arg3, arg4;
 
@@ -34,7 +54,7 @@ namespace eced
             this.actw = clone.actw;
             this.acte = clone.acte;
 
-            this.action = clone.action;
+            this.type = clone.type;
 
             this.arg0 = clone.arg0;
             this.arg1 = clone.arg1;
@@ -56,7 +76,7 @@ namespace eced
             stringmaker.Append("\tx = "); stringmaker.Append(x); stringmaker.Append(";");
             stringmaker.Append("\n\ty = "); stringmaker.Append(y); stringmaker.Append(";");
             stringmaker.Append("\n\tz = "); stringmaker.Append(z); stringmaker.Append(";");
-            stringmaker.Append("\n\taction = "); stringmaker.Append(action); stringmaker.Append(";");
+            stringmaker.Append("\n\taction = \""); stringmaker.Append(type); stringmaker.Append("\";");
 
             stringmaker.Append("\n\tactivatenorth = "); stringmaker.Append(actn.ToString().ToLower()); stringmaker.Append(";");
             stringmaker.Append("\n\tactivatesouth = "); stringmaker.Append(acts.ToString().ToLower()); stringmaker.Append(";");
@@ -87,7 +107,7 @@ namespace eced
             trigger.x = UWMFSearch.getIntTag(data, "x", 0);
             trigger.y = UWMFSearch.getIntTag(data, "y", 0);
             trigger.z = UWMFSearch.getIntTag(data, "z", 0);
-            trigger.action = UWMFSearch.getIntTag(data, "action", 0);
+            trigger.type = UWMFSearch.getStringTag(data, "action", "");
 
             trigger.actn = UWMFSearch.getBoolTag(data, "activatenorth", true);
             trigger.acts = UWMFSearch.getBoolTag(data, "activatesouth", true);

@@ -30,14 +30,10 @@ namespace eced
     }
     public class Level
     {
-        //public int width = 64, height = 64, depth = 1;
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int Depth { get; private set; }
         public int TileSize { get; private set; } = 64;
-
-        //public Cell[, ,] cells;
-
         public List<Plane> Planes { get; } = new List<Plane>();
 
         //Data management
@@ -45,7 +41,8 @@ namespace eced
         public Dictionary<Tile, int> TilesetMap { get; } = new Dictionary<Tile, int>();
         public List<Sector> Sectorset { get; } = new List<Sector>();
         public Dictionary<Sector, int> SectorsetMap { get; } = new Dictionary<Sector, int>();
-
+        public List<TriggerList> Triggers { get; } = new List<TriggerList>();
+        public Dictionary<TilePosition, int> TriggersMap { get; } = new Dictionary<TilePosition, int>();
         public List<Thing> Things { get; } = new List<Thing>();
         public List<Zone> ZoneDefs { get; } = new List<Zone>();
 
@@ -139,26 +136,6 @@ namespace eced
         public int GetZoneID(int x, int y, int z)
         {
             return ZoneDefs.IndexOf(Planes[z].cells[x, y].zone);
-        }
-
-        public void SetCell(int x, int y, int z, Cell cell)
-        {
-            if (x >= 0 && y >= 0 && x < Width && y < Height)
-            {
-                Planes[z].cells[x, y] = cell;
-                OpenTK.Vector2 triggerPos = new OpenTK.Vector2(x, y);
-                if (cell.triggerList.Count > 0)
-                {
-                    if (!Planes[z].cellsWithTriggers.Contains(triggerPos))
-                    {
-                        Planes[z].cellsWithTriggers.Add(triggerPos);
-                    }
-                }
-                else if (cell.triggerList.Count == 0 && Planes[z].cellsWithTriggers.Contains(triggerPos))
-                {
-                    Planes[z].cellsWithTriggers.Remove(triggerPos);
-                }
-            }
         }
 
         public void AddTile(Tile tile)
@@ -335,27 +312,34 @@ namespace eced
 
         public void AddTrigger(int x, int y, int z, Trigger trigger)
         {
-            Planes[z].cells[x, y].triggerList.Add(trigger);
-            OpenTK.Vector2 triggerPos = new OpenTK.Vector2(x, y);
-            if (!Planes[z].cellsWithTriggers.Contains(triggerPos))
+            TilePosition pos; pos.x = x; pos.y = y; pos.z = z;
+            //If there's already a trigger at this position, simply add to the stack
+            if (TriggersMap.ContainsKey(pos))
             {
-                Planes[z].cellsWithTriggers.Add(triggerPos);
+                Triggers[TriggersMap[pos]].Triggers.Add(trigger);
+            }
+            //Otherwise, create a new trigger stack at that position
+            else
+            {
+                TriggerList list = new TriggerList();
+                list.pos.x = x; list.pos.y = y; list.pos.z = z;
+                list.Triggers.Add(trigger);
+                Triggers.Add(list);
+                TriggersMap.Add(pos, Triggers.Count - 1);
             }
         }
 
-        public List<Trigger> GetTriggers(int x, int y, int z)
+        public TriggerList GetTriggers(int x, int y, int z)
         {
-            return Planes[z].cells[x, y].triggerList;
-        }
-
-        public List<OpenTK.Vector2> GetTriggerLocations()
-        {
-            return Planes[0].cellsWithTriggers;
+            TilePosition pos; pos.x = x; pos.y = y; pos.z = z;
+            if (!TriggersMap.ContainsKey(pos)) return null;
+            return Triggers[TriggersMap[pos]];
         }
 
         public void HighlightTrigger(int x, int y, int z)
         {
-            List<Trigger> trigger = GetTriggers(x, y, z);
+            //TODO
+            /*List<Trigger> trigger = GetTriggers(x, y, z);
             if (trigger.Count > 0)
             {
                 Console.WriteLine("highlighting!");
@@ -363,7 +347,7 @@ namespace eced
                 this.highlightedTrigger = Planes[z].cells[x, y];
                 this.highlightedPos[0] = x;
                 this.highlightedPos[1] = y;
-            }
+            }*/
         }
 
         public void UpdateTriggerHighlight(int x, int y, int z)
@@ -461,18 +445,10 @@ namespace eced
             }
             sb.Append("\n");
 
-            for (int i = 0; i < Width * Height; i++)
+            for (int i = 0; i < Triggers.Count; i++)
             {
-                for (int p = 0; p < this.Depth; p++)
-                {
-                    int x = i % Width;
-                    int y = i / Width;
-                    for (int li = 0; li < Planes[p].cells[x, y].triggerList.Count; li++)
-                    {
-                        sb.Append(Planes[p].cells[x, y].triggerList[li].Serialize());
-                        sb.Append("\n");
-                    }
-                }
+                foreach (Trigger trigger in Triggers[i].Triggers)
+                    sb.Append(trigger.Serialize());
             }
             sb.Append("\n");
 			return sb.ToString();

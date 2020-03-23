@@ -39,19 +39,20 @@ namespace eced
         public Level CurrentLevel { get; private set; }
         public TileManager TileList { get; private set; }
         public ThingManager ThingList { get; private set; }
+        public TriggerManager TriggerList { get; private set; }
         public VSwapNames VSwapNameList { get; private set; }
 
         private void CreateBrushes()
         {
-            BrushList[0] = new EditorBrush();
-            BrushList[1] = new RoomBrush(); BrushList[1].normalTile = TileList.tileset[0];
-            BrushList[2] = new TileBrush(); BrushList[2].normalTile = TileList.tileset[0];
-            BrushList[3] = new EditorBrush();
-            BrushList[4] = new ThingBrush(); ((ThingBrush)BrushList[4]).thinglist = ThingList; ((ThingBrush)BrushList[4]).thing = ThingList.thingList[0];
-            BrushList[5] = new TriggerBrush();
-            BrushList[6] = new SectorBrush();
-            BrushList[7] = new FloodBrush();
-            BrushList[8] = new TagTool();
+            BrushList[0] = new EditorBrush(this);
+            BrushList[1] = new RoomBrush(this);
+            BrushList[2] = new TileBrush(this);
+            BrushList[3] = new EditorBrush(this);
+            BrushList[4] = new ThingBrush(this); ((ThingBrush)BrushList[4]).thinglist = ThingList; ((ThingBrush)BrushList[4]).thing = ThingList.thingList[0];
+            BrushList[5] = new TriggerBrush(this);
+            BrushList[6] = new SectorBrush(this);
+            BrushList[7] = new FloodBrush(this);
+            BrushList[8] = new TagTool(this);
         }
 
         private void LoadGameConfiguration()
@@ -61,6 +62,8 @@ namespace eced
             TileList.LoadPalette();
             ThingList = new ThingManager();
             ThingList.LoadThingDefintions("./resources/wolfactors.xml");
+            TriggerList = new TriggerManager();
+            TriggerList.LoadTriggerDefinitions("./resources/wolftriggers.xml");
             VSwapNameList = new VSwapNames();
             VSwapNameList.LoadVSwapNames("./resources/wolfvswap.xml");
             byte[] defaultPalette = new byte[768];
@@ -118,7 +121,7 @@ namespace eced
             //this.UpdateCurrentZoneList();
             //gbTileSelection.SetPalette(tilelist.tileset);
         }
-
+        
         public void CloseLevel()
         {
             //arc.closeResource();

@@ -15,12 +15,37 @@ namespace eced.UIPanels
     public partial class WallUIPanel : UserControl
     {
         public Tile CurrentTile { get; private set; } = new Tile();
-        public EditorBrush pairedBrush;
+        private EditorBrush pairedBrush;
         private List<Tile> palette;
         private bool isLocked = false;
         public WallUIPanel()
         {
             InitializeComponent();
+        }
+
+        public void SetPairedBrush(EditorBrush brush)
+        {
+            pairedBrush = brush;
+            if (brush.normalTile != null)
+            {
+                isLocked = true;
+                NorthTexTextBox.Text = brush.normalTile.NorthTex;
+                SouthTexTextBox.Text = brush.normalTile.SouthTex;
+                EastTexTextBox.Text = brush.normalTile.EastTex;
+                WestTexTextBox.Text = brush.normalTile.WestTex;
+                MapTexTextBox.Text = brush.normalTile.MapTex;
+                NorthBlockCheckBox.Checked = brush.normalTile.NorthBlock;
+                SouthBlockCheckBox.Checked = brush.normalTile.SouthBlock;
+                EastBlockCheckBox.Checked = brush.normalTile.EastBlock;
+                WestBlockCheckBox.Checked = brush.normalTile.WestBlock;
+                InsetHorizontalCheckBox.Checked = brush.normalTile.HorizOffset;
+                InsetVerticalCheckBox.Checked = brush.normalTile.VerticalOffset;
+                isLocked = false;
+            }
+            else
+            {
+                TilePaletteComboBox.SelectedIndex = 0;
+            }
         }
 
         public void SetPalette(List<Tile> tiles)

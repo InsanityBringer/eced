@@ -25,7 +25,6 @@ namespace eced
         public int sector;
         public Zone zone;
         public int tag;
-        public List<Trigger> triggerList = new List<Trigger>();
 
         public bool highlighted = false;
     }

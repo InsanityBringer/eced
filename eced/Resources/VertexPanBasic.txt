@@ -14,8 +14,8 @@ uniform ivec2 mapsize;
 
 void main()
 {
-	vec4 scale = vec4(tilesize * (float(mapsize.x) / 2), tilesize * (float(mapsize.y) / 2), 1.0, 1.0);
-	vec4 scaledPt = point * scale;
+	vec4 scale = vec4(tilesize, tilesize, 1.0, 1.0);
+	vec4 scaledPt = (point - vec4(mapsize.x / 2.0, mapsize.y / 2.0, 0.0, 0.0)) * scale;
 	scaledPt *= vec4(zoom, zoom, 1.0, 1.0);
 	scaledPt += vec4(pan.x, pan.y, 0.0, 0.0);
 	gl_Position = project * scaledPt;

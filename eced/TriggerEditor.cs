@@ -24,33 +24,42 @@ namespace eced
 {
     public partial class TriggerEditor : Form
     {
-        private Cell cell;
-        int cx, cy;
-        private TriggerTypeList typelist = new TriggerTypeList();
+        private TriggerList triggerList;
+        private TriggerManager typelist = new TriggerManager();
         public bool locked = false;
-        public TriggerEditor(ref Cell cell, int cx, int cy, int cz)
+        public TriggerEditor(TriggerList triggerList, TriggerManager typelist)
         {
             InitializeComponent();
-            this.cell = cell;
-            this.cx = cx;
-            this.cy = cy;
+            this.triggerList = triggerList;
+            this.typelist = typelist;
         }
 
         private void TriggerEditor_Load(object sender, EventArgs e)
         {
-            updateCells();
-            this.cbTriggerType.Items.Clear();
-            typelist.fillOutComboBox(ref this.cbTriggerType);
+            UpdateCells();
+            this.TriggerComboBox.Items.Clear();
+            SetTriggerList(typelist);
         }
 
-        private void updateCells()
+        public void SetTriggerList(TriggerManager triggerManager)
+        {
+            TriggerComboBox.Items.Clear();
+            string[] nameArray = new string[triggerManager.triggerList.Count];
+            for (int i = 0; i < nameArray.Length; i++)
+            {
+                nameArray[i] = triggerManager.triggerList[i].name;
+            }
+            TriggerComboBox.Items.AddRange(nameArray);
+        }
+
+        private void UpdateCells()
         {
             cbTriggerList.Items.Clear();
-            for (int i = 0; i < cell.triggerList.Count; i++)
+            for (int i = 0; i < triggerList.Triggers.Count; i++)
             {
                 cbTriggerList.Items.Add(i);
             }
-            if (cell.triggerList.Count == 0)
+            if (triggerList.Triggers.Count == 0)
             {
                 cbTriggerList.SelectedIndex = -1;
             }
@@ -61,10 +70,11 @@ namespace eced
         private void btnAdd_Click(object sender, EventArgs e)
         {
             Trigger newTrigger = new Trigger();
-            newTrigger.x = cx;
-            newTrigger.y = cy;
-            cell.triggerList.Add(newTrigger);
-            updateCells();
+            newTrigger.x = triggerList.pos.x;
+            newTrigger.y = triggerList.pos.y;
+            newTrigger.z = triggerList.pos.z;
+            triggerList.Triggers.Add(newTrigger);
+            UpdateCells();
 
             if (cbTriggerList.SelectedIndex < 0)
                 cbTriggerList.SelectedIndex = 0;
@@ -72,9 +82,9 @@ namespace eced
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            if (cell.triggerList.Count > 0)
+            if (triggerList.Triggers.Count > 0)
             {
-                cell.triggerList.RemoveAt(cbTriggerList.SelectedIndex);
+                triggerList.Triggers.RemoveAt(cbTriggerList.SelectedIndex);
                 cbTriggerList.Items.RemoveAt(cbTriggerList.SelectedIndex);
                 if (cbTriggerList.Items.Count == 0)
                     cbTriggerList.SelectedIndex = -1;
@@ -86,7 +96,7 @@ namespace eced
             if (locked) return;
             if (cbTriggerList.SelectedIndex > -1)
             {
-                Trigger editTrigger = cell.triggerList[cbTriggerList.SelectedIndex];
+                Trigger editTrigger = triggerList.Triggers[cbTriggerList.SelectedIndex];
 
                 editTrigger.acte = cbTrigEast.Checked;
                 editTrigger.actn = cbTrigNorth.Checked;
@@ -99,8 +109,6 @@ namespace eced
 
                 editTrigger.repeat = cbRepeat.Checked;
                 editTrigger.secret = cbSecret.Checked;
-
-                cell.triggerList[cbTriggerList.SelectedIndex] = editTrigger;
             }
         }
 
@@ -109,7 +117,7 @@ namespace eced
             if (locked) return;
             if (cbTriggerList.SelectedIndex > -1)
             {
-                Trigger editTrigger = cell.triggerList[cbTriggerList.SelectedIndex];
+                Trigger editTrigger = triggerList.Triggers[cbTriggerList.SelectedIndex];
 
                 editTrigger.arg0 = (int)ndParam1.Value;
                 editTrigger.arg1 = (int)ndParam2.Value;
@@ -117,7 +125,7 @@ namespace eced
                 editTrigger.arg3 = (int)ndParam4.Value;
                 editTrigger.arg4 = (int)ndParam5.Value;
 
-                cell.triggerList[cbTriggerList.SelectedIndex] = editTrigger;
+                triggerList.Triggers[cbTriggerList.SelectedIndex] = editTrigger;
             }
         }
 
@@ -126,7 +134,7 @@ namespace eced
             if (cbTriggerList.SelectedIndex < 0) return;
             locked = true;
 
-            Trigger editTrigger = cell.triggerList[cbTriggerList.SelectedIndex];
+            Trigger editTrigger = triggerList.Triggers[cbTriggerList.SelectedIndex];
 
             cbTrigEast.Checked = editTrigger.acte;
             cbTrigNorth.Checked = editTrigger.actn;
@@ -146,7 +154,7 @@ namespace eced
             ndParam4.Value = editTrigger.arg3;
             ndParam5.Value = editTrigger.arg4;
 
-            cbTriggerType.SelectedIndex = (editTrigger.action - 1);
+            TriggerComboBox.Text = editTrigger.type;
 
             locked = false;
         }
@@ -155,14 +163,41 @@ namespace eced
         {
             if (!locked)
             {
-                Trigger editTrigger = cell.triggerList[cbTriggerList.SelectedIndex];
-                editTrigger.action = (cbTriggerType.SelectedIndex + 1);
+                Trigger editTrigger = triggerList.Triggers[cbTriggerList.SelectedIndex];
+                editTrigger.type = TriggerComboBox.Text;
+                SetTriggerArgNames();
             }
         }
 
-        public Cell getNewCell()
+        private void SetTriggerArgNames()
         {
-            return this.cell;
+            if (typelist.triggerMapping.ContainsKey(TriggerComboBox.Name))
+            {
+                TriggerType trig = typelist.triggerList[typelist.triggerMapping[TriggerComboBox.Text]];
+                Arg1Label.Text = trig.p1;
+                Arg2Label.Text = trig.p2;
+                Arg3Label.Text = trig.p3;
+                Arg4Label.Text = trig.p4;
+                Arg5Label.Text = trig.p5;
+            }
+            else
+            {
+                Arg1Label.Text = "Arg 1";
+                Arg2Label.Text = "Arg 2";
+                Arg3Label.Text = "Arg 3";
+                Arg4Label.Text = "Arg 4";
+                Arg5Label.Text = "Arg 5";
+            }
+        }
+
+        private void TriggerComboBox_TextChanged(object sender, EventArgs e)
+        {
+            SetTriggerArgNames();
+            if (!locked)
+            {
+                Trigger editTrigger = triggerList.Triggers[cbTriggerList.SelectedIndex];
+                editTrigger.type = TriggerComboBox.Text;
+            }
         }
     }
 }

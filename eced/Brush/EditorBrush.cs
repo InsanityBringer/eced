@@ -26,8 +26,10 @@ namespace eced.Brushes
     {
         public bool repeatable = true;
         public Tile normalTile;
-        public EditorBrush()
+        protected EditorState state;
+        public EditorBrush(EditorState state)
         {
+            this.state = state;
         }
 
         public virtual void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)

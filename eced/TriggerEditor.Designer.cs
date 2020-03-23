@@ -38,11 +38,11 @@
             this.ndParam3 = new System.Windows.Forms.NumericUpDown();
             this.ndParam2 = new System.Windows.Forms.NumericUpDown();
             this.ndParam1 = new System.Windows.Forms.NumericUpDown();
-            this.lbArg5 = new System.Windows.Forms.Label();
-            this.lbArg4 = new System.Windows.Forms.Label();
-            this.lbArg3 = new System.Windows.Forms.Label();
-            this.lbArg2 = new System.Windows.Forms.Label();
-            this.lbArg1 = new System.Windows.Forms.Label();
+            this.Arg5Label = new System.Windows.Forms.Label();
+            this.Arg4Label = new System.Windows.Forms.Label();
+            this.Arg3Label = new System.Windows.Forms.Label();
+            this.Arg2Label = new System.Windows.Forms.Label();
+            this.Arg1Label = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.cbSecret = new System.Windows.Forms.CheckBox();
             this.cbRepeat = new System.Windows.Forms.CheckBox();
@@ -55,7 +55,7 @@
             this.cbTrigNorth = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.cbTriggerType = new System.Windows.Forms.ComboBox();
+            this.TriggerComboBox = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ndParam5)).BeginInit();
@@ -111,11 +111,11 @@
             this.groupBox1.Controls.Add(this.ndParam3);
             this.groupBox1.Controls.Add(this.ndParam2);
             this.groupBox1.Controls.Add(this.ndParam1);
-            this.groupBox1.Controls.Add(this.lbArg5);
-            this.groupBox1.Controls.Add(this.lbArg4);
-            this.groupBox1.Controls.Add(this.lbArg3);
-            this.groupBox1.Controls.Add(this.lbArg2);
-            this.groupBox1.Controls.Add(this.lbArg1);
+            this.groupBox1.Controls.Add(this.Arg5Label);
+            this.groupBox1.Controls.Add(this.Arg4Label);
+            this.groupBox1.Controls.Add(this.Arg3Label);
+            this.groupBox1.Controls.Add(this.Arg2Label);
+            this.groupBox1.Controls.Add(this.Arg1Label);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.cbSecret);
             this.groupBox1.Controls.Add(this.cbRepeat);
@@ -128,7 +128,7 @@
             this.groupBox1.Controls.Add(this.cbTrigNorth);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.cbTriggerType);
+            this.groupBox1.Controls.Add(this.TriggerComboBox);
             this.groupBox1.Location = new System.Drawing.Point(131, 9);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(282, 410);
@@ -226,50 +226,50 @@
             this.ndParam1.TabIndex = 42;
             this.ndParam1.ValueChanged += new System.EventHandler(this.triggerParams);
             // 
-            // lbArg5
+            // Arg5Label
             // 
-            this.lbArg5.AutoSize = true;
-            this.lbArg5.Location = new System.Drawing.Point(6, 356);
-            this.lbArg5.Name = "lbArg5";
-            this.lbArg5.Size = new System.Drawing.Size(32, 13);
-            this.lbArg5.TabIndex = 55;
-            this.lbArg5.Text = "Arg 5";
+            this.Arg5Label.AutoSize = true;
+            this.Arg5Label.Location = new System.Drawing.Point(6, 356);
+            this.Arg5Label.Name = "Arg5Label";
+            this.Arg5Label.Size = new System.Drawing.Size(32, 13);
+            this.Arg5Label.TabIndex = 55;
+            this.Arg5Label.Text = "Arg 5";
             // 
-            // lbArg4
+            // Arg4Label
             // 
-            this.lbArg4.AutoSize = true;
-            this.lbArg4.Location = new System.Drawing.Point(6, 317);
-            this.lbArg4.Name = "lbArg4";
-            this.lbArg4.Size = new System.Drawing.Size(32, 13);
-            this.lbArg4.TabIndex = 54;
-            this.lbArg4.Text = "Arg 4";
+            this.Arg4Label.AutoSize = true;
+            this.Arg4Label.Location = new System.Drawing.Point(6, 317);
+            this.Arg4Label.Name = "Arg4Label";
+            this.Arg4Label.Size = new System.Drawing.Size(32, 13);
+            this.Arg4Label.TabIndex = 54;
+            this.Arg4Label.Text = "Arg 4";
             // 
-            // lbArg3
+            // Arg3Label
             // 
-            this.lbArg3.AutoSize = true;
-            this.lbArg3.Location = new System.Drawing.Point(6, 278);
-            this.lbArg3.Name = "lbArg3";
-            this.lbArg3.Size = new System.Drawing.Size(32, 13);
-            this.lbArg3.TabIndex = 53;
-            this.lbArg3.Text = "Arg 3";
+            this.Arg3Label.AutoSize = true;
+            this.Arg3Label.Location = new System.Drawing.Point(6, 278);
+            this.Arg3Label.Name = "Arg3Label";
+            this.Arg3Label.Size = new System.Drawing.Size(32, 13);
+            this.Arg3Label.TabIndex = 53;
+            this.Arg3Label.Text = "Arg 3";
             // 
-            // lbArg2
+            // Arg2Label
             // 
-            this.lbArg2.AutoSize = true;
-            this.lbArg2.Location = new System.Drawing.Point(6, 239);
-            this.lbArg2.Name = "lbArg2";
-            this.lbArg2.Size = new System.Drawing.Size(32, 13);
-            this.lbArg2.TabIndex = 52;
-            this.lbArg2.Text = "Arg 2";
+            this.Arg2Label.AutoSize = true;
+            this.Arg2Label.Location = new System.Drawing.Point(6, 239);
+            this.Arg2Label.Name = "Arg2Label";
+            this.Arg2Label.Size = new System.Drawing.Size(32, 13);
+            this.Arg2Label.TabIndex = 52;
+            this.Arg2Label.Text = "Arg 2";
             // 
-            // lbArg1
+            // Arg1Label
             // 
-            this.lbArg1.AutoSize = true;
-            this.lbArg1.Location = new System.Drawing.Point(6, 197);
-            this.lbArg1.Name = "lbArg1";
-            this.lbArg1.Size = new System.Drawing.Size(32, 13);
-            this.lbArg1.TabIndex = 51;
-            this.lbArg1.Text = "Arg 1";
+            this.Arg1Label.AutoSize = true;
+            this.Arg1Label.Location = new System.Drawing.Point(6, 197);
+            this.Arg1Label.Name = "Arg1Label";
+            this.Arg1Label.Size = new System.Drawing.Size(32, 13);
+            this.Arg1Label.TabIndex = 51;
+            this.Arg1Label.Text = "Arg 1";
             // 
             // label4
             // 
@@ -283,7 +283,7 @@
             // cbSecret
             // 
             this.cbSecret.AutoSize = true;
-            this.cbSecret.Location = new System.Drawing.Point(73, 153);
+            this.cbSecret.Location = new System.Drawing.Point(207, 103);
             this.cbSecret.Name = "cbSecret";
             this.cbSecret.Size = new System.Drawing.Size(57, 17);
             this.cbSecret.TabIndex = 49;
@@ -294,7 +294,7 @@
             // cbRepeat
             // 
             this.cbRepeat.AutoSize = true;
-            this.cbRepeat.Location = new System.Drawing.Point(6, 153);
+            this.cbRepeat.Location = new System.Drawing.Point(208, 80);
             this.cbRepeat.Name = "cbRepeat";
             this.cbRepeat.Size = new System.Drawing.Size(61, 17);
             this.cbRepeat.TabIndex = 48;
@@ -305,7 +305,7 @@
             // cbCross
             // 
             this.cbCross.AutoSize = true;
-            this.cbCross.Location = new System.Drawing.Point(181, 130);
+            this.cbCross.Location = new System.Drawing.Point(116, 126);
             this.cbCross.Name = "cbCross";
             this.cbCross.Size = new System.Drawing.Size(84, 17);
             this.cbCross.TabIndex = 47;
@@ -316,7 +316,7 @@
             // cbUseMonst
             // 
             this.cbUseMonst.AutoSize = true;
-            this.cbUseMonst.Location = new System.Drawing.Point(6, 130);
+            this.cbUseMonst.Location = new System.Drawing.Point(116, 80);
             this.cbUseMonst.Name = "cbUseMonst";
             this.cbUseMonst.Size = new System.Drawing.Size(86, 17);
             this.cbUseMonst.TabIndex = 46;
@@ -327,7 +327,7 @@
             // cbUse
             // 
             this.cbUse.AutoSize = true;
-            this.cbUse.Location = new System.Drawing.Point(98, 130);
+            this.cbUse.Location = new System.Drawing.Point(116, 103);
             this.cbUse.Name = "cbUse";
             this.cbUse.Size = new System.Drawing.Size(77, 17);
             this.cbUse.TabIndex = 45;
@@ -338,7 +338,7 @@
             // cbTrigWest
             // 
             this.cbTrigWest.AutoSize = true;
-            this.cbTrigWest.Location = new System.Drawing.Point(64, 107);
+            this.cbTrigWest.Location = new System.Drawing.Point(6, 103);
             this.cbTrigWest.Name = "cbTrigWest";
             this.cbTrigWest.Size = new System.Drawing.Size(51, 17);
             this.cbTrigWest.TabIndex = 44;
@@ -349,7 +349,7 @@
             // cbTrigSouth
             // 
             this.cbTrigSouth.AutoSize = true;
-            this.cbTrigSouth.Location = new System.Drawing.Point(6, 107);
+            this.cbTrigSouth.Location = new System.Drawing.Point(34, 126);
             this.cbTrigSouth.Name = "cbTrigSouth";
             this.cbTrigSouth.Size = new System.Drawing.Size(54, 17);
             this.cbTrigSouth.TabIndex = 43;
@@ -360,7 +360,7 @@
             // cbTrigEast
             // 
             this.cbTrigEast.AutoSize = true;
-            this.cbTrigEast.Location = new System.Drawing.Point(64, 84);
+            this.cbTrigEast.Location = new System.Drawing.Point(63, 103);
             this.cbTrigEast.Name = "cbTrigEast";
             this.cbTrigEast.Size = new System.Drawing.Size(47, 17);
             this.cbTrigEast.TabIndex = 41;
@@ -371,7 +371,7 @@
             // cbTrigNorth
             // 
             this.cbTrigNorth.AutoSize = true;
-            this.cbTrigNorth.Location = new System.Drawing.Point(6, 84);
+            this.cbTrigNorth.Location = new System.Drawing.Point(36, 80);
             this.cbTrigNorth.Name = "cbTrigNorth";
             this.cbTrigNorth.Size = new System.Drawing.Size(52, 17);
             this.cbTrigNorth.TabIndex = 39;
@@ -397,27 +397,15 @@
             this.label9.TabIndex = 40;
             this.label9.Text = "Trigger Type";
             // 
-            // cbTriggerType
+            // TriggerComboBox
             // 
-            this.cbTriggerType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTriggerType.FormattingEnabled = true;
-            this.cbTriggerType.Items.AddRange(new object[] {
-            "1: Door Open",
-            "2: Pushwall Move",
-            "3: Exit Normal",
-            "4: Exit Secret",
-            "5: Teleport_NewMap",
-            "6: Exit_VictorySpin",
-            "7: Exit_Victory",
-            "8: Trigger_Execute",
-            "9: StartConversation",
-            "10: Door_Elevator",
-            "11: Elevator_SwitchFloor"});
-            this.cbTriggerType.Location = new System.Drawing.Point(6, 40);
-            this.cbTriggerType.Name = "cbTriggerType";
-            this.cbTriggerType.Size = new System.Drawing.Size(121, 21);
-            this.cbTriggerType.TabIndex = 37;
-            this.cbTriggerType.SelectedIndexChanged += new System.EventHandler(this.cbTriggerType_SelectedIndexChanged);
+            this.TriggerComboBox.FormattingEnabled = true;
+            this.TriggerComboBox.Location = new System.Drawing.Point(6, 40);
+            this.TriggerComboBox.Name = "TriggerComboBox";
+            this.TriggerComboBox.Size = new System.Drawing.Size(121, 21);
+            this.TriggerComboBox.TabIndex = 37;
+            this.TriggerComboBox.SelectedIndexChanged += new System.EventHandler(this.cbTriggerType_SelectedIndexChanged);
+            this.TriggerComboBox.TextChanged += new System.EventHandler(this.TriggerComboBox_TextChanged);
             // 
             // button1
             // 
@@ -469,11 +457,11 @@
         private System.Windows.Forms.NumericUpDown ndParam3;
         private System.Windows.Forms.NumericUpDown ndParam2;
         private System.Windows.Forms.NumericUpDown ndParam1;
-        private System.Windows.Forms.Label lbArg5;
-        private System.Windows.Forms.Label lbArg4;
-        private System.Windows.Forms.Label lbArg3;
-        private System.Windows.Forms.Label lbArg2;
-        private System.Windows.Forms.Label lbArg1;
+        private System.Windows.Forms.Label Arg5Label;
+        private System.Windows.Forms.Label Arg4Label;
+        private System.Windows.Forms.Label Arg3Label;
+        private System.Windows.Forms.Label Arg2Label;
+        private System.Windows.Forms.Label Arg1Label;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbSecret;
         private System.Windows.Forms.CheckBox cbRepeat;
@@ -486,7 +474,7 @@
         private System.Windows.Forms.CheckBox cbTrigNorth;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox cbTriggerType;
+        private System.Windows.Forms.ComboBox TriggerComboBox;
         private System.Windows.Forms.Button button1;
     }
 }

@@ -26,8 +26,8 @@ namespace eced.Brushes
         public ThingFlags flags = new ThingFlags();
         public ThingManager thinglist;
 
-        public ThingBrush()
-            : base()
+        public ThingBrush(EditorState state)
+            : base(state)
         {
             this.repeatable = false;
         }

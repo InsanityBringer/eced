@@ -23,16 +23,12 @@ namespace eced
         private WorldRenderer worldRenderer;
         private bool ready = false;
 
-        //private int panx = 0, pany = 0;
         private Vector2 pan;
 
         private float zoom = 1.0f;
 
         private bool brushmode = false;
         private int heldMouseButton = 0;
-
-        private int VAOid;
-        //int program;
 
         private OpenTK.Vector2 lastMousePos = new Vector2();
 
@@ -102,28 +98,19 @@ namespace eced
         {
             //statusBar1.Panels[1].Text =
 
-            tbToolPanel.Buttons[5].Pushed = true;
+            //tbToolPanel.Buttons[5].Pushed = true;
             this.gbThingSelect.Visible = false;
-            this.gbTileSelection.Visible = true;
+            this.gbTileSelection.Visible = false;
             this.gbTriggerData.Visible = false;
             this.gbZoneList.Visible = false;
             this.gbSectorPanel.Visible = false;
             this.gbTag.Visible = false;
-
-            VAOid = GL.GenVertexArray();
-            GL.BindVertexArray(VAOid);
 
             renderer = new RendererState(editorState);
             renderer.Init();
             renderer.SetViewSize(mainLevelPanel.Width, mainLevelPanel.Height);
             UpdateZoom();
             worldRenderer = new WorldRenderer(renderer);
-
-            ErrorCode error = GL.GetError();
-            if (error != ErrorCode.NoError)
-            {
-                Console.WriteLine("SETUP GL Error: {0}", error.ToString());
-            }
 
             GL.Disable(EnableCap.DepthTest);
             mainLevelPanel.MouseWheel += MainLevelPanel_MouseWheel;
@@ -215,13 +202,13 @@ namespace eced
             {
                 case 1:
                     this.gbTileSelection.Visible = true;
-                    gbTileSelection.pairedBrush = editorState.BrushList[toolID];
                     gbTileSelection.SetPalette(editorState.TileList.tileset);
+                    gbTileSelection.SetPairedBrush(editorState.BrushList[toolID]);
                     break;
                 case 2:
                     this.gbTileSelection.Visible = true;
-                    gbTileSelection.pairedBrush = editorState.BrushList[toolID];
                     gbTileSelection.SetPalette(editorState.TileList.tileset);
+                    gbTileSelection.SetPairedBrush(editorState.BrushList[toolID]);
                     break;
                 case 4:
                     this.gbThingSelect.Visible = true;
@@ -230,6 +217,8 @@ namespace eced
                     break;
                 case 5:
                     this.gbTriggerData.Visible = true;
+                    gbTriggerData.SetPairedBrush((TriggerBrush)editorState.BrushList[toolID]);
+                    gbTriggerData.SetTriggerList(editorState.TriggerList);
                     break;
                 case 6:
                     this.gbSectorPanel.Visible = true;
@@ -447,7 +436,7 @@ namespace eced
         private void UpdateZoom()
         {
             statusBar1.Panels[1].Text = String.Format("Zoom: {0:P}", zoom);
-            renderer.SetZoom(zoom);
+            renderer.SetZoom(zoom, (int)lastMousePos.X, (int)lastMousePos.Y);
             //renderer.zoom = zoom;
 
             mainLevelPanel.Invalidate();
