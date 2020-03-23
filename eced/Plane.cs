@@ -43,7 +43,7 @@ namespace eced
         public String Serialize()
         {
             String str = "plane\n{\n";
-            str += "\theight = " + height.ToString() + ";\n";
+            str += "\tdepth = " + height.ToString() + ";\n";
             str += "}";
 
             return str;
@@ -52,7 +52,7 @@ namespace eced
         public static Plane Reconstruct(Level level, UniversalCollection data)
         {
             Plane plane = new Plane(level.Width, level.Depth);
-            plane.height = UWMFSearch.getIntTag(data, "height", 64);
+            plane.height = UWMFSearch.getIntTag(data, "depth", 64);
             return plane;
         }
     }

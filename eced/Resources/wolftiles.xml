@@ -837,6 +837,7 @@
 	<texs>SLOT1_1</texs>
 	<texe>DOOR1_2</texe>
 	<texw>DOOR1_2</texw>
+	<maptex>DOOR1_1</maptex>
 	
 	<offh>false</offh>
 	<offv>true</offv>
@@ -845,6 +846,8 @@
 	<blocks>true</blocks>
 	<blocke>true</blocke>
 	<blockw>true</blockw>
+	
+	<sndseq>DoorNormal</sndseq>
 </tile>
 
 <tile>
@@ -854,6 +857,7 @@
 	<texs>DOOR1_1</texs>
 	<texe>SLOT1_2</texe>
 	<texw>SLOT1_2</texw>
+	<maptex>DOOR1_1</maptex>
 	
 	<offh>true</offh>
 	<offv>false</offv>
@@ -862,6 +866,8 @@
 	<blocks>true</blocks>
 	<blocke>true</blocke>
 	<blockw>true</blockw>
+	
+	<sndseq>DoorNormal</sndseq>
 </tile>
 
 <tile>
@@ -871,6 +877,7 @@
 	<texs>SLOT1_1</texs>
 	<texe>DOOR2_2</texe>
 	<texw>DOOR2_2</texw>
+	<maptex>DOOR2_1</maptex>
 	
 	<offh>false</offh>
 	<offv>true</offv>
@@ -879,6 +886,8 @@
 	<blocks>true</blocks>
 	<blocke>true</blocke>
 	<blockw>true</blockw>
+	
+	<sndseq>DoorNormal</sndseq>
 </tile>
 
 <tile>
@@ -888,6 +897,7 @@
 	<texs>DOOR2_1</texs>
 	<texe>SLOT1_2</texe>
 	<texw>SLOT1_2</texw>
+	<maptex>DOOR2_1</maptex>
 	
 	<offh>true</offh>
 	<offv>false</offv>
@@ -896,6 +906,8 @@
 	<blocks>true</blocks>
 	<blocke>true</blocke>
 	<blockw>true</blockw>
+	
+	<sndseq>DoorNormal</sndseq>
 </tile>
 
 <tile>
@@ -905,6 +917,7 @@
 	<texs>SLOT1_1</texs>
 	<texe>DOOR3_2</texe>
 	<texw>DOOR3_2</texw>
+	<maptex>DOOR3_1</maptex>
 	
 	<offh>false</offh>
 	<offv>true</offv>
@@ -913,6 +926,8 @@
 	<blocks>true</blocks>
 	<blocke>true</blocke>
 	<blockw>true</blockw>
+	
+	<sndseq>DoorNormal</sndseq>
 </tile>
 
 <tile>
@@ -922,6 +937,7 @@
 	<texs>DOOR3_1</texs>
 	<texe>SLOT1_2</texe>
 	<texw>SLOT1_2</texw>
+	<maptex>DOOR3_1</maptex>
 	
 	<offh>true</offh>
 	<offv>false</offv>
@@ -930,5 +946,7 @@
 	<blocks>true</blocks>
 	<blocke>true</blocke>
 	<blockw>true</blockw>
+	
+	<sndseq>DoorNormal</sndseq>
 </tile>
 </tileset>

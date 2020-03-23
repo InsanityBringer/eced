@@ -38,6 +38,7 @@ namespace eced
         public bool EastBlock { get; private set; } = true;
         public bool WestBlock { get; private set; } = true;
         public string Name { get; private set; } = "-";
+        public string SoundSequence { get; private set; } = "";
 
         public Tile()
         {
@@ -49,6 +50,7 @@ namespace eced
             SouthTex = other.SouthTex;
             EastTex = other.EastTex;
             WestTex = other.WestTex;
+            MapTex = other.MapTex;
 
             HorizOffset = other.HorizOffset;
             VerticalOffset = other.VerticalOffset;
@@ -57,6 +59,8 @@ namespace eced
             SouthBlock = other.SouthBlock;
             EastBlock = other.EastBlock;
             WestBlock = other.WestBlock;
+
+            SoundSequence = other.SoundSequence;
         }
 
         public override int GetHashCode()
@@ -114,6 +118,9 @@ namespace eced
                     case "texw":
                         newTile.WestTex = (string)elem;
                         break;
+                    case "maptex":
+                        newTile.MapTex = (string)elem;
+                        break;
                     case "offh":
                         newTile.HorizOffset = (bool)elem;
                         break;
@@ -131,6 +138,9 @@ namespace eced
                         break;
                     case "blockw":
                         newTile.WestBlock = (bool)elem;
+                        break;
+                    case "sndseq":
+                        newTile.SoundSequence = (string)elem;
                         break;
                 }
             }
@@ -150,6 +160,10 @@ namespace eced
             stringmaker.Append("\n\ttexturesouth = \""); stringmaker.Append(SouthTex); stringmaker.Append("\";");
             stringmaker.Append("\n\ttextureeast = \""); stringmaker.Append(EastTex); stringmaker.Append("\";");
             stringmaker.Append("\n\ttexturewest = \""); stringmaker.Append(WestTex); stringmaker.Append("\";");
+            if (MapTex != "-")
+            {
+                stringmaker.Append("\n\ttextureoverhead = \""); stringmaker.Append(MapTex); stringmaker.Append("\";");
+            }
 
             stringmaker.Append("\n\toffsetvertical = "); stringmaker.Append(VerticalOffset.ToString().ToLower()); stringmaker.Append(";");
             stringmaker.Append("\n\toffsethorizontal = "); stringmaker.Append(HorizOffset.ToString().ToLower()); stringmaker.Append(";");
@@ -158,6 +172,11 @@ namespace eced
             stringmaker.Append("\n\tblockingsouth = "); stringmaker.Append(SouthBlock.ToString().ToLower()); stringmaker.Append(";");
             stringmaker.Append("\n\tblockingeast = "); stringmaker.Append(EastBlock.ToString().ToLower()); stringmaker.Append(";");
             stringmaker.Append("\n\tblockingwest = "); stringmaker.Append(WestBlock.ToString().ToLower()); stringmaker.Append(";");
+
+            if (SoundSequence != "")
+            {
+                stringmaker.Append("\n\tsoundsequence = \""); stringmaker.Append(SoundSequence); stringmaker.Append("\";");
+            }
 
             stringmaker.Append("\n}");
 
@@ -194,6 +213,13 @@ namespace eced
             newTile.WestTex = west;
             newTile.MapTex = map;
 
+            return newTile;
+        }
+
+        public Tile ChangeSoundSequence(string sndSeq)
+        {
+            Tile newTile = new Tile(this);
+            newTile.SoundSequence = sndSeq;
             return newTile;
         }
 

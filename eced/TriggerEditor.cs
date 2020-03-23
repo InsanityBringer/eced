@@ -165,8 +165,8 @@ namespace eced
             {
                 Trigger editTrigger = triggerList.Triggers[cbTriggerList.SelectedIndex];
                 editTrigger.type = TriggerComboBox.Text;
-                SetTriggerArgNames();
             }
+            SetTriggerArgNames();
         }
 
         private void SetTriggerArgNames()

@@ -36,7 +36,7 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.SndSeqTextBox = new System.Windows.Forms.TextBox();
             this.WestBlockCheckBox = new System.Windows.Forms.CheckBox();
             this.SouthBlockCheckBox = new System.Windows.Forms.CheckBox();
             this.EastBlockCheckBox = new System.Windows.Forms.CheckBox();
@@ -129,12 +129,13 @@
             this.label18.TabIndex = 23;
             this.label18.Text = "Event Sound Sequence name";
             // 
-            // textBox6
+            // SndSeqTextBox
             // 
-            this.textBox6.Location = new System.Drawing.Point(6, 452);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(134, 20);
-            this.textBox6.TabIndex = 22;
+            this.SndSeqTextBox.Location = new System.Drawing.Point(6, 452);
+            this.SndSeqTextBox.Name = "SndSeqTextBox";
+            this.SndSeqTextBox.Size = new System.Drawing.Size(134, 20);
+            this.SndSeqTextBox.TabIndex = 22;
+            this.SndSeqTextBox.TextChanged += new System.EventHandler(this.SndSeqTextBox_TextChanged);
             // 
             // WestBlockCheckBox
             // 
@@ -324,7 +325,7 @@
             this.Controls.Add(this.EastTexTextBox);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label15);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.SndSeqTextBox);
             this.Controls.Add(this.WestTexTextBox);
             this.Controls.Add(this.WestBlockCheckBox);
             this.Controls.Add(this.label14);
@@ -351,7 +352,7 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox SndSeqTextBox;
         private System.Windows.Forms.CheckBox WestBlockCheckBox;
         private System.Windows.Forms.CheckBox SouthBlockCheckBox;
         private System.Windows.Forms.CheckBox EastBlockCheckBox;
