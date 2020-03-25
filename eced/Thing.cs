@@ -88,6 +88,7 @@ namespace eced
         public UniversalCollection allkeys;
 
         public bool highlighted = false;
+        public bool selected = false;
         public bool moving = false;
 
         public string Serialize()
@@ -115,16 +116,6 @@ namespace eced
         public bool checkFlag(ThingFlagsBits flag)
         {
             return (flags & (int)flag) != 0;
-        }
-
-        public float getXCoord()
-        {
-            return x * 64f + 32;
-        }
-
-        public float getYCoord()
-        {
-            return y * 64f + 32;
         }
 
         public static Thing Reconstruct(UniversalCollection data)

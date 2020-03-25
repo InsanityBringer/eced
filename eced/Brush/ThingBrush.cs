@@ -54,11 +54,7 @@ namespace eced.Brushes
                 }
                 else
                 {
-                    state.HighlightedThing.moving = true;
-                    state.HighlightedThing.x = pos.X;
-                    state.HighlightedThing.y = pos.Y;
-
-                    this.repeatable = true;
+                    state.ToggleSelectedThing(state.HighlightedThing);
                 }
             }
             else if (button == 1)

@@ -42,6 +42,7 @@ namespace eced
         public TriggerManager TriggerList { get; private set; }
         public VSwapNames VSwapNameList { get; private set; }
         public Thing HighlightedThing { get; private set; }
+        public List<Thing> SelectedThings { get; } = new List<Thing>();
         public bool IsThingMode
         {
             get
@@ -136,6 +137,7 @@ namespace eced
             //arc.closeResource();
             CurrentLevel.DisposeLevel();
             CurrentLevel = null;
+            SelectedThings.Clear();
         }
 
         /// <summary>
@@ -251,6 +253,20 @@ namespace eced
             {
                 thing.highlighted = true;
                 HighlightedThing = thing;
+            }
+        }
+
+        public void ToggleSelectedThing(Thing thing)
+        {
+            if (thing.selected)
+            {
+                thing.selected = false;
+                SelectedThings.Remove(thing); //TODO: optimize?
+            }
+            else
+            {
+                thing.selected = true;
+                SelectedThings.Add(thing);
             }
         }
 

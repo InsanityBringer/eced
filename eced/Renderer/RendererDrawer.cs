@@ -254,6 +254,12 @@ namespace eced.Renderer
                 thingBuffer[lastThingNum * 12 + 5] = (def.G + 64) / 255f;
                 thingBuffer[lastThingNum * 12 + 6] = def.B / 255f;
             }
+            else if (thing.selected)
+            {
+                thingBuffer[lastThingNum * 12 + 4] = def.R / 512f;
+                thingBuffer[lastThingNum * 12 + 5] = (def.G / 2f + 128) / 255f;
+                thingBuffer[lastThingNum * 12 + 6] = (def.B / 2f + 128) / 255f;
+            }
             else
             {
                 thingBuffer[lastThingNum * 12 + 4] = def.R / 255f;
