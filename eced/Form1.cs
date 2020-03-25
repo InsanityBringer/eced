@@ -481,7 +481,7 @@ namespace eced
                 return;
 
             PickResult pickTest = renderer.Pick(e.X, e.Y);
-            statusBar1.Panels[0].Text = string.Format("({0} {1} ({2} {3}))", pickTest.x, pickTest.y, pickTest.xf, pickTest.yf);
+            //statusBar1.Panels[0].Text = string.Format("({0} {1} ({2} {3}))", pickTest.x, pickTest.y, pickTest.xf, pickTest.yf);
             editorState.UpdateHighlight(pickTest);
 
             if (brushmode)
