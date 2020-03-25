@@ -37,7 +37,7 @@ namespace eced.Brushes
         {
             if (button == 0)
             {
-                if (level.highlighted == null)
+                if (state.HighlightedThing == null)
                 {
                     Thing lthing = new Thing();
                     lthing.type = thing.Type;
@@ -54,36 +54,37 @@ namespace eced.Brushes
                 }
                 else
                 {
-                    level.highlighted.moving = true;
-                    level.highlighted.x = pos.X;
-                    level.highlighted.y = pos.Y;
+                    state.HighlightedThing.moving = true;
+                    state.HighlightedThing.x = pos.X;
+                    state.HighlightedThing.y = pos.Y;
 
                     this.repeatable = true;
                 }
             }
             else if (button == 1)
             {
-                if (level.highlighted != null)
+                if (state.HighlightedThing != null)
                 {
-                    ThingEditor editor = new ThingEditor(level.highlighted, thinglist);
+                    //TODO: needs to be rethunk
+                    /*ThingEditor editor = new ThingEditor(state.HighlightedThing, thinglist);
                     if (editor.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        Thing oldthing = level.highlighted;
-                        level.highlighted = editor.thing;
+                        Thing oldthing = state.HighlightedThing;
+                        state.HighlightedThing = editor.thing;
                         level.ReplaceThing(oldthing, editor.thing);
                     }
-                    editor.Dispose();
+                    editor.Dispose();*/
                 }
             }
         }
 
         public override void EndBrush(Level level)
         {
-            if (level.highlighted != null)
+            if (state.HighlightedThing != null)
             {
-                level.highlighted.moving = false;
-                level.highlighted.x = ((int)(level.highlighted.x)) + .5f;
-                level.highlighted.y = ((int)(level.highlighted.y)) + .5f;
+                state.HighlightedThing.moving = false;
+                state.HighlightedThing.x = ((int)(state.HighlightedThing.x)) + .5f;
+                state.HighlightedThing.y = ((int)(state.HighlightedThing.y)) + .5f;
             }
             this.repeatable = false;
         }

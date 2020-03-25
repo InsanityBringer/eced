@@ -12,8 +12,6 @@ uniform sampler2DArray tex;
 
 void main()
 {
-	//color = thingColor;
-	//color = vec4(1.0, 0.0, 0.0, 1.0);
 	vec2 newuv = uv - vec2(0.5, 0.5);
 	if (icon == 0)
 	{
@@ -22,4 +20,7 @@ void main()
 	}
 	newuv += vec2(0.5, 0.5);
 	color = mix(acolor, texture(tex, vec3(newuv, icon)), texture(tex, vec3(newuv, icon)).a);
+
+	//TODO: Probably need to rethink this some
+	color.a = acolor.a;
 }

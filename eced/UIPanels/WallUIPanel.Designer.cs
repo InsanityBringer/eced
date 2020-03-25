@@ -175,9 +175,9 @@
             this.InsetVerticalCheckBox.AutoSize = true;
             this.InsetVerticalCheckBox.Location = new System.Drawing.Point(6, 377);
             this.InsetVerticalCheckBox.Name = "InsetVerticalCheckBox";
-            this.InsetVerticalCheckBox.Size = new System.Drawing.Size(95, 17);
+            this.InsetVerticalCheckBox.Size = new System.Drawing.Size(103, 17);
             this.InsetVerticalCheckBox.TabIndex = 21;
-            this.InsetVerticalCheckBox.Text = "Center Vertical";
+            this.InsetVerticalCheckBox.Text = "Inset East/West";
             this.InsetVerticalCheckBox.UseVisualStyleBackColor = true;
             this.InsetVerticalCheckBox.CheckedChanged += new System.EventHandler(this.InsetHorizontalCheckBox_CheckedChanged);
             // 
@@ -186,9 +186,9 @@
             this.InsetHorizontalCheckBox.AutoSize = true;
             this.InsetHorizontalCheckBox.Location = new System.Drawing.Point(6, 354);
             this.InsetHorizontalCheckBox.Name = "InsetHorizontalCheckBox";
-            this.InsetHorizontalCheckBox.Size = new System.Drawing.Size(107, 17);
+            this.InsetHorizontalCheckBox.Size = new System.Drawing.Size(111, 17);
             this.InsetHorizontalCheckBox.TabIndex = 21;
-            this.InsetHorizontalCheckBox.Text = "Center Horizontal";
+            this.InsetHorizontalCheckBox.Text = "Inset North/South";
             this.InsetHorizontalCheckBox.UseVisualStyleBackColor = true;
             this.InsetHorizontalCheckBox.CheckedChanged += new System.EventHandler(this.InsetHorizontalCheckBox_CheckedChanged);
             // 

@@ -47,6 +47,8 @@ namespace eced.Renderer
 
         public void Init()
         {
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             CreateShaderPrograms();
             Drawer = new RendererDrawer(this);
             Drawer.Init();
@@ -208,8 +210,14 @@ namespace eced.Renderer
             float xTile = mouseCoordX / rightBound;
             float yTile = mouseCoordY / upperBound;
 
-            res.x = (int)(xTile * CurrentState.CurrentLevel.Width);
-            res.y = (int)(yTile * CurrentState.CurrentLevel.Height);
+            xTile *= CurrentState.CurrentLevel.Width;
+            yTile *= CurrentState.CurrentLevel.Height;
+
+            res.x = (int)xTile;
+            res.y = (int)yTile;
+            //needs to be a cleaner way of doing this...
+            res.xf = xTile - (int)xTile;
+            res.yf = yTile - (int)yTile;
 
             return res;
         }

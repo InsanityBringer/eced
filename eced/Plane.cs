@@ -51,7 +51,7 @@ namespace eced
 
         public static Plane Reconstruct(Level level, UniversalCollection data)
         {
-            Plane plane = new Plane(level.Width, level.Depth);
+            Plane plane = new Plane(level.Width, level.Height);
             plane.height = UWMFSearch.getIntTag(data, "depth", 64);
             return plane;
         }

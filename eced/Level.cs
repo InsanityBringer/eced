@@ -56,7 +56,6 @@ namespace eced
 
         public int lastFloorCode = 0;
 
-        public Thing highlighted = null;
         public Cell highlightedTrigger = null;
         public int[] highlightedPos = new int[2];
 
@@ -246,45 +245,23 @@ namespace eced
             return localThingList.GetThingDef(thing.type);
         }
 
-        public void HighlightThing(int x, int y)
+        public Thing HighlightThing(PickResult res)
         {
-            if (this.highlighted != null)
-                return;
-
+            float pickX = (res.x + res.xf) * TileSize;
+            float pickY = (res.y + res.yf) * TileSize;
+            //TODO: spatial partitioning
             for (int lx = 0; lx < this.Things.Count; lx++)
             {
                 Thing thing = Things[lx];
                 ThingDefinition def = GetThingDef(thing);
-                int sx = (int)thing.getXCoord() - def.Radius; int ex = (int)thing.getXCoord() + def.Radius;
-                int sy = (int)thing.getYCoord() - def.Radius; int ey = (int)thing.getYCoord() + def.Radius;
-                if (x >= sx && x < ex && y >= sy && y < ey)
+                float sx = thing.x * TileSize - def.Radius; float ex = thing.x * TileSize + def.Radius;
+                float sy = thing.y * TileSize - def.Radius; float ey = thing.y * TileSize + def.Radius;
+                if (pickX >= sx && pickX < ex && pickY >= sy && pickY < ey)
                 {
-                    this.highlighted = thing;
-                    thing.highlighted = true;
-                    Console.WriteLine("Highlighted");
-                    return;
+                    return thing;
                 }
             }
-        }
-
-        public void UpdateHighlight(int x, int y)
-        {
-            if (this.highlighted == null)
-            {
-                HighlightThing(x, y);
-                return;
-            }
-
-            ThingDefinition def = GetThingDef(highlighted);
-            int sx = (int)highlighted.getXCoord() - def.Radius; int ex = (int)highlighted.getXCoord() + def.Radius;
-            int sy = (int)highlighted.getYCoord() - def.Radius; int ey = (int)highlighted.getYCoord() + def.Radius;
-            if ((x < sx || x >= ex || y < sy || y >= ey) && 
-                !this.highlighted.moving)
-            {
-                Console.WriteLine("unhighlighting");
-                this.highlighted.highlighted = false;
-                this.highlighted = null;
-            }
+            return null;
         }
 
         public void DeleteThing(Thing thing)

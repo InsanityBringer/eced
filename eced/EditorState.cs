@@ -41,6 +41,15 @@ namespace eced
         public ThingManager ThingList { get; private set; }
         public TriggerManager TriggerList { get; private set; }
         public VSwapNames VSwapNameList { get; private set; }
+        public Thing HighlightedThing { get; private set; }
+        public bool IsThingMode
+        {
+            get
+            {
+                //todo: make better
+                return currentBrush == BrushList[4];
+            }
+        }
 
         private void CreateBrushes()
         {
@@ -227,6 +236,22 @@ namespace eced
             CurrentLevel.DisposeLevel();
             //tm.cleanup();
             LoadResources(CurrentMapInfo, CurrentLevel);
+        }
+
+        public void UpdateHighlight(PickResult res)
+        {
+            if (HighlightedThing != null)
+            {
+                HighlightedThing.highlighted = false;
+                HighlightedThing = null;
+            }
+            if (!IsThingMode) return;
+            Thing thing = CurrentLevel.HighlightThing(res);
+            if (thing != null)
+            {
+                thing.highlighted = true;
+                HighlightedThing = thing;
+            }
         }
 
         public void SetBrush(int brushNum)

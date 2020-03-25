@@ -104,12 +104,16 @@ void main()
 	else if (mode == 1) //Normal tile
 	{
 		color = texelFetch(atlas, cellpos, 0) * multiplier;
+		//hack
+		color.a = 1.0;
 	}
 	else if (mode == 2) //Solid color tile
 	{
 		int r = tilemapInfo.g & 255;
 		int g = (tilemapInfo.g >> 8) & 255;
 		color = vec4(r / 255.0, g / 255.0, tilemapInfo.b / 255.0, 1.0f) * multiplier;
+		//hack
+		color.a = 1.0;
 	}
 	//vec2 hack = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
 	//color = vec4(1.0 * hack.x, 1.0 * hack.y, 0.5, 1.0);

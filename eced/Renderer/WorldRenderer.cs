@@ -318,12 +318,15 @@ namespace eced.Renderer
             state.Drawer.FlushLines();
             GL.LineWidth(1);
 
+            float alpha = 0.7f;
+            if (state.CurrentState.IsThingMode)
+                alpha = 1.0f;
             ThingDefinition def;
             foreach (Thing thing in state.CurrentState.CurrentLevel.Things)
             {
                 def = state.CurrentState.CurrentLevel.GetThingDef(thing);
 
-                state.Drawer.DrawThingBase(thing, def, 1.0f);
+                state.Drawer.DrawThingBase(thing, def, alpha);
             }
             state.Drawer.FlushThings();
         }

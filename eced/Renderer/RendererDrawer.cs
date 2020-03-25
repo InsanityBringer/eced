@@ -248,9 +248,18 @@ namespace eced.Renderer
             thingBuffer[lastThingNum * 12 + 2] = thing.z;
             thingBuffer[lastThingNum * 12 + 3] = 0f;
 
-            thingBuffer[lastThingNum * 12 + 4] = def.R / 255f;
-            thingBuffer[lastThingNum * 12 + 5] = def.G / 255f;
-            thingBuffer[lastThingNum * 12 + 6] = def.B / 255f;
+            if (thing.highlighted)
+            {
+                thingBuffer[lastThingNum * 12 + 4] = (def.R + 64) / 255f;
+                thingBuffer[lastThingNum * 12 + 5] = (def.G + 64) / 255f;
+                thingBuffer[lastThingNum * 12 + 6] = def.B / 255f;
+            }
+            else
+            {
+                thingBuffer[lastThingNum * 12 + 4] = def.R / 255f;
+                thingBuffer[lastThingNum * 12 + 5] = def.G / 255f;
+                thingBuffer[lastThingNum * 12 + 6] = def.B / 255f;
+            }
             thingBuffer[lastThingNum * 12 + 7] = alpha;
 
             thingBuffer[lastThingNum * 12 + 8] = def.Radius;

@@ -28,22 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.nudNewTag = new System.Windows.Forms.NumericUpDown();
+            this.TagSpinner = new System.Windows.Forms.NumericUpDown();
             this.label24 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.nudNewTag)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TagSpinner)).BeginInit();
             this.SuspendLayout();
             // 
-            // nudNewTag
+            // TagSpinner
             // 
-            this.nudNewTag.Location = new System.Drawing.Point(2, 19);
-            this.nudNewTag.Maximum = new decimal(new int[] {
+            this.TagSpinner.Location = new System.Drawing.Point(6, 16);
+            this.TagSpinner.Maximum = new decimal(new int[] {
             2147483647,
             0,
             0,
             0});
-            this.nudNewTag.Name = "nudNewTag";
-            this.nudNewTag.Size = new System.Drawing.Size(99, 20);
-            this.nudNewTag.TabIndex = 1;
+            this.TagSpinner.Name = "TagSpinner";
+            this.TagSpinner.Size = new System.Drawing.Size(99, 20);
+            this.TagSpinner.TabIndex = 1;
+            this.TagSpinner.ValueChanged += new System.EventHandler(this.TagSpinner_ValueChanged);
             // 
             // label24
             // 
@@ -58,11 +59,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.nudNewTag);
+            this.Controls.Add(this.TagSpinner);
             this.Controls.Add(this.label24);
             this.Name = "TagUIPanel";
             this.Size = new System.Drawing.Size(113, 55);
-            ((System.ComponentModel.ISupportInitialize)(this.nudNewTag)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TagSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -70,7 +71,7 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown nudNewTag;
+        private System.Windows.Forms.NumericUpDown TagSpinner;
         private System.Windows.Forms.Label label24;
     }
 }

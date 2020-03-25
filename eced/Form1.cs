@@ -201,35 +201,36 @@ namespace eced
             switch (toolID)
             {
                 case 1:
-                    this.gbTileSelection.Visible = true;
+                    gbTileSelection.Visible = true;
                     gbTileSelection.SetPalette(editorState.TileList.tileset);
                     gbTileSelection.SetPairedBrush(editorState.BrushList[toolID]);
                     break;
                 case 2:
-                    this.gbTileSelection.Visible = true;
+                    gbTileSelection.Visible = true;
                     gbTileSelection.SetPalette(editorState.TileList.tileset);
                     gbTileSelection.SetPairedBrush(editorState.BrushList[toolID]);
                     break;
                 case 4:
-                    this.gbThingSelect.Visible = true;
+                    gbThingSelect.Visible = true;
                     gbThingSelect.AddThings(editorState.ThingList.thingList);
                     gbThingSelect.SetPairedBrush((ThingBrush)editorState.BrushList[toolID]);
                     break;
                 case 5:
-                    this.gbTriggerData.Visible = true;
+                    gbTriggerData.Visible = true;
                     gbTriggerData.SetPairedBrush((TriggerBrush)editorState.BrushList[toolID]);
                     gbTriggerData.SetTriggerList(editorState.TriggerList);
                     break;
                 case 6:
-                    this.gbSectorPanel.Visible = true;
+                    gbSectorPanel.Visible = true;
                     gbSectorPanel.pairedBrush = (SectorBrush)editorState.BrushList[toolID];
                     break;
                 case 7:
-                    this.gbZoneList.Visible = true;
-                    this.gbZoneList.SetPairedBrush((FloodBrush)editorState.BrushList[toolID]);
+                    gbZoneList.Visible = true;
+                    gbZoneList.SetPairedBrush((FloodBrush)editorState.BrushList[toolID]);
                     break;
                 case 8:
-                    this.gbTag.Visible = true;
+                    gbTag.Visible = true;
+                    gbTag.SetPairedBrush((TagTool)editorState.BrushList[toolID]);
                     break;
             }
             editorState.SetBrush(toolid);
@@ -413,12 +414,12 @@ namespace eced
             if (e.KeyCode == Keys.Delete)
             {
                 //TODO: move to EditorState somehow
-                if (editorState.CurrentLevel.highlighted != null)
+                /*if (editorState.CurrentLevel.highlighted != null)
                 {
                     editorState.CurrentLevel.DeleteThing(editorState.CurrentLevel.highlighted);
                     editorState.CurrentLevel.highlighted = null;
                     mainLevelPanel.Invalidate();
-                }
+                }*/
             }
         }
 
@@ -480,8 +481,8 @@ namespace eced
                 return;
 
             PickResult pickTest = renderer.Pick(e.X, e.Y);
-            statusBar1.Panels[0].Text = string.Format("({0} {1})", pickTest.x, pickTest.y);
-            //editorState.CurrentLevel.UpdateHighlight((int)((tile.X + .5) * 64), (int)((tile.Y + .5) * 64));
+            statusBar1.Panels[0].Text = string.Format("({0} {1} ({2} {3}))", pickTest.x, pickTest.y, pickTest.xf, pickTest.yf);
+            editorState.UpdateHighlight(pickTest);
 
             if (brushmode)
             {
@@ -527,10 +528,8 @@ namespace eced
 
         private void mainLevelPanel_MouseEnter(object sender, EventArgs e)
         {
-            {
-                //The GL control should be where any hotkeys are passed, so focus immediately when hovered over
-                mainLevelPanel.Focus();
-            }
+            //The GL control should be where any hotkeys are passed, so focus immediately when hovered over
+            mainLevelPanel.Focus();
         }
 
         private void menuItem6_Click(object sender, EventArgs e)
