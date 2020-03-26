@@ -43,6 +43,8 @@ namespace eced
         public VSwapNames VSwapNameList { get; private set; }
         public Thing HighlightedThing { get; private set; }
         public List<Thing> SelectedThings { get; } = new List<Thing>();
+
+        public EditorIO EditorIOState { get; }
         public bool IsThingMode
         {
             get
@@ -50,6 +52,11 @@ namespace eced
                 //todo: make better
                 return currentBrush == BrushList[4];
             }
+        }
+
+        public EditorState()
+        {
+            EditorIOState = new EditorIO(this);
         }
 
         private void CreateBrushes()
@@ -119,17 +126,14 @@ namespace eced
         {
             CurrentMapInfo = mapinfo;
             LoadGameConfiguration();
+            EditorIOState.InitNewLevel();
             Level level = new Level(mapinfo.sizex, mapinfo.sizey, mapinfo.layers, TileList.tileset[0]);
             level.localThingList = this.ThingList;
-            //this.selectedTile = tilelist.tileset[0];
 
             LoadResources(mapinfo, level);
             CreateBrushes();
 
             CurrentLevel = level;
-
-            //this.UpdateCurrentZoneList();
-            //gbTileSelection.SetPalette(tilelist.tileset);
         }
         
         public void CloseLevel()
@@ -143,93 +147,18 @@ namespace eced
         /// <summary>
         /// Saves a map a specified WAD file
         /// <param name="filename">Filename to save to</param>
-        /// <param name="saveinto">Makes the save code put the WAD onto the resource stack before saving</param>
+        /// <param name="saveinto">True if the map should be written into the wad if it already exists, or false if it should create a new wad</param>
         /// </summary>
-        public void SaveMapToFile(string filename, bool saveinto)
+        public bool SaveMapToFile(string filename, bool saveinto)
         {
-            //TODO: Temp
-            bool destArchiveLoaded = this.CurrentMapInfo.ContainsResource(filename);
-
-            //init it off the bat because Visual Studio is being lovely about detecting whether or not it was loaded
-            ResourceFiles.WADArchive savearchive = new ResourceFiles.WADArchive();
-
-            //make sure the save into archive actually exists
-            if (saveinto && !System.IO.File.Exists(filename))
+            bool res = EditorIOState.SaveMapToFile(filename, saveinto);
+            if (res)
             {
-                //if it doesn't turn off save into
-                saveinto = false;
+                //trash all the old resources to be sure we're up to date
+                CurrentLevel.DisposeLevel();
+                LoadResources(CurrentMapInfo, CurrentLevel);
             }
-
-            if (destArchiveLoaded)
-            {
-                //find the resource file for this map
-                bool found = false;
-                foreach (ResourceFiles.Archive file in CurrentLevel.loadedResources)
-                {
-                    if (file is ResourceFiles.WADArchive && file.filename.Equals(filename, StringComparison.OrdinalIgnoreCase))
-                    {
-                        savearchive = (ResourceFiles.WADArchive)file;
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found)
-                {
-                    throw new Exception("The archive for the current save desination is not loaded");
-                }
-            }
-            else
-            {
-                //add the resource onto the stack before doing anything
-                if (saveinto)
-                {
-                    savearchive = (ResourceFiles.WADArchive)ResourceFiles.WADArchive.loadResourceFile(filename);
-                    CurrentLevel.loadedResources.Add(savearchive);
-                    ResourceFiles.ArchiveHeader lhead = new ResourceFiles.ArchiveHeader();
-                    lhead.filename = filename;
-                    CurrentMapInfo.files.Add(lhead);
-                    destArchiveLoaded = true;
-                }
-            }
-
-            //Serialize and get an ascii representation of the map
-            //It's possible ports might eventually support UTF-8, but for now ASCII is safest bet
-            string mapstring = CurrentLevel.Serialize();
-            byte[] mapdata = Encoding.ASCII.GetBytes(mapstring);
-
-            //Do some special things to save the map special lumps
-            List<int> idlist = savearchive.FindMapLumps(this.CurrentMapInfo.lumpname);
-            if (destArchiveLoaded && idlist.Count >= 2) //The map is already present, so overwrite the TEXTMAP lump
-            {
-                savearchive.lumps[idlist[1]].SetCachedData(mapdata);
-            }
-            else
-            {
-                ResourceFiles.Lump mapheader = new ResourceFiles.Lump(this.CurrentMapInfo.lumpname, 0);
-                mapheader.size = 0; savearchive.AddLump(mapheader);
-                ResourceFiles.Lump mapdatal = new ResourceFiles.Lump("TEXTMAP", mapdata.Length);
-                mapdatal.SetCachedData(mapdata); savearchive.AddLump(mapdatal);
-                ResourceFiles.Lump mapend = new ResourceFiles.Lump("ENDMAP", 0);
-                mapend.size = 0; savearchive.AddLump(mapend);
-            }
-
-            savearchive.Save(filename);
-            //savearchive.updateToNewWad(filename, ref lumps, ref mapdata, destArchiveLoaded);
-
-            if (!destArchiveLoaded)
-            {
-                //hock the new map onto the resource list
-                ResourceFiles.ArchiveHeader head = new ResourceFiles.ArchiveHeader();
-                head.filename = filename;
-                head.format = ResourceFiles.ResourceFormat.Wad;
-
-                this.CurrentMapInfo.files.Add(head);
-            }
-
-            //trash all the old resources to be sure we're up to date
-            CurrentLevel.DisposeLevel();
-            //tm.cleanup();
-            LoadResources(CurrentMapInfo, CurrentLevel);
+            return res;
         }
 
         public void UpdateHighlight(PickResult res)

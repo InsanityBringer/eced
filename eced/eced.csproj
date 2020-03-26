@@ -103,6 +103,7 @@
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalEntry.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalParser.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\WAD.cs" />
+    <Compile Include="EditorIO.cs" />
     <Compile Include="EditorState.cs" />
     <Compile Include="GameConfig\GameConfiguration.cs" />
     <Compile Include="GameConfig\VSwapNames.cs" />

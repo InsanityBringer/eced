@@ -46,6 +46,7 @@ namespace eced.ResourceFiles
             int directory = br.ReadInt32();
 
             br.BaseStream.Seek(directory, SeekOrigin.Begin);
+            LumpNamespace ns = LumpNamespace.Global;
 
             for (int i = 0; i < lumps; i++)
             {
@@ -53,7 +54,6 @@ namespace eced.ResourceFiles
                 int size = br.ReadInt32();
                 string name = new String(br.ReadChars(8));
                 string fullname = name;
-                LumpNamespace ns = LumpNamespace.Global;
                 //eat null bytes for convenience
                 name = name.Trim('\0', ' '); //maybe this will work
                 fullname = fullname.Trim('\0'); //try to cut off null bytes at end of fullname
@@ -87,7 +87,8 @@ namespace eced.ResourceFiles
                 Lump lump = new Lump(name, size);
                 lump.fullname = fullname;
                 lump.pointer = ptr;
-                lump.@namespace = ns;
+                if (size != 0) //hack to avoid including the namespace markers themselves
+                    lump.@namespace = ns;
                 lump.size = size;
                 wad.lumps.Add(lump);
                 //Console.WriteLine("{0}, {1} {2}", lump.fullname, lump.pointer, lump.size);
@@ -119,14 +120,14 @@ namespace eced.ResourceFiles
         
         public override List<Lump> GetResourceList(LumpNamespace ns)
         {
-            if (ns == LumpNamespace.Global)
+            if ((ns & LumpNamespace.Global) != 0)
                 return lumps;
 
             List<Lump> lumplist = new List<Lump>();
 
             for (int i = 0; i < lumps.Count; i++)
             {
-                    if (lumps[i].@namespace == ns)
+                    if ((lumps[i].@namespace & ns) != 0)
                         lumplist.Add(lumps[i]);
             }
 

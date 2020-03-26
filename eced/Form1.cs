@@ -32,9 +32,6 @@ namespace eced
 
         private OpenTK.Vector2 lastMousePos = new Vector2();
 
-        //Empty when no current filename
-        private string currentFilename = "";
-
         private WallUIPanel gbTileSelection;
         private ThingUIPanel gbThingSelect;
         private ZoneUIPanel gbZoneList;
@@ -166,6 +163,18 @@ namespace eced
         {
         }
 
+        private void DoQuickSave()
+        {
+            if (editorState.EditorIOState.HasSavedBefore)
+            {
+                DoSave("", true);
+            }
+            else
+            {
+                DoSaveDialog(true);
+            }
+        }
+
         /// <summary>
         /// Spawns the save file dialog to save the current map
         /// </summary>
@@ -176,10 +185,19 @@ namespace eced
             {
                 if (saveFileDialog1.FileName != "")
                 {
-                    string fixFilename = saveFileDialog1.FileName.Replace('/', '\\');
-                    //TODO: move filename data
-                    editorState.SaveMapToFile(fixFilename, saveinto);
+                    DoSave(saveFileDialog1.FileName, saveinto);
                 }
+            }
+        }
+
+        private void DoSave(string filename, bool saveinto)
+        {
+            string fixFilename = filename.Replace('/', '\\');
+            //TODO: move filename data
+            if (editorState.SaveMapToFile(fixFilename, saveinto))
+            {
+                RebuildResources();
+                worldRenderer.LevelChanged();
             }
         }
 
@@ -254,16 +272,7 @@ namespace eced
 
                 if (ltag == 22)
                 {
-                    if (this.currentFilename != "")
-                    {
-                        editorState.SaveMapToFile(this.currentFilename, true);
-                        RebuildResources();
-                    }
-                    else
-                    {
-                        DoSaveDialog(true);
-                        RebuildResources();
-                    }
+                    DoQuickSave();
                 }
 
                 if (ltag == 21)
@@ -534,12 +543,7 @@ namespace eced
 
         private void menuItem6_Click(object sender, EventArgs e)
         {
-            //update current wad if you just click save
-            if (this.currentFilename != "")
-            {
-                editorState.SaveMapToFile(this.currentFilename, true);
-                RebuildResources();
-            }
+            DoQuickSave();
         }
 
         private void menuItem7_Click(object sender, EventArgs e)
