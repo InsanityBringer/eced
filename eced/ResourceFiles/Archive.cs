@@ -7,11 +7,11 @@ namespace eced.ResourceFiles
 {
     public abstract class Archive
     {
-        public string archiveName; 
-        public abstract Lump FindResource(string name);
+        public string filename; 
+        public abstract Lump FindLump(string name);
         public abstract List<Lump> GetResourceList(LumpNamespace ns);
-        public abstract byte[] LoadResource(string name);
-        public abstract void PushResource(Lump lump);
+        public abstract byte[] LoadLump(string name);
+        public abstract void AddLump(Lump lump);
         public abstract void CloseResource();
 
         /// <summary>

@@ -88,7 +88,7 @@ namespace eced.ResourceFiles
             br.Dispose();
         }
 
-        public override Lump FindResource(string name)
+        public override Lump FindLump(string name)
         {
             foreach (Lump lump in lumps)
             {
@@ -112,10 +112,10 @@ namespace eced.ResourceFiles
             return lumps;
         }
 
-        public override byte[] LoadResource(string name)
+        public override byte[] LoadLump(string name)
         {
             byte[] contents;
-            Lump lump = FindResource(name);
+            Lump lump = FindLump(name);
 
             if (lump == null) return null;
 
@@ -125,7 +125,7 @@ namespace eced.ResourceFiles
             return contents;
         }
 
-        public override void PushResource(Lump lump)
+        public override void AddLump(Lump lump)
         {
             //yeah having this as an interface was a good idea...
             throw new Exception("whyyy");

@@ -45,12 +45,29 @@ namespace eced.ResourceFiles
         public Archive host;
         public LumpFormatType format;
 
+        /// <summary>
+        /// Local data for this lump. Set to not null if local data should be used instead of saved data
+        /// </summary>
+        public byte[] Data { get; private set; } = null;
+
         public Lump(string name, int size)
         {
             this.name = name;
             this.size = size;
 
             format = LumpFormatType.Generic;
+        }
+
+        public void SetCachedData(byte[] newdata)
+        {
+            Data = newdata;
+            size = newdata.Length;
+            pointer = -1;
+        }
+
+        public void ClearCache()
+        {
+            Data = null;
         }
     }
 }

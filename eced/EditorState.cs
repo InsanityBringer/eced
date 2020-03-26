@@ -166,7 +166,7 @@ namespace eced
                 bool found = false;
                 foreach (ResourceFiles.Archive file in CurrentLevel.loadedResources)
                 {
-                    if (file.archiveName.Equals(filename, StringComparison.OrdinalIgnoreCase))
+                    if (file is ResourceFiles.WADArchive && file.filename.Equals(filename, StringComparison.OrdinalIgnoreCase))
                     {
                         savearchive = (ResourceFiles.WADArchive)file;
                         found = true;
@@ -192,37 +192,29 @@ namespace eced
                 }
             }
 
-            //Do some special things to save the map special lumps
-            if (destArchiveLoaded)
-            {
-                List<int> idlist = savearchive.findSpecialMapLumps(this.CurrentMapInfo.lumpname);
-
-                //TODO: actually preserve special lumps
-
-                //Delete the current version of the map out of the archive
-                savearchive.deleteMap(CurrentMapInfo.lumpname);
-            }
-
+            //Serialize and get an ascii representation of the map
+            //It's possible ports might eventually support UTF-8, but for now ASCII is safest bet
             string mapstring = CurrentLevel.Serialize();
-
-            //Console.WriteLine(mapstring);
-
-            //Get an ascii representation of the map
             byte[] mapdata = Encoding.ASCII.GetBytes(mapstring);
 
-            //Console.WriteLine(mapdata.Length);
+            //Do some special things to save the map special lumps
+            List<int> idlist = savearchive.FindMapLumps(this.CurrentMapInfo.lumpname);
+            if (destArchiveLoaded && idlist.Count >= 2) //The map is already present, so overwrite the TEXTMAP lump
+            {
+                savearchive.lumps[idlist[1]].SetCachedData(mapdata);
+            }
+            else
+            {
+                ResourceFiles.Lump mapheader = new ResourceFiles.Lump(this.CurrentMapInfo.lumpname, 0);
+                mapheader.size = 0; savearchive.AddLump(mapheader);
+                ResourceFiles.Lump mapdatal = new ResourceFiles.Lump("TEXTMAP", mapdata.Length);
+                mapdatal.SetCachedData(mapdata); savearchive.AddLump(mapdatal);
+                ResourceFiles.Lump mapend = new ResourceFiles.Lump("ENDMAP", 0);
+                mapend.size = 0; savearchive.AddLump(mapend);
+            }
 
-            List<ResourceFiles.Lump> lumps = new List<ResourceFiles.Lump>();
-
-            ResourceFiles.Lump mapheader = new ResourceFiles.Lump(this.CurrentMapInfo.lumpname, 0);
-            mapheader.pointer = 0; lumps.Add(mapheader);
-            ResourceFiles.Lump mapdatal = new ResourceFiles.Lump("TEXTMAP", mapdata.Length);
-            mapdatal.pointer = 0; lumps.Add(mapdatal);
-            ResourceFiles.Lump mapend = new ResourceFiles.Lump("ENDMAP", 0);
-            mapend.pointer = 0; lumps.Add(mapend);
-
-
-            savearchive.updateToNewWad(filename, ref lumps, ref mapdata, destArchiveLoaded);
+            savearchive.Save(filename);
+            //savearchive.updateToNewWad(filename, ref lumps, ref mapdata, destArchiveLoaded);
 
             if (!destArchiveLoaded)
             {

@@ -242,9 +242,9 @@ namespace eced.Renderer
         public void AddArchiveTextures(ResourceFiles.Archive archive)
         {
             //Try to load a palette from this resource
-            if (archive.FindResource("PLAYPAL") != null)
+            if (archive.FindLump("PLAYPAL") != null)
             {
-                palette = archive.LoadResource("PLAYPAL");
+                palette = archive.LoadLump("PLAYPAL");
             }
             List<ResourceFiles.Lump> lumps = archive.GetResourceList(ResourceFiles.LumpNamespace.Texture);
 
@@ -252,7 +252,7 @@ namespace eced.Renderer
             {
                 try
                 {
-                    byte[] data = archive.LoadResource(lumps[i].fullname);
+                    byte[] data = archive.LoadLump(lumps[i].fullname);
                     //Console.WriteLine(lumps[i].fullname);
                     if (data != null)
                     {
@@ -262,13 +262,13 @@ namespace eced.Renderer
                     //if it isn't known, don't add it, possibly add a warning texture if it gets used
                     else
                     {
-                        Console.WriteLine("Error loading lump {0} from archive {1}", lumps[i].name, archive.archiveName);
+                        Console.WriteLine("Error loading lump {0} from archive {1}", lumps[i].name, archive.filename);
                     }
                 }
                 catch (Exception exc)
                 {
                     //TODO: Error handling
-                    Console.WriteLine("Error while processing archive textures {0}: {1}", archive.archiveName, exc.Message);
+                    Console.WriteLine("Error while processing archive textures {0}: {1}", archive.filename, exc.Message);
                 }
             }
             //GL.BindTexture(TextureTarget.Texture2D, 0);

@@ -35,7 +35,7 @@ namespace eced.ResourceFiles
             ZIPArchive zip = new ZIPArchive();
 
             zip.archive = new ZipFile(filename);
-            zip.archiveName = filename;
+            zip.filename = filename;
 
             foreach (ZipEntry entry in zip.archive)
             {
@@ -83,7 +83,7 @@ namespace eced.ResourceFiles
             }
         }
 
-        public override Lump FindResource(string fullname)
+        public override Lump FindLump(string fullname)
         {
             //string[] parts = name.Split('\\', '/');
             //return recursiveFind(parts, 0, this.lumps);
@@ -114,11 +114,11 @@ namespace eced.ResourceFiles
             return lumplist;
         }
 
-        public override void PushResource(Lump resource)
+        public override void AddLump(Lump resource)
         {
             if (saveToDirectory != "-")
             {
-                DirectoryLump directory = (DirectoryLump)FindResource(saveToDirectory);
+                DirectoryLump directory = (DirectoryLump)FindLump(saveToDirectory);
                 directory.resources.Add(resource);
             }
             else
@@ -131,9 +131,9 @@ namespace eced.ResourceFiles
             this.archive.Close();
         }
 
-        public override byte[] LoadResource(string name)
+        public override byte[] LoadLump(string name)
         {
-            Lump lump = FindResource(name);
+            Lump lump = FindLump(name);
 
             //this.streamreader.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
             //ZipEntry entry = (ZipEntry)lump.internalObject;

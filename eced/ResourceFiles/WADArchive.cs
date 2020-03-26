@@ -27,10 +27,8 @@ namespace eced.ResourceFiles
     {
         public List<Lump> lumps = new List<Lump>();
         public string saveToDirectory = "-";
-        public string filename;
 
         BinaryReader streamreader;
-        BinaryWriter streamwriter = null;
         FileStream stream;
 
         public WADArchive()
@@ -40,7 +38,6 @@ namespace eced.ResourceFiles
         public static Archive loadResourceFile(string filename)
         {
             WADArchive wad = new WADArchive();
-            wad.archiveName = filename;
             wad.filename = filename;
             wad.stream = File.Open(filename, FileMode.Open);
             BinaryReader br = new BinaryReader(wad.stream, Encoding.ASCII);
@@ -105,7 +102,7 @@ namespace eced.ResourceFiles
             return wad;
         }
 
-        public override Lump FindResource(string fullname)
+        public override Lump FindLump(string fullname)
         {
             //string[] parts = name.Split('\\', '/');
             //return recursiveFind(parts, 0, this.lumps);
@@ -136,11 +133,11 @@ namespace eced.ResourceFiles
             return lumplist;
         }
 
-        public override void PushResource(Lump resource)
+        public override void AddLump(Lump resource)
         {
             if (saveToDirectory != "-")
             {
-                DirectoryLump directory = (DirectoryLump)FindResource(saveToDirectory);
+                DirectoryLump directory = (DirectoryLump)FindLump(saveToDirectory);
                 directory.resources.Add(resource);
             }
             else
@@ -170,9 +167,9 @@ namespace eced.ResourceFiles
             this.CloseResource();
         }
 
-        public override byte[] LoadResource(string name)
+        public override byte[] LoadLump(string name)
         {
-            Lump lump = FindResource(name);
+            Lump lump = FindLump(name);
 
             this.streamreader.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
             byte[] lumpdata = this.streamreader.ReadBytes(lump.size);
@@ -202,11 +199,11 @@ namespace eced.ResourceFiles
         }
 
         /// <summary>
-        /// Finds all special lumps associated with a map
+        /// Finds all lumps associated with a map
         /// </summary>
         /// <param name="name">The mapname to find them for</param>
         /// <returns>Lump indicies of all the special lumps</returns>
-        public List<int> findSpecialMapLumps(string name)
+        public List<int> FindMapLumps(string name)
         {
             List<int> foundlumps = new List<int>();
             int firstelement = -1, lastelement = -1;
@@ -239,7 +236,7 @@ namespace eced.ResourceFiles
             //make sure there actually is a map
             if (lastelement != -1)
             {
-                for (int li = firstelement+2; li < lastelement; li++)
+                for (int li = firstelement; li < lastelement; li++)
                 {
                     //just add the index to the list
                     foundlumps.Add(li);
@@ -249,50 +246,9 @@ namespace eced.ResourceFiles
             return foundlumps;
         }
 
-        /// <summary>
-        /// Delete a map from the wad directory
-        /// </summary>
-        /// <param name="name"></param>
-        public void deleteMap(string name)
+        public List<int> FindMapLumps()
         {
-            //Find the index of the first element
-            int firstelement = -1, lastelement = -1;
-            int i;
-            for (i = 0; i < lumps.Count; i++)
-            {
-                if (lumps[i].name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                {
-                    if (i != (lumps.Count-1) && lumps[i+1].name.Equals("TEXTMAP", StringComparison.OrdinalIgnoreCase))
-                    firstelement = i;
-                    break;
-                }
-            }
-
-            //Map isn't present, so abort
-            if (firstelement == -1)
-            {
-                return;
-            }
-
-            //Find the index of the ENDMAP element from this map
-            for (; i < lumps.Count; i++)
-            {
-                if (lumps[i].name.Equals("ENDMAP", StringComparison.OrdinalIgnoreCase))
-                {
-                    lastelement = i;
-                }
-            }
-            //Delete from the directory
-            //Make sure the end is actually present
-            if (lastelement != -1)
-            {
-                lumps.RemoveRange(firstelement, lastelement - firstelement);
-            }
-        }
-
-        public List<string> findAllMapNames()
-        {
-            List<string> maplumps = new List<string>();
+            List<int> maplumps = new List<int>();
 
             //Count up to the amount of lumps - 2 since two additonal lumps are needed to define a map
             for (int i = 0; i < lumps.Count - 2; i++)
@@ -303,122 +259,110 @@ namespace eced.ResourceFiles
 
                 if (nextlump.Equals("TEXTMAP", StringComparison.OrdinalIgnoreCase))
                 {
-                    maplumps.Add(checkmap);
+                    maplumps.Add(i);
                 }
             }
 
             return maplumps;
         }
 
-        /// <summary>
-        /// Writes out a new wad, appending the new lumps onto the end of the stack. Expects pointer for each ResourceFile to point to the position of the data in the old archive
-        /// Opens and closes the old wad automatically
-        /// </summary>
-        /// <param name="destfilename">The destination to write the new file</param>
-        /// <param name="newLumps">The directory entries of the new lumps to add</param>
-        /// <param name="data"></param>
-        /// <param name="update">True if the wad should be updated, false if it should be done solely with the new data</param>
-        public void updateToNewWad(string destfilename, ref List<Lump> newLumps, ref byte[] data, bool update)
+        public void Save(string newfilename = "")
         {
-            //Open the file for reading
-            if (update)
+            string tempFilename;
+
+            //Save the new file to a temporary filename
+            if (newfilename == "")
+                tempFilename = Path.ChangeExtension(filename, "new");
+            else
+                tempFilename = Path.ChangeExtension(newfilename, "new");
+
+            //If the source file isn't open, load it for reading
+            //TODO: weird things will happen if the file is deleted at some point, needs fix...
+            if (File.Exists(filename))
             {
-                OpenFile();
+                if (streamreader != null)
+                    OpenFile();
             }
 
-            //Find how large the resultant WAD data will be
-            int numLumps = lumps.Count + newLumps.Count;
-            int directorySize = numLumps * 16;
-            int dataSize = 0;
+            BinaryWriter bw = new BinaryWriter(File.Open(tempFilename, FileMode.Create));
+            bw.Write(0x44415750); //IWAD header
+            bw.Write(lumps.Count); //number of lumps
+            int directoryOffset = 12;
+            foreach (Lump lump in lumps)
+                directoryOffset += lump.size;
+            bw.Write(directoryOffset);
+
+            byte[] data;
+            //Write the data block
             foreach (Lump lump in lumps)
             {
-                dataSize += lump.size;
-            }
-            foreach (Lump lump in newLumps)
-            {
-                dataSize += lump.size;
-            }
-            int finalSize = directorySize + dataSize + 12;
-
-            //Allocate a block of memory of the bytes
-            byte[] block = new byte[finalSize];
-            //Write magic number for header
-            byte[] intblock = new byte[4];
-            block[0] = (byte)'P';
-            block[1] = (byte)'W';
-            block[2] = (byte)'A';
-            block[3] = (byte)'D';
-
-            //Write number of lumps and pointer
-            BinaryHelper.getBytes(numLumps, ref intblock);
-            Array.Copy(intblock, 0, block, 4, 4);
-            BinaryHelper.getBytes(12, ref intblock);
-            Array.Copy(intblock, 0, block, 8, 4);
-
-            //Build the directory
-            int ptr = 12;
-            int dataptr = 12 + directorySize;
-
-            //only try to load old lumps when updating
-            if (update)
-            {
-                foreach (Lump lump in lumps)
+                if (lump.size != 0)
                 {
-                    //copy the data into the data block
-                    streamreader.BaseStream.Seek((long)lump.pointer, SeekOrigin.Begin);
-                    byte[] lumpdata = streamreader.ReadBytes(lump.size);
-                    if (lumpdata.Length != lump.size)
+                    if (File.Exists(filename))
                     {
-                        //TODO: Report error more formally
-                        Console.WriteLine("ERROR: Loaded less bytes than expected reading lump {0}", lump.name);
+                        if (lump.Data == null)
+                        {
+                            streamreader.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
+                            data = streamreader.ReadBytes(lump.size);
+                        }
+                        else data = lump.Data;
                     }
-                    Array.Copy(lumpdata, 0, block, dataptr, lump.size);
+                    else
+                    {
+                        if (lump.Data == null)
+                            throw new Exception("WADArchive::Save: Trying to write lump without 0 size or cached data to new WAD file");
+                        else
+                            data = lump.Data;
+                    }
+                    lump.pointer = (int)bw.BaseStream.Position;
 
-                    BinaryHelper.getBytes(dataptr, ref intblock);
-                    Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
-                    BinaryHelper.getBytes(lump.size, ref intblock);
-                    Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
+                    bw.Write(data);
 
-                    byte[] name = Encoding.ASCII.GetBytes(lump.name);
-                    Array.Copy(name, 0, block, ptr, name.Length); ptr += 8;
-
-                    dataptr += lump.size;
+                    lump.ClearCache(); //Free the cached data
                 }
             }
-            foreach (Lump lump in newLumps)
+            //Write the directory
+            foreach (Lump lump in lumps)
             {
-                //copy the data into the data block
-                Array.Copy(data, lump.pointer, block, dataptr, lump.size);
-
-                BinaryHelper.getBytes(dataptr, ref intblock);
-                Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
-                BinaryHelper.getBytes(lump.size, ref intblock);
-                Array.Copy(intblock, 0, block, ptr, 4); ptr += 4;
-
-                byte[] name = Encoding.ASCII.GetBytes(lump.name);
-                Array.Copy(name, 0, block, ptr, name.Length); ptr += 8;
-
-                dataptr += lump.size;
+                bw.Write(lump.pointer);
+                bw.Write(lump.size);
+                for (int i = 0; i < 8; i++)
+                {
+                    if (i < lump.name.Length)
+                        bw.Write((byte)lump.name[i]);
+                    else bw.Write((byte)0);
+                }
             }
 
-            //Close for reading
-            if (update)
+            bw.Flush();
+            bw.Close();
+            bw.Dispose();
+
+            //.new file is successfully written, now move the old file over to a backup extension and create
+            if (File.Exists(filename))
             {
                 CloseFile();
             }
 
-            //Open the wad for writing
-            BinaryWriter bw = new BinaryWriter(File.Open(destfilename, FileMode.Create), Encoding.ASCII);
-
-            //Write the wad
-            bw.Write(block);
-
-            bw.Close();
-
-            if (!update)
+            if (newfilename != "")
             {
-                this.filename = destfilename;
+                filename = newfilename;
             }
+
+            string backupFilename = Path.ChangeExtension(tempFilename, "bak");
+            try
+            {
+                File.Delete(backupFilename);
+            }
+            catch (FileNotFoundException) { } //checking existence then opening opens up 1 in a million race condition...
+
+            try
+            {
+                File.Move(filename, backupFilename);
+            }
+            catch (FileNotFoundException) { }
+
+            File.Move(tempFilename, filename);
         }
     }
 }
