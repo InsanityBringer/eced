@@ -383,8 +383,11 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "WAD Files|*.wad";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "WAD Files|*.wad";
             // 
             // SizeTemplatePanel
             // 
