@@ -1,4 +1,21 @@
-﻿using System;
+﻿/*  ---------------------------------------------------------------------
+ *  Copyright (c) 2020 ISB
+ *
+ *  eced is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *   eced is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
+ *  -------------------------------------------------------------------*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +30,7 @@ using eced.Renderer;
 
 using eced.UIPanels;
 using eced.Brushes;
+using eced.ResourceFiles;
 
 namespace eced
 {
@@ -163,6 +181,43 @@ namespace eced
         {
         }
 
+        private void DoLoadDialog()
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (openFileDialog1.FileName != "")
+                {
+                    WADArchive archive = (WADArchive)WADArchive.loadResourceFile(openFileDialog1.FileName);
+                    List<int> mapLumpNums = archive.FindMaps();
+                    if (mapLumpNums.Count == 0)
+                        MessageBox.Show("Chosen WAD file does not have any maps present.");
+                    else
+                    {
+                        OpenMapDialog mapDialog = new OpenMapDialog(archive, mapLumpNums);
+                        //TODO: Organize better and add some functions for common tasks
+                        if (mapDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            archive.OpenFile();
+                            byte[] data = archive.LoadLumpByIndex(mapDialog.CurrentMapIndex + 1);
+                            archive.CloseFile();
+                            if (editorState.CurrentLevel != null)
+                            {
+                                editorState.CloseLevel();
+                                renderer.Textures.DestroyAtlas();
+                            }
+                            if (editorState.CreateLevelFromData(mapDialog.CurrentMap, data))
+                            {
+                                RebuildResources();
+                                SelectTool(1);
+                                worldRenderer.LevelChanged();
+                            }
+                        }
+                        mapDialog.Dispose();
+                    }
+                }
+            }
+        }
+
         private void DoQuickSave()
         {
             if (editorState.EditorIOState.HasSavedBefore)
@@ -269,62 +324,13 @@ namespace eced
                     toolid = ltag;
                     SelectTool(toolid);
                 }
-
                 if (ltag == 22)
                 {
                     DoQuickSave();
                 }
-
                 if (ltag == 21)
                 {
-                    /*
-                    //TODO: Absolute path
-                    CodeImp.DoomBuilder.IO.UniversalParser parser = new CodeImp.DoomBuilder.IO.UniversalParser("c:/dev/textmap.txt");
-
-                    Console.WriteLine("Errors: {0}, line {1}", parser.ErrorDescription, parser.ErrorLine);
-                    for (int x = 0; x < parser.Root.Count; x++)
-                    {
-                        Console.WriteLine("Found key {0}", parser.Root[x].Key);
-                    }
-
-                    //reconstruct the level
-                    if (parser.ErrorDescription == "")
-                    {
-                        //try
-                        {
-                            //TODO: Redundant code with level creation
-                            closeLevel();
-                            tm.cleanup();
-                            //TODO: Absolute path
-                            ResourceFiles.ResourceArchive arc = ResourceFiles.WADResourceFile.loadResourceFile("c:/games/ecwolf/sneswolf.wad");
-
-                            Level newLevel = LevelIO.makeNewLevel(parser.Root);
-                            newLevel.localThingList = this.thinglist;
-
-                            tm.allocateAtlasTexture();
-                            tm.readyAtlasCreation();
-                            tm.getTextureList(arc);
-                            tm.createInfoTexture();
-                            tm.uploadNumberTexture();
-
-                            newLevel.tm = this.tm;
-
-                            renderer.setupTextures(newLevel, tm.resourceInfoID, tm.atlasTextureID, tm.numberTextureID);
-
-                            currentLevel = newLevel;
-
-                            renderer.setupLevelRendering(currentLevel, (uint)sm.programList["WorldRender"], new OpenTK.Vector2(mainLevelPanel.Width, mainLevelPanel.Height));
-                            renderer.setupThingUniforms(sm.programList["ThingRender"]);
-
-                            this.updateZoneList();
-                        }
-                        catch (Exception exc)
-                        {
-                            statusBar1.Panels[0].Text = "Error loading map: " + exc.Message;
-                            Console.WriteLine(exc.ToString());
-                        }
-                    }
-                    Console.WriteLine("heh");*/
+                    DoLoadDialog();
                 }
                 if (ltag == 20)
                 {

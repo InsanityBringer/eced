@@ -135,6 +135,32 @@ namespace eced
 
             CurrentLevel = level;
         }
+
+        public bool CreateLevelFromData(MapInformation mapinfo, byte[] data)
+        {
+            Level level;
+            if (EditorIOState.InitFromLump(mapinfo.files[0].filename, data, out level))
+            {
+                //we're good, so lets kick off this mess
+                CurrentMapInfo = mapinfo;
+                LoadGameConfiguration();
+                CurrentLevel = level;
+                level.localThingList = this.ThingList;
+
+                LoadResources(mapinfo, level);
+                CreateBrushes();
+            }
+            else
+            {
+                if (EditorIOState.LastErrorLine != -1)
+                {
+                    //TODO: Real error handling
+                    Console.WriteLine("Error on line {0}: {1}", EditorIOState.LastErrorLine, EditorIOState.LastError);
+                }
+                return false;
+            }
+            return true;
+        }
         
         public void CloseLevel()
         {

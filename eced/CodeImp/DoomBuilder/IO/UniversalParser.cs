@@ -336,7 +336,7 @@ namespace CodeImp.DoomBuilder.IO
 
             int planephase = 65536;
 
-            List<eced.NumberCell> cells = new List<eced.NumberCell>();
+            List<eced.Cell> cells = new List<eced.Cell>();
 
             if (planemaps)
             {
@@ -506,7 +506,7 @@ namespace CodeImp.DoomBuilder.IO
                             pos++;
                             if (c != ',')
                             {
-                                RaiseError(line, String.Format("It blew up: expected second \',\', got {0}!", c));
+                                RaiseError(line, String.Format("Parsing planemap, expected \',\', got {0}!", c));
                                 break;
                             }
                             terminateWhitespace(ref data, ref pos, ref line);
@@ -516,7 +516,7 @@ namespace CodeImp.DoomBuilder.IO
                             pos++;
                             if (c != ',')
                             {
-                                RaiseError(line, String.Format("It blew up: expected second \',\', got {0}!", c));
+                                RaiseError(line, String.Format("Parsing planemap, expected \',\', got {0}!", c));
                                 break;
                             }
                             terminateWhitespace(ref data, ref pos, ref line);
@@ -530,14 +530,13 @@ namespace CodeImp.DoomBuilder.IO
                                 tag = (int)GetNumber(ref data, ref pos, ref line);
                                 terminateWhitespace(ref data, ref pos, ref line);
                                 c = data[pos];
-                                Console.WriteLine("tag {0}", tag);
                             }
                             if (c != '}')
                             {
-                                RaiseError(line, String.Format("It blew up: expected \'closing brace\', got {0}!", c));
+                                RaiseError(line, String.Format("Parsing planemap, expected \'closing brace\', got {0}!", c));
                                 break;
                             }
-                            eced.NumberCell cell = new eced.NumberCell();
+                            eced.Cell cell = new eced.Cell();
                             cell.tile = til;
                             cell.sector = sec;
                             cell.zone = zone;

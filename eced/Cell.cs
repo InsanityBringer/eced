@@ -16,14 +16,14 @@
  *  -------------------------------------------------------------------*/
 namespace eced
 {
-    public class Cell
+    public struct Cell
     {
         public int tile;
         public int sector;
         public int zone;
         public int tag;
 
-        public bool highlighted = false;
+        public bool highlighted;
     }
 
     public class NumberCell

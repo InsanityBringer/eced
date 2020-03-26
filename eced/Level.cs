@@ -35,6 +35,9 @@ namespace eced
         public int Depth { get; private set; }
         public int TileSize { get; private set; } = 64;
         public List<Plane> Planes { get; } = new List<Plane>();
+        public int Brightness { get; set; } = 255;
+        public float Visibility { get; set; } = 1.0f;
+        public string Name { get; set; } = "ecedtest";
 
         //Data management
         public List<Tile> Tileset { get; } = new List<Tile>();
@@ -50,13 +53,10 @@ namespace eced
         public bool Dirty { get; private set; } = false;
         public DirtyRectangle dirtyRectangle; //could be property but the structure nature makes that useless... TODO make better
 
-        private List<NumberCell> tempPlanemap;
-
         public ThingManager localThingList;
 
         public int lastFloorCode = 0;
 
-        public Cell highlightedTrigger = null;
         public int[] highlightedPos = new int[2];
 
         public List<ResourceFiles.Archive> loadedResources = new List<ResourceFiles.Archive>();
@@ -68,17 +68,21 @@ namespace eced
             this.Height = h;
             this.Depth = d;
 
-            Planes.Add(new Plane(w, h));
+            for (int i = 0; i < Depth; i++)
+                Planes.Add(new Plane(w, h));
+
             Sectorset.Add(new Sector());
 
-            for (int x = 0; x < Width; x++)
+            for (int z = 0; z < Depth; z++)
             {
-                for (int y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    Planes[0].cells[x, y] = new Cell();
-                    Planes[0].cells[x, y].tile = 0;
-                    Planes[0].cells[x, y].sector = 0;
-                    Planes[0].cells[x, y].zone = -1;
+                    for (int y = 0; y < Height; y++)
+                    {
+                        Planes[z].cells[x, y].tile = 0;
+                        Planes[z].cells[x, y].sector = 0;
+                        Planes[z].cells[x, y].zone = -1;
+                    }
                 }
             }
             if (defaultTile != null)
@@ -86,6 +90,35 @@ namespace eced
                 AddTile(defaultTile);
             }
             ClearDirty();
+        }
+
+        /// <summary>
+        /// Creates a completely blank level, for deserializing purposes. 
+        /// </summary>
+        private Level()
+        {
+            this.Width = 0;
+            this.Height = 0;
+            this.Depth = 0;
+
+            ClearDirty();
+        }
+
+        public void AddPlane(Plane plane, int where = -1)
+        {
+            if (plane.Width != Width || plane.Height != Height)
+            {
+                throw new Exception("Level::AddPlane: Plane added with mismatched width and height.");
+            }
+            if (where < 0 || where >= Planes.Count) //append to top of stack
+            {
+                Planes.Add(plane);
+            }
+            else
+            {
+                Planes.Insert(where, plane);
+            }
+            Depth = Planes.Count;
         }
 
         /// <summary>
@@ -328,23 +361,6 @@ namespace eced
 
         public void UpdateTriggerHighlight(int x, int y, int z)
         {
-            if (x < 0 || y < 0)
-                return;
-
-            if (this.highlightedTrigger == null)
-            {
-                HighlightTrigger(x, y, z);
-                return;
-            }
-            else
-            {
-                if (x != this.highlightedPos[0] || y != this.highlightedPos[1])
-                {
-                    this.highlightedTrigger.highlighted = false;
-                    this.highlightedTrigger = null;
-                    return;
-                }
-            }
         }
 
         public void SetZone(int x, int y, int z, int code)
@@ -475,11 +491,6 @@ namespace eced
             return ZoneDefs[Planes[z].cells[x, y].zone];
         }
 
-        public void SetTempPlaneMap(List<NumberCell> planemap)
-        {
-            this.tempPlanemap = planemap;
-        }
-
         public void AddZone(Zone zone)
         {
             this.ZoneDefs.Add(zone);
@@ -495,39 +506,126 @@ namespace eced
             return Planes[z].cells[x, y].highlighted;
         }
 
-        public void ProcessPlanemap()
+        public static bool DeserializeLevel(CodeImp.DoomBuilder.IO.UniversalCollection collection, out Level level)
         {
-            if (this.tempPlanemap == null)
-                return;
-
-            int index = 0;
-            int tilesadded = 0;
-            for (int y = 0; y < Height; y++)
+            level = null;
+            string levelNamespace;
+            if (!collection[0].Key.Equals("namespace", StringComparison.OrdinalIgnoreCase))
             {
-                for (int x = 0; x < Width; x++)
+                throw new Exception("Level::DeserializeLevel: Namespace isn't first value in UWMF map.");
+            }
+            levelNamespace = (string)collection[0].Value;
+            if (levelNamespace != "ECWolf-v12" && levelNamespace != "Wolf3D")
+            {
+                throw new Exception(string.Format("Level::DeserializeLevel: Unexpected namespace {0}.", levelNamespace));
+            }
+            string key;
+            level = new Level();
+            int planenum = 0;
+            foreach (CodeImp.DoomBuilder.IO.UniversalEntry entry in collection)
+            {
+                key = entry.Key.ToLowerInvariant();
+                switch (key)
                 {
-                    for (int z = 0; z < Depth; z++)
-                    {
-                        Cell cell = new Cell();
-                        if (tempPlanemap[index].tile >= 0)
-                        {
-                            cell.tile = tempPlanemap[index].tile;
-                            tilesadded++;
-                        }
-                        //TODO: This is REALLY BAD
-                        //TODO: LIKE SERIOUSLY WHY DID I THINK ANYTHING HERE WAS A GOOD IDEA
-                        //cell.sector = new Sector(); //no sector management
-                        if (tempPlanemap[index].zone >= 0)
-                            cell.zone = tempPlanemap[index].zone;
-
-                        Planes[z].cells[x, y] = cell;
-                    }
-
-                    index++;
+                    case "width":
+                        entry.ValidateType(typeof(int));
+                        level.Width = (int)entry.Value;
+                        break;
+                    case "height":
+                        entry.ValidateType(typeof(int));
+                        level.Height = (int)entry.Value;
+                        break;
+                    case "tilesize":
+                        entry.ValidateType(typeof(int));
+                        level.TileSize = (int)entry.Value;
+                        break;
+                    case "name":
+                        entry.ValidateType(typeof(string));
+                        level.Name = (string)entry.Value;
+                        break;
+                    case "defaultlightlevel":
+                        if (levelNamespace != "ECWolf-v12")
+                            throw new Exception("Level::DeserializeLevel: Attempting to use defaultlightlevel in non-experimental map.");
+                        entry.ValidateType(typeof(int));
+                        level.Brightness = (int)entry.Value;
+                        break;
+                    case "defaultvisibility":
+                        if (levelNamespace != "ECWolf-v12")
+                            throw new Exception("Level::DeserializeLevel: Attempting to use defaultvisibility in non-experimental map.");
+                        entry.ValidateType(typeof(float));
+                        level.Visibility = (float)entry.Value;
+                        break;
+                    case "tile":
+                        entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
+                        Tile tile = Tile.Deserialize((CodeImp.DoomBuilder.IO.UniversalCollection)entry.Value);
+                        level.AddTile(tile);
+                        break;
+                    case "sector":
+                        entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
+                        Sector sector = Sector.Deserialize((CodeImp.DoomBuilder.IO.UniversalCollection)entry.Value);
+                        level.AddSector(sector);
+                        break;
+                    case "plane":
+                        if (level.Width == 0 || level.Height == 0)
+                            throw new Exception("Level::DeserializeLevel: Defining plane before level size is defined.");
+                        entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
+                        Plane plane = Plane.Deserialize(level, (CodeImp.DoomBuilder.IO.UniversalCollection)entry.Value);
+                        level.AddPlane(plane);
+                        break;
+                    case "zone":
+                        entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
+                        Zone zone = new Zone();
+                        level.AddZone(zone);
+                        break;
+                    case "thing":
+                        entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
+                        Thing thing = Thing.Reconstruct((CodeImp.DoomBuilder.IO.UniversalCollection)entry.Value);
+                        level.AddThing(thing);
+                        break;
+                    case "trigger":
+                        entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
+                        Trigger trigger = Trigger.Reconstruct((CodeImp.DoomBuilder.IO.UniversalCollection)entry.Value);
+                        level.AddTrigger(trigger.x, trigger.y, trigger.z, trigger);
+                        break;
+                    case "planemap":
+                        entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
+                        level.ProcessPlanemap((CodeImp.DoomBuilder.IO.UniversalCollection)entry.Value, ref planenum);
+                        break;
                 }
             }
-            this.tempPlanemap = null;
-            Console.WriteLine("added {0} tiles", tilesadded);
+            return true;
+        }
+
+        public void ProcessPlanemap(CodeImp.DoomBuilder.IO.UniversalCollection collection, ref int planenum)
+        {
+            if (planenum >= Planes.Count)
+            {
+                throw new Exception(string.Format("Level::ProcessPlanemap: Planemap specified for plane {0} but plane {0} has not been created.", planenum));
+            }
+            List<Cell> newCells;
+            foreach (CodeImp.DoomBuilder.IO.UniversalEntry entry in collection)
+            {
+                string name = entry.Key.ToLowerInvariant();
+                switch (name)
+                {
+                    case "planedata":
+                        entry.ValidateType(typeof(List<Cell>));
+                        newCells = (List<Cell>)entry.Value;
+                        if (newCells.Count < Width * Height)
+                        {
+                            throw new Exception(string.Format("Level::ProcessPlanemap: Insufficient planemap data for plane {0}.", planenum));
+                        }
+                        for (int y = 0; y < Height; y++)
+                        {
+                            for (int x = 0; x < Width; x++)
+                            {
+                                Planes[planenum].cells[x, y] = newCells[y * Width + x];
+                            }
+                        }
+                        break;
+                }
+            }
+            planenum++;
         }
     }
 }

@@ -247,7 +247,7 @@ namespace eced.ResourceFiles
             return foundlumps;
         }
 
-        public List<int> FindMapLumps()
+        public List<int> FindMaps()
         {
             List<int> maplumps = new List<int>();
 

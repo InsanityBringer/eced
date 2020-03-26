@@ -17,9 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using eced.ResourceFiles;
 
@@ -30,6 +28,8 @@ namespace eced
         private EditorState state;
         public bool HasSavedBefore { get; private set; } = false;
         public string LastFilename { get; private set; } = "Untitled";
+        public int LastErrorLine { get; private set; } = -1;
+        public string LastError { get; private set; } = "";
 
         public EditorIO(EditorState state)
         {
@@ -43,6 +43,30 @@ namespace eced
         {
             HasSavedBefore = false;
             LastFilename = "";
+            LastErrorLine = -1;
+        }
+
+        public bool InitFromLump(string filename, byte[] data, out Level level)
+        {
+            level = null;
+            string levelStr = Encoding.ASCII.GetString(data);
+            CodeImp.DoomBuilder.IO.UniversalParser parser = new CodeImp.DoomBuilder.IO.UniversalParser();
+            if (parser.InputConfiguration(levelStr))
+            {
+                if (Level.DeserializeLevel(parser.Root, out level))
+                {
+                    HasSavedBefore = true;
+                    LastFilename = filename;
+                    return true;
+                }
+                else return false;
+            }
+            else
+            {
+                LastErrorLine = parser.ErrorLine;
+                LastError = parser.ErrorDescription;
+                return false;
+            }
         }
 
         public bool SaveMapToFile(string filename, bool saveinto)

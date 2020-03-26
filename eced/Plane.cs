@@ -30,14 +30,24 @@ namespace eced
         public Cell[,] cells;
         public List<OpenTK.Vector2> cellsWithTriggers = new List<OpenTK.Vector2>();
 
-        int w = 64, h = 64;
+        public int Width { get; } = 64;
+        public int Height { get; } = 64;
         
         public Plane(int w, int h)
         {
-            this.w = w;
-            this.h = h;
+            this.Width = w;
+            this.Height = h;
 
             cells = new Cell[w, h];
+            for (int x = 0; x < w; x++)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    cells[x, y].tile = 0;
+                    cells[x, y].sector = 0;
+                    cells[x, y].zone = -1;
+                }
+            }
         }
 
         public String Serialize()
@@ -49,7 +59,7 @@ namespace eced
             return str;
         }
 
-        public static Plane Reconstruct(Level level, UniversalCollection data)
+        public static Plane Deserialize(Level level, UniversalCollection data)
         {
             Plane plane = new Plane(level.Width, level.Height);
             plane.height = UWMFSearch.getIntTag(data, "depth", 64);
