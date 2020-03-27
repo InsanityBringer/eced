@@ -79,19 +79,19 @@ void main()
 	if (neighbors != 0)
 	{
 		multiplier = 1.0;
-		if (neighbors & 1)
+		if ((neighbors & 1) != 0)
 		{
 			multiplier *= (clamp(cellposf.x * 5.0, 0.0, 1.0));
 		}
-		if (neighbors & 2)
+		if ((neighbors & 2) != 0)
 		{
 			multiplier *= (clamp((1.0 - cellposf.x) * 5.0, 0.0, 1.0));
 		}
-		if (neighbors & 4)
+		if ((neighbors & 4) != 0)
 		{
 			multiplier *= (clamp(cellposf.y * 5.0, 0.0, 1.0));
 		}
-		if (neighbors & 8)
+		if ((neighbors & 8) != 0)
 		{
 			multiplier *= (clamp((1.0 - cellposf.y) * 5.0, 0.0, 1.0));
 		}

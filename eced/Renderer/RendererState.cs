@@ -58,8 +58,8 @@ namespace eced.Renderer
         {
             TileMapShader = new Shader("tileMapShader");
             TileMapShader.Init();
-            TileMapShader.AddShader("./resources/VertexPanTexture.txt", ShaderType.VertexShader);
-            TileMapShader.AddShader("./resources/FragTextureAtlas.txt", ShaderType.FragmentShader);
+            TileMapShader.AddShader("./Resources/VertexPanTexture.txt", ShaderType.VertexShader);
+            TileMapShader.AddShader("./Resources/FragTextureAtlas.txt", ShaderType.FragmentShader);
             TileMapShader.LinkShader();
             TileMapShader.AddUniform("pan");
             TileMapShader.AddUniform("zoom");
@@ -73,8 +73,8 @@ namespace eced.Renderer
 
             ThingShader = new Shader("thingShader");
             ThingShader.Init();
-            ThingShader.AddShader("./resources/VertexPanThing.txt", ShaderType.VertexShader);
-            ThingShader.AddShader("./resources/FragThing.txt", ShaderType.FragmentShader);
+            ThingShader.AddShader("./Resources/VertexPanThing.txt", ShaderType.VertexShader);
+            ThingShader.AddShader("./Resources/FragThing.txt", ShaderType.FragmentShader);
             ThingShader.LinkShader();
             ThingShader.AddUniform("pan");
             ThingShader.AddUniform("zoom");
@@ -86,8 +86,8 @@ namespace eced.Renderer
 
             LineShader = new Shader("lineShader");
             LineShader.Init();
-            LineShader.AddShader("./resources/VertexPanBasic.txt", ShaderType.VertexShader);
-            LineShader.AddShader("./resources/FragColor.txt", ShaderType.FragmentShader);
+            LineShader.AddShader("./Resources/VertexPanBasic.txt", ShaderType.VertexShader);
+            LineShader.AddShader("./Resources/FragColor.txt", ShaderType.FragmentShader);
             LineShader.LinkShader();
             LineShader.AddUniform("pan");
             LineShader.AddUniform("zoom");

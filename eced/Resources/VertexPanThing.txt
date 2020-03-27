@@ -1,4 +1,4 @@
-﻿#version 330 core
+﻿#version 430 core
 
 layout(location=0) in vec4 point;
 layout(location=1) in vec2 uvCoord;
@@ -10,6 +10,8 @@ struct thingDef
 	vec4 extra;
 };
 
+//uh oh, this didn't compile in the FOSS AMD drivers with version 330...
+//Probably need to remove the binding and get it manually...
 layout(binding=0, std140) buffer thingBlock
 {
 	thingDef thingDefs[];

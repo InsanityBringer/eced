@@ -137,7 +137,7 @@ namespace eced.Renderer
 
         public void CreateZoneNumberTexture()
         {
-            this.numberTextureID = GetTexture("./resources/floorfont.png");
+            this.numberTextureID = GetTexture("./Resources/floorfont.png");
         }
 
         //atlasing algorthim lifted from Quake II GPL source release
@@ -228,7 +228,7 @@ namespace eced.Renderer
         {
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, atlasTextureID);
-            Bitmap defTexture = new Bitmap("./resources/missingtex.png");
+            Bitmap defTexture = new Bitmap("./Resources/missingtex.png");
             AddImageToAtlas(PNGCodec.BasicImageFromBitmap(defTexture));
             defTexture.Dispose();
 
