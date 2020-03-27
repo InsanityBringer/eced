@@ -39,6 +39,7 @@ namespace eced
     }
     public class EditorState
     {
+        public ColorChart Colors { get; } = new ColorChart();
         private EditorBrush currentBrush;
         public CurrentToolNum CurrentTool { get; private set; }
         public EditorBrush[] BrushList { get; } = new EditorBrush[9];
@@ -74,6 +75,7 @@ namespace eced
         {
             EditorIOState = new EditorIO(this);
             inputHandler = new EditorInputHandler(this);
+            Colors.Init();
         }
 
         private void CreateBrushes()

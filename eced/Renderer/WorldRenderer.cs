@@ -90,6 +90,7 @@ namespace eced.Renderer
             string name;
             int mode, type;
             Sector sector;
+            int colordef;
 
             for (int x = 0; x < w; x++)
             {
@@ -116,8 +117,15 @@ namespace eced.Renderer
                         type = 2;
                         if (currentViewMode == 1)
                         {
-                            mode = 0;
-                            planeData[coord + 1] = (ushort)editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone;
+                            mode = 2;
+                            colordef = editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone;
+                            if (colordef < 0) colordef = 0;
+                            else
+                                colordef = state.CurrentState.Colors.Colors[colordef];
+
+                            planeData[coord + 1] = (ushort)(((colordef >> 16) & 255) + (((colordef >> 8) & 255) << 8));
+                            planeData[coord + 2] = (ushort)(colordef & 255);
+                            planeData[coord + 3] = 255;
                         }
                         else
                         {

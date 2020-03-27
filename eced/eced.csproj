@@ -103,6 +103,7 @@
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalEntry.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\UniversalParser.cs" />
     <Compile Include="CodeImp\DoomBuilder\IO\WAD.cs" />
+    <Compile Include="ColorChart.cs" />
     <Compile Include="EditorInputHandler.cs" />
     <Compile Include="EditorIO.cs" />
     <Compile Include="EditorState.cs" />

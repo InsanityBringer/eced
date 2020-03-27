@@ -57,6 +57,7 @@
             this.ZoneListView.TabIndex = 2;
             this.ZoneListView.UseCompatibleStateImageBehavior = false;
             this.ZoneListView.View = System.Windows.Forms.View.Details;
+            this.ZoneListView.SelectedIndexChanged += new System.EventHandler(this.ZoneListBox_SelectedIndexChanged);
             this.ZoneListView.Resize += new System.EventHandler(this.ZoneListView_Resize);
             // 
             // columnHeader1

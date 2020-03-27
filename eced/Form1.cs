@@ -77,7 +77,7 @@ namespace eced
             gbThingSelect.Anchor |= AnchorStyles.Bottom;
             Controls.Add(gbThingSelect);
 
-            gbZoneList = new ZoneUIPanel();
+            gbZoneList = new ZoneUIPanel(editorState);
             components.Add(gbZoneList);
             gbZoneList.Location = SizeTemplatePanel.Location;
             gbZoneList.Size = SizeTemplatePanel.Size;

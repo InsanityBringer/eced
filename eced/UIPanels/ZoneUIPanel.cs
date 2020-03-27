@@ -32,9 +32,11 @@ namespace eced.UIPanels
     public partial class ZoneUIPanel : UserControl
     {
         private FloodBrush pairedBrush;
-        public ZoneUIPanel()
+        private EditorState state; //need state for color chart
+        public ZoneUIPanel(EditorState state)
         {
             InitializeComponent();
+            this.state = state;
         }
 
         public void SetPairedBrush(FloodBrush brush)
@@ -50,14 +52,15 @@ namespace eced.UIPanels
             for (int x = 0; x < zones.Count; x++)
             {
                 item = new ListViewItem(string.Format("Zone {0}", x));
-                item.BackColor = Color.FromArgb(64, 64, 64);
+                item.BackColor = Color.FromArgb(state.Colors.Colors[x]);
                 ZoneListView.Items.Add(item);
             }
         }
 
         private void ZoneListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            pairedBrush.setCode = ZoneListView.SelectedIndices[0] - 1;
+            if (ZoneListView.SelectedIndices.Count > 0)
+                pairedBrush.setCode = ZoneListView.SelectedIndices[0] - 1;
         }
 
         private void ZoneListView_Resize(object sender, EventArgs e)
