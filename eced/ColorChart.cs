@@ -25,28 +25,27 @@ namespace eced
 
         public void Init()
         {
+            int[] localColors = new int[4096];
+
             int r, g, b;
 
-            int i2 = 0;
             for (int i = 0; i < 4096; i++)
             {
-                i2 += 2037;
-                i2 = i2 % 4096;
-                r = ((i2 >> 8) & 15) * 8 + 64;
-                g = ((i2 >> 4) & 15) * 8 + 64;
-                b = (i2 & 15) * 8 + 64;
+                r = ((i >> 8) & 15) * 8 + 64;
+                g = ((i >> 4) & 15) * 8 + 64;
+                b = (i & 15) * 8 + 64;
 
-                Colors[i] = (r & 255) + ((g & 255) << 8) + ((b & 255) << 16) + (255 << 24);
+                localColors[i] = (r & 255) + ((g & 255) << 8) + ((b & 255) << 16) + (255 << 24);
             }
 
-            /*Random random = new Random(54074);
+            Random random = new Random(54074);
             int choice;
             for (int i = 0; i < 4096; i++)
             {
                 choice = random.Next(4096 - i);
                 Colors[i] = localColors[choice];
                 localColors[choice] = localColors[4095 - i];
-            }*/
+            }
         }
     }
 }
