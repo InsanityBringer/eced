@@ -32,14 +32,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.NewMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
-            this.menuItem5 = new System.Windows.Forms.MenuItem();
-            this.menuItem6 = new System.Windows.Forms.MenuItem();
-            this.menuItem7 = new System.Windows.Forms.MenuItem();
-            this.menuItem14 = new System.Windows.Forms.MenuItem();
+            this.OpenMenuItem = new System.Windows.Forms.MenuItem();
+            this.SaveMenuItem = new System.Windows.Forms.MenuItem();
+            this.SaveAsMenuItem = new System.Windows.Forms.MenuItem();
+            this.SaveIntoMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem8 = new System.Windows.Forms.MenuItem();
-            this.menuItem9 = new System.Windows.Forms.MenuItem();
+            this.ExitMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.menuItem10 = new System.Windows.Forms.MenuItem();
             this.menuItem11 = new System.Windows.Forms.MenuItem();
@@ -87,60 +87,60 @@
             // 
             this.menuItem1.Index = 0;
             this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem3,
+            this.NewMenuItem,
             this.menuItem4,
-            this.menuItem5,
-            this.menuItem6,
-            this.menuItem7,
-            this.menuItem14,
+            this.OpenMenuItem,
+            this.SaveMenuItem,
+            this.SaveAsMenuItem,
+            this.SaveIntoMenuItem,
             this.menuItem8,
-            this.menuItem9});
+            this.ExitMenuItem});
             this.menuItem1.Text = "File";
             // 
-            // menuItem3
+            // NewMenuItem
             // 
-            this.menuItem3.Index = 0;
-            this.menuItem3.Text = "New";
-            this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click);
+            this.NewMenuItem.Index = 0;
+            this.NewMenuItem.Text = "New";
+            this.NewMenuItem.Click += new System.EventHandler(this.NewMenuItem_Click);
             // 
             // menuItem4
             // 
             this.menuItem4.Index = 1;
             this.menuItem4.Text = "-";
             // 
-            // menuItem5
+            // OpenMenuItem
             // 
-            this.menuItem5.Index = 2;
-            this.menuItem5.Text = "Open...";
-            this.menuItem5.Click += new System.EventHandler(this.menuItem5_Click);
+            this.OpenMenuItem.Index = 2;
+            this.OpenMenuItem.Text = "Open...";
+            this.OpenMenuItem.Click += new System.EventHandler(this.OpenMenuItem_Click);
             // 
-            // menuItem6
+            // SaveMenuItem
             // 
-            this.menuItem6.Index = 3;
-            this.menuItem6.Text = "Save...";
-            this.menuItem6.Click += new System.EventHandler(this.menuItem6_Click);
+            this.SaveMenuItem.Index = 3;
+            this.SaveMenuItem.Text = "Save...";
+            this.SaveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
-            // menuItem7
+            // SaveAsMenuItem
             // 
-            this.menuItem7.Index = 4;
-            this.menuItem7.Text = "Save As...";
-            this.menuItem7.Click += new System.EventHandler(this.menuItem7_Click);
+            this.SaveAsMenuItem.Index = 4;
+            this.SaveAsMenuItem.Text = "Save As...";
+            this.SaveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
             // 
-            // menuItem14
+            // SaveIntoMenuItem
             // 
-            this.menuItem14.Index = 5;
-            this.menuItem14.Text = "Save Into...";
-            this.menuItem14.Click += new System.EventHandler(this.menuItem14_Click);
+            this.SaveIntoMenuItem.Index = 5;
+            this.SaveIntoMenuItem.Text = "Save Into...";
+            this.SaveIntoMenuItem.Click += new System.EventHandler(this.SaveIntoMenuItem_Click);
             // 
             // menuItem8
             // 
             this.menuItem8.Index = 6;
             this.menuItem8.Text = "-";
             // 
-            // menuItem9
+            // ExitMenuItem
             // 
-            this.menuItem9.Index = 7;
-            this.menuItem9.Text = "Exit";
+            this.ExitMenuItem.Index = 7;
+            this.ExitMenuItem.Text = "Exit";
             // 
             // menuItem2
             // 
@@ -429,14 +429,14 @@
 
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.MenuItem menuItem3;
+        private System.Windows.Forms.MenuItem NewMenuItem;
         private System.Windows.Forms.MenuItem menuItem4;
-        private System.Windows.Forms.MenuItem menuItem5;
-        private System.Windows.Forms.MenuItem menuItem6;
-        private System.Windows.Forms.MenuItem menuItem7;
+        private System.Windows.Forms.MenuItem OpenMenuItem;
+        private System.Windows.Forms.MenuItem SaveMenuItem;
+        private System.Windows.Forms.MenuItem SaveAsMenuItem;
         private System.Windows.Forms.MenuItem menuItem8;
         private System.Windows.Forms.MenuItem menuItem2;
-        private System.Windows.Forms.MenuItem menuItem9;
+        private System.Windows.Forms.MenuItem ExitMenuItem;
         private System.Windows.Forms.MenuItem menuItem10;
         private System.Windows.Forms.MenuItem menuItem11;
         private System.Windows.Forms.MenuItem menuItem12;
@@ -466,7 +466,7 @@
         private System.Windows.Forms.ToolBarButton toolBarButton17;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolBarButton toolBarButton18;
-        private System.Windows.Forms.MenuItem menuItem14;
+        private System.Windows.Forms.MenuItem SaveIntoMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Panel SizeTemplatePanel;
     }

@@ -42,7 +42,7 @@ namespace eced
         public void InitNewLevel()
         {
             HasSavedBefore = false;
-            LastFilename = "";
+            LastFilename = "Untitled";
             LastErrorLine = -1;
         }
 

@@ -131,6 +131,18 @@ namespace eced
             mainLevelPanel.MouseWheel += MainLevelPanel_MouseWheel;
         }
 
+        private void UpdateWindowTitle()
+        {
+            if (editorState.CurrentLevel == null)
+            {
+                Text = "eced";
+            }
+            else
+            {
+                Text = string.Format("{0} - eced", editorState.EditorIOState.LastFilename);
+            }
+        }
+
         private void DoNewMapDialog()
         {
             NewMapDialog nmd = new NewMapDialog();
@@ -144,12 +156,18 @@ namespace eced
                     renderer.Textures.DestroyAtlas();
                 }
                 editorState.CreateNewLevel(nmd.CurrentMap);
-                RebuildResources();
-                SelectTool(1);
-                worldRenderer.LevelChanged();
+                LevelChanged();
             }
 
             nmd.Dispose();
+        }
+
+        private void LevelChanged()
+        {
+            RebuildResources();
+            SelectTool(1);
+            worldRenderer.LevelChanged();
+            UpdateWindowTitle();
         }
 
         private void RebuildResources()
@@ -177,10 +195,6 @@ namespace eced
             gbZoneList.SetZones(zonelist);
         }
 
-        private void menuItem5_Click(object sender, EventArgs e)
-        {
-        }
-
         private void DoLoadDialog()
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -206,11 +220,7 @@ namespace eced
                                 renderer.Textures.DestroyAtlas();
                             }
                             if (editorState.CreateLevelFromData(mapDialog.CurrentMap, data))
-                            {
-                                RebuildResources();
-                                SelectTool(1);
-                                worldRenderer.LevelChanged();
-                            }
+                                LevelChanged();
                         }
                         mapDialog.Dispose();
                     }
@@ -252,6 +262,7 @@ namespace eced
             if (editorState.SaveMapToFile(fixFilename, saveinto))
             {
                 RebuildResources();
+                UpdateWindowTitle();
                 worldRenderer.LevelChanged();
             }
         }
@@ -454,7 +465,6 @@ namespace eced
         {
             statusBar1.Panels[1].Text = String.Format("Zoom: {0:P}", zoom);
             renderer.SetZoom(zoom, (int)lastMousePos.X, (int)lastMousePos.Y);
-            //renderer.zoom = zoom;
 
             mainLevelPanel.Invalidate();
         }
@@ -545,18 +555,28 @@ namespace eced
             mainLevelPanel.Focus();
         }
 
-        private void menuItem6_Click(object sender, EventArgs e)
+        private void NewMenuItem_Click(object sender, EventArgs e)
+        {
+            DoNewMapDialog();
+        }
+
+        private void OpenMenuItem_Click(object sender, EventArgs e)
+        {
+            DoLoadDialog();
+        }
+
+        private void SaveMenuItem_Click(object sender, EventArgs e)
         {
             DoQuickSave();
         }
 
-        private void menuItem7_Click(object sender, EventArgs e)
+        private void SaveAsMenuItem_Click(object sender, EventArgs e)
         {
             //save as, delete all contents of the destination WAD
             DoSaveDialog(false);
         }
 
-        private void menuItem14_Click(object sender, EventArgs e)
+        private void SaveIntoMenuItem_Click(object sender, EventArgs e)
         {
             //save as, preserve all contents of the destination WAD
             DoSaveDialog(true);
@@ -565,11 +585,6 @@ namespace eced
         private void Form1_Leave(object sender, EventArgs e)
         {
             //this was needed for an experiment, but it turned out not to be needed
-        }
-
-        private void menuItem3_Click(object sender, EventArgs e)
-        {
-            this.DoNewMapDialog();
         }
     }
 }
