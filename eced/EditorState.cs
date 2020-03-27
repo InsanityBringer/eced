@@ -92,16 +92,16 @@ namespace eced
         private void LoadGameConfiguration()
         {
             //TODO: Actual game configuration elements
-            TileList = new TileManager("./resources/wolftiles.xml");
+            TileList = new TileManager("./Resources/wolftiles.xml");
             TileList.LoadPalette();
             ThingList = new ThingManager();
-            ThingList.LoadThingDefintions("./resources/wolfactors.xml");
+            ThingList.LoadThingDefintions("./Resources/wolfactors.xml");
             TriggerList = new TriggerManager();
-            TriggerList.LoadTriggerDefinitions("./resources/wolftriggers.xml");
+            TriggerList.LoadTriggerDefinitions("./Resources/wolftriggers.xml");
             VSwapNameList = new VSwapNames();
-            VSwapNameList.LoadVSwapNames("./resources/wolfvswap.xml");
+            VSwapNameList.LoadVSwapNames("./Resources/wolfvswap.xml");
             byte[] defaultPalette = new byte[768];
-            Stream str = File.Open("./resources/wolfpalette.pal", FileMode.Open);
+            Stream str = File.Open("./Resources/wolfpalette.pal", FileMode.Open);
             str.Read(defaultPalette, 0, 768);
             str.Close(); str.Dispose();
             CurrentMapInfo.SetPalette(defaultPalette);
