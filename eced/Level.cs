@@ -345,6 +345,27 @@ namespace eced
             return Triggers[TriggersMap[pos]];
         }
 
+        public void DeleteTriggersAt(int x, int y, int z)
+        {
+            TilePosition pos; pos.x = x; pos.y = y; pos.z = z;
+            if (TriggersMap.ContainsKey(pos))
+            {
+                Triggers.RemoveAt(TriggersMap[pos]);
+                ResetTriggerMap();
+            }
+        }
+
+        private void ResetTriggerMap()
+        {
+            TriggersMap.Clear();
+            TriggerList triggers;
+            for (int i = 0; i < Triggers.Count; i++)
+            {
+                triggers = Triggers[i];
+                TriggersMap.Add(triggers.pos, i);
+            }
+        }
+
         public void HighlightTrigger(int x, int y, int z)
         {
             //TODO

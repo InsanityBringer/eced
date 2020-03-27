@@ -91,6 +91,13 @@ namespace eced
         public bool selected = false;
         public bool moving = false;
 
+        public bool ambush = false;
+        public bool patrol = false;
+        public bool skill1 = true;
+        public bool skill2 = true;
+        public bool skill3 = true;
+        public bool skill4 = true;
+
         public string Serialize()
         {
             StringBuilder stringmaker = new StringBuilder();
@@ -101,12 +108,12 @@ namespace eced
 
             stringmaker.Append("\n\tangle = "); stringmaker.Append(angle); stringmaker.Append(";");
             stringmaker.Append("\n\ttype = \""); stringmaker.Append(type); stringmaker.Append("\";");
-            stringmaker.Append("\n\tambush = "); stringmaker.Append(checkFlag(ThingFlagsBits.FLAG_AMBUSH).ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\tpatrol = "); stringmaker.Append(checkFlag(ThingFlagsBits.FLAG_PATROL).ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\tskill1 = "); stringmaker.Append(checkFlag(ThingFlagsBits.FLAG_SKILL1).ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\tskill2 = "); stringmaker.Append(checkFlag(ThingFlagsBits.FLAG_SKILL2).ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\tskill3 = "); stringmaker.Append(checkFlag(ThingFlagsBits.FLAG_SKILL3).ToString().ToLower()); stringmaker.Append(";");
-            stringmaker.Append("\n\tskill4 = "); stringmaker.Append(checkFlag(ThingFlagsBits.FLAG_SKILL4).ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tambush = "); stringmaker.Append(ambush.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tpatrol = "); stringmaker.Append(patrol.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tskill1 = "); stringmaker.Append(skill1.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tskill2 = "); stringmaker.Append(skill2.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tskill3 = "); stringmaker.Append(skill3.ToString().ToLower()); stringmaker.Append(";");
+            stringmaker.Append("\n\tskill4 = "); stringmaker.Append(skill4.ToString().ToLower()); stringmaker.Append(";");
 
             stringmaker.Append("\n}");
 
@@ -130,17 +137,14 @@ namespace eced
 
             thing.angle = UWMFSearch.getIntTag(data, "angle", 0);
 
-            thing.type = UWMFSearch.getStringTag(data, "type", "Unknown"); 
+            thing.type = UWMFSearch.getStringTag(data, "type", "Unknown");
 
-            ThingFlags flags = new ThingFlags();
-            flags.ambush = UWMFSearch.getBoolTag(data, "ambush", false);
-            flags.patrol = UWMFSearch.getBoolTag(data, "patrol", false);
-            flags.skill1 = UWMFSearch.getBoolTag(data, "skill1", false);
-            flags.skill2 = UWMFSearch.getBoolTag(data, "skill2", false);
-            flags.skill3 = UWMFSearch.getBoolTag(data, "skill3", false);
-            flags.skill4 = UWMFSearch.getBoolTag(data, "skill4", false);
-
-            thing.flags = flags.getFlags();
+            thing.ambush = UWMFSearch.getBoolTag(data, "ambush", false);
+            thing.patrol = UWMFSearch.getBoolTag(data, "patrol", false);
+            thing.skill1 = UWMFSearch.getBoolTag(data, "skill1", false);
+            thing.skill2 = UWMFSearch.getBoolTag(data, "skill2", false);
+            thing.skill3 = UWMFSearch.getBoolTag(data, "skill3", false);
+            thing.skill4 = UWMFSearch.getBoolTag(data, "skill4", false);
 
             return thing;
         }

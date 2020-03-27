@@ -104,5 +104,35 @@ namespace eced.UIPanels
         {
             UpdateBrush();
         }
+
+        private void cbThingSkill4_CheckedChanged(object sender, EventArgs e)
+        {
+            pairedBrush.flags.skill4 = cbThingSkill4.Checked;
+        }
+
+        private void cbThingPatrol_CheckedChanged(object sender, EventArgs e)
+        {
+            pairedBrush.flags.patrol = cbThingPatrol.Checked;
+        }
+
+        private void cbThingSkill1_CheckedChanged(object sender, EventArgs e)
+        {
+            pairedBrush.flags.skill1 = cbThingSkill1.Checked;
+        }
+
+        private void cbThingSkill2_CheckedChanged(object sender, EventArgs e)
+        {
+            pairedBrush.flags.skill2 = cbThingSkill2.Checked;
+        }
+
+        private void cbThingSkill3_CheckedChanged(object sender, EventArgs e)
+        {
+            pairedBrush.flags.skill3 = cbThingSkill3.Checked;
+        }
+
+        private void cbThingAmbush_CheckedChanged(object sender, EventArgs e)
+        {
+            pairedBrush.flags.ambush = cbThingAmbush.Checked;
+        }
     }
 }

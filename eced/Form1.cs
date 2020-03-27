@@ -168,6 +168,7 @@ namespace eced
             SelectTool(1);
             worldRenderer.LevelChanged();
             UpdateWindowTitle();
+            mainLevelPanel.Invalidate();
         }
 
         private void RebuildResources()
@@ -409,6 +410,8 @@ namespace eced
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             Console.WriteLine("input");
+
+            //Handle UI events first
             if (e.KeyCode == Keys.Down)
             {
                 pan.Y -= 32f;
@@ -416,37 +419,43 @@ namespace eced
                 mainLevelPanel.Invalidate();
             }
 
-            if (e.KeyCode == Keys.Up)
+            else if (e.KeyCode == Keys.Up)
             {
-                pan.Y += 32f; 
+                pan.Y += 32f;
                 renderer.SetPan(pan);
                 mainLevelPanel.Invalidate();
             }
 
-            if (e.KeyCode == Keys.Left)
+            else if (e.KeyCode == Keys.Left)
             {
                 pan.X += 32f;
                 renderer.SetPan(pan);
                 mainLevelPanel.Invalidate();
             }
 
-            if (e.KeyCode == Keys.Right)
+            else if (e.KeyCode == Keys.Right)
             {
                 pan.X -= 32f;
                 renderer.SetPan(pan);
                 mainLevelPanel.Invalidate();
             }
-
-            if (e.KeyCode == Keys.Delete)
+            //Pass events to the editor state
+            else
             {
-                //TODO: move to EditorState somehow
-                /*if (editorState.CurrentLevel.highlighted != null)
-                {
-                    editorState.CurrentLevel.DeleteThing(editorState.CurrentLevel.highlighted);
-                    editorState.CurrentLevel.highlighted = null;
+                InputEvent ev = new InputEvent();
+                ev.keycode = e.KeyCode;
+                ev.down = true;
+                if (editorState.HandleInputEvent(ev))
                     mainLevelPanel.Invalidate();
-                }*/
             }
+        }
+        private void mainLevelPanel_KeyUp(object sender, KeyEventArgs e)
+        {
+            InputEvent ev = new InputEvent();
+            ev.keycode = e.KeyCode;
+            ev.down = false;
+            if (editorState.HandleInputEvent(ev))
+                mainLevelPanel.Invalidate();
         }
 
         private void Form1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -506,8 +515,7 @@ namespace eced
                 return;
 
             PickResult pickTest = renderer.Pick(e.X, e.Y);
-            //statusBar1.Panels[0].Text = string.Format("({0} {1} ({2} {3}))", pickTest.x, pickTest.y, pickTest.xf, pickTest.yf);
-            editorState.UpdateHighlight(pickTest);
+            editorState.HandlePick(pickTest);
 
             if (brushmode)
             {

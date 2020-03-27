@@ -73,8 +73,13 @@ namespace eced.Brushes
                         lthing.x = pos.x + .5f;
                         lthing.y = pos.y + .5f;
 
-                        lthing.flags = flags.getFlags();
                         lthing.angle = flags.angle;
+                        lthing.ambush = flags.ambush;
+                        lthing.patrol = flags.patrol;
+                        lthing.skill1 = flags.skill1;
+                        lthing.skill2 = flags.skill2;
+                        lthing.skill3 = flags.skill3;
+                        lthing.skill4 = flags.skill4;
 
                         level.AddThing(lthing);
                     }

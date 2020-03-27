@@ -166,6 +166,7 @@
             this.cbThingSkill4.Tag = "skill4";
             this.cbThingSkill4.Text = "Skill 4";
             this.cbThingSkill4.UseVisualStyleBackColor = true;
+            this.cbThingSkill4.CheckedChanged += new System.EventHandler(this.cbThingSkill4_CheckedChanged);
             // 
             // cbThingSkill3
             // 
@@ -179,6 +180,7 @@
             this.cbThingSkill3.Tag = "skill3";
             this.cbThingSkill3.Text = "Skill 3";
             this.cbThingSkill3.UseVisualStyleBackColor = true;
+            this.cbThingSkill3.CheckedChanged += new System.EventHandler(this.cbThingSkill3_CheckedChanged);
             // 
             // cbThingSkill2
             // 
@@ -192,6 +194,7 @@
             this.cbThingSkill2.Tag = "skill2";
             this.cbThingSkill2.Text = "Skill 2";
             this.cbThingSkill2.UseVisualStyleBackColor = true;
+            this.cbThingSkill2.CheckedChanged += new System.EventHandler(this.cbThingSkill2_CheckedChanged);
             // 
             // cbThingSkill1
             // 
@@ -205,6 +208,7 @@
             this.cbThingSkill1.Tag = "skill1";
             this.cbThingSkill1.Text = "Skill 1";
             this.cbThingSkill1.UseVisualStyleBackColor = true;
+            this.cbThingSkill1.CheckedChanged += new System.EventHandler(this.cbThingSkill1_CheckedChanged);
             // 
             // cbThingPatrol
             // 
@@ -216,6 +220,7 @@
             this.cbThingPatrol.Tag = "patrol";
             this.cbThingPatrol.Text = "Patrol";
             this.cbThingPatrol.UseVisualStyleBackColor = true;
+            this.cbThingPatrol.CheckedChanged += new System.EventHandler(this.cbThingPatrol_CheckedChanged);
             // 
             // cbThingAmbush
             // 
@@ -227,6 +232,7 @@
             this.cbThingAmbush.Tag = "ambush";
             this.cbThingAmbush.Text = "Ambush";
             this.cbThingAmbush.UseVisualStyleBackColor = true;
+            this.cbThingAmbush.CheckedChanged += new System.EventHandler(this.cbThingAmbush_CheckedChanged);
             // 
             // label10
             // 

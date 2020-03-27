@@ -109,6 +109,7 @@
     <Compile Include="GameConfig\GameConfiguration.cs" />
     <Compile Include="GameConfig\VSwapNames.cs" />
     <Compile Include="Brush\LineDrawer.cs" />
+    <Compile Include="InputEvent.cs" />
     <Compile Include="MapInformation.cs" />
     <Compile Include="NewMapDialog.cs">
       <SubType>Form</SubType>

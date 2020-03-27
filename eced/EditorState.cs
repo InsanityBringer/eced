@@ -25,10 +25,25 @@ using eced.GameConfig;
 
 namespace eced
 {
+    public enum CurrentToolNum
+    {
+        Unknown,
+        RoomTool,
+        TileTool,
+        TextureTool,
+        ThingTool,
+        TriggerTool,
+        SectorTool,
+        ZoneTool,
+        TagTool
+    }
     public class EditorState
     {
         private EditorBrush currentBrush;
+        public CurrentToolNum CurrentTool { get; private set; }
         public EditorBrush[] BrushList { get; } = new EditorBrush[9];
+
+        public PickResult LastOrthoHit { get; private set; }
 
         //fields for current primitive types
         public Tile currentTile;
@@ -45,6 +60,7 @@ namespace eced
         public List<Thing> SelectedThings { get; } = new List<Thing>();
 
         public EditorIO EditorIOState { get; }
+        private EditorInputHandler inputHandler;
         public bool IsThingMode
         {
             get
@@ -57,6 +73,7 @@ namespace eced
         public EditorState()
         {
             EditorIOState = new EditorIO(this);
+            inputHandler = new EditorInputHandler(this);
         }
 
         private void CreateBrushes()
@@ -219,6 +236,7 @@ namespace eced
 
         public void SetBrush(int brushNum)
         {
+            CurrentTool = (CurrentToolNum)brushNum;
             currentBrush = BrushList[brushNum];
         }
 
@@ -239,6 +257,17 @@ namespace eced
         public void BrushEnd()
         {
             currentBrush.EndBrush(CurrentLevel);
+        }
+
+        public void HandlePick(PickResult res)
+        {
+            UpdateHighlight(res);
+            LastOrthoHit = res;
+        }
+
+        public bool HandleInputEvent(InputEvent ev)
+        {
+            return inputHandler.HandleInputEvent(ev);
         }
     }
 }
