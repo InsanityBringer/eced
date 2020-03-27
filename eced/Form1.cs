@@ -484,7 +484,7 @@ namespace eced
             {
                 PickResult pickTest = renderer.Pick(e.X, e.Y);
                 SetMouseButton(e);
-                brushmode = editorState.BrushDown(new Vector2(pickTest.x, pickTest.y), heldMouseButton);
+                brushmode = editorState.BrushDown(pickTest, heldMouseButton);
             }
 
             mainLevelPanel.Invalidate();
@@ -502,7 +502,7 @@ namespace eced
             if (brushmode)
             {
                 PickResult src = renderer.Pick((int)lastMousePos.X, (int)lastMousePos.Y);
-                editorState.BrushFromTo(new Vector2(src.x, src.y), new Vector2(pickTest.x, pickTest.y), heldMouseButton);
+                editorState.BrushFromTo(src, pickTest, heldMouseButton);
             }
             else if ((e.Button & MouseButtons.Middle) != 0) //middle click to pan
             {
@@ -518,8 +518,6 @@ namespace eced
         {
             if (editorState.CurrentLevel == null)
                 return;
-
-            Console.WriteLine("lifting brush");
 
             brushmode = false;
             editorState.BrushEnd();

@@ -24,7 +24,8 @@ namespace eced.Brushes
 {
     public class EditorBrush
     {
-        public bool repeatable = true;
+        public bool Repeatable { get; protected set; } = true;
+        public bool Interpolated { get; protected set; } = true;
         public Tile normalTile;
         protected EditorState state;
         public EditorBrush(EditorState state)
@@ -32,7 +33,7 @@ namespace eced.Brushes
             this.state = state;
         }
 
-        public virtual void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
+        public virtual void ApplyToTile(PickResult pos, Level level, int button)
         {
         }
 

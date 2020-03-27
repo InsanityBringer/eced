@@ -24,15 +24,12 @@ namespace eced.Brushes
         public SectorBrush(EditorState state)
             : base(state)
         {
-            this.repeatable = true;
+            this.Repeatable = true;
         }
 
-        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
+        public override void ApplyToTile(PickResult pos, Level level, int button)
         {
-            int tx = (int)pos.X;
-            int ty = (int)pos.Y;
-
-            level.SetSector(tx, ty, z, currentSector);
+            level.SetSector(pos.x, pos.y, pos.z, currentSector);
         }
     }
 }

@@ -20,11 +20,9 @@ namespace eced.Brushes
     public class TileBrush : EditorBrush
     {
         public TileBrush(EditorState state) : base(state) { }
-        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
+        public override void ApplyToTile(PickResult pos, Level level, int button)
         {
-            int tx = (int)pos.X;
-            int ty = (int)pos.Y;
-            level.SetTile(tx, ty, z, this.normalTile);
+            level.SetTile(pos.x, pos.y, pos.z, this.normalTile);
         }
     }
 }

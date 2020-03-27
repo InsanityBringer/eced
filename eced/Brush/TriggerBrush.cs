@@ -23,27 +23,24 @@ namespace eced.Brushes
         public TriggerBrush(EditorState state)
             : base(state)
         {
-            this.repeatable = false;
+            this.Repeatable = false;
         }
 
-        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
+        public override void ApplyToTile(PickResult pos, Level level, int button)
         {
-            int lx = (int)pos.X;
-            int ly = (int)pos.Y;
-
             if (button == 0)
             {
                 Trigger triggertoput = new Trigger(trigger);
 
-                triggertoput.x = lx;
-                triggertoput.y = ly;
-                triggertoput.z = z;
+                triggertoput.x = pos.x;
+                triggertoput.y = pos.y;
+                triggertoput.z = pos.z;
 
-                level.AddTrigger(lx, ly, z, triggertoput);
+                level.AddTrigger(pos.x, pos.y, pos.z, triggertoput);
             }
             else
             {
-                TriggerList list = state.CurrentLevel.GetTriggers(lx, ly, z);
+                TriggerList list = state.CurrentLevel.GetTriggers(pos.x, pos.y, pos.z);
                 if (list != null)
                 {
                     TriggerEditor editor = new TriggerEditor(list, state.TriggerList);

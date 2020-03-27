@@ -26,63 +26,100 @@ namespace eced.Brushes
         public ThingFlags flags = new ThingFlags();
         public ThingManager thinglist;
 
+        private PickResult lastMovePos;
+        private bool moving = false;
+
+        public int gridGranularity = 4;
+
         public ThingBrush(EditorState state)
             : base(state)
         {
-            this.repeatable = false;
+            this.Repeatable = false;
+            this.Interpolated = false;
         }
 
-        //public override void ApplyToTile(int x, int y, int z, int tilsize, Level level, int button)
-        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
+        public override void ApplyToTile(PickResult pos, Level level, int button)
         {
-            if (button == 0)
+            if (moving)
             {
-                if (state.HighlightedThing == null)
+                float sx = lastMovePos.x + lastMovePos.xf;
+                float sy = lastMovePos.y + lastMovePos.yf;
+
+                float ex = pos.x + pos.xf;
+                float ey = pos.y + pos.yf;
+
+                float dx = (ex - sx);
+                float dy = (ey - sy);
+
+                //float dx = ((int)((ex - sx) * gridGranularity)) / gridGranularity;
+                //float dy = ((int)((ey - sy) * gridGranularity)) / gridGranularity;
+
+                foreach (Thing thing in state.SelectedThings)
                 {
-                    Thing lthing = new Thing();
-                    lthing.type = thing.Type;
-
-                    lthing.x = (int)pos.X + .5f;
-                    lthing.y = (int)pos.Y + .5f;
-
-                    lthing.flags = flags.getFlags();
-                    lthing.angle = flags.angle;
-
-                    level.AddThing(lthing);
-
-                    Console.WriteLine("adding thing at {0}, {1}", lthing.x, lthing.y);
+                    thing.x += dx;
+                    thing.y += dy;
                 }
-                else
-                {
-                    state.ToggleSelectedThing(state.HighlightedThing);
-                }
+                lastMovePos = pos;
             }
-            else if (button == 1)
+            else
             {
-                if (state.HighlightedThing != null)
+                if (button == 0)
                 {
-                    //TODO: needs to be rethunk
-                    /*ThingEditor editor = new ThingEditor(state.HighlightedThing, thinglist);
-                    if (editor.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    if (state.HighlightedThing == null)
                     {
-                        Thing oldthing = state.HighlightedThing;
-                        state.HighlightedThing = editor.thing;
-                        level.ReplaceThing(oldthing, editor.thing);
+                        Thing lthing = new Thing();
+                        lthing.type = thing.Type;
+
+                        lthing.x = pos.x + .5f;
+                        lthing.y = pos.y + .5f;
+
+                        lthing.flags = flags.getFlags();
+                        lthing.angle = flags.angle;
+
+                        level.AddThing(lthing);
                     }
-                    editor.Dispose();*/
+                    else
+                    {
+                        state.ToggleSelectedThing(state.HighlightedThing);
+                    }
+                }
+                else if (button == 1)
+                {
+                    if (state.SelectedThings.Count > 0)
+                    {
+                        //a hack aaaa
+                        moving = true;
+                        Repeatable = true;
+                        lastMovePos = pos;
+                    }
+                    else if (state.HighlightedThing != null)
+                    {
+                        //TODO: needs to be rethunk
+                        /*ThingEditor editor = new ThingEditor(state.HighlightedThing, thinglist);
+                        if (editor.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        {
+                            Thing oldthing = state.HighlightedThing;
+                            state.HighlightedThing = editor.thing;
+                            level.ReplaceThing(oldthing, editor.thing);
+                        }
+                        editor.Dispose();*/
+                    }
                 }
             }
         }
 
         public override void EndBrush(Level level)
         {
-            if (state.HighlightedThing != null)
+            if (moving)
             {
-                state.HighlightedThing.moving = false;
-                state.HighlightedThing.x = ((int)(state.HighlightedThing.x)) + .5f;
-                state.HighlightedThing.y = ((int)(state.HighlightedThing.y)) + .5f;
+                foreach (Thing thing in state.SelectedThings)
+                {
+                    thing.x = (float)Math.Round(thing.x * gridGranularity, MidpointRounding.AwayFromZero) / (float)gridGranularity;
+                    thing.y = (float)Math.Round(thing.y * gridGranularity, MidpointRounding.AwayFromZero) / (float)gridGranularity;
+                }
             }
-            this.repeatable = false;
+            moving = false;
+            this.Repeatable = false;
         }
     }
 }

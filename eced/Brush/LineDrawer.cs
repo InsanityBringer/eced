@@ -13,24 +13,24 @@ namespace eced.Brushes
         /// </summary>
         /// <param name="src">The picked src point</param>
         /// <param name="dst">The picked destination point</param>
-        public static void DrawLineWithBrush(Vector2 src, Vector2 dst, Level currentLevel, int heldMouseButton, EditorBrush defaultBrush)
+        public static void DrawLineWithBrush(PickResult src, PickResult dst, Level currentLevel, int heldMouseButton, EditorBrush defaultBrush)
         {
             //Vector2 srct = pick(src);
             //Vector2 dstt = pick(dst);
-            float swapTemp;
+            int swapTemp;
 
-            if (src.Y > dst.Y)
+            if (src.y > dst.y)
             {
-                swapTemp = src.Y;
-                src.Y = dst.Y;
-                dst.Y = swapTemp;
-                swapTemp = src.X;
-                src.X = dst.X;
-                dst.X = swapTemp;
+                swapTemp = src.y;
+                src.y = dst.y;
+                dst.y = swapTemp;
+                swapTemp = src.x;
+                src.x = dst.x;
+                dst.x = swapTemp;
             }
 
-            int dx = (int)(dst.X - src.X);
-            int dy = (int)(dst.Y - src.Y);
+            int dx = (int)(dst.x - src.x);
+            int dy = (int)(dst.y - src.y);
 
             //Console.WriteLine("{0} {1} {2} {3}", dx, dy, src.Y, dst.Y);
 
@@ -54,48 +54,48 @@ namespace eced.Brushes
             //defaultBrush.ApplyToTile(srct, 0, this.currentLevel, this.heldMouseButton);
         }
 
-        private static void LineOctant0(Vector2 src, int dx, int dy, int direction, Level currentLevel, int heldMouseButton, EditorBrush defaultBrush)
+        private static void LineOctant0(PickResult src, int dx, int dy, int direction, Level currentLevel, int heldMouseButton, EditorBrush defaultBrush)
         {
             //Console.WriteLine("octant 0 line");
             int doubledy = dy * 2;
             int doubledymdoubledx = doubledy - dx * 2;
             int error = doubledy - dx;
 
-            defaultBrush.ApplyToTile(src, 0, currentLevel, heldMouseButton);
+            defaultBrush.ApplyToTile(src, currentLevel, heldMouseButton);
 
             while (dx != 0)
             {
                 if (error >= 0)
                 {
-                    src.Y++;
+                    src.y++;
                     error += doubledymdoubledx;
                 }
                 else
                 {
                     error += doubledy;
                 }
-                src.X += direction;
-                defaultBrush.ApplyToTile(src, 0, currentLevel, heldMouseButton);
+                src.x += direction;
+                defaultBrush.ApplyToTile(src, currentLevel, heldMouseButton);
 
                 dx--;
             }
         }
 
-        private static void LineOctant1(Vector2 src, int dx, int dy, int direction, Level currentLevel, int heldMouseButton, EditorBrush defaultBrush)
+        private static void LineOctant1(PickResult src, int dx, int dy, int direction, Level currentLevel, int heldMouseButton, EditorBrush defaultBrush)
         {
             //Console.WriteLine("octant 1 line");
             int doubledx = dx * 2;
             int doubledxmdoubledy = doubledx - dy * 2;
             int error = doubledx - dy;
 
-            defaultBrush.ApplyToTile(src, 0, currentLevel, heldMouseButton);
+            defaultBrush.ApplyToTile(src, currentLevel, heldMouseButton);
 
             while (dy != 0)
             {
                 if (error >= 0)
                 {
                     //src.X++;
-                    src.X += direction;
+                    src.x += direction;
                     error += doubledxmdoubledy;
                 }
                 else
@@ -103,8 +103,8 @@ namespace eced.Brushes
                     error += doubledx;
                 }
                 //src.Y += direction;
-                src.Y++;
-                defaultBrush.ApplyToTile(src, 0, currentLevel, heldMouseButton);
+                src.y++;
+                defaultBrush.ApplyToTile(src, currentLevel, heldMouseButton);
 
                 dy--;
             }

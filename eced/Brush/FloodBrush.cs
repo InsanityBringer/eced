@@ -30,38 +30,35 @@ namespace eced.Brushes
         public FloodBrush(EditorState state)
             : base(state)
         {
-            this.repeatable = false;
+            this.Repeatable = false;
         }
 
-        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
+        public override void ApplyToTile(PickResult pos, Level level, int button)
         {
-            int tx = (int)pos.X;
-            int ty = (int)pos.Y;
-
             this.level = level;
             if (setCode < 0)
                 code = level.GetUniqueZone();
             else code = setCode;
 
-            flood(tx, ty);
+            FloodFloorCode(pos.x, pos.y, pos.z);
 
             this.level = null; //no need to let that linger
         }
 
-        private void flood(int x, int y)
+        private void FloodFloorCode(int x, int y, int z)
         {
-            if (level.GetTile(x, y, 0) != null)
+            if (level.GetTile(x, y, z) != null)
                 return;
 
-            if (level.CompareZoneID(x, y, 0, code))
+            if (level.CompareZoneID(x, y, z, code))
                 return;
 
             level.SetZone(x, y, 0, code);
 
-            flood(x - 1, y);
-            flood(x + 1, y);
-            flood(x, y - 1);
-            flood(x, y + 1);
+            FloodFloorCode(x - 1, y, z);
+            FloodFloorCode(x + 1, y, z);
+            FloodFloorCode(x, y - 1, z);
+            FloodFloorCode(x, y + 1, z);
         }
     }
 }

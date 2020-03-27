@@ -222,15 +222,18 @@ namespace eced
             currentBrush = BrushList[brushNum];
         }
 
-        public bool BrushDown(OpenTK.Vector2 pos, int button)
+        public bool BrushDown(PickResult pos, int button)
         {
-            currentBrush.ApplyToTile(pos, 0, CurrentLevel, button);
-            return currentBrush.repeatable;
+            currentBrush.ApplyToTile(pos, CurrentLevel, button);
+            return currentBrush.Repeatable;
         }
 
-        public void BrushFromTo(OpenTK.Vector2 src, OpenTK.Vector2 dst, int button)
+        public void BrushFromTo(PickResult src, PickResult dst, int button)
         {
-            LineDrawer.DrawLineWithBrush(src, dst, CurrentLevel, button, currentBrush);
+            if (currentBrush.Interpolated)
+                LineDrawer.DrawLineWithBrush(src, dst, CurrentLevel, button, currentBrush);
+            else
+                currentBrush.ApplyToTile(dst, CurrentLevel, button);
         }
 
         public void BrushEnd()

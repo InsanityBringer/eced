@@ -12,15 +12,12 @@ namespace eced.Brushes
         public TagTool(EditorState state)
             : base(state)
         {
-            this.repeatable = true;
+            this.Repeatable = true;
         }
 
-        public override void ApplyToTile(OpenTK.Vector2 pos, int z, Level level, int button)
+        public override void ApplyToTile(PickResult pos, Level level, int button)
         {
-            int tx = (int)pos.X;
-            int ty = (int)pos.Y;
-
-            level.SetTag(tx, ty, z, tag);
+            level.SetTag(pos.x, pos.y, pos.z, tag);
         }
     }
 }
