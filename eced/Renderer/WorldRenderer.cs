@@ -306,6 +306,7 @@ namespace eced.Renderer
         {
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, currentTilemapTexture);
+            UpdateLevel();
             state.TileMapShader.UseShader();
             state.Drawer.DrawTilemap();
             DrawLevelGrid();

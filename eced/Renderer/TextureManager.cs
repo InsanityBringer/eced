@@ -204,19 +204,12 @@ namespace eced.Renderer
 
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, atlasTextureID);
-
+            //Console.WriteLine("Got texture {0} for atlas", atlasTextureID);
             //GL.TexStorage2D(TextureTarget2d.Texture2D, 1, SizedInternalFormat.Rgba8, baseAtlasSize, baseAtlasSize);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, baseAtlasSize, baseAtlasSize, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr)0);
-
-            GL.BindTexture(TextureTarget.Texture2D, 0);
-
-            ErrorCode err = GL.GetError();
-            if (err != ErrorCode.NoError)
-            {
-                Console.WriteLine("ALLOCATE ATLAS GL ERROR: {0}", err.ToString());
-            }
+            RendererState.ErrorCheck("TextureManager::AllocateAtlasTexture: creating atlas base");
 
             cells = new List<TextureCell>();
         }
@@ -241,11 +234,6 @@ namespace eced.Renderer
         /// <param name="archive"></param>
         public void AddArchiveTextures(ResourceFiles.Archive archive)
         {
-            //Try to load a palette from this resource
-            if (archive.FindLump("PLAYPAL") != null)
-            {
-                palette = archive.LoadLump("PLAYPAL");
-            }
             List<ResourceFiles.Lump> lumps = archive.GetResourceList(ResourceFiles.LumpNamespace.Texture);
 
             for (int i = 0; i < lumps.Count; i++)
@@ -258,6 +246,7 @@ namespace eced.Renderer
                     {
                         AddImageToAtlas(ImageDecoder.DecodeLump(lumps[i], data, state.CurrentState.CurrentMapInfo.Palette));
                         textureIDList[lumps[i].name.ToUpper()] = lastID; lastID++;
+                        //Console.WriteLine("Added texture {0} at position {1}", lumps[i].name.ToUpper(), lastID - 1);
                     }
                     //if it isn't known, don't add it, possibly add a warning texture if it gets used
                     else
@@ -326,8 +315,6 @@ namespace eced.Renderer
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, 1, numResources, 0, OpenTK.Graphics.OpenGL.PixelFormat.RgbaInteger, PixelType.Short, data);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
-
-            GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
         public int GetTextureID(string name)

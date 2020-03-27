@@ -380,7 +380,6 @@ namespace eced
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             if (editorState.CurrentLevel != null)
             {
-                worldRenderer.UpdateLevel();
                 worldRenderer.DrawLevel();
             }
             GL.Flush();
