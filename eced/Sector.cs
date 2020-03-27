@@ -41,7 +41,7 @@ namespace eced
             stringBuilder.Append("sector\n{\n");
             stringBuilder.AppendFormat("\ttexturefloor = \"{0}\";\n",FloorTexture);
             stringBuilder.AppendFormat("\ttextureceiling = \"{0}\";\n", CeilingTexture);
-            stringBuilder.AppendFormat("\tlight = \"{0}\";\n", Light);
+            stringBuilder.AppendFormat("\tlight = {0};\n", Light);
             stringBuilder.Append("}");
 
             return stringBuilder.ToString();
@@ -53,6 +53,7 @@ namespace eced
 
             newSector.FloorTexture = UWMFSearch.getStringTag(data, "texturefloor", "#717171");
             newSector.CeilingTexture = UWMFSearch.getStringTag(data, "textureceiling", "#383838");
+            newSector.Light = UWMFSearch.getIntTag(data, "light", 255);
             
             return newSector;
         }
