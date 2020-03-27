@@ -44,17 +44,26 @@ namespace eced.UIPanels
 
         public void SetZones(List<Zone> zones)
         {
-            ZoneListBox.Items.Clear();
-            ZoneListBox.Items.Add("Automatic");
+            ZoneListView.Items.Clear();
+            ZoneListView.Items.Add(new ListViewItem("Automatic"));
+            ListViewItem item;
             for (int x = 0; x < zones.Count; x++)
             {
-                ZoneListBox.Items.Add(String.Format("Zone {0}", x));
+                item = new ListViewItem(string.Format("Zone {0}", x));
+                item.BackColor = Color.FromArgb(64, 64, 64);
+                ZoneListView.Items.Add(item);
             }
         }
 
         private void ZoneListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            pairedBrush.setCode = ZoneListBox.SelectedIndex - 1;
+            pairedBrush.setCode = ZoneListView.SelectedIndices[0] - 1;
+        }
+
+        private void ZoneListView_Resize(object sender, EventArgs e)
+        {
+            //Would you look at the time, it's already hack-o-clock!
+            ZoneListView.Columns[0].Width = ZoneListView.Width;
         }
     }
 }
