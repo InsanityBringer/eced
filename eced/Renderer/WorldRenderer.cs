@@ -331,8 +331,11 @@ namespace eced.Renderer
             if (state.CurrentState.IsThingMode)
                 alpha = 1.0f;
             ThingDefinition def;
-            foreach (Thing thing in state.CurrentState.CurrentLevel.Things)
+            Thing thing;
+            //Draw in reverse order, since thing highlighting logic gets the least recent thing
+            for (int i = state.CurrentState.CurrentLevel.Things.Count - 1; i >= 0; i--) 
             {
+                thing = state.CurrentState.CurrentLevel.Things[i];
                 def = state.CurrentState.CurrentLevel.GetThingDef(thing);
 
                 state.Drawer.DrawThingBase(thing, def, alpha);
