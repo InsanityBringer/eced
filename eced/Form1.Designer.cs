@@ -296,27 +296,31 @@
             // 
             // toolBarButton14
             // 
-            this.toolBarButton14.ImageIndex = 11;
+            this.toolBarButton14.ImageIndex = 12;
             this.toolBarButton14.Name = "toolBarButton14";
             this.toolBarButton14.Tag = "100";
+            this.toolBarButton14.ToolTipText = "Numeric Floorcode display";
             // 
             // toolBarButton15
             // 
-            this.toolBarButton15.ImageIndex = 12;
+            this.toolBarButton15.ImageIndex = 11;
             this.toolBarButton15.Name = "toolBarButton15";
             this.toolBarButton15.Tag = "101";
+            this.toolBarButton15.ToolTipText = "Color-coded Floorcode display";
             // 
             // toolBarButton16
             // 
             this.toolBarButton16.ImageIndex = 13;
             this.toolBarButton16.Name = "toolBarButton16";
             this.toolBarButton16.Tag = "102";
+            this.toolBarButton16.ToolTipText = "Floor texture display";
             // 
             // toolBarButton17
             // 
             this.toolBarButton17.ImageIndex = 14;
             this.toolBarButton17.Name = "toolBarButton17";
             this.toolBarButton17.Tag = "103";
+            this.toolBarButton17.ToolTipText = "Ceiling texture display";
             // 
             // imageList1
             // 

@@ -55,15 +55,28 @@ void main()
 
 	if (mode == 0) //Show floor code
 	{
-		ivec2 texOrigin = ivec2(floorid / 16, 0) * 8;
-		ivec2 texOrigin2 = ivec2(floorid % 16, 0) * 8;
+		ivec2 digit1;
+		ivec2 digit2;
 
-		cellposf = vec2((tileloc.x - itile.x) * 2 , tileloc.y - itile.y);
-		if (cellposf.x > 1)
-			cellpos = ivec2(texOrigin2.x + int((cellposf.x - 1) * 8), texOrigin.y + int(cellposf.y * 16));
-
+		cellposf = vec2((tileloc.x - itile.x) * 2 , (tileloc.y - itile.y) * 2);
+		if (cellposf.y >= 1)
+		{
+			digit1 = ivec2((floorid >> 8) / 16, 0) * 8;
+			digit2 = ivec2((floorid >> 8) % 16, 0) * 8;
+			if (cellposf.x >= 1)
+				cellpos = ivec2(digit2.x + int((cellposf.x - 1) * 8), digit2.y + int((cellposf.y - 1) * 8));
+			else
+				cellpos = ivec2(digit1.x + int(cellposf.x * 8), digit1.y + int((cellposf.y - 1) * 8));
+		}
 		else
-			cellpos = ivec2(texOrigin.x + int(cellposf.x * 8), texOrigin.y + int(cellposf.y * 16));
+		{
+			digit1 = ivec2((floorid & 255) / 16, 0) * 8;
+			digit2 = ivec2(floorid % 16, 0) * 8;
+			if (cellposf.x >= 1)
+				cellpos = ivec2(digit2.x + int((cellposf.x - 1) * 8), digit2.y + int(cellposf.y * 8));
+			else
+				cellpos = ivec2(digit1.x + int(cellposf.x * 8), digit1.y + int(cellposf.y * 8));
+		}
 	}
 	else if (mode == 1) //Show textured wall
 	{

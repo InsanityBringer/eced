@@ -289,33 +289,40 @@ namespace eced
                     gbTileSelection.Visible = true;
                     gbTileSelection.SetPalette(editorState.TileList.tileset);
                     gbTileSelection.SetPairedBrush(editorState.BrushList[toolID]);
+                    worldRenderer.showGrid = true;
                     break;
                 case 2:
                     gbTileSelection.Visible = true;
                     gbTileSelection.SetPalette(editorState.TileList.tileset);
                     gbTileSelection.SetPairedBrush(editorState.BrushList[toolID]);
+                    worldRenderer.showGrid = true;
                     break;
                 case 4:
                     gbThingSelect.Visible = true;
                     gbThingSelect.AddThings(editorState.ThingList.thingList);
                     gbThingSelect.SetPairedBrush((ThingBrush)editorState.BrushList[toolID]);
+                    worldRenderer.showGrid = true;
                     break;
                 case 5:
                     gbTriggerData.Visible = true;
                     gbTriggerData.SetPairedBrush((TriggerBrush)editorState.BrushList[toolID]);
                     gbTriggerData.SetTriggerList(editorState.TriggerList);
+                    worldRenderer.showGrid = true;
                     break;
                 case 6:
                     gbSectorPanel.Visible = true;
                     gbSectorPanel.pairedBrush = (SectorBrush)editorState.BrushList[toolID];
+                    worldRenderer.showGrid = true;
                     break;
                 case 7:
                     gbZoneList.Visible = true;
                     gbZoneList.SetPairedBrush((FloodBrush)editorState.BrushList[toolID]);
+                    worldRenderer.showGrid = false;
                     break;
                 case 8:
                     gbTag.Visible = true;
                     gbTag.SetPairedBrush((TagTool)editorState.BrushList[toolID]);
+                    worldRenderer.showGrid = true;
                     break;
             }
             editorState.SetBrush(toolid);

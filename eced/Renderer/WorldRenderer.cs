@@ -28,6 +28,8 @@ namespace eced.Renderer
         private int currentTilemapTexture = 0;
         private int currentViewMode = 1;
 
+        public bool showGrid = true;
+
         public WorldRenderer(RendererState state)
         {
             this.state = state;
@@ -115,7 +117,12 @@ namespace eced.Renderer
                     else
                     {
                         type = 2;
-                        if (currentViewMode == 1)
+                        if (currentViewMode == 0)
+                        {
+                            mode = 0;
+                            planeData[coord + 1] = (ushort)editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone;
+                        }
+                        else if (currentViewMode == 1)
                         {
                             mode = 2;
                             colordef = editorState.CurrentLevel.Planes[layer].cells[x + xPos, y + yPos].zone;
@@ -317,8 +324,11 @@ namespace eced.Renderer
             UpdateLevel();
             state.TileMapShader.UseShader();
             state.Drawer.DrawTilemap();
-            DrawLevelGrid();
-            state.Drawer.FlushLines();
+            if (showGrid)
+            {
+                DrawLevelGrid();
+                state.Drawer.FlushLines();
+            }
             GL.LineWidth(3);
             foreach (TriggerList triggerList in state.CurrentState.CurrentLevel.Triggers)
             {
