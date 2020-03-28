@@ -515,6 +515,10 @@ namespace eced
 
             PickResult pickTest = renderer.Pick(e.X, e.Y);
             editorState.HandlePick(pickTest);
+            if (editorState.CurrentTool == CurrentToolNum.ZoneTool)
+            {
+                gbZoneList.UpdateZoneHighlight(editorState.HighlightedZone);
+            }
 
             if (brushmode)
             {

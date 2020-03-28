@@ -33,6 +33,7 @@ namespace eced.UIPanels
     {
         private FloodBrush pairedBrush;
         private EditorState state; //need state for color chart
+        private int lastzone = -1;
         public ZoneUIPanel(EditorState state)
         {
             InitializeComponent();
@@ -57,6 +58,24 @@ namespace eced.UIPanels
             }
         }
 
+        public void UpdateZoneHighlight(int newzone)
+        {
+            if (newzone != lastzone) //don't cause too many updates
+            {
+                lastzone = newzone;
+                if (newzone == -1)
+                {
+                    HighlightedLabel.BackColor = Color.FromKnownColor(KnownColor.Control);
+                    HighlightedLabel.Text = "Unzoned";
+                }
+                else
+                {
+                    HighlightedLabel.BackColor = Color.FromArgb(state.Colors.Colors[newzone]);
+                    HighlightedLabel.Text = string.Format("Zone {0}", newzone);
+                }
+            }
+        }
+
         private void ZoneListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ZoneListView.SelectedIndices.Count > 0)
@@ -66,7 +85,7 @@ namespace eced.UIPanels
         private void ZoneListView_Resize(object sender, EventArgs e)
         {
             //Would you look at the time, it's already hack-o-clock!
-            ZoneListView.Columns[0].Width = ZoneListView.Width;
+            ZoneListView.Columns[0].Width = ZoneListView.Width - ZoneListView.Margin.Right - ZoneListView.Margin.Left;
         }
     }
 }

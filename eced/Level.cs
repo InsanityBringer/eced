@@ -166,7 +166,11 @@ namespace eced
 
         public int GetZoneID(int x, int y, int z)
         {
-            return Planes[z].cells[x, y].zone;
+            if (x >= 0 && y >= 0 && x < Width && y < Height)
+            {
+                return Planes[z].cells[x, y].zone;
+            }
+            return -1;
         }
 
         public void AddTile(Tile tile)

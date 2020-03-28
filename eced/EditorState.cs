@@ -59,9 +59,13 @@ namespace eced
         public VSwapNames VSwapNameList { get; private set; }
         public Thing HighlightedThing { get; private set; }
         public List<Thing> SelectedThings { get; } = new List<Thing>();
+        public int HighlightedZone { get; private set; } = -1;
 
         public EditorIO EditorIOState { get; }
         private EditorInputHandler inputHandler;
+
+        //This file is getting way too big aaaaa
+        private bool facingMode = false;
         public bool IsThingMode
         {
             get
@@ -224,6 +228,7 @@ namespace eced
 
         public void ToggleSelectedThing(Thing thing)
         {
+            if (facingMode) return;
             if (thing.selected)
             {
                 thing.selected = false;
@@ -236,8 +241,35 @@ namespace eced
             }
         }
 
+        public void ClearSelectedThings()
+        {
+            if (facingMode) return;
+            foreach (Thing thing in SelectedThings)
+                thing.selected = false;
+            SelectedThings.Clear();
+        }
+
+        public void DeleteSelectedThings()
+        {
+            if (facingMode) return;
+            foreach (Thing thing in SelectedThings)
+                CurrentLevel.DeleteThing(thing);
+            ClearSelectedThings();
+        }
+
+        public void StartFacing()
+        {
+            facingMode = true;
+        }
+
+        public void EndFacing()
+        {
+            facingMode = false;
+        }
+
         public void SetBrush(int brushNum)
         {
+            EndFacing(); //prevent issues with facing remaining
             CurrentTool = (CurrentToolNum)brushNum;
             currentBrush = BrushList[brushNum];
         }
@@ -265,6 +297,34 @@ namespace eced
         {
             UpdateHighlight(res);
             LastOrthoHit = res;
+            if (CurrentTool == CurrentToolNum.ZoneTool)
+            {
+                HighlightedZone = CurrentLevel.GetZoneID(res.x, res.y, res.z);
+            }
+            else if (CurrentTool == CurrentToolNum.ThingTool)
+            {
+                if (facingMode)
+                    DoFacing();
+            }
+        }
+
+        private void DoFacing()
+        {
+            float sx, sy, dx, dy;
+            float newang;
+            sx = LastOrthoHit.x + LastOrthoHit.xf;
+            sy = LastOrthoHit.y + LastOrthoHit.yf;
+            foreach (Thing thing in SelectedThings)
+            {
+                dx = sx - thing.x;
+                dy = sy - thing.y;
+                //ah, fun math. Get a "normalized" angle
+                newang = (float)(Math.Atan2(-dy, dx) / (2 * Math.PI));
+                newang *= 8; //8 cardinal dirs
+                newang = (float)Math.Round(newang, MidpointRounding.AwayFromZero); //Round to nearest 45th
+                newang *= 45f;
+                thing.angle = (int)newang;
+            }
         }
 
         public bool HandleInputEvent(InputEvent ev)

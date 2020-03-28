@@ -37,17 +37,45 @@ namespace eced
 
         public bool HandleInputEvent(InputEvent ev)
         {
-            if (ev.keycode == Keys.Delete && !ev.down)
+            if (state.CurrentTool == CurrentToolNum.ThingTool)
             {
-                if (state.CurrentTool == CurrentToolNum.ThingTool)
+                if (ev.keycode == Keys.Delete && !ev.down)
                 {
-                    if (state.HighlightedThing != null)
+                    if (state.SelectedThings.Count > 0)
                     {
-                        state.CurrentLevel.DeleteThing(state.HighlightedThing);
+                        state.DeleteSelectedThings();
+                        return true;
+                    }
+
+                }
+                else if (ev.keycode == Keys.F)
+                {
+                    if (ev.down)
+                    {
+                        if (state.SelectedThings.Count > 0)
+                        {
+                            state.StartFacing();
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        state.EndFacing();
                         return true;
                     }
                 }
-                else if (state.CurrentTool == CurrentToolNum.TriggerTool)
+                else if (ev.keycode == Keys.C && ev.down)
+                {
+                    if (state.CurrentTool == CurrentToolNum.ThingTool)
+                    {
+                        state.ClearSelectedThings();
+                        return true;
+                    }
+                }
+            }
+            else if (state.CurrentTool == CurrentToolNum.TriggerTool)
+            {
+                if (ev.keycode == Keys.Delete && !ev.down)
                 {
                     if (state.CurrentLevel.GetTriggers(state.LastOrthoHit.x, state.LastOrthoHit.y, state.LastOrthoHit.z) != null)
                     {
