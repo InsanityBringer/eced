@@ -16,6 +16,7 @@
  *  -------------------------------------------------------------------*/
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 using eced.GameConfig;
@@ -24,24 +25,19 @@ namespace eced
 {
     public partial class ThingEditor : Form
     {
-        public Thing thing;
+        public List<Thing> thingList;
         public ThingFlags flags;
         private ThingManager thinglist;
         private bool lockangle = false;
 
-        public ThingEditor(Thing thingToEdit, ThingManager thinglist)
+        private bool isLocked = false;
+
+        public ThingEditor(EditorState state, List<Thing> thingToEdit, ThingManager thinglist)
         {
             InitializeComponent();
-            this.thing = thingToEdit;
-            this.flags = new ThingFlags();
-            flags.getFlagsFromInt(thing.flags);
-            this.cbThingAmbush.Checked = flags.ambush;
-            this.cbThingPatrol.Checked = flags.patrol;
-            this.cbThingSkill1.Checked = flags.skill1;
-            this.cbThingSkill2.Checked = flags.skill2;
-            this.cbThingSkill3.Checked = flags.skill3;
-            this.cbThingSkill4.Checked = flags.skill4;
+            this.thingList = thingToEdit;
 
+            isLocked = true;
             this.thinglist = thinglist;
 
             for (int x = 0; x < thinglist.idlist.Count; x++)
@@ -50,61 +46,136 @@ namespace eced
                 listBox1.Items.Add(lthing.Type);
             }
 
-            this.ndThingAngle.Value = thing.angle;
+            //TODO: Make this less terrible
+            AmbushCheckBox.Checked = thingList[0].ambush;
+            PatrolCheckBox.Checked = thingList[0].patrol;
+            Skill1CheckBox.Checked = thingList[0].skill1;
+            Skill2CheckBox.Checked = thingList[0].skill2;
+            Skill3CheckBox.Checked = thingList[0].skill3;
+            Skill4CheckBox.Checked = thingList[0].skill4;
+            XPosTextBox.Text = ((int)(thingList[0].x * state.CurrentLevel.TileSize)).ToString();
+            YPosTextBox.Text = ((int)(thingList[0].y * state.CurrentLevel.TileSize)).ToString();
+            ZPosTextBox.Text = state.CurrentLevel.TranslateTileZToMUZ(thingList[0].z).ToString();
+            //having multiple loops here isn't great, but it means they can break easier and no state has to be saved
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (thingList[i].ambush != AmbushCheckBox.Checked)
+                {
+                    AmbushCheckBox.CheckState = CheckState.Indeterminate;
+                    break;
+                }
+            }
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (thingList[i].patrol != PatrolCheckBox.Checked)
+                {
+                    PatrolCheckBox.CheckState = CheckState.Indeterminate;
+                    break;
+                }
+            }
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (thingList[i].skill1 != Skill1CheckBox.Checked)
+                {
+                    Skill1CheckBox.CheckState = CheckState.Indeterminate;
+                    break;
+                }
+            }
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (thingList[i].skill2 != Skill2CheckBox.Checked)
+                {
+                    Skill2CheckBox.CheckState = CheckState.Indeterminate;
+                    break;
+                }
+            }
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (thingList[i].skill3 != Skill3CheckBox.Checked)
+                {
+                    Skill3CheckBox.CheckState = CheckState.Indeterminate;
+                    break;
+                }
+            }
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (thingList[i].skill4 != Skill4CheckBox.Checked)
+                {
+                    Skill4CheckBox.CheckState = CheckState.Indeterminate;
+                    break;
+                }
+            }
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (state.CurrentLevel.TranslateTileZToMUZ(thingList[0].z).ToString() == XPosTextBox.Text)
+                {
+                    XPosTextBox.Text = "";
+                    break;
+                }
+            }
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (((int)(thingList[i].x * state.CurrentLevel.TileSize)).ToString() == YPosTextBox.Text)
+                {
+                    YPosTextBox.Text = "";
+                    break;
+                }
+            }
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (((int)(thingList[i].x * state.CurrentLevel.TileSize)).ToString() == ZPosTextBox.Text)
+                {
+                    ZPosTextBox.Text = "";
+                    break;
+                }
+            }
+            isLocked = false;
+
+            //TODO: I don't think you can't have a value on a spinner, so
+            this.ThingAngleSpinner.Value = thingList[0].angle;
         }
 
         private void thingBitChange(object sender, EventArgs e)
         {
-            flags.ambush = this.cbThingAmbush.Checked;
-            flags.patrol = this.cbThingPatrol.Checked;
-            flags.skill1 = this.cbThingSkill1.Checked;
-            flags.skill2 = this.cbThingSkill2.Checked;
-            flags.skill3 = this.cbThingSkill3.Checked;
-            flags.skill4 = this.cbThingSkill4.Checked;
-
-            thing.flags = flags.getFlags();
         }
 
         private void ndThingAngle_ValueChanged(object sender, EventArgs e)
         {
-            if (this.ndThingAngle.Value == 360)
-                this.ndThingAngle.Value = 0;
+            if (this.ThingAngleSpinner.Value == 360)
+                this.ThingAngleSpinner.Value = 0;
 
-            thing.angle = (int)this.ndThingAngle.Value;
+            rbThingEast.Checked = false;
+            rbThingNorth.Checked = false;
+            rbThingWest.Checked = false;
+            rbThingSouth.Checked = false;
+            rbThingNE.Checked = false;
+            rbThingNW.Checked = false;
+            rbThingSW.Checked = false;
+            rbThingSE.Checked = false;
+
+            foreach (Thing thing in thingList)
+            {
+                thing.angle = (int)this.ThingAngleSpinner.Value;
+            }
 
             this.lockangle = true;
 
-            if (thing.angle == 0)
+            if (ThingAngleSpinner.Value == 0)
                 this.rbThingEast.Checked = true;
-            else this.rbThingEast.Checked = false;
-
-            if (thing.angle == 90)
+            else if (ThingAngleSpinner.Value == 90)
                 this.rbThingNorth.Checked = true;
-            else this.rbThingNorth.Checked = false;
-
-            if (thing.angle == 180)
+            else if (ThingAngleSpinner.Value == 180)
                 this.rbThingWest.Checked = true;
-            else this.rbThingWest.Checked = false;
-
-            if (thing.angle == 270)
+            else if (ThingAngleSpinner.Value == 270)
                 this.rbThingSouth.Checked = true;
-            else this.rbThingSouth.Checked = false;
-
-            if (thing.angle == 45)
+            else if (ThingAngleSpinner.Value == 45)
                 this.rbThingNE.Checked = true;
-            else this.rbThingNE.Checked = false;
-
-            if (thing.angle == 135)
+            else if (ThingAngleSpinner.Value == 135)
                 this.rbThingNW.Checked = true;
-            else this.rbThingNW.Checked = false;
-
-            if (thing.angle == 225)
+            else if (ThingAngleSpinner.Value == 225)
                 this.rbThingSW.Checked = true;
-            else this.rbThingSW.Checked = false;
-
-            if (thing.angle == 315)
+            else if (ThingAngleSpinner.Value == 315)
                 this.rbThingSE.Checked = true;
-            else this.rbThingSE.Checked = false;
 
             lockangle = false;
         }
@@ -113,27 +184,28 @@ namespace eced
         {
             if (lockangle) return;
             if (rbThingEast.Checked)
-                this.ndThingAngle.Value = 0;
-            if (rbThingNorth.Checked)
-                this.ndThingAngle.Value = 90;
-            if (rbThingWest.Checked)
-                this.ndThingAngle.Value = 180;
-            if (rbThingSouth.Checked)
-                this.ndThingAngle.Value = 270;
+                this.ThingAngleSpinner.Value = 0;
+            else if (rbThingNorth.Checked)
+                this.ThingAngleSpinner.Value = 90;
+            else if (rbThingWest.Checked)
+                this.ThingAngleSpinner.Value = 180;
+            else if (rbThingSouth.Checked)
+                this.ThingAngleSpinner.Value = 270;
 
-            if (rbThingNE.Checked)
-                this.ndThingAngle.Value = 45;
-            if (rbThingNW.Checked)
-                this.ndThingAngle.Value = 135;
-            if (rbThingSW.Checked)
-                this.ndThingAngle.Value = 225;
-            if (rbThingSE.Checked)
-                this.ndThingAngle.Value = 315;
+            else if (rbThingNE.Checked)
+                this.ThingAngleSpinner.Value = 45;
+            else if (rbThingNW.Checked)
+                this.ThingAngleSpinner.Value = 135;
+            else if (rbThingSW.Checked)
+                this.ThingAngleSpinner.Value = 225;
+            else if (rbThingSE.Checked)
+                this.ThingAngleSpinner.Value = 315;
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.thing.type = listBox1.Text;
+            foreach (Thing thing in thingList)
+                thing.type = listBox1.Text;
         }
 
         private void button1_Click(object sender, EventArgs e)

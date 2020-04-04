@@ -167,13 +167,13 @@ namespace eced.Renderer
             //int[] tids = new int[4]; GL.GenTextures(4, tids);
             int worldTextureID = GL.GenTexture();
 
-            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.ActiveTexture(TextureUnit.Texture4);
             GL.BindTexture(TextureTarget.Texture2D, worldTextureID);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, w, h, 0, PixelFormat.RgbaInteger, PixelType.Short, (IntPtr)0);
             //GL.BindTexture(TextureTarget.Texture2D, 0);
-            //GL.ActiveTexture(TextureUnit.Texture0);
+            GL.ActiveTexture(TextureUnit.Texture0);
 
             RendererState.ErrorCheck("WorldRenderer::CreateTilemapTexture: Creating tilemap texture");
 
@@ -182,9 +182,10 @@ namespace eced.Renderer
 
         private void UpdateTilemapRegion(int textureID, int x, int y, int w, int h, ushort[] data)
         {
-            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.ActiveTexture(TextureUnit.Texture4);
             GL.BindTexture(TextureTarget.Texture2D, textureID);
             GL.TexSubImage2D(TextureTarget.Texture2D, 0, x, y, w, h, PixelFormat.RgbaInteger, PixelType.Short, data);
+            GL.ActiveTexture(TextureUnit.Texture0);
         }
 
         public void UpdateLevel()
@@ -319,7 +320,7 @@ namespace eced.Renderer
 
         public void DrawLevel()
         {
-            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.ActiveTexture(TextureUnit.Texture4);
             GL.BindTexture(TextureTarget.Texture2D, currentTilemapTexture);
             UpdateLevel();
             state.TileMapShader.UseShader();

@@ -173,7 +173,7 @@ namespace eced.Renderer
         public void SetTilemapStaticUniforms()
         {
             TileMapShader.UseShader();
-            GL.Uniform1(TileMapShader.UniformLocations["mapPlane"], 0);
+            GL.Uniform1(TileMapShader.UniformLocations["mapPlane"], 4);
             GL.ActiveTexture(TextureUnit.Texture1);
             GL.BindTexture(TextureTarget.Texture2D, Textures.atlasTextureID);
             GL.Uniform1(TileMapShader.UniformLocations["atlas"], 1);

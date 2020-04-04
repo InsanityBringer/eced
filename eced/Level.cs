@@ -38,6 +38,7 @@ namespace eced
         public int Brightness { get; set; } = 255;
         public float Visibility { get; set; } = 1.0f;
         public string Name { get; set; } = "ecedtest";
+        public bool Experimental { get; set; } = false;
 
         //Data management
         public List<Tile> Tileset { get; } = new List<Tile>();
@@ -282,6 +283,21 @@ namespace eced
             return localThingList.GetThingDef(thing.type);
         }
 
+        public int TranslateTileZToMUZ(float z)
+        {
+            int accum = 0;
+            int ipart = (int)z;
+            float fpart = z - ipart;
+            //todo: find a solution for making this better
+            ipart = Math.Min(Depth, ipart);
+            for (int i = 0; i < Depth - 1; i++)
+            {
+                accum += Planes[i].Height;
+            }
+            accum += (int)(Planes[ipart].Height * fpart);
+            return accum;
+        }
+
         public Thing HighlightThing(PickResult res)
         {
             float pickX = (res.x + res.xf) * TileSize;
@@ -412,7 +428,10 @@ namespace eced
         {
             StringBuilder sb = new StringBuilder(); 
 			
-            sb.Append("namespace = \"Wolf3D\";\n");
+            if (Experimental)
+                sb.Append("namespace = \"ECWolf-v12\";\n");
+            else
+                sb.Append("namespace = \"Wolf3D\";\n");
             sb.Append("tilesize = 64;\n");
             sb.Append("name = \"ecedtest\";\n");
             sb.Append("width = " + Width.ToString() + ";\n");
@@ -547,6 +566,8 @@ namespace eced
             string key;
             level = new Level();
             int planenum = 0;
+            if (levelNamespace == "ECWolf-v12")
+                level.Experimental = true;
             foreach (CodeImp.DoomBuilder.IO.UniversalEntry entry in collection)
             {
                 key = entry.Key.ToLowerInvariant();
@@ -569,13 +590,13 @@ namespace eced
                         level.Name = (string)entry.Value;
                         break;
                     case "defaultlightlevel":
-                        if (levelNamespace != "ECWolf-v12")
+                        if (!level.Experimental)
                             throw new Exception("Level::DeserializeLevel: Attempting to use defaultlightlevel in non-experimental map.");
                         entry.ValidateType(typeof(int));
                         level.Brightness = (int)entry.Value;
                         break;
                     case "defaultvisibility":
-                        if (levelNamespace != "ECWolf-v12")
+                        if (!level.Experimental)
                             throw new Exception("Level::DeserializeLevel: Attempting to use defaultvisibility in non-experimental map.");
                         entry.ValidateType(typeof(float));
                         level.Visibility = (float)entry.Value;
