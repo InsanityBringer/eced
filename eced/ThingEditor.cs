@@ -55,7 +55,7 @@ namespace eced
             Skill4CheckBox.Checked = thingList[0].skill4;
             XPosTextBox.Text = ((int)(thingList[0].x * state.CurrentLevel.TileSize)).ToString();
             YPosTextBox.Text = ((int)(thingList[0].y * state.CurrentLevel.TileSize)).ToString();
-            ZPosTextBox.Text = state.CurrentLevel.TranslateTileZToMUZ(thingList[0].z).ToString();
+            ZPosTextBox.Text = ((int)(thingList[0].z * state.CurrentLevel.TileSize)).ToString();
             //having multiple loops here isn't great, but it means they can break easier and no state has to be saved
             for (int i = 1; i < thingList.Count; i++)
             {
@@ -107,7 +107,7 @@ namespace eced
             }
             for (int i = 1; i < thingList.Count; i++)
             {
-                if (state.CurrentLevel.TranslateTileZToMUZ(thingList[0].z).ToString() == XPosTextBox.Text)
+                if (((int)(thingList[i].x * state.CurrentLevel.TileSize)).ToString() == XPosTextBox.Text)
                 {
                     XPosTextBox.Text = "";
                     break;
@@ -115,7 +115,7 @@ namespace eced
             }
             for (int i = 1; i < thingList.Count; i++)
             {
-                if (((int)(thingList[i].x * state.CurrentLevel.TileSize)).ToString() == YPosTextBox.Text)
+                if (((int)(thingList[i].y * state.CurrentLevel.TileSize)).ToString() == YPosTextBox.Text)
                 {
                     YPosTextBox.Text = "";
                     break;
@@ -123,7 +123,7 @@ namespace eced
             }
             for (int i = 1; i < thingList.Count; i++)
             {
-                if (((int)(thingList[i].x * state.CurrentLevel.TileSize)).ToString() == ZPosTextBox.Text)
+                if (((int)(thingList[i].z * state.CurrentLevel.TileSize)).ToString() == ZPosTextBox.Text)
                 {
                     ZPosTextBox.Text = "";
                     break;

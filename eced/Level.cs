@@ -283,21 +283,6 @@ namespace eced
             return localThingList.GetThingDef(thing.type);
         }
 
-        public int TranslateTileZToMUZ(float z)
-        {
-            int accum = 0;
-            int ipart = (int)z;
-            float fpart = z - ipart;
-            //todo: find a solution for making this better
-            ipart = Math.Min(Depth, ipart);
-            for (int i = 0; i < Depth - 1; i++)
-            {
-                accum += Planes[i].Height;
-            }
-            accum += (int)(Planes[ipart].Height * fpart);
-            return accum;
-        }
-
         public Thing HighlightThing(PickResult res)
         {
             float pickX = (res.x + res.xf) * TileSize;
