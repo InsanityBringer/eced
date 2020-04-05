@@ -43,11 +43,10 @@
             this.PatrolCheckBox = new System.Windows.Forms.CheckBox();
             this.AmbushCheckBox = new System.Windows.Forms.CheckBox();
             this.ThingAngleSpinner = new System.Windows.Forms.NumericUpDown();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.DialogCancelButton = new System.Windows.Forms.Button();
+            this.DialogOKButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.XPosTextBox = new System.Windows.Forms.TextBox();
             this.YPosTextBox = new System.Windows.Forms.TextBox();
@@ -55,13 +54,14 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.ZPosTextBox = new System.Windows.Forms.TextBox();
+            this.ThingTypeComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.ThingAngleSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // rbThingNW
             // 
             this.rbThingNW.AutoSize = true;
-            this.rbThingNW.Location = new System.Drawing.Point(165, 276);
+            this.rbThingNW.Location = new System.Drawing.Point(85, 105);
             this.rbThingNW.Name = "rbThingNW";
             this.rbThingNW.Size = new System.Drawing.Size(50, 17);
             this.rbThingNW.TabIndex = 44;
@@ -73,7 +73,7 @@
             // rbThingNE
             // 
             this.rbThingNE.AutoSize = true;
-            this.rbThingNE.Location = new System.Drawing.Point(275, 276);
+            this.rbThingNE.Location = new System.Drawing.Point(195, 105);
             this.rbThingNE.Name = "rbThingNE";
             this.rbThingNE.Size = new System.Drawing.Size(49, 17);
             this.rbThingNE.TabIndex = 43;
@@ -85,7 +85,7 @@
             // rbThingSW
             // 
             this.rbThingSW.AutoSize = true;
-            this.rbThingSW.Location = new System.Drawing.Point(165, 324);
+            this.rbThingSW.Location = new System.Drawing.Point(85, 153);
             this.rbThingSW.Name = "rbThingSW";
             this.rbThingSW.Size = new System.Drawing.Size(49, 17);
             this.rbThingSW.TabIndex = 42;
@@ -97,7 +97,7 @@
             // rbThingSE
             // 
             this.rbThingSE.AutoSize = true;
-            this.rbThingSE.Location = new System.Drawing.Point(275, 325);
+            this.rbThingSE.Location = new System.Drawing.Point(195, 154);
             this.rbThingSE.Name = "rbThingSE";
             this.rbThingSE.Size = new System.Drawing.Size(48, 17);
             this.rbThingSE.TabIndex = 41;
@@ -109,7 +109,7 @@
             // rbThingSouth
             // 
             this.rbThingSouth.AutoSize = true;
-            this.rbThingSouth.Location = new System.Drawing.Point(216, 325);
+            this.rbThingSouth.Location = new System.Drawing.Point(136, 154);
             this.rbThingSouth.Name = "rbThingSouth";
             this.rbThingSouth.Size = new System.Drawing.Size(53, 17);
             this.rbThingSouth.TabIndex = 40;
@@ -121,7 +121,7 @@
             // rbThingNorth
             // 
             this.rbThingNorth.AutoSize = true;
-            this.rbThingNorth.Location = new System.Drawing.Point(216, 276);
+            this.rbThingNorth.Location = new System.Drawing.Point(136, 105);
             this.rbThingNorth.Name = "rbThingNorth";
             this.rbThingNorth.Size = new System.Drawing.Size(51, 17);
             this.rbThingNorth.TabIndex = 39;
@@ -133,7 +133,7 @@
             // rbThingWest
             // 
             this.rbThingWest.AutoSize = true;
-            this.rbThingWest.Location = new System.Drawing.Point(165, 299);
+            this.rbThingWest.Location = new System.Drawing.Point(85, 128);
             this.rbThingWest.Name = "rbThingWest";
             this.rbThingWest.Size = new System.Drawing.Size(50, 17);
             this.rbThingWest.TabIndex = 38;
@@ -146,7 +146,7 @@
             // 
             this.rbThingEast.AutoSize = true;
             this.rbThingEast.Checked = true;
-            this.rbThingEast.Location = new System.Drawing.Point(275, 299);
+            this.rbThingEast.Location = new System.Drawing.Point(195, 128);
             this.rbThingEast.Name = "rbThingEast";
             this.rbThingEast.Size = new System.Drawing.Size(46, 17);
             this.rbThingEast.TabIndex = 30;
@@ -160,7 +160,7 @@
             this.Skill4CheckBox.AutoSize = true;
             this.Skill4CheckBox.Checked = true;
             this.Skill4CheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.Skill4CheckBox.Location = new System.Drawing.Point(165, 138);
+            this.Skill4CheckBox.Location = new System.Drawing.Point(15, 172);
             this.Skill4CheckBox.Name = "Skill4CheckBox";
             this.Skill4CheckBox.Size = new System.Drawing.Size(54, 17);
             this.Skill4CheckBox.TabIndex = 37;
@@ -173,7 +173,7 @@
             this.Skill3CheckBox.AutoSize = true;
             this.Skill3CheckBox.Checked = true;
             this.Skill3CheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.Skill3CheckBox.Location = new System.Drawing.Point(165, 116);
+            this.Skill3CheckBox.Location = new System.Drawing.Point(15, 150);
             this.Skill3CheckBox.Name = "Skill3CheckBox";
             this.Skill3CheckBox.Size = new System.Drawing.Size(54, 17);
             this.Skill3CheckBox.TabIndex = 36;
@@ -186,7 +186,7 @@
             this.Skill2CheckBox.AutoSize = true;
             this.Skill2CheckBox.Checked = true;
             this.Skill2CheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.Skill2CheckBox.Location = new System.Drawing.Point(165, 93);
+            this.Skill2CheckBox.Location = new System.Drawing.Point(15, 127);
             this.Skill2CheckBox.Name = "Skill2CheckBox";
             this.Skill2CheckBox.Size = new System.Drawing.Size(54, 17);
             this.Skill2CheckBox.TabIndex = 35;
@@ -199,7 +199,7 @@
             this.Skill1CheckBox.AutoSize = true;
             this.Skill1CheckBox.Checked = true;
             this.Skill1CheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.Skill1CheckBox.Location = new System.Drawing.Point(165, 70);
+            this.Skill1CheckBox.Location = new System.Drawing.Point(15, 104);
             this.Skill1CheckBox.Name = "Skill1CheckBox";
             this.Skill1CheckBox.Size = new System.Drawing.Size(54, 17);
             this.Skill1CheckBox.TabIndex = 34;
@@ -212,7 +212,7 @@
             this.PatrolCheckBox.AutoSize = true;
             this.PatrolCheckBox.Checked = true;
             this.PatrolCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.PatrolCheckBox.Location = new System.Drawing.Point(165, 48);
+            this.PatrolCheckBox.Location = new System.Drawing.Point(15, 82);
             this.PatrolCheckBox.Name = "PatrolCheckBox";
             this.PatrolCheckBox.Size = new System.Drawing.Size(53, 17);
             this.PatrolCheckBox.TabIndex = 33;
@@ -225,7 +225,7 @@
             this.AmbushCheckBox.AutoSize = true;
             this.AmbushCheckBox.Checked = true;
             this.AmbushCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.AmbushCheckBox.Location = new System.Drawing.Point(165, 25);
+            this.AmbushCheckBox.Location = new System.Drawing.Point(15, 59);
             this.AmbushCheckBox.Name = "AmbushCheckBox";
             this.AmbushCheckBox.Size = new System.Drawing.Size(64, 17);
             this.AmbushCheckBox.TabIndex = 31;
@@ -235,7 +235,7 @@
             // 
             // ThingAngleSpinner
             // 
-            this.ThingAngleSpinner.Location = new System.Drawing.Point(221, 299);
+            this.ThingAngleSpinner.Location = new System.Drawing.Point(141, 128);
             this.ThingAngleSpinner.Maximum = new decimal(new int[] {
             360,
             0,
@@ -245,15 +245,6 @@
             this.ThingAngleSpinner.Size = new System.Drawing.Size(39, 20);
             this.ThingAngleSpinner.TabIndex = 32;
             this.ThingAngleSpinner.ValueChanged += new System.EventHandler(this.ndThingAngle_ValueChanged);
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(12, 25);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(147, 316);
-            this.listBox1.TabIndex = 29;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -267,38 +258,36 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(162, 9);
+            this.label2.Location = new System.Drawing.Point(12, 43);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 46;
             this.label2.Text = "Flags";
             // 
-            // button1
+            // DialogCancelButton
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(315, 347);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 47;
-            this.button1.Text = "Cancel";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.DialogCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.DialogCancelButton.Location = new System.Drawing.Point(164, 199);
+            this.DialogCancelButton.Name = "DialogCancelButton";
+            this.DialogCancelButton.Size = new System.Drawing.Size(75, 23);
+            this.DialogCancelButton.TabIndex = 47;
+            this.DialogCancelButton.Text = "Cancel";
+            this.DialogCancelButton.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // DialogOKButton
             // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(234, 347);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 48;
-            this.button2.Text = "OK";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button1_Click);
+            this.DialogOKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.DialogOKButton.Location = new System.Drawing.Point(83, 199);
+            this.DialogOKButton.Name = "DialogOKButton";
+            this.DialogOKButton.Size = new System.Drawing.Size(75, 23);
+            this.DialogOKButton.TabIndex = 48;
+            this.DialogOKButton.Text = "OK";
+            this.DialogOKButton.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(165, 214);
+            this.label3.Location = new System.Drawing.Point(85, 43);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(101, 13);
             this.label3.TabIndex = 49;
@@ -306,14 +295,14 @@
             // 
             // XPosTextBox
             // 
-            this.XPosTextBox.Location = new System.Drawing.Point(165, 250);
+            this.XPosTextBox.Location = new System.Drawing.Point(85, 79);
             this.XPosTextBox.Name = "XPosTextBox";
             this.XPosTextBox.Size = new System.Drawing.Size(43, 20);
             this.XPosTextBox.TabIndex = 50;
             // 
             // YPosTextBox
             // 
-            this.YPosTextBox.Location = new System.Drawing.Point(214, 250);
+            this.YPosTextBox.Location = new System.Drawing.Point(134, 79);
             this.YPosTextBox.Name = "YPosTextBox";
             this.YPosTextBox.Size = new System.Drawing.Size(43, 20);
             this.YPosTextBox.TabIndex = 51;
@@ -321,7 +310,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(165, 234);
+            this.label4.Location = new System.Drawing.Point(85, 63);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(14, 13);
             this.label4.TabIndex = 53;
@@ -330,7 +319,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(213, 234);
+            this.label5.Location = new System.Drawing.Point(133, 63);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(14, 13);
             this.label5.TabIndex = 54;
@@ -339,7 +328,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(260, 234);
+            this.label6.Location = new System.Drawing.Point(180, 63);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(14, 13);
             this.label6.TabIndex = 55;
@@ -347,18 +336,27 @@
             // 
             // ZPosTextBox
             // 
-            this.ZPosTextBox.Location = new System.Drawing.Point(263, 250);
+            this.ZPosTextBox.Location = new System.Drawing.Point(183, 79);
             this.ZPosTextBox.Name = "ZPosTextBox";
             this.ZPosTextBox.Size = new System.Drawing.Size(43, 20);
             this.ZPosTextBox.TabIndex = 52;
             // 
+            // ThingTypeComboBox
+            // 
+            this.ThingTypeComboBox.FormattingEnabled = true;
+            this.ThingTypeComboBox.Location = new System.Drawing.Point(52, 6);
+            this.ThingTypeComboBox.Name = "ThingTypeComboBox";
+            this.ThingTypeComboBox.Size = new System.Drawing.Size(127, 21);
+            this.ThingTypeComboBox.TabIndex = 56;
+            // 
             // ThingEditor
             // 
-            this.AcceptButton = this.button2;
+            this.AcceptButton = this.DialogOKButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.button1;
-            this.ClientSize = new System.Drawing.Size(402, 382);
+            this.CancelButton = this.DialogCancelButton;
+            this.ClientSize = new System.Drawing.Size(251, 234);
+            this.Controls.Add(this.ThingTypeComboBox);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -366,8 +364,8 @@
             this.Controls.Add(this.YPosTextBox);
             this.Controls.Add(this.XPosTextBox);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.DialogOKButton);
+            this.Controls.Add(this.DialogCancelButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.rbThingNW);
@@ -385,7 +383,6 @@
             this.Controls.Add(this.PatrolCheckBox);
             this.Controls.Add(this.AmbushCheckBox);
             this.Controls.Add(this.ThingAngleSpinner);
-            this.Controls.Add(this.listBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -415,11 +412,10 @@
         private System.Windows.Forms.CheckBox PatrolCheckBox;
         private System.Windows.Forms.CheckBox AmbushCheckBox;
         private System.Windows.Forms.NumericUpDown ThingAngleSpinner;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button DialogCancelButton;
+        private System.Windows.Forms.Button DialogOKButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox XPosTextBox;
         private System.Windows.Forms.TextBox YPosTextBox;
@@ -427,5 +423,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox ZPosTextBox;
+        private System.Windows.Forms.ComboBox ThingTypeComboBox;
     }
 }

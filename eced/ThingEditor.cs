@@ -27,23 +27,24 @@ namespace eced
     {
         public List<Thing> thingList;
         public ThingFlags flags;
+        private EditorState state;
         private ThingManager thinglist;
         private bool lockangle = false;
-
+        private bool angleChanged = false; //hack needed since spinner can't not have a value
         private bool isLocked = false;
 
-        public ThingEditor(EditorState state, List<Thing> thingToEdit, ThingManager thinglist)
+        public ThingEditor(EditorState state, List<Thing> thingToEdit)
         {
             InitializeComponent();
             this.thingList = thingToEdit;
+            this.state = state;
 
             isLocked = true;
-            this.thinglist = thinglist;
+            this.thinglist = state.ThingList;
 
-            for (int x = 0; x < thinglist.idlist.Count; x++)
+            foreach (ThingDefinition thingDef in thinglist.thingList)
             {
-                ThingDefinition lthing = thinglist.thingList[x];
-                listBox1.Items.Add(lthing.Type);
+                ThingTypeComboBox.Items.Add(thingDef.Type);
             }
 
             //TODO: Make this less terrible
@@ -56,6 +57,7 @@ namespace eced
             XPosTextBox.Text = ((int)(thingList[0].x * state.CurrentLevel.TileSize)).ToString();
             YPosTextBox.Text = ((int)(thingList[0].y * state.CurrentLevel.TileSize)).ToString();
             ZPosTextBox.Text = ((int)(thingList[0].z * state.CurrentLevel.TileSize)).ToString();
+            ThingTypeComboBox.Text = thingList[0].type;
             //having multiple loops here isn't great, but it means they can break easier and no state has to be saved
             for (int i = 1; i < thingList.Count; i++)
             {
@@ -107,7 +109,7 @@ namespace eced
             }
             for (int i = 1; i < thingList.Count; i++)
             {
-                if (((int)(thingList[i].x * state.CurrentLevel.TileSize)).ToString() == XPosTextBox.Text)
+                if (((int)(thingList[i].x * state.CurrentLevel.TileSize)).ToString() != XPosTextBox.Text)
                 {
                     XPosTextBox.Text = "";
                     break;
@@ -115,7 +117,7 @@ namespace eced
             }
             for (int i = 1; i < thingList.Count; i++)
             {
-                if (((int)(thingList[i].y * state.CurrentLevel.TileSize)).ToString() == YPosTextBox.Text)
+                if (((int)(thingList[i].y * state.CurrentLevel.TileSize)).ToString() != YPosTextBox.Text)
                 {
                     YPosTextBox.Text = "";
                     break;
@@ -123,9 +125,17 @@ namespace eced
             }
             for (int i = 1; i < thingList.Count; i++)
             {
-                if (((int)(thingList[i].z * state.CurrentLevel.TileSize)).ToString() == ZPosTextBox.Text)
+                if (((int)(thingList[i].z * state.CurrentLevel.TileSize)).ToString() != ZPosTextBox.Text)
                 {
                     ZPosTextBox.Text = "";
+                    break;
+                }
+            }
+            for (int i = 1; i < thingList.Count; i++)
+            {
+                if (thingList[i].type != ThingTypeComboBox.Text)
+                {
+                    ThingTypeComboBox.Text = "";
                     break;
                 }
             }
@@ -141,6 +151,7 @@ namespace eced
 
         private void ndThingAngle_ValueChanged(object sender, EventArgs e)
         {
+            angleChanged = true;
             if (this.ThingAngleSpinner.Value == 360)
                 this.ThingAngleSpinner.Value = 0;
 
@@ -152,11 +163,6 @@ namespace eced
             rbThingNW.Checked = false;
             rbThingSW.Checked = false;
             rbThingSE.Checked = false;
-
-            foreach (Thing thing in thingList)
-            {
-                thing.angle = (int)this.ThingAngleSpinner.Value;
-            }
 
             this.lockangle = true;
 
@@ -182,6 +188,7 @@ namespace eced
 
         private void rbThingEast_CheckedChanged(object sender, EventArgs e)
         {
+            angleChanged = true;
             if (lockangle) return;
             if (rbThingEast.Checked)
                 this.ThingAngleSpinner.Value = 0;
@@ -202,15 +209,39 @@ namespace eced
                 this.ThingAngleSpinner.Value = 315;
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            foreach (Thing thing in thingList)
-                thing.type = listBox1.Text;
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        public void ApplyChanges()
+        {
+            foreach (Thing thing in thingList)
+            {
+                int tx, ty, tz;
+                if (XPosTextBox.Text != "" && int.TryParse(XPosTextBox.Text, out tx))
+                    thing.x = (float)tx / state.CurrentLevel.TileSize;
+                if (YPosTextBox.Text != "" && int.TryParse(YPosTextBox.Text, out ty))
+                    thing.y = (float)ty / state.CurrentLevel.TileSize;
+                if (ZPosTextBox.Text != "" && int.TryParse(ZPosTextBox.Text, out tz))
+                    thing.z = (float)tz / state.CurrentLevel.TileSize;
+                if (ThingTypeComboBox.Text != "")
+                    thing.type = ThingTypeComboBox.Text;
+                if (AmbushCheckBox.CheckState != CheckState.Indeterminate)
+                    thing.ambush = AmbushCheckBox.Checked;
+                if (PatrolCheckBox.CheckState != CheckState.Indeterminate)
+                    thing.patrol = PatrolCheckBox.Checked;
+                if (Skill1CheckBox.CheckState != CheckState.Indeterminate)
+                    thing.skill1 = Skill1CheckBox.Checked;
+                if (Skill2CheckBox.CheckState != CheckState.Indeterminate)
+                    thing.skill2 = Skill2CheckBox.Checked;
+                if (Skill3CheckBox.CheckState != CheckState.Indeterminate)
+                    thing.skill3 = Skill3CheckBox.Checked;
+                if (Skill4CheckBox.CheckState != CheckState.Indeterminate)
+                    thing.skill4 = Skill4CheckBox.Checked;
+                if (angleChanged)
+                    thing.angle = (int)ThingAngleSpinner.Value;
+            }
         }
     }
 }

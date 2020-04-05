@@ -92,8 +92,10 @@ namespace eced.Brushes
                 {
                     if (state.SelectedThings.Count > 0)
                     {
-                        //a hack aaaa
-                        moving = true;
+                        //a hack aaaa. Right click + no move = spawn editor
+                        if (Repeatable)
+                            moving = true;
+
                         Repeatable = true;
                         lastMovePos = pos;
                     }
@@ -123,8 +125,15 @@ namespace eced.Brushes
                     thing.y = (float)Math.Round(thing.y * gridGranularity, MidpointRounding.AwayFromZero) / (float)gridGranularity;
                 }
             }
+            else if (Repeatable) //I need to do some changes to the brush API
+            {
+                ThingEditor editor = new ThingEditor(state, state.SelectedThings);
+                if (editor.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    editor.ApplyChanges();
+                editor.Dispose();
+            }
             moving = false;
-            this.Repeatable = false;
+            Repeatable = false;
         }
     }
 }
