@@ -276,7 +276,7 @@ namespace eced
 
         public bool BrushDown(PickResult pos, int button)
         {
-            currentBrush.ApplyToTile(pos, CurrentLevel, button);
+            currentBrush.StartBrush(pos, CurrentLevel, button);
             return currentBrush.Repeatable;
         }
 
@@ -324,6 +324,7 @@ namespace eced
                 newang = (float)Math.Round(newang, MidpointRounding.AwayFromZero); //Round to nearest 45th
                 newang *= 45f;
                 thing.angle = (int)newang;
+                if (thing.angle < 0) thing.angle = 360 + thing.angle;
             }
         }
 

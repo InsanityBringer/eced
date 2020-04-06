@@ -42,9 +42,7 @@
             this.ExitMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.menuItem10 = new System.Windows.Forms.MenuItem();
-            this.menuItem11 = new System.Windows.Forms.MenuItem();
-            this.menuItem12 = new System.Windows.Forms.MenuItem();
-            this.menuItem13 = new System.Windows.Forms.MenuItem();
+            this.PreferencesMenuItem = new System.Windows.Forms.MenuItem();
             this.tbToolPanel = new System.Windows.Forms.ToolBar();
             this.toolBarButton10 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton11 = new System.Windows.Forms.ToolBarButton();
@@ -72,8 +70,17 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SizeTemplatePanel = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.LayerNumSpinner = new System.Windows.Forms.NumericUpDown();
+            this.ManageLayerButton = new System.Windows.Forms.Button();
+            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
+            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem6 = new System.Windows.Forms.MenuItem();
+            this.MapPropertiesMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LayerNumSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -100,6 +107,7 @@
             // NewMenuItem
             // 
             this.NewMenuItem.Index = 0;
+            this.NewMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlN;
             this.NewMenuItem.Text = "New";
             this.NewMenuItem.Click += new System.EventHandler(this.NewMenuItem_Click);
             // 
@@ -111,12 +119,14 @@
             // OpenMenuItem
             // 
             this.OpenMenuItem.Index = 2;
+            this.OpenMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
             this.OpenMenuItem.Text = "Open...";
             this.OpenMenuItem.Click += new System.EventHandler(this.OpenMenuItem_Click);
             // 
             // SaveMenuItem
             // 
             this.SaveMenuItem.Index = 3;
+            this.SaveMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
             this.SaveMenuItem.Text = "Save...";
             this.SaveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
@@ -145,31 +155,24 @@
             // menuItem2
             // 
             this.menuItem2.Index = 1;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.UndoMenuItem,
+            this.RedoMenuItem,
+            this.menuItem6,
+            this.MapPropertiesMenuItem});
             this.menuItem2.Text = "Edit";
             // 
             // menuItem10
             // 
             this.menuItem10.Index = 2;
             this.menuItem10.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem11,
-            this.menuItem12,
-            this.menuItem13});
+            this.PreferencesMenuItem});
             this.menuItem10.Text = "Config";
             // 
-            // menuItem11
+            // PreferencesMenuItem
             // 
-            this.menuItem11.Index = 0;
-            this.menuItem11.Text = "Base Data...";
-            // 
-            // menuItem12
-            // 
-            this.menuItem12.Index = 1;
-            this.menuItem12.Text = "-";
-            // 
-            // menuItem13
-            // 
-            this.menuItem13.Index = 2;
-            this.menuItem13.Text = "Map Options...";
+            this.PreferencesMenuItem.Index = 0;
+            this.PreferencesMenuItem.Text = "Preferences...";
             // 
             // tbToolPanel
             // 
@@ -396,18 +399,72 @@
             // 
             // SizeTemplatePanel
             // 
-            this.SizeTemplatePanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.SizeTemplatePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.SizeTemplatePanel.Location = new System.Drawing.Point(0, 26);
             this.SizeTemplatePanel.Name = "SizeTemplatePanel";
-            this.SizeTemplatePanel.Size = new System.Drawing.Size(172, 576);
+            this.SizeTemplatePanel.Size = new System.Drawing.Size(172, 489);
             this.SizeTemplatePanel.TabIndex = 9;
             this.SizeTemplatePanel.Visible = false;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.ManageLayerButton);
+            this.groupBox1.Controls.Add(this.LayerNumSpinner);
+            this.groupBox1.Location = new System.Drawing.Point(0, 521);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(172, 81);
+            this.groupBox1.TabIndex = 10;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Layers";
+            // 
+            // LayerNumSpinner
+            // 
+            this.LayerNumSpinner.Enabled = false;
+            this.LayerNumSpinner.Location = new System.Drawing.Point(12, 19);
+            this.LayerNumSpinner.Name = "LayerNumSpinner";
+            this.LayerNumSpinner.Size = new System.Drawing.Size(75, 20);
+            this.LayerNumSpinner.TabIndex = 0;
+            // 
+            // ManageLayerButton
+            // 
+            this.ManageLayerButton.Enabled = false;
+            this.ManageLayerButton.Location = new System.Drawing.Point(12, 45);
+            this.ManageLayerButton.Name = "ManageLayerButton";
+            this.ManageLayerButton.Size = new System.Drawing.Size(75, 23);
+            this.ManageLayerButton.TabIndex = 1;
+            this.ManageLayerButton.Text = "Manage...";
+            this.ManageLayerButton.UseVisualStyleBackColor = true;
+            // 
+            // UndoMenuItem
+            // 
+            this.UndoMenuItem.Index = 0;
+            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
+            this.UndoMenuItem.Text = "Undo";
+            // 
+            // RedoMenuItem
+            // 
+            this.RedoMenuItem.Index = 1;
+            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
+            this.RedoMenuItem.Text = "Redo";
+            // 
+            // menuItem6
+            // 
+            this.menuItem6.Index = 2;
+            this.menuItem6.Text = "-";
+            // 
+            // MapPropertiesMenuItem
+            // 
+            this.MapPropertiesMenuItem.Index = 3;
+            this.MapPropertiesMenuItem.Text = "Map Properties...";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(853, 624);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.SizeTemplatePanel);
             this.Controls.Add(this.mainLevelPanel);
             this.Controls.Add(this.statusBar1);
@@ -425,6 +482,8 @@
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.LayerNumSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -443,9 +502,7 @@
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem ExitMenuItem;
         private System.Windows.Forms.MenuItem menuItem10;
-        private System.Windows.Forms.MenuItem menuItem11;
-        private System.Windows.Forms.MenuItem menuItem12;
-        private System.Windows.Forms.MenuItem menuItem13;
+        private System.Windows.Forms.MenuItem PreferencesMenuItem;
         private System.Windows.Forms.ToolBar tbToolPanel;
         private System.Windows.Forms.ToolBarButton toolBarButton1;
         private System.Windows.Forms.ToolBarButton toolBarButton2;
@@ -474,6 +531,13 @@
         private System.Windows.Forms.MenuItem SaveIntoMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Panel SizeTemplatePanel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button ManageLayerButton;
+        private System.Windows.Forms.NumericUpDown LayerNumSpinner;
+        private System.Windows.Forms.MenuItem UndoMenuItem;
+        private System.Windows.Forms.MenuItem RedoMenuItem;
+        private System.Windows.Forms.MenuItem menuItem6;
+        private System.Windows.Forms.MenuItem MapPropertiesMenuItem;
     }
 }
 

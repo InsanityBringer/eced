@@ -16,6 +16,7 @@
  *  -------------------------------------------------------------------*/
 
 using System;
+using System.Collections.Generic;
 using eced.GameConfig;
 
 namespace eced.Brushes
@@ -38,6 +39,47 @@ namespace eced.Brushes
             this.Interpolated = false;
         }
 
+        public override void StartBrush(PickResult pos, Level level, int button)
+        {
+            base.StartBrush(pos, level, button);
+            if (button == 0)
+            {
+                if (state.HighlightedThing != null)
+                {
+                    state.ToggleSelectedThing(state.HighlightedThing);
+                }
+                else
+                {
+                    state.ClearSelectedThings();
+                }
+            }
+            else if (button == 1)
+            {
+                if (state.SelectedThings.Count == 0 && state.HighlightedThing == null)
+                {
+                    Thing lthing = new Thing();
+                    lthing.type = thing.Type;
+
+                    lthing.x = pos.x + .5f;
+                    lthing.y = pos.y + .5f;
+
+                    lthing.angle = flags.angle;
+                    lthing.ambush = flags.ambush;
+                    lthing.patrol = flags.patrol;
+                    lthing.skill1 = flags.skill1;
+                    lthing.skill2 = flags.skill2;
+                    lthing.skill3 = flags.skill3;
+                    lthing.skill4 = flags.skill4;
+
+                    level.AddThing(lthing);
+                }
+                else if (state.HighlightedThing != null)
+                {
+                    Repeatable = true; //Summon the editor at release if the highlighted thing is selected
+                    lastMovePos = pos;
+                }
+            }
+        }
         public override void ApplyToTile(PickResult pos, Level level, int button)
         {
             if (moving)
@@ -63,55 +105,17 @@ namespace eced.Brushes
             }
             else
             {
-                if (button == 0)
-                {
-                    if (state.HighlightedThing == null)
-                    {
-                        Thing lthing = new Thing();
-                        lthing.type = thing.Type;
+                float sx = lastMovePos.x + lastMovePos.xf;
+                float sy = lastMovePos.y + lastMovePos.yf;
 
-                        lthing.x = pos.x + .5f;
-                        lthing.y = pos.y + .5f;
+                float ex = pos.x + pos.xf;
+                float ey = pos.y + pos.yf;
 
-                        lthing.angle = flags.angle;
-                        lthing.ambush = flags.ambush;
-                        lthing.patrol = flags.patrol;
-                        lthing.skill1 = flags.skill1;
-                        lthing.skill2 = flags.skill2;
-                        lthing.skill3 = flags.skill3;
-                        lthing.skill4 = flags.skill4;
+                float dx = (ex - sx);
+                float dy = (ey - sy);
 
-                        level.AddThing(lthing);
-                    }
-                    else
-                    {
-                        state.ToggleSelectedThing(state.HighlightedThing);
-                    }
-                }
-                else if (button == 1)
-                {
-                    if (state.SelectedThings.Count > 0)
-                    {
-                        //a hack aaaa. Right click + no move = spawn editor
-                        if (Repeatable)
-                            moving = true;
-
-                        Repeatable = true;
-                        lastMovePos = pos;
-                    }
-                    else if (state.HighlightedThing != null)
-                    {
-                        //TODO: needs to be rethunk
-                        /*ThingEditor editor = new ThingEditor(state.HighlightedThing, thinglist);
-                        if (editor.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                        {
-                            Thing oldthing = state.HighlightedThing;
-                            state.HighlightedThing = editor.thing;
-                            level.ReplaceThing(oldthing, editor.thing);
-                        }
-                        editor.Dispose();*/
-                    }
-                }
+                if (Math.Abs(dx) > 0.2 || Math.Abs(dy) > 0.2)
+                    moving = true;
             }
         }
 
@@ -127,10 +131,23 @@ namespace eced.Brushes
             }
             else if (Repeatable) //I need to do some changes to the brush API
             {
-                ThingEditor editor = new ThingEditor(state, state.SelectedThings);
-                if (editor.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    editor.ApplyChanges();
-                editor.Dispose();
+                List<Thing> editThings = null;
+                if (state.SelectedThings.Count > 0)
+                {
+                    editThings = state.SelectedThings;
+                }
+                else if (state.HighlightedThing != null)
+                {
+                    editThings = new List<Thing>();
+                    editThings.Add(state.HighlightedThing);
+                }
+                if (editThings != null)
+                {
+                    ThingEditor editor = new ThingEditor(state, editThings);
+                    if (editor.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        editor.ApplyChanges();
+                    editor.Dispose();
+                }
             }
             moving = false;
             Repeatable = false;

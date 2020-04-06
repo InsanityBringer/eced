@@ -1,5 +1,5 @@
 ﻿/*  ---------------------------------------------------------------------
- *  Copyright (c) 2013 ISB
+ *  Copyright (c) 2020 ISB
  *
  *  eced is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,30 +19,46 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace eced.Brushes
+namespace eced.Operations
 {
-    public class EditorBrush
+    public class OperationChain
     {
-        public bool Repeatable { get; protected set; } = true;
-        public bool Interpolated { get; protected set; } = true;
-        public Tile normalTile;
-        protected EditorState state;
-        public EditorBrush(EditorState state)
+        private List<Operation> operations;
+        /// <summary>
+        /// A name to be displayed in the UI.
+        /// </summary>
+        public string Name { get; }
+        private EditorState state;
+
+        public OperationChain(EditorState state, string name)
         {
             this.state = state;
+            this.Name = name;
         }
 
-        public virtual void StartBrush(PickResult pos, Level level, int button)
+        public void AddOperation(Operation operation)
         {
+            operations.Add(operation);
         }
 
-        public virtual void ApplyToTile(PickResult pos, Level level, int button)
+        public OperationChain GetCounterOpChain()
         {
+            OperationChain counterChain = new OperationChain(state, Name);
+            foreach (Operation operation in operations)
+            {
+                counterChain.AddOperation(operation.GenerateCounterOperation());
+            }
+            return counterChain;
         }
 
-        public virtual void EndBrush(Level level)
+        public void ApplyChain()
         {
+            foreach (Operation operation in operations)
+            {
+                operation.Apply();
+            }
         }
     }
 }

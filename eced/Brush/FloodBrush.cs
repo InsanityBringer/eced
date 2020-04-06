@@ -33,7 +33,7 @@ namespace eced.Brushes
             this.Repeatable = false;
         }
 
-        public override void ApplyToTile(PickResult pos, Level level, int button)
+        public override void StartBrush(PickResult pos, Level level, int button)
         {
             this.level = level;
             if (setCode < 0)
@@ -41,8 +41,6 @@ namespace eced.Brushes
             else code = setCode;
 
             FloodFloorCode(pos.x, pos.y, pos.z);
-
-            this.level = null; //no need to let that linger
         }
 
         private void FloodFloorCode(int x, int y, int z)

@@ -139,10 +139,10 @@ namespace eced
                     break;
                 }
             }
-            isLocked = false;
-
             //TODO: I don't think you can't have a value on a spinner, so
             this.ThingAngleSpinner.Value = thingList[0].angle;
+
+            isLocked = false;
         }
 
         private void thingBitChange(object sender, EventArgs e)
@@ -151,6 +151,7 @@ namespace eced
 
         private void ndThingAngle_ValueChanged(object sender, EventArgs e)
         {
+            if (isLocked) return;
             angleChanged = true;
             if (this.ThingAngleSpinner.Value == 360)
                 this.ThingAngleSpinner.Value = 0;
@@ -188,6 +189,7 @@ namespace eced
 
         private void rbThingEast_CheckedChanged(object sender, EventArgs e)
         {
+            if (isLocked) return;
             angleChanged = true;
             if (lockangle) return;
             if (rbThingEast.Checked)

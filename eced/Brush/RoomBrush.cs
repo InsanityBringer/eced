@@ -20,6 +20,11 @@ namespace eced.Brushes
     public class RoomBrush : EditorBrush
     {
         public RoomBrush(EditorState state) : base(state) { }
+
+        public override void StartBrush(PickResult pos, Level level, int button)
+        {
+            ApplyToTile(pos, level, button);
+        }
         public override void ApplyToTile(PickResult pos, Level level, int button)
         {
             level.SetTile(pos.x, pos.y, pos.z, null);

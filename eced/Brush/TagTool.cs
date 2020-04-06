@@ -15,7 +15,7 @@ namespace eced.Brushes
             this.Repeatable = true;
         }
 
-        public override void ApplyToTile(PickResult pos, Level level, int button)
+        public override void StartBrush(PickResult pos, Level level, int button)
         {
             level.SetTag(pos.x, pos.y, pos.z, tag);
         }

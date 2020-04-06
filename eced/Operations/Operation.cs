@@ -1,5 +1,5 @@
 ﻿/*  ---------------------------------------------------------------------
- *  Copyright (c) 2013 ISB
+ *  Copyright (c) 2020 ISB
  *
  *  eced is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,25 +15,35 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-namespace eced.Brushes
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eced.Operations
 {
-    public class SectorBrush : EditorBrush
+    public class Operation
     {
-        public Sector currentSector = new Sector();
+        public EditorState State { get; }
 
-        public SectorBrush(EditorState state)
-            : base(state)
+        public Operation(EditorState state)
         {
-            this.Repeatable = true;
+            State = state;
         }
 
-        public override void StartBrush(PickResult pos, Level level, int button)
+        public virtual void Apply()
         {
-            ApplyToTile(pos, level, button);
         }
-        public override void ApplyToTile(PickResult pos, Level level, int button)
+
+        public virtual Operation GenerateCounterOperation()
         {
-            level.SetSector(pos.x, pos.y, pos.z, currentSector);
+            return this;
+        }
+
+        public override string ToString()
+        {
+            return "Generic operation (wait, how did this get here?)";
         }
     }
 }

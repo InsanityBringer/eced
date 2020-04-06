@@ -124,6 +124,8 @@
     <Compile Include="OpenMapDialog.Designer.cs">
       <DependentUpon>OpenMapDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Operation.cs" />
+    <Compile Include="Operations\OperationChain.cs" />
     <Compile Include="PickResult.cs" />
     <Compile Include="Renderer\RendererDrawer.cs" />
     <Compile Include="Renderer\Shader.cs" />

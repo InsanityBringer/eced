@@ -26,7 +26,7 @@ namespace eced.Brushes
             this.Repeatable = false;
         }
 
-        public override void ApplyToTile(PickResult pos, Level level, int button)
+        public override void StartBrush(PickResult pos, Level level, int button)
         {
             if (button == 0)
             {

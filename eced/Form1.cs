@@ -111,9 +111,6 @@ namespace eced
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //statusBar1.Panels[1].Text =
-
-            //tbToolPanel.Buttons[5].Pushed = true;
             this.gbThingSelect.Visible = false;
             this.gbTileSelection.Visible = false;
             this.gbTriggerData.Visible = false;
@@ -415,8 +412,6 @@ namespace eced
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            Console.WriteLine("input");
-
             //Handle UI events first
             if (e.KeyCode == Keys.Down)
             {
@@ -474,7 +469,8 @@ namespace eced
         protected override bool IsInputKey(Keys keyData) { return false; }
         protected override bool ProcessKeyPreview(ref Message m) { return false; }
         protected override bool ProcessDialogKey(Keys keyData) { return false; }
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) { return false; }
+        //[ISB] actually needed for accelerators? Hopefully it isn't a problem
+        //protected override bool ProcessCmdKey(ref Message msg, Keys keyData) { return false; }
 
         private void UpdateZoom()
         {
@@ -521,11 +517,6 @@ namespace eced
                 return;
 
             PickResult pickTest = renderer.Pick(e.X, e.Y);
-            editorState.HandlePick(pickTest);
-            if (editorState.CurrentTool == CurrentToolNum.ZoneTool)
-            {
-                gbZoneList.UpdateZoneHighlight(editorState.HighlightedZone);
-            }
 
             if (brushmode)
             {
@@ -535,6 +526,12 @@ namespace eced
             else if ((e.Button & MouseButtons.Middle) != 0) //middle click to pan
             {
                 renderer.AddPan(e.X - (int)lastMousePos.X, e.Y - (int)lastMousePos.Y);
+            }
+
+            editorState.HandlePick(pickTest);
+            if (editorState.CurrentTool == CurrentToolNum.ZoneTool)
+            {
+                gbZoneList.UpdateZoneHighlight(editorState.HighlightedZone);
             }
             mainLevelPanel.Invalidate();
 

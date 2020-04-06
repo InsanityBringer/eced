@@ -387,6 +387,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ThingEditor";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Editing Thing";
             ((System.ComponentModel.ISupportInitialize)(this.ThingAngleSpinner)).EndInit();
