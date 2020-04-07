@@ -422,8 +422,6 @@ namespace eced
             sb.Append("width = " + Width.ToString() + ";\n");
             sb.Append("height = " + Height.ToString() + ";\n");
 
-            //Plane plane = new Plane();
-
             for (int x = 0; x < Tileset.Count; x++)
             {
                 sb.Append(Tileset[x].Serialize());

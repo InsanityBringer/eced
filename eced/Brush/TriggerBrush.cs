@@ -44,7 +44,14 @@ namespace eced.Brushes
                 if (list != null)
                 {
                     TriggerEditor editor = new TriggerEditor(list, state.TriggerList);
-                    editor.ShowDialog();
+                    if (editor.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        level.DeleteTriggersAt(pos.x, pos.y, pos.z);
+                        foreach (Trigger trigger in editor.LocalTriggerList.Triggers)
+                        {
+                            level.AddTrigger(pos.x, pos.y, pos.z, trigger);
+                        }
+                    }
                     editor.Dispose();
                 }
             }

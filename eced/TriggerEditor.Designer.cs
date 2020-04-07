@@ -56,7 +56,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.TriggerComboBox = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.CloseDialogButton = new System.Windows.Forms.Button();
+            this.AcceptDialogButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ndParam5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ndParam4)).BeginInit();
@@ -407,21 +408,33 @@
             this.TriggerComboBox.SelectedIndexChanged += new System.EventHandler(this.cbTriggerType_SelectedIndexChanged);
             this.TriggerComboBox.TextChanged += new System.EventHandler(this.TriggerComboBox_TextChanged);
             // 
-            // button1
+            // CloseDialogButton
             // 
-            this.button1.Location = new System.Drawing.Point(338, 425);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Close";
-            this.button1.UseVisualStyleBackColor = true;
+            this.CloseDialogButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CloseDialogButton.Location = new System.Drawing.Point(338, 425);
+            this.CloseDialogButton.Name = "CloseDialogButton";
+            this.CloseDialogButton.Size = new System.Drawing.Size(75, 23);
+            this.CloseDialogButton.TabIndex = 4;
+            this.CloseDialogButton.Text = "Cancel";
+            this.CloseDialogButton.UseVisualStyleBackColor = true;
+            // 
+            // AcceptDialogButton
+            // 
+            this.AcceptDialogButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.AcceptDialogButton.Location = new System.Drawing.Point(257, 425);
+            this.AcceptDialogButton.Name = "AcceptDialogButton";
+            this.AcceptDialogButton.Size = new System.Drawing.Size(75, 23);
+            this.AcceptDialogButton.TabIndex = 5;
+            this.AcceptDialogButton.Text = "OK";
+            this.AcceptDialogButton.UseVisualStyleBackColor = true;
             // 
             // TriggerEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(425, 459);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.AcceptDialogButton);
+            this.Controls.Add(this.CloseDialogButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnAdd);
@@ -431,6 +444,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "TriggerEditor";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Editing Triggers";
             this.Load += new System.EventHandler(this.TriggerEditor_Load);
             this.groupBox1.ResumeLayout(false);
@@ -475,6 +490,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox TriggerComboBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button CloseDialogButton;
+        private System.Windows.Forms.Button AcceptDialogButton;
     }
 }
