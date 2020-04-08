@@ -77,6 +77,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ManageLayerButton = new System.Windows.Forms.Button();
             this.LayerNumSpinner = new System.Windows.Forms.NumericUpDown();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.ClearUnusedElementMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -159,6 +161,8 @@
             this.UndoMenuItem,
             this.RedoMenuItem,
             this.menuItem6,
+            this.ClearUnusedElementMenuItem,
+            this.menuItem3,
             this.MapPropertiesMenuItem});
             this.menuItem2.Text = "Edit";
             // 
@@ -181,7 +185,7 @@
             // 
             // MapPropertiesMenuItem
             // 
-            this.MapPropertiesMenuItem.Index = 3;
+            this.MapPropertiesMenuItem.Index = 5;
             this.MapPropertiesMenuItem.Text = "Map Properties...";
             this.MapPropertiesMenuItem.Click += new System.EventHandler(this.MapPropertiesMenuItem_Click);
             // 
@@ -461,6 +465,16 @@
             this.LayerNumSpinner.TabIndex = 0;
             this.LayerNumSpinner.ValueChanged += new System.EventHandler(this.LayerNumSpinner_ValueChanged);
             // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 4;
+            this.menuItem3.Text = "-";
+            // 
+            // ClearUnusedElementMenuItem
+            // 
+            this.ClearUnusedElementMenuItem.Index = 3;
+            this.ClearUnusedElementMenuItem.Text = "Clear Unused Items";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -540,6 +554,8 @@
         private System.Windows.Forms.MenuItem RedoMenuItem;
         private System.Windows.Forms.MenuItem menuItem6;
         private System.Windows.Forms.MenuItem MapPropertiesMenuItem;
+        private System.Windows.Forms.MenuItem ClearUnusedElementMenuItem;
+        private System.Windows.Forms.MenuItem menuItem3;
     }
 }
 

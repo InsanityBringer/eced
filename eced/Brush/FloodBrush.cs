@@ -31,16 +31,41 @@ namespace eced.Brushes
             : base(state)
         {
             this.Repeatable = false;
+            this.Interpolated = true;
         }
 
         public override void StartBrush(PickResult pos, Level level, int button)
         {
-            this.level = level;
-            if (setCode < 0)
-                code = level.GetUniqueZone();
-            else code = setCode;
+            if (button == 0)
+            {
+                if (setCode >= 0)
+                {
+                    Repeatable = true;
+                    ApplyToTile(pos, level, button);
+                }
+            }
+            else if (button == 1)
+            {
+                this.level = level;
+                if (setCode < 0)
+                    code = level.GetUniqueZone();
+                else code = setCode;
 
-            FloodFloorCode(pos.x, pos.y, pos.z);
+                FloodFloorCode(pos.x, pos.y, pos.z);
+            }
+        }
+
+        public override void ApplyToTile(PickResult pos, Level level, int button)
+        {
+            if (button == 0)
+            {
+                state.CurrentLevel.SetZone(pos.x, pos.y, pos.z, setCode);
+            }
+        }
+
+        public override void EndBrush(Level level)
+        {
+            Repeatable = false;
         }
 
         private void FloodFloorCode(int x, int y, int z)
