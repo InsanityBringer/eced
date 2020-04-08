@@ -35,7 +35,7 @@ namespace eced
             this.LocalTriggerList.pos = triggerList.pos;
             foreach (Trigger trigger in triggerList.Triggers)
             {
-                this.LocalTriggerList.Triggers.Add(trigger);
+                this.LocalTriggerList.Triggers.Add(new Trigger(trigger));
             }
             this.typelist = typelist;
         }

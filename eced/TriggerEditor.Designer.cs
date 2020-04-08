@@ -421,7 +421,7 @@
             // AcceptDialogButton
             // 
             this.AcceptDialogButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.AcceptDialogButton.Location = new System.Drawing.Point(257, 425);
+            this.AcceptDialogButton.Location = new System.Drawing.Point(258, 425);
             this.AcceptDialogButton.Name = "AcceptDialogButton";
             this.AcceptDialogButton.Size = new System.Drawing.Size(75, 23);
             this.AcceptDialogButton.TabIndex = 5;
@@ -430,8 +430,10 @@
             // 
             // TriggerEditor
             // 
+            this.AcceptButton = this.AcceptDialogButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.CloseDialogButton;
             this.ClientSize = new System.Drawing.Size(425, 459);
             this.Controls.Add(this.AcceptDialogButton);
             this.Controls.Add(this.CloseDialogButton);
