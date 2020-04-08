@@ -37,7 +37,7 @@ namespace eced
         public List<Plane> Planes { get; } = new List<Plane>();
         public int Brightness { get; set; } = 255;
         public float Visibility { get; set; } = 1.0f;
-        public string Name { get; set; } = "ecedtest";
+        public string Name { get; set; } = "New Level";
         public bool Experimental { get; set; } = false;
 
         //Data management
@@ -47,7 +47,7 @@ namespace eced
         public Dictionary<Sector, int> SectorsetMap { get; } = new Dictionary<Sector, int>();
         public List<TriggerList> Triggers { get; } = new List<TriggerList>();
         public Dictionary<TilePosition, int> TriggersMap { get; } = new Dictionary<TilePosition, int>();
-        public List<Thing> Things { get; } = new List<Thing>();
+        //public List<Thing> Things { get; } = new List<Thing>();
         public List<Zone> ZoneDefs { get; } = new List<Zone>();
 
         //Dirty rectangle properties
@@ -251,31 +251,42 @@ namespace eced
             }
         }
 
+        public int CalculateHeight()
+        {
+            int height = 0;
+            foreach (Plane plane in Planes)
+            {
+                height += plane.Depth;
+            }
+            return height;
+        }
+
+        public int CalculatePlaneForHeight(float z)
+        {
+            int zInMU = (int)(z * TileSize);
+            int current = 0;
+            for (int i = 0; i < Planes.Count; i++)
+            {
+                current += Planes[i].Depth;
+                if (zInMU < current) return i;
+            }
+            return -1;
+        }
+
+        public void LinkThing(Thing thing)
+        {
+            int zInMU = (int)(thing.z * TileSize);
+            //Clamp the thing to the height of the level
+            if (thing.z < 0) thing.z = 0;
+            if (zInMU >= CalculateHeight()) thing.z = ((float)(CalculateHeight() - 1) / TileSize);
+            //Link the thing into the proper plane.
+            int plane = CalculatePlaneForHeight(thing.z);
+            Planes[plane].Things.Add(thing);
+        }
+
         public void AddThing(Thing thing)
         {
-            this.Things.Add(thing);
-        }
-
-        public List<Thing> GetThings()
-        {
-            return Things;
-        }
-
-        public List<Thing> GetThingsInRange(int sx, int sy, int w, int h)
-        {
-            List<Thing> thinglist = new List<Thing>();
-            int ex = sx + w;
-            int ey = sy + h;
-            for (int x = 0; x < this.Things.Count; x++)
-            {
-                Thing thing = Things[x];
-                if (thing.x >= sx && thing.x < ex && thing.y >= sy && thing.y < ey)
-                {
-                    thinglist.Add(thing);
-                }
-            }
-            //Console.WriteLine("{0} things added", thinglist.Count);
-            return thinglist;
+            LinkThing(thing);
         }
 
         public ThingDefinition GetThingDef(Thing thing)
@@ -288,9 +299,10 @@ namespace eced
             float pickX = (res.x + res.xf) * TileSize;
             float pickY = (res.y + res.yf) * TileSize;
             //TODO: spatial partitioning
-            for (int lx = 0; lx < this.Things.Count; lx++)
+            List<Thing> localThings = Planes[res.z].Things;
+            for (int lx = 0; lx < localThings.Count; lx++)
             {
-                Thing thing = Things[lx];
+                Thing thing = localThings[lx];
                 ThingDefinition def = GetThingDef(thing);
                 float sx = thing.x * TileSize - def.Radius; float ex = thing.x * TileSize + def.Radius;
                 float sy = thing.y * TileSize - def.Radius; float ey = thing.y * TileSize + def.Radius;
@@ -304,23 +316,10 @@ namespace eced
 
         public void DeleteThing(Thing thing)
         {
-            if (this.Things.Contains(thing))
+            int plane = CalculatePlaneForHeight(thing.z);
+            if (Planes[plane].Things.Contains(thing))
             {
-                int lx = (int)thing.x;
-                int ly = (int)thing.y;
-
-                this.Things.Remove(thing);
-            }
-        }
-
-        public void ReplaceThing(Thing thing, Thing newThing)
-        {
-            if (this.Things.Contains(thing))
-            {
-                int lx = (int)newThing.x;
-                int ly = (int)newThing.y;
-
-                this.Things[this.Things.IndexOf(thing)] = newThing;
+                Planes[plane].Things.Remove(thing);
             }
         }
 
@@ -440,12 +439,15 @@ namespace eced
                 sb.Append("\n");
             }
             sb.Append("\n");
-            for (int x = 0; x < Things.Count; x++)
+            for (int i = 0; i < Depth; i++)
             {
-                sb.Append(Things[x].Serialize());
+                for (int x = 0; x < Planes[i].Things.Count; x++)
+                {
+                    sb.Append(Planes[i].Things[x].Serialize());
+                    sb.Append("\n");
+                }
                 sb.Append("\n");
             }
-            sb.Append("\n");
 
             for (int x = 0; x < Sectorset.Count; x++)
             {
@@ -464,6 +466,7 @@ namespace eced
             for (int x = 0; x < Planes.Count; x++)
             {
                 sb.Append(SerializePlaneMap(x));
+                sb.Append("\n");
             }
             sb.Append("\n");
 
@@ -541,6 +544,9 @@ namespace eced
 
         public static bool DeserializeLevel(CodeImp.DoomBuilder.IO.UniversalCollection collection, out Level level)
         {
+            //Things and triggers are linked to planes, so hold a buffer of them and add them later in case the planes haven't been loaded yet
+            List<Thing> localThings = new List<Thing>();
+            List<Trigger> localTriggers = new List<Trigger>();
             level = null;
             string levelNamespace;
             if (!collection[0].Key.Equals("namespace", StringComparison.OrdinalIgnoreCase))
@@ -623,18 +629,29 @@ namespace eced
                     case "thing":
                         entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
                         Thing thing = Thing.Reconstruct((CodeImp.DoomBuilder.IO.UniversalCollection)entry.Value);
-                        level.AddThing(thing);
+                        //level.AddThing(thing);
+                        localThings.Add(thing);
                         break;
                     case "trigger":
                         entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
                         Trigger trigger = Trigger.Reconstruct((CodeImp.DoomBuilder.IO.UniversalCollection)entry.Value);
-                        level.AddTrigger(trigger.x, trigger.y, trigger.z, trigger);
+                        //level.AddTrigger(trigger.x, trigger.y, trigger.z, trigger);
+                        localTriggers.Add(trigger);
                         break;
                     case "planemap":
                         entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));
                         level.ProcessPlanemap((CodeImp.DoomBuilder.IO.UniversalCollection)entry.Value, ref planenum);
                         break;
                 }
+            }
+            //All planes should be loaded, so link the things and triggers now.
+            foreach (Thing thing in localThings)
+            {
+                level.AddThing(thing);
+            }
+            foreach (Trigger trigger in localTriggers)
+            {
+                level.AddTrigger(trigger.x, trigger.y, trigger.z, trigger);
             }
             return true;
         }

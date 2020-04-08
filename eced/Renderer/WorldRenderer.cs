@@ -194,7 +194,7 @@ namespace eced.Renderer
             {
                 DirtyRectangle rect = editorState.CurrentLevel.dirtyRectangle;
                 int w = rect.x2 - rect.x1 + 1; int h = rect.y2 - rect.y1 + 1;
-                UpdateTilemapRegion(currentTilemapTexture, rect.x1, rect.y1, w, h, BuildPlaneData(0, rect.x1, rect.y1, w, h));
+                UpdateTilemapRegion(currentTilemapTexture, rect.x1, rect.y1, w, h, BuildPlaneData(state.CurrentState.ActiveLayer, rect.x1, rect.y1, w, h));
                 editorState.CurrentLevel.ClearDirty();
             }
         }
@@ -221,6 +221,7 @@ namespace eced.Renderer
 
         public void DrawTrigger(TriggerList triggerList)
         {
+            if (triggerList.pos.z != state.CurrentState.ActiveLayer) return;
             int triggerActivation = 0;
             int tilesize = state.CurrentState.CurrentLevel.TileSize;
             Vector4 color = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
@@ -344,9 +345,9 @@ namespace eced.Renderer
             ThingDefinition def;
             Thing thing;
             //Draw in reverse order, since thing highlighting logic gets the least recent thing
-            for (int i = state.CurrentState.CurrentLevel.Things.Count - 1; i >= 0; i--) 
+            for (int i = state.CurrentState.CurrentLevel.Planes[state.CurrentState.ActiveLayer].Things.Count - 1; i >= 0; i--) 
             {
-                thing = state.CurrentState.CurrentLevel.Things[i];
+                thing = state.CurrentState.CurrentLevel.Planes[state.CurrentState.ActiveLayer].Things[i];
                 def = state.CurrentState.CurrentLevel.GetThingDef(thing);
 
                 state.Drawer.DrawThingBase(thing, def, alpha);

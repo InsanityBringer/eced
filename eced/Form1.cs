@@ -161,6 +161,10 @@ namespace eced
 
         private void LevelChanged()
         {
+            LayerNumSpinner.Enabled = true;
+            ManageLayerButton.Enabled = true;
+            LayerNumSpinner.Value = 0;
+            LayerNumSpinner.Maximum = editorState.CurrentLevel.Depth - 1;
             RebuildResources();
             SelectTool(1);
             worldRenderer.LevelChanged();
@@ -605,6 +609,13 @@ namespace eced
                 mapDialog.ApplyChanges();
             mapDialog.Dispose();
             worldRenderer.LevelChanged();
+            mainLevelPanel.Invalidate();
+        }
+
+        private void LayerNumSpinner_ValueChanged(object sender, EventArgs e)
+        {
+            editorState.ActiveLayer = (int)LayerNumSpinner.Value;
+            editorState.CurrentLevel.Invalidate();
             mainLevelPanel.Invalidate();
         }
 

@@ -39,6 +39,8 @@ namespace eced
     }
     public class EditorState
     {
+        //needed since layers are bounds checked and need more properties
+        private int mActiveLayer = 0;
         public ColorChart Colors { get; } = new ColorChart();
         private EditorBrush currentBrush;
         public CurrentToolNum CurrentTool { get; private set; }
@@ -60,6 +62,21 @@ namespace eced
         public Thing HighlightedThing { get; private set; }
         public List<Thing> SelectedThings { get; } = new List<Thing>();
         public int HighlightedZone { get; private set; } = -1;
+        public int ActiveLayer { get => mActiveLayer;
+            set
+            {
+                if (value < 0) mActiveLayer = 0;
+                else if (CurrentLevel != null)
+                {
+                    if (value >= CurrentLevel.Depth)
+                        mActiveLayer = CurrentLevel.Depth - 1;
+                    else
+                        mActiveLayer = value;
+                }
+                else
+                    mActiveLayer = 1;
+            }
+        }
 
         public EditorIO EditorIOState { get; }
         private EditorInputHandler inputHandler;
@@ -157,6 +174,7 @@ namespace eced
             CreateBrushes();
 
             CurrentLevel = level;
+            ActiveLayer = 0;
         }
 
         public bool CreateLevelFromData(MapInformation mapinfo, byte[] data)
@@ -172,6 +190,7 @@ namespace eced
 
                 LoadResources(mapinfo, level);
                 CreateBrushes();
+                ActiveLayer = 0;
             }
             else
             {

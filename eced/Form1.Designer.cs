@@ -459,6 +459,7 @@
             this.LayerNumSpinner.Name = "LayerNumSpinner";
             this.LayerNumSpinner.Size = new System.Drawing.Size(75, 20);
             this.LayerNumSpinner.TabIndex = 0;
+            this.LayerNumSpinner.ValueChanged += new System.EventHandler(this.LayerNumSpinner_ValueChanged);
             // 
             // Form1
             // 

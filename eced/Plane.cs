@@ -25,14 +25,15 @@ namespace eced
 {
     public class Plane
     {
-        int height = 64;
 
         public Cell[,] cells;
-        public List<OpenTK.Vector2> cellsWithTriggers = new List<OpenTK.Vector2>();
+
 
         public int Width { get; } = 64;
         public int Height { get; } = 64;
-        
+        public int Depth { get; set; } = 64; //fine to mutate depth
+        public List<Thing> Things { get; } = new List<Thing>();
+
         public Plane(int w, int h)
         {
             this.Width = w;
@@ -53,7 +54,7 @@ namespace eced
         public String Serialize()
         {
             String str = "plane\n{\n";
-            str += "\tdepth = " + height.ToString() + ";\n";
+            str += "\tdepth = " + Depth.ToString() + ";\n";
             str += "}";
 
             return str;
@@ -62,7 +63,7 @@ namespace eced
         public static Plane Deserialize(Level level, UniversalCollection data)
         {
             Plane plane = new Plane(level.Width, level.Height);
-            plane.height = UWMFSearch.getIntTag(data, "depth", 64);
+            plane.Depth = UWMFSearch.getIntTag(data, "depth", 64);
             return plane;
         }
     }

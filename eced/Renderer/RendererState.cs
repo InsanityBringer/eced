@@ -220,6 +220,8 @@ namespace eced.Renderer
             res.xf = xTile - (int)xTile;
             res.yf = yTile - (int)yTile;
 
+            res.z = CurrentState.ActiveLayer;
+
             return res;
         }
 
