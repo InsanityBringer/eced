@@ -1,4 +1,21 @@
-﻿using System;
+﻿/*  ---------------------------------------------------------------------
+ *  Copyright (c) 2020 ISB
+ *
+ *  eced is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *   eced is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
+ *  -------------------------------------------------------------------*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -26,15 +43,15 @@ namespace eced.UIPanels
 
         public void AddThings(List<ThingDefinition> things)
         {
-            comboBox1.Items.Clear();
+            ThingTypeComboBox.Items.Clear();
             palette = things;
             string[] names = new string[things.Count];
             for (int i = 0; i < things.Count; i++)
             {
                 names[i] = things[i].Type;
             }
-            comboBox1.Items.AddRange(names);
-            comboBox1.SelectedIndex = 0;
+            ThingTypeComboBox.Items.AddRange(names);
+            ThingTypeComboBox.SelectedIndex = 0;
         }
 
         public void SetPairedBrush(ThingBrush brush)
@@ -48,7 +65,7 @@ namespace eced.UIPanels
             if (pairedBrush != null)
             {
                 pairedBrush.flags.angle = (int)ThingAngleSpinner.Value;
-                pairedBrush.thing = palette[comboBox1.SelectedIndex];
+                pairedBrush.ThingType = ThingTypeComboBox.Text;
             }
         }
 
@@ -133,6 +150,11 @@ namespace eced.UIPanels
         private void cbThingAmbush_CheckedChanged(object sender, EventArgs e)
         {
             pairedBrush.flags.ambush = cbThingAmbush.Checked;
+        }
+
+        private void ThingTypeComboBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateBrush();
         }
     }
 }

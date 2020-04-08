@@ -23,7 +23,8 @@ namespace eced.Brushes
 {
     public class ThingBrush : EditorBrush
     {
-        public ThingDefinition thing = null;
+        //public ThingDefinition thing = null;
+        public string ThingType { get; set; } = "$Player1Start";
         public ThingFlags flags = new ThingFlags();
         public ThingManager thinglist;
 
@@ -58,7 +59,7 @@ namespace eced.Brushes
                 if (state.SelectedThings.Count == 0 && state.HighlightedThing == null)
                 {
                     Thing lthing = new Thing();
-                    lthing.type = thing.Type;
+                    lthing.type = ThingType;
 
                     lthing.x = pos.x + .5f;
                     lthing.y = pos.y + .5f;

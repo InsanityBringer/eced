@@ -105,7 +105,7 @@ namespace eced
             BrushList[1] = new RoomBrush(this);
             BrushList[2] = new TileBrush(this);
             BrushList[3] = new EditorBrush(this);
-            BrushList[4] = new ThingBrush(this); ((ThingBrush)BrushList[4]).thinglist = ThingList; ((ThingBrush)BrushList[4]).thing = ThingList.thingList[0];
+            BrushList[4] = new ThingBrush(this); ((ThingBrush)BrushList[4]).thinglist = ThingList;
             BrushList[5] = new TriggerBrush(this);
             BrushList[6] = new SectorBrush(this);
             BrushList[7] = new FloodBrush(this);

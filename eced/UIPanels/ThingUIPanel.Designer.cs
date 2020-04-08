@@ -45,7 +45,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.ThingAngleSpinner = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.ThingTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ThingAngleSpinner)).BeginInit();
             this.SuspendLayout();
@@ -265,16 +265,16 @@
             this.label9.TabIndex = 16;
             this.label9.Text = "Angle";
             // 
-            // comboBox1
+            // ThingTypeComboBox
             // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.ThingTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(3, 16);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(159, 21);
-            this.comboBox1.TabIndex = 29;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.ThingTypeComboBox.FormattingEnabled = true;
+            this.ThingTypeComboBox.Location = new System.Drawing.Point(3, 16);
+            this.ThingTypeComboBox.Name = "ThingTypeComboBox";
+            this.ThingTypeComboBox.Size = new System.Drawing.Size(159, 21);
+            this.ThingTypeComboBox.TabIndex = 29;
+            this.ThingTypeComboBox.TextChanged += new System.EventHandler(this.ThingTypeComboBox_TextChanged);
             // 
             // label1
             // 
@@ -290,7 +290,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.ThingTypeComboBox);
             this.Controls.Add(this.cbThingSkill4);
             this.Controls.Add(this.rbThingNW);
             this.Controls.Add(this.rbThingNE);
@@ -335,7 +335,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.NumericUpDown ThingAngleSpinner;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox ThingTypeComboBox;
         private System.Windows.Forms.Label label1;
     }
 }
