@@ -33,7 +33,7 @@ namespace eced
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int Depth { get; private set; }
-        public int TileSize { get; private set; } = 64;
+        public int TileSize { get; set; } = 64;
         public List<Plane> Planes { get; } = new List<Plane>();
         public int Brightness { get; set; } = 255;
         public float Visibility { get; set; } = 1.0f;
@@ -417,10 +417,16 @@ namespace eced
                 sb.Append("namespace = \"ECWolf-v12\";\n");
             else
                 sb.Append("namespace = \"Wolf3D\";\n");
-            sb.Append("tilesize = 64;\n");
-            sb.Append("name = \"ecedtest\";\n");
-            sb.Append("width = " + Width.ToString() + ";\n");
-            sb.Append("height = " + Height.ToString() + ";\n");
+            sb.AppendFormat("tilesize = {0};\n", TileSize);
+            //cheap escaping
+            sb.AppendFormat("name = \"{0}\";\n", Name.Replace("\"", "\\\""));
+            sb.AppendFormat("width = {0};\n", Width);
+            sb.AppendFormat("height = {0};\n", Height);
+            if (Experimental)
+            {
+                sb.AppendFormat("defaultlightlevel = {0};\n", Brightness);
+                sb.AppendFormat("defaultvisibility = {0:N2};\n", Visibility);
+            }
 
             for (int x = 0; x < Tileset.Count; x++)
             {
@@ -581,8 +587,16 @@ namespace eced
                     case "defaultvisibility":
                         if (!level.Experimental)
                             throw new Exception("Level::DeserializeLevel: Attempting to use defaultvisibility in non-experimental map.");
-                        entry.ValidateType(typeof(float));
-                        level.Visibility = (float)entry.Value;
+                        try
+                        {
+                            entry.ValidateType(typeof(float));
+                            level.Visibility = (float)entry.Value;
+                        }
+                        catch (Exception) //no decimal places, try integer instead
+                        {
+                            entry.ValidateType(typeof(int));
+                            level.Visibility = (float)((int)entry.Value);
+                        }
                         break;
                     case "tile":
                         entry.ValidateType(typeof(CodeImp.DoomBuilder.IO.UniversalCollection));

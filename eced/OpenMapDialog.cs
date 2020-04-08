@@ -44,6 +44,7 @@ namespace eced
             {
                 MapsListBox.Items.Add(archive.lumps[mapIndicies[i]].name);
             }
+            MapsListBox.SelectedIndex = 0;
         }
 
         private void ButtonAdd_Click(object sender, EventArgs e)

@@ -41,6 +41,10 @@
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this.ExitMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
+            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem6 = new System.Windows.Forms.MenuItem();
+            this.MapPropertiesMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem10 = new System.Windows.Forms.MenuItem();
             this.PreferencesMenuItem = new System.Windows.Forms.MenuItem();
             this.tbToolPanel = new System.Windows.Forms.ToolBar();
@@ -71,12 +75,8 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SizeTemplatePanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.LayerNumSpinner = new System.Windows.Forms.NumericUpDown();
             this.ManageLayerButton = new System.Windows.Forms.Button();
-            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
-            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem6 = new System.Windows.Forms.MenuItem();
-            this.MapPropertiesMenuItem = new System.Windows.Forms.MenuItem();
+            this.LayerNumSpinner = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -161,6 +161,29 @@
             this.menuItem6,
             this.MapPropertiesMenuItem});
             this.menuItem2.Text = "Edit";
+            // 
+            // UndoMenuItem
+            // 
+            this.UndoMenuItem.Index = 0;
+            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
+            this.UndoMenuItem.Text = "Undo";
+            // 
+            // RedoMenuItem
+            // 
+            this.RedoMenuItem.Index = 1;
+            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
+            this.RedoMenuItem.Text = "Redo";
+            // 
+            // menuItem6
+            // 
+            this.menuItem6.Index = 2;
+            this.menuItem6.Text = "-";
+            // 
+            // MapPropertiesMenuItem
+            // 
+            this.MapPropertiesMenuItem.Index = 3;
+            this.MapPropertiesMenuItem.Text = "Map Properties...";
+            this.MapPropertiesMenuItem.Click += new System.EventHandler(this.MapPropertiesMenuItem_Click);
             // 
             // menuItem10
             // 
@@ -419,14 +442,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Layers";
             // 
-            // LayerNumSpinner
-            // 
-            this.LayerNumSpinner.Enabled = false;
-            this.LayerNumSpinner.Location = new System.Drawing.Point(12, 19);
-            this.LayerNumSpinner.Name = "LayerNumSpinner";
-            this.LayerNumSpinner.Size = new System.Drawing.Size(75, 20);
-            this.LayerNumSpinner.TabIndex = 0;
-            // 
             // ManageLayerButton
             // 
             this.ManageLayerButton.Enabled = false;
@@ -437,27 +452,13 @@
             this.ManageLayerButton.Text = "Manage...";
             this.ManageLayerButton.UseVisualStyleBackColor = true;
             // 
-            // UndoMenuItem
+            // LayerNumSpinner
             // 
-            this.UndoMenuItem.Index = 0;
-            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
-            this.UndoMenuItem.Text = "Undo";
-            // 
-            // RedoMenuItem
-            // 
-            this.RedoMenuItem.Index = 1;
-            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
-            this.RedoMenuItem.Text = "Redo";
-            // 
-            // menuItem6
-            // 
-            this.menuItem6.Index = 2;
-            this.menuItem6.Text = "-";
-            // 
-            // MapPropertiesMenuItem
-            // 
-            this.MapPropertiesMenuItem.Index = 3;
-            this.MapPropertiesMenuItem.Text = "Map Properties...";
+            this.LayerNumSpinner.Enabled = false;
+            this.LayerNumSpinner.Location = new System.Drawing.Point(12, 19);
+            this.LayerNumSpinner.Name = "LayerNumSpinner";
+            this.LayerNumSpinner.Size = new System.Drawing.Size(75, 20);
+            this.LayerNumSpinner.TabIndex = 0;
             // 
             // Form1
             // 

@@ -597,6 +597,17 @@ namespace eced
             DoSaveDialog(true);
         }
 
+        private void MapPropertiesMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editorState.CurrentLevel == null) return;
+            MapPropertiesDialog mapDialog = new MapPropertiesDialog(editorState.CurrentLevel);
+            if (mapDialog.ShowDialog() == DialogResult.OK)
+                mapDialog.ApplyChanges();
+            mapDialog.Dispose();
+            worldRenderer.LevelChanged();
+            mainLevelPanel.Invalidate();
+        }
+
         private void Form1_Leave(object sender, EventArgs e)
         {
             //this was needed for an experiment, but it turned out not to be needed

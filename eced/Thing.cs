@@ -102,9 +102,9 @@ namespace eced
         {
             StringBuilder stringmaker = new StringBuilder();
             stringmaker.Append("thing\n{\n");
-            stringmaker.Append("\tx = "); stringmaker.Append(x); stringmaker.Append(";");
-            stringmaker.Append("\n\ty = "); stringmaker.Append(y); stringmaker.Append(";");
-            stringmaker.Append("\n\tz = "); stringmaker.Append(z); stringmaker.Append(";");
+            stringmaker.AppendFormat("\tx = {0:N2};", x);
+            stringmaker.AppendFormat("\n\ty = {0:N2};", y);
+            stringmaker.AppendFormat("\n\tz = {0:N2};", z);
 
             stringmaker.Append("\n\tangle = "); stringmaker.Append(angle); stringmaker.Append(";");
             stringmaker.Append("\n\ttype = \""); stringmaker.Append(type); stringmaker.Append("\";");

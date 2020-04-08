@@ -124,7 +124,7 @@ namespace eced.Renderer
             GL.Uniform1(TileMapShader.UniformLocations["tilesize"], (float)CurrentState.CurrentLevel.TileSize); 
             GL.Uniform2(TileMapShader.UniformLocations["mapsize"], level.Width, level.Height);
             ThingShader.UseShader();
-            GL.Uniform1(ThingShader.UniformLocations["tilesize"], (float)64); //TODO
+            GL.Uniform1(ThingShader.UniformLocations["tilesize"], (float)CurrentState.CurrentLevel.TileSize); //TODO
             GL.Uniform2(ThingShader.UniformLocations["mapsize"], level.Width, level.Height);
             LineShader.UseShader();
             GL.Uniform1(LineShader.UniformLocations["tilesize"], (float)CurrentState.CurrentLevel.TileSize); 

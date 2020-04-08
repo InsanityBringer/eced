@@ -8,6 +8,7 @@ uniform sampler2D atlas;
 uniform sampler2D numbers;
 uniform isampler2D texInfo;
 uniform isampler2D mapPlane;
+uniform float tilesize;
 
 void main()
 {
@@ -83,9 +84,11 @@ void main()
 		textureInfo = texelFetch(texInfo, ivec2(0, tileid), 0);
 		ivec2 textureRes = textureInfo.rg;
 		ivec2 texOrigin = textureInfo.ba;
+		vec2 texScale = vec2(tilesize / textureInfo.r, tilesize / textureInfo.g);
 
 		cellposf = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
-		cellpos = ivec2(texOrigin.x + int(cellposf.x * textureRes.x), texOrigin.y + int(cellposf.y * textureRes.y));
+		vec2 cellpost = fract(cellposf * texScale);
+		cellpos = ivec2(texOrigin.x + int(cellpost.x * textureRes.x), texOrigin.y + int(cellpost.y * textureRes.y));
 	}
 
 	//Darken the edges of tiles with neighboring empty cells

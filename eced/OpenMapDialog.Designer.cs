@@ -153,8 +153,9 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "OpenMapDialog";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "OpenMapDialog";
+            this.Text = "Open Map";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OpenMapDialog_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
