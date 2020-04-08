@@ -313,6 +313,16 @@
 		<b>192</b>
 		<icon>2</icon>
 	</actor>
+  <actor>
+    <id>GatlingGunUpgrade</id>
+    <radius>20</radius>
+    <height>16</height>
+    <name>Chaingun+Machinegun</name>
+    <r>0</r>
+    <g>128</g>
+    <b>192</b>
+    <icon>2</icon>
+  </actor>
 	
 	<actor>
 		<id>GoldKey</id>
