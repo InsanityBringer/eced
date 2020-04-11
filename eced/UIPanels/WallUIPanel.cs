@@ -135,5 +135,12 @@ namespace eced.UIPanels
 
             pairedBrush.normalTile = pairedBrush.normalTile.ChangeSoundSequence(SndSeqTextBox.Text);
         }
+
+        private void BrowseNorthTextureButton_Click(object sender, EventArgs e)
+        {
+            TextureBrowser browser = new TextureBrowser();
+            browser.ShowDialog();
+            browser.Dispose();
+        }
     }
 }

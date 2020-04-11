@@ -26,6 +26,7 @@ namespace eced.Renderer
         Tilemap = 0,
         Thing,
         LineBuffer,
+        BasicTexture,
         NumVAOs
     }
 
@@ -53,6 +54,8 @@ namespace eced.Renderer
         private float[] thingBuffer = new float[12 * NUM_THING_POINTS];
         private int lastThingNum;
         private int thingArrowTexture;
+        //Basic texture data
+        private int basicBufferName;
 
         public RendererDrawer(RendererState state)
         {
@@ -68,6 +71,7 @@ namespace eced.Renderer
             InitTilemapBuffer();
             InitThingBuffer();
             InitThingTextures();
+            InitBasicBuffer();
         }
 
         public void InitLineBuffer()
@@ -273,6 +277,49 @@ namespace eced.Renderer
             thingBuffer[lastThingNum * 12 + 10] = (float)def.Icon;
 
             lastThingNum++;
+        }
+
+        private void InitBasicBuffer()
+        {
+            tilemapBuffer[0] = 0.0f;
+            tilemapBuffer[1] = 1.0f;
+            tilemapBuffer[2] = 0f;
+            tilemapBuffer[3] = 1.0f;
+            tilemapBuffer[4] = 0.0f;
+            tilemapBuffer[5] = 1.0f;
+
+            tilemapBuffer[6 + 0] = 0.0f;
+            tilemapBuffer[6 + 1] = 0.0f;
+            tilemapBuffer[6 + 2] = 0f;
+            tilemapBuffer[6 + 3] = 1.0f;
+            tilemapBuffer[6 + 4] = 0.0f;
+            tilemapBuffer[6 + 5] = 0.0f;
+
+            tilemapBuffer[12 + 0] = 1.0f;
+            tilemapBuffer[12 + 1] = 0.0f;
+            tilemapBuffer[12 + 2] = 0f;
+            tilemapBuffer[12 + 3] = 1.0f;
+            tilemapBuffer[12 + 4] = 1.0f;
+            tilemapBuffer[12 + 5] = 0.0f;
+
+            tilemapBuffer[18 + 0] = 1.0f;
+            tilemapBuffer[18 + 1] = 1.0f;
+            tilemapBuffer[18 + 2] = 0f;
+            tilemapBuffer[18 + 3] = 1.0f;
+            tilemapBuffer[18 + 4] = 1.0f;
+            tilemapBuffer[18 + 5] = 1.0f;
+
+            basicBufferName = GL.GenBuffer();
+            GL.BindVertexArray(vaoNames[(int)VAOInidices.BasicTexture]);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, basicBufferName);
+            GL.BufferData(BufferTarget.ArrayBuffer, 6 * sizeof(float) * 6, tilemapBuffer, BufferUsageHint.StaticDraw);
+            RendererState.ErrorCheck("RendererDrawer::InitLineBuffer: Creating tilemap vertex buffer");
+
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, sizeof(float) * 6, 0);
+            GL.EnableVertexAttribArray(1);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, sizeof(float) * 6, sizeof(float) * 4);
+            RendererState.ErrorCheck("RendererDrawer::InitLineBuffer: Creating tilemap vertex attributes");
         }
     }
 }

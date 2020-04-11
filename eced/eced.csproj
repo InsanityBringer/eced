@@ -135,6 +135,7 @@
     <Compile Include="PickResult.cs" />
     <Compile Include="Renderer\RendererDrawer.cs" />
     <Compile Include="Renderer\Shader.cs" />
+    <Compile Include="Renderer\TextureRenderTarget.cs" />
     <Compile Include="Renderer\WorldRenderer.cs" />
     <Compile Include="ResourceFiles\DirectoryLump.cs" />
     <Compile Include="ResourceFiles\Formats\LumpClassifier.cs" />
@@ -155,6 +156,18 @@
     <Compile Include="ResourceFiles\ZIPArchive.cs" />
     <Compile Include="Brush\SectorBrush.cs" />
     <Compile Include="Brush\TagTool.cs" />
+    <Compile Include="TextureBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextureBrowser.Designer.cs">
+      <DependentUpon>TextureBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextureView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TextureView.Designer.cs">
+      <DependentUpon>TextureView.cs</DependentUpon>
+    </Compile>
     <Compile Include="ThingEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,6 +206,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextureBrowser.resx">
+      <DependentUpon>TextureBrowser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ThingEditor.resx">
       <DependentUpon>ThingEditor.cs</DependentUpon>
@@ -311,6 +327,9 @@
     <Content Include="Resources\floorfont.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\FragBasicTexture.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\FragColor.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -351,6 +370,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\thingweapon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\VertexBasicTexture.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\VertexPanTexture.txt">

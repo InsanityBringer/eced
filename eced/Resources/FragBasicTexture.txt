@@ -1,0 +1,15 @@
+﻿#version 330 core
+
+smooth in vec2 uvs;
+
+out vec4 color;
+
+uniform sampler2D atlas;
+uniform int textureNum;
+uniform isampler2D texInfo;
+
+void main()
+{
+	ivec4 data = texelFetch(texInfo, ivec2(0, textureNum), 0);
+	color = texelFetch(atlas, ivec2(data.b + int(uvs.x * data.r), data.a + int(uvs.y * data.g)), 0);
+}

@@ -1,0 +1,28 @@
+﻿#version 330 core
+
+layout(location=0) in vec4 point;
+layout(location=1) in vec2 uvCoord;
+
+uniform int textureNum;
+uniform isampler2D texInfo;
+
+smooth out vec2 uvs;
+
+void main()
+{
+	//Build a scaling vector based on the currently selected texture
+	ivec4 data = texelFetch(texInfo, ivec2(0, textureNum), 0);
+	vec4 scale;
+
+	if (data.r > data.g) //Wider than tall, shrink Y
+	{
+		scale = vec4(1.0, float(data.g) / data.r, 0.0, 1.0);
+	}
+	else //Taller than wide, shrink X
+	{
+		scale = vec4(float(data.r) / data.g, 1.0, 0.0, 1.0);
+	}
+	//scale and passthrough
+	gl_Position = point * scale;
+	uvs = uvCoord;
+}

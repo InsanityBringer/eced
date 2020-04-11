@@ -36,6 +36,7 @@ namespace eced.Renderer
         public Shader TileMapShader { get; private set; }
         public Shader ThingShader { get; private set; }
         public Shader LineShader { get; private set; }
+        public Shader BasicTextureShader { get; private set; }
 
         public RendererDrawer Drawer { get; private set; }
 
@@ -95,6 +96,12 @@ namespace eced.Renderer
             LineShader.AddUniform("project");
             LineShader.AddUniform("mapsize");
             LineShader.AddUniform("tilesize");
+
+            BasicTextureShader = new Shader("BasicTextureShader");
+            BasicTextureShader.Init();
+            BasicTextureShader.AddShader("./Resources/VertexBasicTexture.txt", ShaderType.VertexShader);
+            BasicTextureShader.AddShader("./Resources/FragBasicTexture.txt", ShaderType.FragmentShader);
+            BasicTextureShader.LinkShader();
         }
 
         public void SetViewSize(int w, int h)

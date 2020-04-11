@@ -36,7 +36,7 @@ namespace eced
         public int TileSize { get; set; } = 64;
         public List<Plane> Planes { get; } = new List<Plane>();
         public int Brightness { get; set; } = 255;
-        public float Visibility { get; set; } = 1.0f;
+        public float Visibility { get; set; } = 8.0f;
         public string Name { get; set; } = "New Level";
         public bool Experimental { get; set; } = false;
 
@@ -432,13 +432,11 @@ namespace eced
                 sb.Append(Tileset[x].Serialize());
                 sb.Append("\n");
             }
-            sb.Append("\n");
             for (int x = 0; x < ZoneDefs.Count; x++)
             {
                 sb.Append(ZoneDefs[x].Serialize());
                 sb.Append("\n");
             }
-            sb.Append("\n");
             for (int i = 0; i < Depth; i++)
             {
                 for (int x = 0; x < Planes[i].Things.Count; x++)
@@ -446,7 +444,6 @@ namespace eced
                     sb.Append(Planes[i].Things[x].Serialize());
                     sb.Append("\n");
                 }
-                sb.Append("\n");
             }
 
             for (int x = 0; x < Sectorset.Count; x++)
@@ -454,28 +451,27 @@ namespace eced
                 sb.Append(Sectorset[x].Serialize());
                 sb.Append("\n");
             }
-            sb.Append("\n");
 
             for (int x = 0; x < Planes.Count; x++)
             {
                 sb.Append(Planes[x].Serialize());
                 sb.Append("\n");
             }
-            sb.Append("\n");
 
             for (int x = 0; x < Planes.Count; x++)
             {
                 sb.Append(SerializePlaneMap(x));
                 sb.Append("\n");
             }
-            sb.Append("\n");
 
             for (int i = 0; i < Triggers.Count; i++)
             {
                 foreach (Trigger trigger in Triggers[i].Triggers)
+                {
                     sb.Append(trigger.Serialize());
+                    sb.Append("\n");
+                }
             }
-            sb.Append("\n");
 			return sb.ToString();
         }
 

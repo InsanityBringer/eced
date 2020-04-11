@@ -162,9 +162,6 @@ namespace eced.Renderer
 
         private int CreateTilemapTexture(int w, int h)
         {
-            //short[] mapTexture = BuildPlaneData(0);
-
-            //int[] tids = new int[4]; GL.GenTextures(4, tids);
             int worldTextureID = GL.GenTexture();
 
             GL.ActiveTexture(TextureUnit.Texture4);

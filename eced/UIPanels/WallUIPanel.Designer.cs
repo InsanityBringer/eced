@@ -55,6 +55,7 @@
             this.SouthTexTextBox = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.NorthTexTextBox = new System.Windows.Forms.TextBox();
+            this.BrowseNorthTextureButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -307,10 +308,21 @@
             this.NorthTexTextBox.TabIndex = 12;
             this.NorthTexTextBox.TextChanged += new System.EventHandler(this.TileTexture_TextChanged);
             // 
+            // BrowseNorthTextureButton
+            // 
+            this.BrowseNorthTextureButton.Location = new System.Drawing.Point(109, 95);
+            this.BrowseNorthTextureButton.Name = "BrowseNorthTextureButton";
+            this.BrowseNorthTextureButton.Size = new System.Drawing.Size(31, 23);
+            this.BrowseNorthTextureButton.TabIndex = 30;
+            this.BrowseNorthTextureButton.Text = "...";
+            this.BrowseNorthTextureButton.UseVisualStyleBackColor = true;
+            this.BrowseNorthTextureButton.Click += new System.EventHandler(this.BrowseNorthTextureButton_Click);
+            // 
             // WallUIPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.BrowseNorthTextureButton);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
@@ -374,5 +386,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox TilePaletteComboBox;
+        private System.Windows.Forms.Button BrowseNorthTextureButton;
     }
 }

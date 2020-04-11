@@ -56,6 +56,7 @@ namespace eced.Renderer
 
         public List<TextureCell> cells;
         public Dictionary<string, int> textureIDList = new Dictionary<string, int>();
+        private TextureRenderTarget renderTarget;
 
         /// <summary>
         /// The current palette for processing doom format patches
@@ -70,6 +71,7 @@ namespace eced.Renderer
                 palette[i * 3] = palette[i * 3 + 1] = palette[i * 3 + 2] = (byte)i;
             }
             state = host;
+            renderTarget = new TextureRenderTarget();
         }
 
         public static int LookUpTextureID(String filename)
