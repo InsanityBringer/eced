@@ -42,7 +42,13 @@ namespace eced
             textureView.Size = SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything.Size;
             textureView.Anchor = SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything.Anchor;
             textureView.Cache = cache;
+            textureView.TextureList = cache.TexturesManager.GetTextureList();
             Controls.Add(textureView);
+        }
+
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            textureView.SearchString = SearchTextBox.Text;
         }
     }
 }

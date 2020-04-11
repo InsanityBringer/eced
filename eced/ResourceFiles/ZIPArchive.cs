@@ -134,6 +134,7 @@ namespace eced.ResourceFiles
         public override byte[] LoadLump(string name)
         {
             Lump lump = FindLump(name);
+            if (lump == null) return null;
 
             //this.streamreader.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
             //ZipEntry entry = (ZipEntry)lump.internalObject;

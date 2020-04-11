@@ -34,6 +34,26 @@ namespace eced.Renderer
         public int w, h;
     }
 
+    public struct TextureInformation : IComparable
+    {
+        public string name;
+        public string archive;
+        public int width, height;
+        public int id;
+
+        public TextureInformation(string name, string archive, int width, int height, int id)
+        {
+            this.name = name; this.archive = archive; this.width = width; this.height = height; this.id = id;
+        }
+
+        public int CompareTo(object obj)
+        {
+            //Alphabetical sorting
+            TextureInformation info = (TextureInformation)obj;
+            return name.CompareTo(info.name);
+        }
+    }
+
     /// <summary>
     /// Manages textures, responsible for building tilemap texture atlas and filling in details about each texture
     /// </summary>
@@ -46,7 +66,6 @@ namespace eced.Renderer
         private RendererState state;
         public static Dictionary<string, int> textureList = new Dictionary<string, int>();
 
-
         const int baseAtlasSize = 4096;
 
         public int atlasTextureID;
@@ -55,7 +74,7 @@ namespace eced.Renderer
         public int lastID = 0;
 
         public List<TextureCell> cells;
-        public Dictionary<string, int> textureIDList = new Dictionary<string, int>();
+        public Dictionary<string, TextureInformation> textureIDList = new Dictionary<string, TextureInformation>();
         private TextureRenderTarget renderTarget;
 
         /// <summary>
@@ -227,7 +246,7 @@ namespace eced.Renderer
             AddImageToAtlas(PNGCodec.BasicImageFromBitmap(defTexture));
             defTexture.Dispose();
 
-            textureIDList.Add("NULLTEX", 0); lastID++;
+            textureIDList.Add("NULLTEX", new TextureInformation("NULLTEX", "", 32, 32, 0)); lastID++;
         }
 
         /// <summary>
@@ -237,6 +256,7 @@ namespace eced.Renderer
         public void AddArchiveTextures(ResourceFiles.Archive archive)
         {
             List<ResourceFiles.Lump> lumps = archive.GetResourceList(ResourceFiles.LumpNamespace.Texture);
+            BasicImage img;
 
             for (int i = 0; i < lumps.Count; i++)
             {
@@ -246,8 +266,10 @@ namespace eced.Renderer
                     //Console.WriteLine(lumps[i].fullname);
                     if (data != null)
                     {
-                        AddImageToAtlas(ImageDecoder.DecodeLump(lumps[i], data, state.CurrentState.CurrentMapInfo.Palette));
-                        textureIDList[lumps[i].name.ToUpper()] = lastID; lastID++;
+                        img = ImageDecoder.DecodeLump(lumps[i], data, state.CurrentState.CurrentMapInfo.Palette);
+                        AddImageToAtlas(img);
+                        //textureIDList[lumps[i].name.ToUpper()] = lastID; lastID++;
+                        textureIDList[lumps[i].name.ToUpperInvariant()] = new TextureInformation(lumps[i].name.ToUpperInvariant(), archive.filename, img.x, img.y, lastID); lastID++;
                         //Console.WriteLine("Added texture {0} at position {1}", lumps[i].name.ToUpper(), lastID - 1);
                     }
                     //if it isn't known, don't add it, possibly add a warning texture if it gets used
@@ -322,7 +344,9 @@ namespace eced.Renderer
         public int GetTextureID(string name)
         {
             int id = 0;
-            textureIDList.TryGetValue(name.ToUpper(), out id);
+            TextureInformation info;
+            if (textureIDList.TryGetValue(name.ToUpper(), out info))
+                id = info.id;
 
             return id;
         }
@@ -340,14 +364,22 @@ namespace eced.Renderer
             }
 
             this.lastID = 0;
-            this.textureIDList = new Dictionary<string, int>();
+            this.textureIDList = new Dictionary<string, TextureInformation>();
             this.cells = new List<TextureCell>() ;
         }
 
         public byte[] GetTextureImage(int id)
         {
-            if (id >= textureIDList.Count) id = 0;
-                return renderTarget.RenderTexture(id);
+            return renderTarget.RenderTexture(id);
+        }
+
+        public List<TextureInformation> GetTextureList()
+        {
+            List<TextureInformation> textures = new List<TextureInformation>();
+            foreach (TextureInformation info in textureIDList.Values)
+                textures.Add(info);
+
+            return textures;
         }
     }
 

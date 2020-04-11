@@ -14,7 +14,6 @@ namespace eced.ResourceFiles
     {
         private List<Lump> lumps = new List<Lump>();
         private BinaryReader br;
-        private string filename;
 
         public static VSwapArchive OpenArchive(string filename, VSwapNames namelist)
         {

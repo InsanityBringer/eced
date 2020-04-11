@@ -32,6 +32,7 @@
             this.SelectButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything = new System.Windows.Forms.Panel();
+            this.SearchTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // CancelButton
@@ -62,9 +63,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 471);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 13);
+            this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Number of textures:";
+            this.label1.Text = "Filter:";
             // 
             // SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything
             // 
@@ -78,13 +79,22 @@
             this.SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything.TabIndex = 3;
             this.SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything.Visible = false;
             // 
+            // SearchTextBox
+            // 
+            this.SearchTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.SearchTextBox.Location = new System.Drawing.Point(50, 468);
+            this.SearchTextBox.Name = "SearchTextBox";
+            this.SearchTextBox.Size = new System.Drawing.Size(100, 20);
+            this.SearchTextBox.TabIndex = 4;
+            this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
+            // 
             // TextureBrowser
             // 
             this.AcceptButton = this.SelectButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CancelButton;
             this.ClientSize = new System.Drawing.Size(734, 501);
+            this.Controls.Add(this.SearchTextBox);
             this.Controls.Add(this.SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SelectButton);
@@ -105,5 +115,6 @@
         private System.Windows.Forms.Button SelectButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything;
+        private System.Windows.Forms.TextBox SearchTextBox;
     }
 }

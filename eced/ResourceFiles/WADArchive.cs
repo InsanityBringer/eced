@@ -47,6 +47,7 @@ namespace eced.ResourceFiles
 
             br.BaseStream.Seek(directory, SeekOrigin.Begin);
             LumpNamespace ns = LumpNamespace.Global;
+            LumpFormatType format = LumpFormatType.Generic;
 
             for (int i = 0; i < lumps; i++)
             {
@@ -58,30 +59,27 @@ namespace eced.ResourceFiles
                 name = name.Trim('\0', ' '); //maybe this will work
                 fullname = fullname.Trim('\0'); //try to cut off null bytes at end of fullname
 
-                //TODO: Better namespacing system
                 if (name == "TX_START")
-                {
-                    ns = LumpNamespace.Texture;
-                }
+                    ns |= LumpNamespace.Texture;
                 else if (name == "TX_END")
-                {
-                    ns = LumpNamespace.Global;
-                }
+                    ns &= ~LumpNamespace.Texture;
                 else if (name == "S_START")
-                {
-                    ns = LumpNamespace.Sprite;
-                }
+                    ns |= LumpNamespace.Sprite;
                 else if (name == "S_END")
-                {
-                    ns = LumpNamespace.Global;
-                }
+                    ns &= ~LumpNamespace.Sprite;
                 else if (name == "F_START")
-                {
-                    ns = LumpNamespace.Flat;
-                }
+                    ns |= LumpNamespace.Flat;
                 else if (name == "F_END")
+                    ns &= ~LumpNamespace.Flat;
+                else if (name == "WALLSTRT")
                 {
-                    ns = LumpNamespace.Global;
+                    ns |= LumpNamespace.Texture;
+                    format = LumpFormatType.VSwapTexture;
+                }
+                else if (name == "WALLSTOP")
+                {
+                    ns &= ~LumpNamespace.Texture;
+                    format = LumpFormatType.Generic;
                 }
 
                 Lump lump = new Lump(name, size);
@@ -90,6 +88,7 @@ namespace eced.ResourceFiles
                 if (size != 0) //hack to avoid including the namespace markers themselves
                     lump.@namespace = ns;
                 lump.size = size;
+                lump.format = format; //ROTT hack
                 wad.lumps.Add(lump);
                 //Console.WriteLine("{0}, {1} {2}", lump.fullname, lump.pointer, lump.size);
             }
@@ -171,6 +170,7 @@ namespace eced.ResourceFiles
         public override byte[] LoadLump(string name)
         {
             Lump lump = FindLump(name);
+            if (lump == null) return null;
 
             this.streamreader.BaseStream.Seek(lump.pointer, SeekOrigin.Begin);
             byte[] lumpdata = this.streamreader.ReadBytes(lump.size);
@@ -194,8 +194,12 @@ namespace eced.ResourceFiles
             for (int i = 0; i < lumps.Count; i++)
             {
                 //TODO: This should be done more cleanly to avoid having to load every lump
-                data = LoadLumpByIndex(i);
-                LumpClassifier.Classify(lumps[i], data);
+                //Only classify generic lumps, needed for the ROTT hack. 
+                if (lumps[i].format == LumpFormatType.Generic)
+                {
+                    data = LoadLumpByIndex(i);
+                    LumpClassifier.Classify(lumps[i], data);
+                }
             }
         }
 

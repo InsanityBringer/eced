@@ -132,6 +132,7 @@ namespace eced
 
         private void LoadResources(MapInformation mapinfo, Level level)
         {
+            byte[] pal;
             for (int i = 0; i < mapinfo.files.Count; i++)
             {
                 ResourceFiles.Archive file;
@@ -143,6 +144,10 @@ namespace eced
                     fixfilename = fixfilename.Replace('/', '\\');
                     file = ResourceFiles.WADArchive.loadResourceFile(mapinfo.files[i].filename);
                     file.OpenFile();
+                    //TODO: needs to be in game configuration
+                    pal = file.LoadLump("WOLFPAL");
+                    if (pal != null && pal.Length >= 768)
+                        CurrentMapInfo.SetPalette(pal);
                     level.loadedResources.Add(file);
                     file.CloseFile();
                 }
@@ -150,6 +155,10 @@ namespace eced
                 {
                     file = ResourceFiles.ZIPArchive.loadResourceFile(mapinfo.files[i].filename);
                     file.OpenFile();
+                    //TODO: needs to be in game configuration
+                    pal = file.LoadLump("WOLFPAL");
+                    if (pal != null && pal.Length >= 768)
+                        CurrentMapInfo.SetPalette(pal);
                     level.loadedResources.Add(file);
                     file.CloseFile();
                 }
