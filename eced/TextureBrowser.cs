@@ -33,7 +33,7 @@ namespace eced
     public partial class TextureBrowser : Form
     {
         private TextureView textureView;
-        public TextureBrowser()
+        public TextureBrowser(TextureCache cache)
         {
             InitializeComponent();
             //AGH
@@ -41,32 +41,8 @@ namespace eced
             textureView.Location = SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything.Location;
             textureView.Size = SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything.Size;
             textureView.Anchor = SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything.Anchor;
+            textureView.Cache = cache;
             Controls.Add(textureView);
-        }
-    }
-
-    public class TextureCache
-    {
-        private Dictionary<int, Bitmap> cache = new Dictionary<int, Bitmap>();
-        private TextureManager textureManager;
-        public ImageList CurrentImageSet { get; }
-
-        public TextureCache(TextureManager manager)
-        {
-            textureManager = manager;
-        }
-
-        public void Purge()
-        {
-            //Need to make sure all the bitmaps are disposed of
-            CurrentImageSet.Images.Clear();
-            cache.Clear();
-        }
-
-        public bool RequestImage(int id, out Bitmap image)
-        {
-            image = new Bitmap(64, 64);
-            return false;
         }
     }
 }

@@ -71,7 +71,7 @@ namespace eced.Renderer
                 palette[i * 3] = palette[i * 3 + 1] = palette[i * 3 + 2] = (byte)i;
             }
             state = host;
-            renderTarget = new TextureRenderTarget();
+            renderTarget = new TextureRenderTarget(state);
         }
 
         public static int LookUpTextureID(String filename)
@@ -342,6 +342,12 @@ namespace eced.Renderer
             this.lastID = 0;
             this.textureIDList = new Dictionary<string, int>();
             this.cells = new List<TextureCell>() ;
+        }
+
+        public byte[] GetTextureImage(int id)
+        {
+            if (id >= textureIDList.Count) id = 0;
+                return renderTarget.RenderTexture(id);
         }
     }
 

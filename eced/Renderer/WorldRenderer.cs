@@ -318,6 +318,7 @@ namespace eced.Renderer
 
         public void DrawLevel()
         {
+            state.SetGLViewport();
             GL.ActiveTexture(TextureUnit.Texture4);
             GL.BindTexture(TextureTarget.Texture2D, currentTilemapTexture);
             UpdateLevel();

@@ -50,60 +50,61 @@ namespace eced
 
         private OpenTK.Vector2 lastMousePos = new Vector2();
 
-        private WallUIPanel gbTileSelection;
-        private ThingUIPanel gbThingSelect;
-        private ZoneUIPanel gbZoneList;
-        private TriggerUIPanel gbTriggerData;
-        private SectorUIPanel gbSectorPanel;
-        private TagUIPanel gbTag;
+        private WallUIPanel TileEditorPanel;
+        private ThingUIPanel ThingEditorPanel;
+        private ZoneUIPanel ZoneListPanel;
+        private TriggerUIPanel TriggerEditorPanel;
+        private SectorUIPanel SectorEditorPanel;
+        private TagUIPanel TagListPanel;
 
         private EditorState editorState = new EditorState();
+        private TextureCache textureCache;
 
         public Form1()
         {
             InitializeComponent();
             this.SuspendLayout();
-            gbTileSelection = new WallUIPanel();
-            components.Add(gbTileSelection);
-            gbTileSelection.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom;
-            gbTileSelection.Location = SizeTemplatePanel.Location;
-            gbTileSelection.Size = SizeTemplatePanel.Size;
-            Controls.Add(gbTileSelection);
+            TileEditorPanel = new WallUIPanel();
+            components.Add(TileEditorPanel);
+            TileEditorPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom;
+            TileEditorPanel.Location = SizeTemplatePanel.Location;
+            TileEditorPanel.Size = SizeTemplatePanel.Size;
+            Controls.Add(TileEditorPanel);
 
-            gbThingSelect = new ThingUIPanel();
-            components.Add(gbThingSelect);
-            gbThingSelect.Location = SizeTemplatePanel.Location;
-            gbThingSelect.Size = SizeTemplatePanel.Size;
-            gbThingSelect.Anchor |= AnchorStyles.Bottom;
-            Controls.Add(gbThingSelect);
+            ThingEditorPanel = new ThingUIPanel();
+            components.Add(ThingEditorPanel);
+            ThingEditorPanel.Location = SizeTemplatePanel.Location;
+            ThingEditorPanel.Size = SizeTemplatePanel.Size;
+            ThingEditorPanel.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(ThingEditorPanel);
 
-            gbZoneList = new ZoneUIPanel(editorState);
-            components.Add(gbZoneList);
-            gbZoneList.Location = SizeTemplatePanel.Location;
-            gbZoneList.Size = SizeTemplatePanel.Size;
-            gbZoneList.Anchor |= AnchorStyles.Bottom;
-            Controls.Add(gbZoneList);
+            ZoneListPanel = new ZoneUIPanel(editorState);
+            components.Add(ZoneListPanel);
+            ZoneListPanel.Location = SizeTemplatePanel.Location;
+            ZoneListPanel.Size = SizeTemplatePanel.Size;
+            ZoneListPanel.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(ZoneListPanel);
 
-            gbTriggerData = new TriggerUIPanel();
-            components.Add(gbTriggerData);
-            gbTriggerData.Location = SizeTemplatePanel.Location;
-            gbTriggerData.Size = SizeTemplatePanel.Size;
-            gbTriggerData.Anchor |= AnchorStyles.Bottom;
-            Controls.Add(gbTriggerData);
+            TriggerEditorPanel = new TriggerUIPanel();
+            components.Add(TriggerEditorPanel);
+            TriggerEditorPanel.Location = SizeTemplatePanel.Location;
+            TriggerEditorPanel.Size = SizeTemplatePanel.Size;
+            TriggerEditorPanel.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(TriggerEditorPanel);
 
-            gbSectorPanel = new SectorUIPanel();
-            components.Add(gbSectorPanel);
-            gbSectorPanel.Location = SizeTemplatePanel.Location;
-            gbSectorPanel.Size = SizeTemplatePanel.Size;
-            gbSectorPanel.Anchor |= AnchorStyles.Bottom;
-            Controls.Add(gbSectorPanel);
+            SectorEditorPanel = new SectorUIPanel();
+            components.Add(SectorEditorPanel);
+            SectorEditorPanel.Location = SizeTemplatePanel.Location;
+            SectorEditorPanel.Size = SizeTemplatePanel.Size;
+            SectorEditorPanel.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(SectorEditorPanel);
 
-            gbTag = new TagUIPanel();
-            components.Add(gbTag);
-            gbTag.Location = SizeTemplatePanel.Location;
-            gbTag.Size = SizeTemplatePanel.Size;
-            gbTag.Anchor |= AnchorStyles.Bottom;
-            Controls.Add(gbTag);
+            TagListPanel = new TagUIPanel();
+            components.Add(TagListPanel);
+            TagListPanel.Location = SizeTemplatePanel.Location;
+            TagListPanel.Size = SizeTemplatePanel.Size;
+            TagListPanel.Anchor |= AnchorStyles.Bottom;
+            Controls.Add(TagListPanel);
 
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -111,18 +112,20 @@ namespace eced
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.gbThingSelect.Visible = false;
-            this.gbTileSelection.Visible = false;
-            this.gbTriggerData.Visible = false;
-            this.gbZoneList.Visible = false;
-            this.gbSectorPanel.Visible = false;
-            this.gbTag.Visible = false;
+            this.ThingEditorPanel.Visible = false;
+            this.TileEditorPanel.Visible = false;
+            this.TriggerEditorPanel.Visible = false;
+            this.ZoneListPanel.Visible = false;
+            this.SectorEditorPanel.Visible = false;
+            this.TagListPanel.Visible = false;
 
             renderer = new RendererState(editorState);
             renderer.Init();
             renderer.SetViewSize(mainLevelPanel.Width, mainLevelPanel.Height);
             UpdateZoom();
             worldRenderer = new WorldRenderer(renderer);
+            textureCache = new TextureCache(renderer.Textures);
+            TileEditorPanel.Cache = textureCache;
 
             GL.Disable(EnableCap.DepthTest);
             mainLevelPanel.MouseWheel += MainLevelPanel_MouseWheel;
@@ -186,6 +189,7 @@ namespace eced
             }
             renderer.Textures.GenerateAtlasInfoTexture();
             renderer.Textures.CreateZoneNumberTexture();
+            textureCache.Purge();
 
             //world.setupTextures(editorState.CurrentLevel);
         }
@@ -194,7 +198,7 @@ namespace eced
         {
             //TODO: hack
             List<Zone> zonelist = editorState.CurrentLevel.GetZones();
-            gbZoneList.SetZones(zonelist);
+            ZoneListPanel.SetZones(zonelist);
         }
 
         private void DoLoadDialog()
@@ -277,52 +281,52 @@ namespace eced
             }
             tbToolPanel.Buttons[toolID + 4].Pushed = true;
 
-            this.gbThingSelect.Visible = false;
-            this.gbTileSelection.Visible = false;
-            this.gbTriggerData.Visible = false;
-            this.gbZoneList.Visible = false;
-            this.gbSectorPanel.Visible = false;
-            this.gbTag.Visible = false;
+            this.ThingEditorPanel.Visible = false;
+            this.TileEditorPanel.Visible = false;
+            this.TriggerEditorPanel.Visible = false;
+            this.ZoneListPanel.Visible = false;
+            this.SectorEditorPanel.Visible = false;
+            this.TagListPanel.Visible = false;
 
             switch (toolID)
             {
                 case 1:
-                    gbTileSelection.Visible = true;
-                    gbTileSelection.SetPalette(editorState.TileList.tileset);
-                    gbTileSelection.SetPairedBrush(editorState.BrushList[toolID]);
+                    TileEditorPanel.Visible = true;
+                    TileEditorPanel.SetPalette(editorState.TileList.tileset);
+                    TileEditorPanel.SetPairedBrush(editorState.BrushList[toolID]);
                     worldRenderer.showGrid = true;
                     break;
                 case 2:
-                    gbTileSelection.Visible = true;
-                    gbTileSelection.SetPalette(editorState.TileList.tileset);
-                    gbTileSelection.SetPairedBrush(editorState.BrushList[toolID]);
+                    TileEditorPanel.Visible = true;
+                    TileEditorPanel.SetPalette(editorState.TileList.tileset);
+                    TileEditorPanel.SetPairedBrush(editorState.BrushList[toolID]);
                     worldRenderer.showGrid = true;
                     break;
                 case 4:
-                    gbThingSelect.Visible = true;
-                    gbThingSelect.AddThings(editorState.ThingList.thingList);
-                    gbThingSelect.SetPairedBrush((ThingBrush)editorState.BrushList[toolID]);
+                    ThingEditorPanel.Visible = true;
+                    ThingEditorPanel.AddThings(editorState.ThingList.thingList);
+                    ThingEditorPanel.SetPairedBrush((ThingBrush)editorState.BrushList[toolID]);
                     worldRenderer.showGrid = true;
                     break;
                 case 5:
-                    gbTriggerData.Visible = true;
-                    gbTriggerData.SetPairedBrush((TriggerBrush)editorState.BrushList[toolID]);
-                    gbTriggerData.SetTriggerList(editorState.TriggerList);
+                    TriggerEditorPanel.Visible = true;
+                    TriggerEditorPanel.SetPairedBrush((TriggerBrush)editorState.BrushList[toolID]);
+                    TriggerEditorPanel.SetTriggerList(editorState.TriggerList);
                     worldRenderer.showGrid = true;
                     break;
                 case 6:
-                    gbSectorPanel.Visible = true;
-                    gbSectorPanel.pairedBrush = (SectorBrush)editorState.BrushList[toolID];
+                    SectorEditorPanel.Visible = true;
+                    SectorEditorPanel.pairedBrush = (SectorBrush)editorState.BrushList[toolID];
                     worldRenderer.showGrid = true;
                     break;
                 case 7:
-                    gbZoneList.Visible = true;
-                    gbZoneList.SetPairedBrush((FloodBrush)editorState.BrushList[toolID]);
+                    ZoneListPanel.Visible = true;
+                    ZoneListPanel.SetPairedBrush((FloodBrush)editorState.BrushList[toolID]);
                     worldRenderer.showGrid = false;
                     break;
                 case 8:
-                    gbTag.Visible = true;
-                    gbTag.SetPairedBrush((TagTool)editorState.BrushList[toolID]);
+                    TagListPanel.Visible = true;
+                    TagListPanel.SetPairedBrush((TagTool)editorState.BrushList[toolID]);
                     worldRenderer.showGrid = true;
                     break;
             }
@@ -535,7 +539,7 @@ namespace eced
             editorState.HandlePick(pickTest);
             if (editorState.CurrentTool == CurrentToolNum.ZoneTool)
             {
-                gbZoneList.UpdateZoneHighlight(editorState.HighlightedZone);
+                ZoneListPanel.UpdateZoneHighlight(editorState.HighlightedZone);
             }
             mainLevelPanel.Invalidate();
 

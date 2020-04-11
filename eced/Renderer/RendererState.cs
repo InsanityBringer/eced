@@ -96,12 +96,6 @@ namespace eced.Renderer
             LineShader.AddUniform("project");
             LineShader.AddUniform("mapsize");
             LineShader.AddUniform("tilesize");
-
-            BasicTextureShader = new Shader("BasicTextureShader");
-            BasicTextureShader.Init();
-            BasicTextureShader.AddShader("./Resources/VertexBasicTexture.txt", ShaderType.VertexShader);
-            BasicTextureShader.AddShader("./Resources/FragBasicTexture.txt", ShaderType.FragmentShader);
-            BasicTextureShader.LinkShader();
         }
 
         public void SetViewSize(int w, int h)
@@ -109,7 +103,6 @@ namespace eced.Renderer
             int halfWidth = w / 2;
             int halfHeight = h / 2;
             Matrix4 projectionMatrix = Matrix4.CreateOrthographicOffCenter(-halfWidth, halfWidth, halfHeight, -halfHeight, -16, 16);
-            GL.Viewport(0, 0, w, h);
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
             TileMapShader.UseShader();
             GL.UniformMatrix4(TileMapShader.UniformLocations["project"], false, ref projectionMatrix);
@@ -119,6 +112,11 @@ namespace eced.Renderer
             GL.UniformMatrix4(LineShader.UniformLocations["project"], false, ref projectionMatrix);
 
             screenSize.X = w; screenSize.Y = h;
+        }
+
+        public void SetGLViewport()
+        {
+            GL.Viewport(0, 0, (int)screenSize.X, (int)screenSize.Y);
         }
 
         /// <summary>

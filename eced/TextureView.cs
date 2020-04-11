@@ -20,10 +20,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using eced.Renderer;
 
 namespace eced
 {
@@ -35,6 +38,7 @@ namespace eced
         private int numTexturesY;
         private int numTextures = 1400; //testing
         private Random random;
+        public TextureCache Cache { get; set; }
         public TextureView()
         {
             InitializeComponent();
@@ -66,46 +70,90 @@ namespace eced
             pe.Graphics.FillRectangle(brush, pe.ClipRectangle);
             brush.Dispose();
 
-            //Create a new rectangle in the space of the entire control's view. 
-            Rectangle newRect = pe.ClipRectangle;
-            newRect.Y += VerticalScroll.Value;
-            //Measure how many textures this clip rectangle will involve drawing.
-            int firstTextureX = newRect.X / (128 + TextureMargin);
-            int lastTextureX = newRect.Right / (128 + TextureMargin);
-            lastTextureX = Math.Min(lastTextureX, numTexturesX);
-
-            int firstTextureY = newRect.Y / (128 + TextureMargin + FontSize);
-            int lastTextureY = newRect.Bottom / (128 + TextureMargin + FontSize);
-            lastTextureY = Math.Min(lastTextureY, numTexturesY);
-
-            int textureNum;
-            Rectangle textureBox;
-            Brush textBrush = new SolidBrush(Color.White);
-            //Draw the texture cells
-            for (int x = firstTextureX; x < lastTextureX; x++)
+            if (Cache != null)
             {
-                for (int y = firstTextureY; y <= lastTextureY; y++)
+                //Create a new rectangle in the space of the entire control's view. 
+                Rectangle newRect = pe.ClipRectangle;
+                newRect.Y += VerticalScroll.Value;
+                //Measure how many textures this clip rectangle will involve drawing.
+                int firstTextureX = newRect.X / (128 + TextureMargin);
+                int lastTextureX = newRect.Right / (128 + TextureMargin);
+                lastTextureX = Math.Min(lastTextureX, numTexturesX);
+
+                int firstTextureY = newRect.Y / (128 + TextureMargin + FontSize);
+                int lastTextureY = newRect.Bottom / (128 + TextureMargin + FontSize);
+                lastTextureY = Math.Min(lastTextureY, numTexturesY);
+
+                int textureNum;
+                Rectangle textureBox;
+                Bitmap image;
+                Brush textBrush = new SolidBrush(Color.White);
+                //Draw the texture cells
+                for (int x = firstTextureX; x < lastTextureX; x++)
                 {
-                    textureNum = y * (numTexturesX) + x;
-                    if (textureNum < numTextures)
+                    for (int y = firstTextureY; y <= lastTextureY; y++)
                     {
-                        random = new Random(textureNum); //there's not a SetSeed function why exactly?
-                        brush = new SolidBrush(Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)));
-                        textureBox = new Rectangle(x * (128 + TextureMargin) + TextureMargin, y * (128 + TextureMargin + FontSize) + TextureMargin - VerticalScroll.Value, 128, 128);
-                        pe.Graphics.FillRectangle(brush, textureBox);
-                        pe.Graphics.DrawString(textureNum.ToString(), Font, textBrush, new PointF(textureBox.X, textureBox.Y + 130));
-                        brush.Dispose();
+                        textureNum = y * (numTexturesX) + x;
+                        if (textureNum < numTextures)
+                        {
+                            textureBox = new Rectangle(x * (128 + TextureMargin) + TextureMargin, y * (128 + TextureMargin + FontSize) + TextureMargin - VerticalScroll.Value, 128, 128);
+                            if (!Cache.RequestImage(textureNum, out image))
+                            {
+                                Console.WriteLine("miss on {0}\n", textureNum);
+                            }
+                            pe.Graphics.DrawImageUnscaled(image, textureBox.X, textureBox.Y);
+                            pe.Graphics.DrawString(textureNum.ToString(), Font, textBrush, new PointF(textureBox.X, textureBox.Y + 130));
+                            //brush = new SolidBrush(Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)));
+                            //pe.Graphics.FillRectangle(brush, textureBox);
+                            //brush.Dispose();
+                        }
                     }
                 }
+                textBrush.Dispose();
             }
-            textBrush.Dispose();
-            
         }
 
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
             CalcBounds();
+        }
+    }
+
+    public class TextureCache
+    {
+        private Dictionary<int, Bitmap> cache = new Dictionary<int, Bitmap>();
+        private TextureManager textureManager;
+
+        public TextureCache(TextureManager manager)
+        {
+            textureManager = manager;
+        }
+
+        public void Purge()
+        {
+            //Need to make sure all the bitmaps are disposed of
+            foreach (Bitmap image in cache.Values)
+            {
+                image.Dispose();
+            }
+            cache.Clear();
+        }
+
+        public bool RequestImage(int id, out Bitmap image)
+        {
+            if (cache.ContainsKey(id))
+            {
+                image = cache[id];
+                return true;
+            }
+            image = new Bitmap(128, 128);
+            byte[] data = textureManager.GetTextureImage(id);
+            BitmapData bmpData = image.LockBits(new Rectangle(0, 0, 128, 128), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            System.Runtime.InteropServices.Marshal.Copy(data, 0, bmpData.Scan0, 128 * 128 * 4);
+            image.UnlockBits(bmpData);
+            cache[id] = image;
+            return false;
         }
     }
 }

@@ -12,4 +12,5 @@ void main()
 {
 	ivec4 data = texelFetch(texInfo, ivec2(0, textureNum), 0);
 	color = texelFetch(atlas, ivec2(data.b + int(uvs.x * data.r), data.a + int(uvs.y * data.g)), 0);
+	//color = vec4(1.0, 0.0, 1.0, 1.0);
 }

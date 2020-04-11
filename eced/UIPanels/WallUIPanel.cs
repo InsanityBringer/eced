@@ -35,6 +35,10 @@ namespace eced.UIPanels
         private EditorBrush pairedBrush;
         private List<Tile> palette;
         private bool isLocked = false;
+        //annoying that all instances of anything that can spawn a texture browser needs an instance of this,
+        //but I'd rather have this over global state
+        //Alternative option: Things summoning dialogs could call into the form
+        public TextureCache Cache { get; set; }
         public WallUIPanel()
         {
             InitializeComponent();
@@ -138,7 +142,7 @@ namespace eced.UIPanels
 
         private void BrowseNorthTextureButton_Click(object sender, EventArgs e)
         {
-            TextureBrowser browser = new TextureBrowser();
+            TextureBrowser browser = new TextureBrowser(Cache);
             browser.ShowDialog();
             browser.Dispose();
         }
