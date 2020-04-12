@@ -59,28 +59,19 @@ namespace eced.ResourceFiles
                 name = name.Trim('\0', ' '); //maybe this will work
                 fullname = fullname.Trim('\0'); //try to cut off null bytes at end of fullname
 
-                if (name == "TX_START")
-                    ns |= LumpNamespace.Texture;
-                else if (name == "TX_END")
+                if (name == "TX_END")
                     ns &= ~LumpNamespace.Texture;
-                else if (name == "S_START")
-                    ns |= LumpNamespace.Sprite;
                 else if (name == "S_END")
                     ns &= ~LumpNamespace.Sprite;
-                else if (name == "F_START")
-                    ns |= LumpNamespace.Flat;
                 else if (name == "F_END")
                     ns &= ~LumpNamespace.Flat;
-                else if (name == "WALLSTRT")
-                {
-                    ns |= LumpNamespace.Texture;
-                    format = LumpFormatType.VSwapTexture;
-                }
-                else if (name == "WALLSTOP")
+                else if (name == "WALLSTOP" || name == "SIDESTOP")
                 {
                     ns &= ~LumpNamespace.Texture;
                     format = LumpFormatType.Generic;
                 }
+                else if (name == "EXITSTOP" || name == "ABVMSTRT" || name == "HMSKSTRT" || name == "GUNSTART" || name == "DOORSTOP" || name == "MASKSTOP")
+                    ns &= ~(LumpNamespace.Rott | LumpNamespace.Texture);
 
                 Lump lump = new Lump(name, size);
                 lump.fullname = fullname;
@@ -90,6 +81,27 @@ namespace eced.ResourceFiles
                 lump.size = size;
                 lump.format = format; //ROTT hack
                 wad.lumps.Add(lump);
+
+                if (name == "TX_START")
+                    ns |= LumpNamespace.Texture;
+                else if (name == "S_START")
+                    ns |= LumpNamespace.Sprite;
+                else if (name == "F_START")
+                    ns |= LumpNamespace.Flat;
+                else if (name == "WALLSTRT" || name == "ANIMSTRT" || name == "SIDESTRT")
+                {
+                    ns |= LumpNamespace.Texture;
+                    format = LumpFormatType.VSwapTexture;
+                }
+                else if (name == "EXITSTRT" || name == "ABVWSTRT" || name == "ABVMSTRT" || name == "HMSKSTRT" || name == "DOORSTRT" || name == "MASKSTRT")
+                    ns |= LumpNamespace.Rott | LumpNamespace.Texture;
+
+                if (name == "ANIMLAT6") //kinda fuckin hate ROTT tbh
+                {
+                    ns &= ~LumpNamespace.Texture;
+                    format = LumpFormatType.Generic;
+                }
+
                 //Console.WriteLine("{0}, {1} {2}", lump.fullname, lump.pointer, lump.size);
             }
 

@@ -148,6 +148,10 @@ namespace eced
                     pal = file.LoadLump("WOLFPAL");
                     if (pal != null && pal.Length >= 768)
                         CurrentMapInfo.SetPalette(pal);
+                    //From a WAD, load a ROTT palette
+                    pal = file.LoadLump("PAL");
+                    if (pal != null && pal.Length >= 768)
+                        CurrentMapInfo.SetPalette(pal);
                     level.loadedResources.Add(file);
                     file.CloseFile();
                 }

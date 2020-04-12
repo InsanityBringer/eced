@@ -27,6 +27,9 @@ namespace eced.ResourceFiles.Formats
         DoomPatch,
         DoomFlat,
         PNG,
+        ROTTMask,
+        ROTTPatch,
+        ROTTRaw,
     }
 
     public class LumpClassifierEntry
@@ -51,6 +54,9 @@ namespace eced.ResourceFiles.Formats
 
             //This serves as the registry of detected lump formats.
             //For the moment, this is just image formats used by ImageDecoder.
+            formats.Add(new LumpClassifierEntry(new ROTTMaskLumpFormat(), LumpFormatType.ROTTMask));
+            formats.Add(new LumpClassifierEntry(new ROTTPatchLumpFormat(), LumpFormatType.ROTTPatch));
+            formats.Add(new LumpClassifierEntry(new ROTTRawLumpFormat(), LumpFormatType.ROTTRaw));
             formats.Add(new LumpClassifierEntry(new PNGLumpFormat(), LumpFormatType.PNG));
             formats.Add(new LumpClassifierEntry(new PatchLumpFormat(), LumpFormatType.DoomPatch));
         }

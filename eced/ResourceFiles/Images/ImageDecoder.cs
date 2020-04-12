@@ -30,6 +30,9 @@ namespace eced.ResourceFiles.Images
             decoderMap.Add(LumpFormatType.DoomFlat, new DoomFlatCodec());
             decoderMap.Add(LumpFormatType.PNG, new PNGCodec());
             decoderMap.Add(LumpFormatType.VSwapTexture, new VSwapWallCodec());
+            decoderMap.Add(LumpFormatType.ROTTMask, new ROTTMaskCodec());
+            decoderMap.Add(LumpFormatType.ROTTPatch, new ROTTPatchCodec());
+            decoderMap.Add(LumpFormatType.ROTTRaw, new VSwapWallCodec());
         }
 
         public static BasicImage DecodeLump(Lump lump, byte[] data, byte[] palette)

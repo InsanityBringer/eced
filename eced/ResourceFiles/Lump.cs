@@ -26,7 +26,10 @@ namespace eced.ResourceFiles
         Global = 0,
         Sprite = 1,
         Texture = 2,
-        Flat = 4
+        Flat = 4,
+
+        //Special bits
+        Rott = 16384
     }
 
     public class Lump

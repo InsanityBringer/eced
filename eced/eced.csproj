@@ -142,6 +142,9 @@
     <Compile Include="ResourceFiles\Formats\LumpFormat.cs" />
     <Compile Include="ResourceFiles\Formats\PatchLumpFormat.cs" />
     <Compile Include="ResourceFiles\Formats\PNGLumpFormat.cs" />
+    <Compile Include="ResourceFiles\Formats\ROTTMaskLumpFormat.cs" />
+    <Compile Include="ResourceFiles\Formats\ROTTPatchLumpFormat.cs" />
+    <Compile Include="ResourceFiles\Formats\ROTTRawLumpFormat.cs" />
     <Compile Include="ResourceFiles\Images\DoomFlatCodec.cs" />
     <Compile Include="ResourceFiles\Images\DoomPatchCodec.cs" />
     <Compile Include="ResourceFiles\Images\ImageCodec.cs" />
@@ -149,6 +152,8 @@
     <Compile Include="ResourceFiles\Images\PNGCodec.cs" />
     <Compile Include="ResourceFiles\Archive.cs" />
     <Compile Include="ResourceFiles\ArchiveHeader.cs" />
+    <Compile Include="ResourceFiles\Images\ROTTMaskCodec.cs" />
+    <Compile Include="ResourceFiles\Images\ROTTPatchCodec.cs" />
     <Compile Include="ResourceFiles\Images\VSwapWallCodec.cs" />
     <Compile Include="ResourceFiles\Lump.cs" />
     <Compile Include="ResourceFiles\VSwapArchive.cs" />
