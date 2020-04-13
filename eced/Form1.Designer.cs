@@ -78,6 +78,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ManageLayerButton = new System.Windows.Forms.Button();
             this.LayerNumSpinner = new System.Windows.Forms.NumericUpDown();
+            this.GLControlSizeTemplate = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -384,7 +385,7 @@
             // 
             // statusBar1
             // 
-            this.statusBar1.Location = new System.Drawing.Point(0, 602);
+            this.statusBar1.Location = new System.Drawing.Point(0, 581);
             this.statusBar1.Name = "statusBar1";
             this.statusBar1.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
             this.statusBarPanel1,
@@ -419,7 +420,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.SizeTemplatePanel.Location = new System.Drawing.Point(0, 26);
             this.SizeTemplatePanel.Name = "SizeTemplatePanel";
-            this.SizeTemplatePanel.Size = new System.Drawing.Size(172, 489);
+            this.SizeTemplatePanel.Size = new System.Drawing.Size(172, 468);
             this.SizeTemplatePanel.TabIndex = 9;
             this.SizeTemplatePanel.Visible = false;
             // 
@@ -428,7 +429,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox1.Controls.Add(this.ManageLayerButton);
             this.groupBox1.Controls.Add(this.LayerNumSpinner);
-            this.groupBox1.Location = new System.Drawing.Point(0, 521);
+            this.groupBox1.Location = new System.Drawing.Point(0, 500);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(172, 81);
             this.groupBox1.TabIndex = 10;
@@ -454,11 +455,23 @@
             this.LayerNumSpinner.TabIndex = 0;
             this.LayerNumSpinner.ValueChanged += new System.EventHandler(this.LayerNumSpinner_ValueChanged);
             // 
+            // GLControlSizeTemplate
+            // 
+            this.GLControlSizeTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GLControlSizeTemplate.Location = new System.Drawing.Point(178, 26);
+            this.GLControlSizeTemplate.Name = "GLControlSizeTemplate";
+            this.GLControlSizeTemplate.Size = new System.Drawing.Size(675, 577);
+            this.GLControlSizeTemplate.TabIndex = 11;
+            this.GLControlSizeTemplate.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 624);
+            this.ClientSize = new System.Drawing.Size(853, 603);
+            this.Controls.Add(this.GLControlSizeTemplate);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.SizeTemplatePanel);
             this.Controls.Add(this.statusBar1);
@@ -533,6 +546,7 @@
         private System.Windows.Forms.MenuItem MapPropertiesMenuItem;
         private System.Windows.Forms.MenuItem ClearUnusedElementMenuItem;
         private System.Windows.Forms.MenuItem menuItem3;
+        private System.Windows.Forms.Panel GLControlSizeTemplate;
     }
 }
 

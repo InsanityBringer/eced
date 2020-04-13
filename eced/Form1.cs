@@ -74,9 +74,10 @@ namespace eced
 | System.Windows.Forms.AnchorStyles.Left)
 | System.Windows.Forms.AnchorStyles.Right)));
             mainLevelPanel.BackColor = System.Drawing.Color.Black;
-            mainLevelPanel.Location = new System.Drawing.Point(178, 28);
+            //Adding controls after the fact seems to interfere with Mono's GTK+ implementation of Winforms, so I use a template control here to try to get it more accurate.
+            mainLevelPanel.Location = GLControlSizeTemplate.Location;
             mainLevelPanel.Name = "mainLevelPanel";
-            mainLevelPanel.Size = new System.Drawing.Size(675, 574);
+            mainLevelPanel.Size = GLControlSizeTemplate.Size;
             mainLevelPanel.TabIndex = 8;
             mainLevelPanel.VSync = false;
             mainLevelPanel.Load += new System.EventHandler(this.mainLevelPanel_Load);
