@@ -94,6 +94,7 @@ namespace eced.Renderer
         public void FlushLines()
         {
             if (lastLinePoint == 0) return;
+            RendererState.ErrorCheck("RendererDrawer::FlushLines: debug");
             state.LineShader.UseShader();
 
             GL.BindVertexArray(vaoNames[(int)VAOInidices.LineBuffer]);
@@ -166,13 +167,13 @@ namespace eced.Renderer
             GL.BindVertexArray(vaoNames[(int)VAOInidices.Tilemap]);
             GL.BindBuffer(BufferTarget.ArrayBuffer, tilemapBufferName);
             GL.BufferData(BufferTarget.ArrayBuffer, 6 * sizeof(float) * 6, tilemapBuffer, BufferUsageHint.StaticDraw);
-            RendererState.ErrorCheck("RendererDrawer::InitLineBuffer: Creating tilemap vertex buffer");
+            RendererState.ErrorCheck("RendererDrawer::InitTilemapBuffer: Creating tilemap vertex buffer");
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, sizeof(float) * 6, 0);
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, sizeof(float) * 6, sizeof(float) * 4);
-            RendererState.ErrorCheck("RendererDrawer::InitLineBuffer: Creating tilemap vertex attributes");
+            RendererState.ErrorCheck("RendererDrawer::InitTilemapBuffer: Creating tilemap vertex attributes");
         }
 
         public void DrawTilemap()
@@ -187,19 +188,23 @@ namespace eced.Renderer
 
             GL.BindBuffer(BufferTarget.ShaderStorageBuffer, thingBufferName);
             GL.BufferData(BufferTarget.ShaderStorageBuffer, 12 * NUM_THING_POINTS * sizeof(float), (IntPtr)0, BufferUsageHint.DynamicRead);
-
-            GL.BindBufferRange(BufferRangeTarget.ShaderStorageBuffer, 0, thingBufferName, (IntPtr)0, sizeof(float) * NUM_THING_POINTS * 12);
             RendererState.ErrorCheck("RendererDrawer::InitThingBuffer: Creating thing shader storage block");
 
+            GL.BindBufferRange(BufferRangeTarget.ShaderStorageBuffer, 0, thingBufferName, (IntPtr)0, sizeof(float) * NUM_THING_POINTS * 12);
+            RendererState.ErrorCheck("RendererDrawer::InitThingBuffer: Binding thing shader storage block");
+
             thingArrowTexture = TextureManager.GetTexture("./Resources/thingarrow.png", false, true);
+            RendererState.ErrorCheck("RendererDrawer::InitThingBuffer: Getting arrow texture");
         }
 
         public void InitThingTextures()
         {
+            RendererState.ErrorCheck("RendererDrawer::InitThingTextures: debug");
             int[] buffer = new int[17 * 17 * 8];
             ResourceFiles.Images.BasicImage hack;
             thingArrowTexture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2DArray, thingArrowTexture);
+            RendererState.ErrorCheck("RendererDrawer::InitThingTextures: Binding texture array");
             //hideous hack
             hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingarrow.png"));
             Array.Copy(hack.data, 0, buffer, 0, 17 * 17);
@@ -219,15 +224,18 @@ namespace eced.Renderer
             Array.Copy(hack.data, 0, buffer, 17 * 17 * 7, 17 * 17);
 
             GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, 17, 17, 8, 0, PixelFormat.Bgra, PixelType.UnsignedByte, buffer);
+            RendererState.ErrorCheck("RendererDrawer::InitThingTextures: Uploading texture array");
             GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
-            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+            RendererState.ErrorCheck("RendererDrawer::InitThingTextures: Setting texture parameters");
         }
 
         public void FlushThings()
         {
             if (lastThingNum == 0) return;
+            RendererState.ErrorCheck("RendererDrawer::FlushThings: debug");
 
             state.ThingShader.UseShader();
 
@@ -281,6 +289,7 @@ namespace eced.Renderer
 
         private void InitBasicBuffer()
         {
+            RendererState.ErrorCheck("RendererDrawer::InitBasicBuffer: debug");
             tilemapBuffer[0] = 0.0f;
             tilemapBuffer[1] = 1.0f;
             tilemapBuffer[2] = 0f;
@@ -313,13 +322,13 @@ namespace eced.Renderer
             GL.BindVertexArray(vaoNames[(int)VAOInidices.BasicTexture]);
             GL.BindBuffer(BufferTarget.ArrayBuffer, basicBufferName);
             GL.BufferData(BufferTarget.ArrayBuffer, 6 * sizeof(float) * 6, tilemapBuffer, BufferUsageHint.StaticDraw);
-            RendererState.ErrorCheck("RendererDrawer::InitLineBuffer: Creating tilemap vertex buffer");
+            RendererState.ErrorCheck("RendererDrawer::InitBasicBuffer: Creating basic vertex buffer");
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, sizeof(float) * 6, 0);
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, sizeof(float) * 6, sizeof(float) * 4);
-            RendererState.ErrorCheck("RendererDrawer::InitLineBuffer: Creating tilemap vertex attributes");
+            RendererState.ErrorCheck("RendererDrawer::InitBasicBuffer: Creating basic vertex attributes");
         }
     }
 }

@@ -169,6 +169,8 @@ namespace eced.Renderer
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, w, h, 0, PixelFormat.RgbaInteger, PixelType.Short, (IntPtr)0);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
             //GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.ActiveTexture(TextureUnit.Texture0);
 
@@ -318,24 +320,30 @@ namespace eced.Renderer
 
         public void DrawLevel()
         {
+            RendererState.ErrorCheck("WorldRenderer:DrawLevel: debug");
             state.SetGLViewport();
+            RendererState.ErrorCheck("WorldRenderer:DrawLevel: Setting viewport");
             GL.ActiveTexture(TextureUnit.Texture4);
             GL.BindTexture(TextureTarget.Texture2D, currentTilemapTexture);
             UpdateLevel();
+            RendererState.ErrorCheck("WorldRenderer:DrawLevel: Level update");
             state.TileMapShader.UseShader();
             state.Drawer.DrawTilemap();
+            RendererState.ErrorCheck("WorldRenderer:DrawLevel: Unhandled drawing tilemap");
             if (showGrid)
             {
                 DrawLevelGrid();
                 state.Drawer.FlushLines();
             }
-            GL.LineWidth(3);
+            RendererState.ErrorCheck("WorldRenderer:DrawLevel: Unhandled drawing lines");
+            //GL.LineWidth(3.0f);
             foreach (TriggerList triggerList in state.CurrentState.CurrentLevel.Triggers)
             {
                 DrawTrigger(triggerList);
             }
             state.Drawer.FlushLines();
-            GL.LineWidth(1);
+            //GL.LineWidth(1.0f);
+            RendererState.ErrorCheck("WorldRenderer:DrawLevel: Unhandled drawing triggers");
 
             float alpha = 0.7f;
             if (state.CurrentState.IsThingMode)
@@ -351,6 +359,7 @@ namespace eced.Renderer
                 state.Drawer.DrawThingBase(thing, def, alpha);
             }
             state.Drawer.FlushThings();
+            RendererState.ErrorCheck("WorldRenderer:DrawLevel: Unhandled drawing things");
         }
     }
 }

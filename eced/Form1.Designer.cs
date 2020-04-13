@@ -44,6 +44,8 @@
             this.UndoMenuItem = new System.Windows.Forms.MenuItem();
             this.RedoMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
+            this.ClearUnusedElementMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.MapPropertiesMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem10 = new System.Windows.Forms.MenuItem();
             this.PreferencesMenuItem = new System.Windows.Forms.MenuItem();
@@ -70,15 +72,12 @@
             this.statusBar1 = new System.Windows.Forms.StatusBar();
             this.statusBarPanel1 = new System.Windows.Forms.StatusBarPanel();
             this.statusBarPanel2 = new System.Windows.Forms.StatusBarPanel();
-            this.mainLevelPanel = new OpenTK.GLControl();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SizeTemplatePanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ManageLayerButton = new System.Windows.Forms.Button();
             this.LayerNumSpinner = new System.Windows.Forms.NumericUpDown();
-            this.menuItem3 = new System.Windows.Forms.MenuItem();
-            this.ClearUnusedElementMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -182,6 +181,16 @@
             // 
             this.menuItem6.Index = 2;
             this.menuItem6.Text = "-";
+            // 
+            // ClearUnusedElementMenuItem
+            // 
+            this.ClearUnusedElementMenuItem.Index = 3;
+            this.ClearUnusedElementMenuItem.Text = "Clear Unused Items";
+            // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 4;
+            this.menuItem3.Text = "-";
             // 
             // MapPropertiesMenuItem
             // 
@@ -396,26 +405,6 @@
             this.statusBarPanel2.Text = "Zoom: 0%";
             this.statusBarPanel2.Width = 125;
             // 
-            // mainLevelPanel
-            // 
-            this.mainLevelPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.mainLevelPanel.BackColor = System.Drawing.Color.Black;
-            this.mainLevelPanel.Location = new System.Drawing.Point(178, 28);
-            this.mainLevelPanel.Name = "mainLevelPanel";
-            this.mainLevelPanel.Size = new System.Drawing.Size(675, 574);
-            this.mainLevelPanel.TabIndex = 8;
-            this.mainLevelPanel.VSync = false;
-            this.mainLevelPanel.Load += new System.EventHandler(this.mainLevelPanel_Load);
-            this.mainLevelPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mainLevelPanel_Paint);
-            this.mainLevelPanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            this.mainLevelPanel.KeyUp += new System.Windows.Forms.KeyEventHandler(this.mainLevelPanel_KeyUp);
-            this.mainLevelPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseDown);
-            this.mainLevelPanel.MouseEnter += new System.EventHandler(this.mainLevelPanel_MouseEnter);
-            this.mainLevelPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseMove);
-            this.mainLevelPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseUp);
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = "WAD Files|*.wad";
@@ -465,16 +454,6 @@
             this.LayerNumSpinner.TabIndex = 0;
             this.LayerNumSpinner.ValueChanged += new System.EventHandler(this.LayerNumSpinner_ValueChanged);
             // 
-            // menuItem3
-            // 
-            this.menuItem3.Index = 4;
-            this.menuItem3.Text = "-";
-            // 
-            // ClearUnusedElementMenuItem
-            // 
-            this.ClearUnusedElementMenuItem.Index = 3;
-            this.ClearUnusedElementMenuItem.Text = "Clear Unused Items";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -482,7 +461,6 @@
             this.ClientSize = new System.Drawing.Size(853, 624);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.SizeTemplatePanel);
-            this.Controls.Add(this.mainLevelPanel);
             this.Controls.Add(this.statusBar1);
             this.Controls.Add(this.tbToolPanel);
             this.KeyPreview = true;
@@ -527,7 +505,6 @@
         private System.Windows.Forms.ToolBarButton toolBarButton5;
         private System.Windows.Forms.ToolBarButton toolBarButton6;
         private System.Windows.Forms.StatusBar statusBar1;
-        private OpenTK.GLControl mainLevelPanel;
         private System.Windows.Forms.StatusBarPanel statusBarPanel1;
         private System.Windows.Forms.StatusBarPanel statusBarPanel2;
         private System.Windows.Forms.ImageList imageList1;

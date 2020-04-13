@@ -38,9 +38,10 @@ namespace eced.Renderer
 
             GL.BindTexture(TextureTarget.Texture2D, targetTexture);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 128, 128, 0, PixelFormat.Bgra, PixelType.UnsignedByte, (IntPtr)0);
+            RendererState.ErrorCheck("TextureRenderTarget: Creating Rendertarget texture");
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-            RendererState.ErrorCheck("TextureRenderTarget: Creating Rendertarget texture");
+            RendererState.ErrorCheck("TextureRenderTarget: Setting Rendertarget texture params");
 
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, fboID);
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, targetTexture, 0);

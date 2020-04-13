@@ -59,17 +59,51 @@ namespace eced
 
         private EditorState editorState = new EditorState();
         private TextureCache textureCache;
+        
+        //ISB: Moved from designer since need to control construction. 
+        private GLControl mainLevelPanel;
 
         public Form1()
         {
             InitializeComponent();
             this.SuspendLayout();
+
+            //Here to take control over the context creation
+            mainLevelPanel = new GLControl(new OpenTK.Graphics.GraphicsMode(), 4, 3, OpenTK.Graphics.GraphicsContextFlags.ForwardCompatible);
+            mainLevelPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+| System.Windows.Forms.AnchorStyles.Left)
+| System.Windows.Forms.AnchorStyles.Right)));
+            mainLevelPanel.BackColor = System.Drawing.Color.Black;
+            mainLevelPanel.Location = new System.Drawing.Point(178, 28);
+            mainLevelPanel.Name = "mainLevelPanel";
+            mainLevelPanel.Size = new System.Drawing.Size(675, 574);
+            mainLevelPanel.TabIndex = 8;
+            mainLevelPanel.VSync = false;
+            mainLevelPanel.Load += new System.EventHandler(this.mainLevelPanel_Load);
+            mainLevelPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mainLevelPanel_Paint);
+            mainLevelPanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            mainLevelPanel.KeyUp += new System.Windows.Forms.KeyEventHandler(this.mainLevelPanel_KeyUp);
+            mainLevelPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseDown);
+            mainLevelPanel.MouseEnter += new System.EventHandler(this.mainLevelPanel_MouseEnter);
+            mainLevelPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseMove);
+            mainLevelPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainLevelPanel_MouseUp);
+            mainLevelPanel.MakeCurrent();
+            Controls.Add(mainLevelPanel);
+
+            renderer = new RendererState(editorState);
+            renderer.Init();
+            renderer.SetViewSize(mainLevelPanel.Width, mainLevelPanel.Height);
+            UpdateZoom();
+            worldRenderer = new WorldRenderer(renderer);
+            textureCache = new TextureCache(renderer.Textures);
+
             TileEditorPanel = new WallUIPanel();
             components.Add(TileEditorPanel);
             TileEditorPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom;
             TileEditorPanel.Location = SizeTemplatePanel.Location;
             TileEditorPanel.Size = SizeTemplatePanel.Size;
             Controls.Add(TileEditorPanel);
+            TileEditorPanel.Cache = textureCache;
 
             ThingEditorPanel = new ThingUIPanel();
             components.Add(ThingEditorPanel);
@@ -119,15 +153,6 @@ namespace eced
             this.SectorEditorPanel.Visible = false;
             this.TagListPanel.Visible = false;
 
-            renderer = new RendererState(editorState);
-            renderer.Init();
-            renderer.SetViewSize(mainLevelPanel.Width, mainLevelPanel.Height);
-            UpdateZoom();
-            worldRenderer = new WorldRenderer(renderer);
-            textureCache = new TextureCache(renderer.Textures);
-            TileEditorPanel.Cache = textureCache;
-
-            GL.Disable(EnableCap.DepthTest);
             mainLevelPanel.MouseWheel += MainLevelPanel_MouseWheel;
         }
 
