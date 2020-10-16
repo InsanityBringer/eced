@@ -143,7 +143,15 @@ namespace eced.UIPanels
         private void BrowseNorthTextureButton_Click(object sender, EventArgs e)
         {
             TextureBrowser browser = new TextureBrowser(Cache);
-            browser.ShowDialog();
+            //horrible hack
+            if (sender == BrowseNorthTextureButton)
+                browser.TextureName = NorthTexTextBox.Text;
+            if (browser.ShowDialog() == DialogResult.OK)
+            {
+                //horrible hack ][
+                if (sender == BrowseNorthTextureButton)
+                    NorthTexTextBox.Text = browser.TextureName;
+            }
             browser.Dispose();
         }
     }

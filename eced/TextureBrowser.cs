@@ -33,6 +33,17 @@ namespace eced
     public partial class TextureBrowser : Form
     {
         private TextureView textureView;
+        public string TextureName
+        {
+            get
+            {
+                return textureView.SelectedTextureName;
+            }
+            set
+            {
+                textureView.SelectedTextureName = value;
+            }
+        }
         public TextureBrowser(TextureCache cache)
         {
             InitializeComponent();

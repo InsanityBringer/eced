@@ -385,7 +385,7 @@
             // 
             // statusBar1
             // 
-            this.statusBar1.Location = new System.Drawing.Point(0, 581);
+            this.statusBar1.Location = new System.Drawing.Point(0, 602);
             this.statusBar1.Name = "statusBar1";
             this.statusBar1.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
             this.statusBarPanel1,
@@ -470,7 +470,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 603);
+            this.ClientSize = new System.Drawing.Size(853, 624);
             this.Controls.Add(this.GLControlSizeTemplate);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.SizeTemplatePanel);

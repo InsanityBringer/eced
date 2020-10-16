@@ -35,12 +35,34 @@ namespace eced
     {
         public int TextureMargin { get; set; } = 8;
         public int FontSize { get; set; } = 12;
+        public string SelectedTextureName
+        {
+            get => mSelectedTextureName;
+            set
+            {
+                mSelectedTextureName = value;
+                //Console.WriteLine("Setting texture name {0}", value);
+
+                if (nameToNumberMapping.ContainsKey(value))
+                {
+                    Console.WriteLine("it's in there");
+                    int yOffset = nameToNumberMapping[value] / numTexturesX;
+                    int startY = yOffset * (128 + FontSize + TextureMargin) + TextureMargin - 128;
+                    if (startY < 0) startY = 0;
+
+                    desiredVerticalScroll = startY;
+                }
+            }
+        }
         private int numTexturesX;
         private int numTexturesY;
         private int numTextures = 1400; //testing
         private List<TextureInformation> mTextureList;
         private string mSearchString = "";
+        private string mSelectedTextureName = "-";
         private List<TextureInformation> currentList;
+        private Dictionary<string, int> nameToNumberMapping;
+        private int desiredVerticalScroll = -1;
 
         public TextureCache Cache { get; set; }
         public List<TextureInformation> TextureList { 
@@ -48,6 +70,7 @@ namespace eced
             set
             {
                 mTextureList = value;
+                nameToNumberMapping = new Dictionary<string, int>();
                 SortInputList();
                 BuildLocalList();
             }
@@ -77,14 +100,27 @@ namespace eced
         {
             if (currentList != null)
                 currentList.Clear();
-
-            if (SearchString == "")
-                currentList = mTextureList.ToList();
             else
+                currentList = new List<TextureInformation>();
+
+            if (nameToNumberMapping != null)
+                nameToNumberMapping.Clear();
+
+            /*if (SearchString == "")
+            {
+                currentList = mTextureList.ToList();
+            }
+            else*/
             {
                 foreach (TextureInformation info in mTextureList)
-                    if (info.name.Contains(mSearchString))
+                {
+                    //This is a hack, but the above solution wouldn't update the dict
+                    if (mSearchString == "" || info.name.Contains(mSearchString))
+                    {
+                        nameToNumberMapping.Add(info.name, currentList.Count);
                         currentList.Add(info);
+                    }
+                }
             }
             numTextures = currentList.Count;
             CalcBounds();
@@ -132,6 +168,8 @@ namespace eced
                 Bitmap image;
                 TextureInformation info;
                 Brush textBrush = new SolidBrush(Color.White);
+                Brush selectBrush = new SolidBrush(SystemColors.Highlight);
+                Brush alphaBrush = new SolidBrush(Color.FromArgb(128, SystemColors.Highlight));
                 //Draw the texture cells
                 for (int x = firstTextureX; x < lastTextureX; x++)
                 {
@@ -141,12 +179,23 @@ namespace eced
                         if (textureNum < numTextures)
                         {
                             info = currentList[textureNum];
+
+                            if (info.name == SelectedTextureName)
+                            {
+                                textureBox = new Rectangle(x * (128 + TextureMargin), y * (128 + TextureMargin + FontSize) + TextureMargin - VerticalScroll.Value, 128 + (TextureMargin << 1), 128 + (TextureMargin << 1));
+                                pe.Graphics.FillRectangle(selectBrush, textureBox);
+                            }
+
                             textureBox = new Rectangle(x * (128 + TextureMargin) + TextureMargin, y * (128 + TextureMargin + FontSize) + TextureMargin - VerticalScroll.Value, 128, 128);
                             if (!Cache.RequestImage(info.id, out image))
                             {
                                 Console.WriteLine("cache miss on texture {0}, id {1}", info.name, info.id);
                             }
                             pe.Graphics.DrawImageUnscaled(image, textureBox.X, textureBox.Y);
+                            if (info.name == SelectedTextureName)
+                            {
+                                pe.Graphics.FillRectangle(alphaBrush, textureBox);
+                            }
                             pe.Graphics.DrawString(info.name, Font, textBrush, new PointF(textureBox.X, textureBox.Y + 130));
                             //brush = new SolidBrush(Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)));
                             //pe.Graphics.FillRectangle(brush, textureBox);
@@ -155,6 +204,8 @@ namespace eced
                     }
                 }
                 textBrush.Dispose();
+                alphaBrush.Dispose();
+                selectBrush.Dispose();
             }
         }
 
@@ -162,6 +213,45 @@ namespace eced
         {
             base.OnResize(e);
             CalcBounds();
+        }
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            base.OnMouseClick(e);
+
+            if (nameToNumberMapping.ContainsKey(SelectedTextureName))
+            {
+                int oldIndex = nameToNumberMapping[SelectedTextureName];
+                int oldCellX = oldIndex % numTexturesX;
+                int oldCellY = oldIndex / numTexturesX;
+
+                Rectangle oldTextureBox = new Rectangle(oldCellX * (128 + TextureMargin), oldCellY * (128 + TextureMargin + FontSize) + TextureMargin - VerticalScroll.Value, 128 + (TextureMargin << 1), 128 + (TextureMargin << 1));
+                Invalidate(oldTextureBox);
+            }
+
+            int cellX = (TextureMargin + e.X) / (128 + TextureMargin);
+            int cellY = (TextureMargin + e.Y + VerticalScroll.Value) / (128 + TextureMargin + FontSize);
+            Console.WriteLine("({0} {1})", cellX, cellY);
+
+            if (cellX >= numTexturesX) return;
+
+            int textureNum = cellY * numTexturesX + cellX;
+            if (textureNum >= currentList.Count) return;
+
+            SelectedTextureName = currentList[textureNum].name;
+            //only invalidate the one region, since it takes a while to draw
+            Rectangle textureBox = new Rectangle(cellX * (128 + TextureMargin), cellY * (128 + TextureMargin + FontSize) + TextureMargin - VerticalScroll.Value, 128 + (TextureMargin << 1), 128 + (TextureMargin << 1));
+            Invalidate(textureBox);
+        }
+
+        protected override void OnCreateControl()
+        {
+            base.OnCreateControl();
+            if (desiredVerticalScroll > 0 && desiredVerticalScroll < VerticalScroll.Maximum)
+            {
+                VerticalScroll.Value = desiredVerticalScroll;
+                desiredVerticalScroll = -1;
+            }
         }
     }
 
