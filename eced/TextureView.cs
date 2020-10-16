@@ -229,9 +229,11 @@ namespace eced
                 Invalidate(oldTextureBox);
             }
 
-            int cellX = (TextureMargin + e.X) / (128 + TextureMargin);
-            int cellY = (TextureMargin + e.Y + VerticalScroll.Value) / (128 + TextureMargin + FontSize);
+            int cellX = (-TextureMargin + e.X) / (128 + TextureMargin);
+            int cellY = (-TextureMargin + e.Y + VerticalScroll.Value) / (128 + TextureMargin + FontSize);
             Console.WriteLine("({0} {1})", cellX, cellY);
+
+            if (cellX < 0 || cellY < 0) return;
 
             if (cellX >= numTexturesX) return;
 

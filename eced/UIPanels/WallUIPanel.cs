@@ -146,11 +146,28 @@ namespace eced.UIPanels
             //horrible hack
             if (sender == BrowseNorthTextureButton)
                 browser.TextureName = NorthTexTextBox.Text;
+            else if (sender == BrowseSouthTextureButton)
+                browser.TextureName = SouthTexTextBox.Text;
+            else if (sender == BrowseEastTextureButton)
+                browser.TextureName = EastTexTextBox.Text;
+            else if (sender == BrowseWestTextureButton)
+                browser.TextureName = WestTexTextBox.Text;
+            else if (sender == BrowseMapTextureButton)
+                browser.TextureName = MapTexTextBox.Text;
+
             if (browser.ShowDialog() == DialogResult.OK)
             {
                 //horrible hack ][
                 if (sender == BrowseNorthTextureButton)
                     NorthTexTextBox.Text = browser.TextureName;
+                else if (sender == BrowseSouthTextureButton)
+                    SouthTexTextBox.Text = browser.TextureName;
+                else if (sender == BrowseEastTextureButton)
+                    EastTexTextBox.Text = browser.TextureName;
+                else if (sender == BrowseWestTextureButton)
+                    WestTexTextBox.Text = browser.TextureName;
+                else if (sender == BrowseMapTextureButton)
+                    MapTexTextBox.Text = browser.TextureName;
             }
             browser.Dispose();
         }

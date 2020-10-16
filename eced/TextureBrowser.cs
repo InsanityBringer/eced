@@ -54,7 +54,14 @@ namespace eced
             textureView.Anchor = SizeReferencePanelBecauseTheWindowsFormDesignerIsABeautifulThingThatIsntBrokenOrAnything.Anchor;
             textureView.Cache = cache;
             textureView.TextureList = cache.TexturesManager.GetTextureList();
+            textureView.DoubleClick += TextureList_DoubleClick;
             Controls.Add(textureView);
+        }
+
+        private void TextureList_DoubleClick(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
