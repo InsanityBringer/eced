@@ -260,7 +260,7 @@ namespace eced.Renderer
         /// <param name="archive"></param>
         public void AddArchiveTextures(ResourceFiles.Archive archive)
         {
-            List<ResourceFiles.Lump> lumps = archive.GetResourceList(ResourceFiles.LumpNamespace.Texture);
+            List<ResourceFiles.Lump> lumps = archive.GetResourceList(ResourceFiles.LumpNamespace.Texture | ResourceFiles.LumpNamespace.Flat);
             BasicImage img;
 
             for (int i = 0; i < lumps.Count; i++)

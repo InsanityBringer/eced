@@ -30,6 +30,7 @@ namespace eced.ResourceFiles.Formats
         ROTTMask,
         ROTTPatch,
         ROTTRaw,
+        ROTTPic,
     }
 
     public class LumpClassifierEntry

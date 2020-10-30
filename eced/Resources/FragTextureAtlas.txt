@@ -16,8 +16,13 @@ void main()
 	ivec2 itile = ivec2(tileloc);
 
 	ivec4 tilemapInfo = texelFetch(mapPlane, itile, 0);
+
+	//The type of the tile. 1 is a normal tile, 2 is a hole exposing either a floor, ceiling, or floorcode.
 	int type = tilemapInfo.r & 255;
+
+	//The mode to draw the tile in.  0 is a floor code, 1 is a textured tile, 2 is a solid color.
 	int mode = (tilemapInfo.r >> 8) & 255;
+
 	int tileid = tilemapInfo.g;
 	int floorid = tilemapInfo.g;
 
@@ -82,12 +87,29 @@ void main()
 	else if (mode == 1) //Show textured wall
 	{
 		textureInfo = texelFetch(texInfo, ivec2(0, tileid), 0);
+
+		//Texture information
 		ivec2 textureRes = textureInfo.rg;
 		ivec2 texOrigin = textureInfo.ba;
+
+		//Texture UV in this tile.
+		vec2 cellpost;
+
+		//Scales the texture to normalized units
 		vec2 texScale = vec2(tilesize / textureInfo.r, tilesize / textureInfo.g);
 
+		//Find fractional position in the cell
 		cellposf = vec2(tileloc.x - itile.x , tileloc.y - itile.y);
-		vec2 cellpost = fract(cellposf * texScale);
+
+		//Find the UV coordinates. This needs to be projected differently for flats.
+		if (type == 2)
+		{
+			cellpost = fract(tileloc * texScale);
+		}
+		else
+		{
+			cellpost = fract(cellposf * texScale);
+		}
 		cellpos = ivec2(texOrigin.x + int(cellpost.x * textureRes.x), texOrigin.y + int(cellpost.y * textureRes.y));
 	}
 

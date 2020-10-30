@@ -104,7 +104,7 @@ namespace eced.ResourceFiles
             List<Lump> lumps = new List<Lump>();
             foreach (Lump lump in this.lumps)
             {
-                if (lump.@namespace == ns)
+                if ((lump.@namespace & ns) != 0)
                     lumps.Add(lump);
             }
 

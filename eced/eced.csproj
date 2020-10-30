@@ -152,6 +152,7 @@
     <Compile Include="ResourceFiles\Images\PNGCodec.cs" />
     <Compile Include="ResourceFiles\Archive.cs" />
     <Compile Include="ResourceFiles\ArchiveHeader.cs" />
+    <Compile Include="ResourceFiles\Images\ROTTPicCodec.cs" />
     <Compile Include="ResourceFiles\Images\ROTTMaskCodec.cs" />
     <Compile Include="ResourceFiles\Images\ROTTPatchCodec.cs" />
     <Compile Include="ResourceFiles\Images\VSwapWallCodec.cs" />

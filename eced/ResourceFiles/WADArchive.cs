@@ -70,6 +70,11 @@ namespace eced.ResourceFiles
                     ns &= ~LumpNamespace.Texture;
                     format = LumpFormatType.Generic;
                 }
+                else if (name == "UPDNSTOP")
+                {
+                    ns &= ~LumpNamespace.Flat;
+                    format = LumpFormatType.Generic;
+                }
                 else if (name == "EXITSTOP" || name == "ABVMSTRT" || name == "HMSKSTRT" || name == "GUNSTART" || name == "DOORSTOP" || name == "MASKSTOP")
                     ns &= ~(LumpNamespace.Rott | LumpNamespace.Texture);
 
@@ -92,6 +97,11 @@ namespace eced.ResourceFiles
                 {
                     ns |= LumpNamespace.Texture;
                     format = LumpFormatType.VSwapTexture;
+                }
+                else if (name == "UPDNSTRT")
+                {
+                    ns |= LumpNamespace.Flat;
+                    format = LumpFormatType.ROTTPic;
                 }
                 else if (name == "EXITSTRT" || name == "ABVWSTRT" || name == "ABVMSTRT" || name == "HMSKSTRT" || name == "DOORSTRT" || name == "MASKSTRT")
                     ns |= LumpNamespace.Rott | LumpNamespace.Texture;
