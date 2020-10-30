@@ -107,7 +107,7 @@ namespace eced.ResourceFiles
 
             for (int i = 0; i < lumps.Count; i++)
             {
-                if (lumps[i].@namespace == ns)
+                if ((lumps[i].@namespace & ns) != 0)
                     lumplist.Add(lumps[i]);
             }
 
