@@ -247,6 +247,9 @@
       <DependentUpon>ZoneUIPanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="GameConfigurations\Wolfenstein3D\palette.pal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -320,6 +323,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FloorTool.bmp" />
+    <Content Include="GameConfigurations\Wolfenstein3D\actors.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameConfigurations\Wolfenstein3D\config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameConfigurations\Wolfenstein3D\tiles.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameConfigurations\Wolfenstein3D\triggers.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameConfigurations\Wolfenstein3D\vswap.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="NewIcon.bmp" />
     <Content Include="OpenIcon.bmp" />
     <Content Include="Pointer.bmp" />

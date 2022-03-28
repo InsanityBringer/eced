@@ -61,9 +61,18 @@ namespace eced
             CurrentArchive.format = ResourceFiles.ResourceFormat.Zip;        
         }
 
+        bool enableVSwap = false;
+        string vswapExt = "";
+
+        public void EnableVSwap(string ext)
+        {
+            enableVSwap = true;
+            vswapExt = ext;
+        }
+
         private void button7_Click(object sender, EventArgs e)
         {
-            ArchiveOpenFileDialog.Filter = "VSWAP Files|VSWAP.WL6;VSWAP.SOD";
+            ArchiveOpenFileDialog.Filter = $"VSWAP Files|VSWAP.{vswapExt}";
 
             DialogResult res = ArchiveOpenFileDialog.ShowDialog();
 
@@ -80,6 +89,12 @@ namespace eced
         {
             CurrentArchive.filename = VSwapPathTextBox.Text;
             CurrentArchive.format = ResourceFormat.VSwap;
+        }
+
+        private void AddResourceDialog_Load(object sender, EventArgs e)
+        {
+            if (!enableVSwap)
+                tabControl1.TabPages.Remove(tabPage3);
         }
     }
 }

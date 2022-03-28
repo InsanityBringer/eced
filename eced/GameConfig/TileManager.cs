@@ -27,19 +27,9 @@ namespace eced.GameConfig
         public List<Tile> tileset = new List<Tile>();
 
         /// <summary>
-        /// The filename where the main XML data is stored.
-        /// </summary>
-        private string filename;
-
-        public TileManager(string filename)
-        {
-            this.filename = filename;
-        }
-
-        /// <summary>
         /// Loads the default tileset from an XML file
         /// </summary>
-        public void LoadPalette()
+        public void LoadPalette(string filename)
         {
             StreamReader sr = new StreamReader(File.Open(filename, FileMode.Open));
             try

@@ -19,6 +19,7 @@ using System;
 using System.Windows.Forms;
 
 using eced.ResourceFiles;
+using eced.GameConfig;
 
 namespace eced
 {
@@ -26,9 +27,19 @@ namespace eced
     {
         //private MapInformation currentMapInfo = new MapInformation();
         public MapInformation CurrentMap { get; } = new MapInformation();
-        public NewMapDialog()
+        private EditorState editorState;
+        public NewMapDialog(EditorState state)
         {
             InitializeComponent();
+            editorState = state;
+
+            //This assumes there's more than 0 configurations, but if you get here without that something is seriously wrong.
+            GameConfigurationComboBox.Items.Clear();
+            foreach (GameConfiguration configuration in editorState.Configurations)
+            {
+                GameConfigurationComboBox.Items.Add(configuration.Name);
+            }
+            GameConfigurationComboBox.SelectedIndex = 0;
         }
 
         private void txtMapName_TextChanged(object sender, EventArgs e)
@@ -71,6 +82,9 @@ namespace eced
         private void button1_Click(object sender, EventArgs e)
         {
             AddResourceDialog resourceDialog = new AddResourceDialog();
+            if (CurrentMap.gameConfiguration.UsesVSwap)
+                resourceDialog.EnableVSwap(CurrentMap.gameConfiguration.VSwapExtension);
+
             ArchiveHeader resource;
             
             if (resourceDialog.ShowDialog() == DialogResult.OK)
@@ -81,6 +95,42 @@ namespace eced
             }
 
             resourceDialog.Dispose();
+        }
+
+        bool recursiveHack = false;
+        private void GameConfigurationComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Hack to handle VSwap archives. These are super configuration-based and likely can't be used between configurations.
+            if (!recursiveHack)
+            {
+                foreach (object hack in listBox1.Items)
+                {
+                    if (hack is ArchiveHeader)
+                    {
+                        ArchiveHeader superhack = (ArchiveHeader)hack;
+                        if (superhack.format == ResourceFormat.VSwap)
+                        {
+                            DialogResult res = MessageBox.Show("VSWAP resources are loaded, which may not be compatible with the new configuration. Changing the config will clear these resources. Do you want to continue?",
+                                "VSwap info", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                            if (res == DialogResult.Yes)
+                            {
+                                listBox1.Items.Clear();
+                                CurrentMap.gameConfiguration = editorState.Configurations[GameConfigurationComboBox.SelectedIndex];
+                            }
+                            else
+                            {
+                                recursiveHack = true;
+                                GameConfigurationComboBox.SelectedIndex = editorState.Configurations.IndexOf(CurrentMap.gameConfiguration);
+                                recursiveHack = false;
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
+
+            CurrentMap.gameConfiguration = editorState.Configurations[GameConfigurationComboBox.SelectedIndex];
         }
     }
 }

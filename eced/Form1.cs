@@ -31,6 +31,7 @@ using eced.Renderer;
 using eced.UIPanels;
 using eced.Brushes;
 using eced.ResourceFiles;
+using eced.GameConfig;
 
 namespace eced
 {
@@ -65,6 +66,12 @@ namespace eced
 
         public Form1()
         {
+            //Check for game configurations before showing anything else
+            if (!editorState.FindGameConfigurations())
+            {
+                MessageBox.Show("Failed to read any game configurations! Game configurations should be placed within the GameConfigurations subdirectory of this program.", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
             InitializeComponent();
             this.SuspendLayout();
 
@@ -143,6 +150,8 @@ namespace eced
 
             this.ResumeLayout(false);
             this.PerformLayout();
+
+            GameConfiguration testconfig = new GameConfiguration("./GameConfigurations/Wolfenstein3D/");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -171,7 +180,7 @@ namespace eced
 
         private void DoNewMapDialog()
         {
-            NewMapDialog nmd = new NewMapDialog();
+            NewMapDialog nmd = new NewMapDialog(editorState);
             nmd.ShowDialog();
 
             if (nmd.DialogResult == DialogResult.OK)
@@ -239,7 +248,7 @@ namespace eced
                         MessageBox.Show("Chosen WAD file does not have any maps present.");
                     else
                     {
-                        OpenMapDialog mapDialog = new OpenMapDialog(archive, mapLumpNums);
+                        OpenMapDialog mapDialog = new OpenMapDialog(archive, mapLumpNums, editorState);
                         //TODO: Organize better and add some functions for common tasks
                         if (mapDialog.ShowDialog() == DialogResult.OK)
                         {

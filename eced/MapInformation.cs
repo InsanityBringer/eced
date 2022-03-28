@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using eced.GameConfig;
 
 namespace eced
 {
@@ -30,6 +31,8 @@ namespace eced
         public byte[] Palette { get; } = new byte[768];
 
         public List<ResourceFiles.ArchiveHeader> files = new List<ResourceFiles.ArchiveHeader>();
+
+        public GameConfiguration gameConfiguration;
 
         /// <summary>
         /// Finds if the specified resource name exists in this map's resources

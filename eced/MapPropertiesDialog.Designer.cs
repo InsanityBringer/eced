@@ -33,17 +33,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.TileSizeSpinner = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.ExperimentalCheckBox = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.DefaultLightSpinner = new System.Windows.Forms.NumericUpDown();
-            this.VisibilitySpinner = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
+            this.VisibilitySpinner = new System.Windows.Forms.NumericUpDown();
+            this.DefaultLightSpinner = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.ExperimentalCheckBox = new System.Windows.Forms.CheckBox();
             this.CloseDialogButton = new System.Windows.Forms.Button();
             this.AcceptDialogButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.TileSizeSpinner)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DefaultLightSpinner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.VisibilitySpinner)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DefaultLightSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -107,37 +107,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Experimental";
             // 
-            // ExperimentalCheckBox
+            // label4
             // 
-            this.ExperimentalCheckBox.AutoSize = true;
-            this.ExperimentalCheckBox.Location = new System.Drawing.Point(6, 19);
-            this.ExperimentalCheckBox.Name = "ExperimentalCheckBox";
-            this.ExperimentalCheckBox.Size = new System.Drawing.Size(162, 17);
-            this.ExperimentalCheckBox.TabIndex = 0;
-            this.ExperimentalCheckBox.Text = "Enable experimental features";
-            this.ExperimentalCheckBox.UseVisualStyleBackColor = true;
-            this.ExperimentalCheckBox.CheckedChanged += new System.EventHandler(this.ExperimentalCheckBox_CheckedChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 44);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(111, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Default tile brightness:";
-            // 
-            // DefaultLightSpinner
-            // 
-            this.DefaultLightSpinner.Location = new System.Drawing.Point(123, 42);
-            this.DefaultLightSpinner.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.DefaultLightSpinner.Name = "DefaultLightSpinner";
-            this.DefaultLightSpinner.Size = new System.Drawing.Size(69, 20);
-            this.DefaultLightSpinner.TabIndex = 5;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 70);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(82, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Default visibility:";
             // 
             // VisibilitySpinner
             // 
@@ -167,14 +144,37 @@
             0,
             131072});
             // 
-            // label4
+            // DefaultLightSpinner
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 70);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Default visibility:";
+            this.DefaultLightSpinner.Location = new System.Drawing.Point(123, 42);
+            this.DefaultLightSpinner.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.DefaultLightSpinner.Name = "DefaultLightSpinner";
+            this.DefaultLightSpinner.Size = new System.Drawing.Size(69, 20);
+            this.DefaultLightSpinner.TabIndex = 5;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 44);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(111, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Default tile brightness:";
+            // 
+            // ExperimentalCheckBox
+            // 
+            this.ExperimentalCheckBox.AutoSize = true;
+            this.ExperimentalCheckBox.Location = new System.Drawing.Point(6, 19);
+            this.ExperimentalCheckBox.Name = "ExperimentalCheckBox";
+            this.ExperimentalCheckBox.Size = new System.Drawing.Size(162, 17);
+            this.ExperimentalCheckBox.TabIndex = 0;
+            this.ExperimentalCheckBox.Text = "Enable experimental features";
+            this.ExperimentalCheckBox.UseVisualStyleBackColor = true;
+            this.ExperimentalCheckBox.CheckedChanged += new System.EventHandler(this.ExperimentalCheckBox_CheckedChanged);
             // 
             // CloseDialogButton
             // 
@@ -203,7 +203,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseDialogButton;
             this.ClientSize = new System.Drawing.Size(331, 217);
-            this.ControlBox = false;
             this.Controls.Add(this.AcceptDialogButton);
             this.Controls.Add(this.CloseDialogButton);
             this.Controls.Add(this.groupBox1);
@@ -211,7 +210,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.MapNameTextBox);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MapPropertiesDialog";
@@ -221,8 +220,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.TileSizeSpinner)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DefaultLightSpinner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.VisibilitySpinner)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DefaultLightSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

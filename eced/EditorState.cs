@@ -55,10 +55,10 @@ namespace eced
         //properties for the current editor state
         public MapInformation CurrentMapInfo { get; private set; }
         public Level CurrentLevel { get; private set; }
-        public TileManager TileList { get; private set; }
-        public ThingManager ThingList { get; private set; }
-        public TriggerManager TriggerList { get; private set; }
-        public VSwapNames VSwapNameList { get; private set; }
+        public TileManager TileList { get => CurrentConfiguration.TilePalette; }
+        public ThingManager ThingList { get => CurrentConfiguration.ThingPalette; }
+        public TriggerManager TriggerList { get => CurrentConfiguration.TriggerPalette; }
+        public VSwapNames VSwapNameList { get => CurrentConfiguration.VSwapNameList; }
         public Thing HighlightedThing { get; private set; }
         public List<Thing> SelectedThings { get; } = new List<Thing>();
         public int HighlightedZone { get; private set; } = -1;
@@ -92,11 +92,47 @@ namespace eced
             }
         }
 
+        public List<GameConfiguration> Configurations { get; } = new List<GameConfiguration>();
+        public GameConfiguration CurrentConfiguration { get => CurrentMapInfo.gameConfiguration; }
+
         public EditorState()
         {
             EditorIOState = new EditorIO(this);
             inputHandler = new EditorInputHandler(this);
             Colors.Init();
+        }
+
+        public bool FindGameConfigurations()
+        {
+            Configurations.Clear();
+
+            DirectoryInfo dir = new DirectoryInfo("./GameConfigurations/");
+            foreach (DirectoryInfo subdir in dir.EnumerateDirectories())
+            {
+                GameConfiguration config = null;
+                try
+                {
+                    config = new GameConfiguration(subdir.FullName);
+                }
+                catch (FileNotFoundException exc)
+                {
+                    Console.WriteLine($"Cannot open game config file {exc.FileName}.");
+                    continue;
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    Console.WriteLine($"Cannot open game config directory.");
+                    continue;
+                }
+                catch (UnauthorizedAccessException exc)
+                {
+                    Console.WriteLine($"Failed to open game config file, {exc.Message}.");
+                    continue;
+                }
+                if (config != null)
+                    Configurations.Add(config);
+            }
+            return Configurations.Count > 0;
         }
 
         private void CreateBrushes()
@@ -114,15 +150,6 @@ namespace eced
 
         private void LoadGameConfiguration()
         {
-            //TODO: Actual game configuration elements
-            TileList = new TileManager("./Resources/wolftiles.xml");
-            TileList.LoadPalette();
-            ThingList = new ThingManager();
-            ThingList.LoadThingDefintions("./Resources/wolfactors.xml");
-            TriggerList = new TriggerManager();
-            TriggerList.LoadTriggerDefinitions("./Resources/wolftriggers.xml");
-            VSwapNameList = new VSwapNames();
-            VSwapNameList.LoadVSwapNames("./Resources/wolfvswap.xml");
             byte[] defaultPalette = new byte[768];
             Stream str = File.Open("./Resources/wolfpalette.pal", FileMode.Open);
             str.Read(defaultPalette, 0, 768);
