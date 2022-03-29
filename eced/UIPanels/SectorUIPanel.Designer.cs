@@ -34,6 +34,8 @@
             this.FloorTexTextBox = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
+            this.PickFloorButton = new System.Windows.Forms.Button();
+            this.PickCeilingButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudSectorLight)).BeginInit();
             this.SuspendLayout();
             // 
@@ -105,10 +107,32 @@
             this.label21.TabIndex = 0;
             this.label21.Text = "Floor Texture";
             // 
+            // PickFloorButton
+            // 
+            this.PickFloorButton.Location = new System.Drawing.Point(109, 15);
+            this.PickFloorButton.Name = "PickFloorButton";
+            this.PickFloorButton.Size = new System.Drawing.Size(30, 23);
+            this.PickFloorButton.TabIndex = 4;
+            this.PickFloorButton.Text = ",,,";
+            this.PickFloorButton.UseVisualStyleBackColor = true;
+            this.PickFloorButton.Click += new System.EventHandler(this.PickFloorButton_Click);
+            // 
+            // PickCeilingButton
+            // 
+            this.PickCeilingButton.Location = new System.Drawing.Point(109, 55);
+            this.PickCeilingButton.Name = "PickCeilingButton";
+            this.PickCeilingButton.Size = new System.Drawing.Size(30, 23);
+            this.PickCeilingButton.TabIndex = 5;
+            this.PickCeilingButton.Text = ",,,";
+            this.PickCeilingButton.UseVisualStyleBackColor = true;
+            this.PickCeilingButton.Click += new System.EventHandler(this.PickFloorButton_Click);
+            // 
             // SectorUIPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.PickCeilingButton);
+            this.Controls.Add(this.PickFloorButton);
             this.Controls.Add(this.nudSectorLight);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.label21);
@@ -116,7 +140,7 @@
             this.Controls.Add(this.label22);
             this.Controls.Add(this.FloorTexTextBox);
             this.Name = "SectorUIPanel";
-            this.Size = new System.Drawing.Size(118, 133);
+            this.Size = new System.Drawing.Size(149, 133);
             ((System.ComponentModel.ISupportInitialize)(this.nudSectorLight)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -131,5 +155,7 @@
         private System.Windows.Forms.TextBox FloorTexTextBox;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Button PickFloorButton;
+        private System.Windows.Forms.Button PickCeilingButton;
     }
 }

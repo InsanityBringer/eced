@@ -110,8 +110,8 @@ namespace eced
             TileEditorPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom;
             TileEditorPanel.Location = SizeTemplatePanel.Location;
             TileEditorPanel.Size = SizeTemplatePanel.Size;
-            Controls.Add(TileEditorPanel);
             TileEditorPanel.Cache = textureCache;
+            Controls.Add(TileEditorPanel);
 
             ThingEditorPanel = new ThingUIPanel();
             components.Add(ThingEditorPanel);
@@ -139,6 +139,7 @@ namespace eced
             SectorEditorPanel.Location = SizeTemplatePanel.Location;
             SectorEditorPanel.Size = SizeTemplatePanel.Size;
             SectorEditorPanel.Anchor |= AnchorStyles.Bottom;
+            SectorEditorPanel.Cache = textureCache;
             Controls.Add(SectorEditorPanel);
 
             TagListPanel = new TagUIPanel();
@@ -150,8 +151,6 @@ namespace eced
 
             this.ResumeLayout(false);
             this.PerformLayout();
-
-            GameConfiguration testconfig = new GameConfiguration("./GameConfigurations/Wolfenstein3D/");
         }
 
         private void Form1_Load(object sender, EventArgs e)

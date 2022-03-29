@@ -25,6 +25,8 @@ namespace eced.UIPanels
     public partial class SectorUIPanel : UserControl
     {
         public SectorBrush pairedBrush;
+
+        public TextureCache Cache { get; set; }
         public SectorUIPanel()
         {
             InitializeComponent();
@@ -43,6 +45,24 @@ namespace eced.UIPanels
             if (pairedBrush != null)
             {
                 pairedBrush.currentSector = pairedBrush.currentSector.ChangeLight((int)nudSectorLight.Value);
+            }
+        }
+
+        private void PickFloorButton_Click(object sender, EventArgs e)
+        {
+            TextureBrowser browser = new TextureBrowser(Cache);
+            //horrible hack
+            if (sender == PickFloorButton)
+                browser.TextureName = FloorTexTextBox.Text;
+            else
+                browser.TextureName = CeilTexTextBox.Text;
+
+            if (browser.ShowDialog() == DialogResult.OK)
+            {
+                if (sender == PickFloorButton)
+                    FloorTexTextBox.Text = browser.TextureName;
+                else
+                    CeilTexTextBox.Text = browser.TextureName;
             }
         }
     }
