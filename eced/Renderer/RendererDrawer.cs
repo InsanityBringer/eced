@@ -200,30 +200,53 @@ namespace eced.Renderer
         public void InitThingTextures()
         {
             RendererState.ErrorCheck("RendererDrawer::InitThingTextures: debug");
-            int[] buffer = new int[17 * 17 * 8];
             ResourceFiles.Images.BasicImage hack;
             thingArrowTexture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2DArray, thingArrowTexture);
             RendererState.ErrorCheck("RendererDrawer::InitThingTextures: Binding texture array");
             //hideous hack
             hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingarrow.png"));
-            Array.Copy(hack.data, 0, buffer, 0, 17 * 17);
+            int width = hack.x; int height = hack.y; int size = width * height;
+            int[] buffer = new int[size * 8];
+            Array.Copy(hack.data, 0, buffer, 0, size);
             hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingammo.png"));
-            Array.Copy(hack.data, 0, buffer, 17*17, 17 * 17);
-            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingweapon.png"));
-            Array.Copy(hack.data, 0, buffer, 17 * 17 * 2, 17 * 17);
-            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thinghealth.png"));
-            Array.Copy(hack.data, 0, buffer, 17 * 17 * 3, 17 * 17);
-            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingkey.png"));
-            Array.Copy(hack.data, 0, buffer, 17 * 17 * 4, 17 * 17);
-            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingtreasure.png"));
-            Array.Copy(hack.data, 0, buffer, 17 * 17 * 5, 17 * 17);
-            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingpowerup.png"));
-            Array.Copy(hack.data, 0, buffer, 17 * 17 * 6, 17 * 17);
-            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thinglight.png"));
-            Array.Copy(hack.data, 0, buffer, 17 * 17 * 7, 17 * 17);
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Ammo icon is the wrong size.");
 
-            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, 17, 17, 8, 0, PixelFormat.Bgra, PixelType.UnsignedByte, buffer);
+            Array.Copy(hack.data, 0, buffer, size, size);
+
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingweapon.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Weapon icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 2, size);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thinghealth.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Health icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 3, size);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingkey.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Key icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 4, size);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingtreasure.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Treasure icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 5, size);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingpowerup.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Powerup icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 6, size);
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thinglight.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Light icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 7, size);
+
+            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, width, height, 8, 0, PixelFormat.Bgra, PixelType.UnsignedByte, buffer);
             RendererState.ErrorCheck("RendererDrawer::InitThingTextures: Uploading texture array");
             GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
