@@ -207,7 +207,7 @@ namespace eced.Renderer
             //hideous hack
             hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingarrow.png"));
             int width = hack.x; int height = hack.y; int size = width * height;
-            int[] buffer = new int[size * 8];
+            int[] buffer = new int[size * 16];
             Array.Copy(hack.data, 0, buffer, 0, size);
             hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingammo.png"));
             if (hack.x != width && hack.y != height)
@@ -245,8 +245,56 @@ namespace eced.Renderer
                 throw new Exception("Light icon is the wrong size.");
 
             Array.Copy(hack.data, 0, buffer, size * 7, size);
+            
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingdecor.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Decor icon is the wrong size.");
 
-            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, width, height, 8, 0, PixelFormat.Bgra, PixelType.UnsignedByte, buffer);
+            Array.Copy(hack.data, 0, buffer, size * 8, size);
+            
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingbarrier.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Barrier icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 9, size);
+            
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingspecial1.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Special 1 icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 10, size);
+            
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingspecial2.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Special 2 icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 11, size);
+            
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingspecial3.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Special 3 icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 12, size);
+            
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thinghazard.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Hazard icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 13, size);
+            
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingitem.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Item icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 14, size);
+            
+            hack = ResourceFiles.Images.PNGCodec.BasicImageFromBitmap(new System.Drawing.Bitmap("./Resources/thingunknown.png"));
+            if (hack.x != width && hack.y != height)
+                throw new Exception("Unknown thing icon is the wrong size.");
+
+            Array.Copy(hack.data, 0, buffer, size * 15, size);
+
+            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, width, height, 16, 0, PixelFormat.Bgra, PixelType.UnsignedByte, buffer);
             RendererState.ErrorCheck("RendererDrawer::InitThingTextures: Uploading texture array");
             GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
