@@ -28,11 +28,9 @@ namespace eced
         public int layers = 1;
         public string lumpname = "MAP01";
 
-        public byte[] Palette { get; } = new byte[768];
-
         public List<ResourceFiles.ArchiveHeader> files = new List<ResourceFiles.ArchiveHeader>();
-
-        public GameConfiguration gameConfiguration;
+        
+        public GameConfiguration Configuration { get; set; }
 
         /// <summary>
         /// Finds if the specified resource name exists in this map's resources
@@ -49,11 +47,6 @@ namespace eced
                 }
             }
             return false;
-        }
-
-        public void SetPalette(byte[] pal)
-        {
-            Array.Copy(pal, 0, Palette, 0, Math.Min(768, pal.Length));
         }
     }
 }

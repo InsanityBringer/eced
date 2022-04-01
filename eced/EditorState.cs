@@ -41,6 +41,7 @@ namespace eced
     {
         //needed since layers are bounds checked and need more properties
         private int mActiveLayer = 0;
+        public byte[] Palette { get; } = new byte[768];
         public ColorChart Colors { get; } = new ColorChart();
         private EditorBrush currentBrush;
         public CurrentToolNum CurrentTool { get; private set; }
@@ -93,7 +94,7 @@ namespace eced
         }
 
         public List<GameConfiguration> Configurations { get; } = new List<GameConfiguration>();
-        public GameConfiguration CurrentConfiguration { get => CurrentMapInfo.gameConfiguration; }
+        public GameConfiguration CurrentConfiguration { get => CurrentMapInfo.Configuration; }
 
         public EditorState()
         {
@@ -150,11 +151,7 @@ namespace eced
 
         private void LoadGameConfiguration()
         {
-            byte[] defaultPalette = new byte[768];
-            Stream str = File.Open("./Resources/wolfpalette.pal", FileMode.Open);
-            str.Read(defaultPalette, 0, 768);
-            str.Close(); str.Dispose();
-            CurrentMapInfo.SetPalette(defaultPalette);
+            Array.Copy(CurrentMapInfo.Configuration.ColorPalette, Palette, 768);
         }
 
         private void LoadResources(MapInformation mapinfo, Level level)
@@ -174,11 +171,12 @@ namespace eced
                     //TODO: needs to be in game configuration
                     pal = file.LoadLump("WOLFPAL");
                     if (pal != null && pal.Length >= 768)
-                        CurrentMapInfo.SetPalette(pal);
+                        Array.Copy(pal, Palette, 768);
+                        //CurrentMapInfo.SetPalette(pal);
                     //From a WAD, load a ROTT palette
                     pal = file.LoadLump("PAL");
                     if (pal != null && pal.Length >= 768)
-                        CurrentMapInfo.SetPalette(pal);
+                        Array.Copy(pal, Palette, 768);
                     level.loadedResources.Add(file);
                     file.CloseFile();
                 }
@@ -189,7 +187,7 @@ namespace eced
                     //TODO: needs to be in game configuration
                     pal = file.LoadLump("WOLFPAL");
                     if (pal != null && pal.Length >= 768)
-                        CurrentMapInfo.SetPalette(pal);
+                        Array.Copy(pal, Palette, 768);
                     level.loadedResources.Add(file);
                     file.CloseFile();
                 }

@@ -35,6 +35,7 @@ namespace eced.GameConfig
         public TriggerManager TriggerPalette { get; }
         public ThingManager ThingPalette { get; }
         public VSwapNames VSwapNameList { get; }
+        public byte[] ColorPalette { get; } = new byte[768];
 
         public GameConfiguration(string pathToConfig)
         {
@@ -53,6 +54,27 @@ namespace eced.GameConfig
             ThingPalette.LoadThingDefintions(Path.Combine(ConfigPath, "actors.xml"));
             if (UsesVSwap)
                 VSwapNameList.LoadVSwapNames(Path.Combine(ConfigPath, "vswap.xml"));
+
+            //Initialize the color palette to grayscale, just in case
+            for (int i = 0; i < 768; i++)
+            {
+                ColorPalette[i] = (byte)(i / 3);
+            }
+            ReadPalette();
+        }
+
+        private void ReadPalette()
+        {
+            try
+            {
+                Stream stream = File.OpenRead(Path.Combine(ConfigPath, "palette.pal"));
+                if (stream.Length < 768)
+                    throw new InvalidDataException("Palette is smaller than 768 bytes large.");
+
+                stream.Read(ColorPalette, 0, 768);
+                stream.Dispose();
+            }
+            catch (FileNotFoundException) { } //silently ignore file not found, since some configurations don't need palettes
         }
 
         private void ReadConfigFile()

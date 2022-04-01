@@ -61,8 +61,8 @@ namespace eced
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
             AddResourceDialog resourceDialog = new AddResourceDialog();
-            if (CurrentMap.gameConfiguration.UsesVSwap)
-                resourceDialog.EnableVSwap(CurrentMap.gameConfiguration.VSwapExtension);
+            if (CurrentMap.Configuration.UsesVSwap)
+                resourceDialog.EnableVSwap(CurrentMap.Configuration.VSwapExtension);
 
             ArchiveHeader resource;
 
@@ -121,12 +121,12 @@ namespace eced
                             if (res == DialogResult.Yes)
                             {
                                 ResourceListBox.Items.Clear();
-                                CurrentMap.gameConfiguration = editorState.Configurations[GameConfigurationComboBox.SelectedIndex];
+                                CurrentMap.Configuration = editorState.Configurations[GameConfigurationComboBox.SelectedIndex];
                             }
                             else
                             {
                                 recursiveHack = true;
-                                GameConfigurationComboBox.SelectedIndex = editorState.Configurations.IndexOf(CurrentMap.gameConfiguration);
+                                GameConfigurationComboBox.SelectedIndex = editorState.Configurations.IndexOf(CurrentMap.Configuration);
                                 recursiveHack = false;
                             }
                             return;
@@ -135,7 +135,7 @@ namespace eced
                 }
             }
 
-            CurrentMap.gameConfiguration = editorState.Configurations[GameConfigurationComboBox.SelectedIndex];
+            CurrentMap.Configuration = editorState.Configurations[GameConfigurationComboBox.SelectedIndex];
         }
     }
 }

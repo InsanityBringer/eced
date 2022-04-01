@@ -270,7 +270,7 @@ namespace eced.Renderer
                     //Console.WriteLine(lumps[i].fullname);
                     if (data != null)
                     {
-                        img = ImageDecoder.DecodeLump(lumps[i], data, state.CurrentState.CurrentMapInfo.Palette);
+                        img = ImageDecoder.DecodeLump(lumps[i], data, state.CurrentState.Palette);
                         AddImageToAtlas(img);
                         //textureIDList[lumps[i].name.ToUpper()] = lastID; lastID++;
                         textureIDList[lumps[i].name.ToUpperInvariant()] = new TextureInformation(lumps[i].name.ToUpperInvariant(), archive.filename, img.Width, img.Height, lastID); lastID++;
