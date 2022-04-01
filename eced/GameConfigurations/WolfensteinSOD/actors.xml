@@ -73,115 +73,64 @@
 	</actor>
 
 	<actor>
-		<name>Hans Grosse</name>
-		<id>Hans</id>
+		<name>Trans Grosse</name>
+		<id>Trans</id>
 		<radius>42</radius>
 		<height>64</height>
 		<icon>0</icon>
-		<r>64</r>
-		<g>64</g>
-		<b>252</b>
-	</actor>
-	<actor>
-		<name>Dr. Schabbs</name>
-		<id>Schabbs</id>
-		<radius>42</radius>
-		<height>64</height>
-		<icon>0</icon>
-		<r>252</r>
+		<r>96</r>
 		<g>156</g>
-		<b>156</b>
-	</actor>
-	<actor>
-		<name>Hitler's Ghost</name>
-		<id>FakeHitler</id>
-		<radius>42</radius>
-		<height>64</height>
-		<icon>0</icon>
-		<r>152</r>
-		<g>0</g>
 		<b>0</b>
 	</actor>
 	<actor>
-		<name>Adolph Hitler</name>
-		<id>Hitler</id>
+		<name>Barnacle Willhelm</name>
+		<id>Wilhelm</id>
 		<radius>42</radius>
 		<height>64</height>
+		<r>0</r>
+		<g>140</g>
+		<b>228</b>
 		<icon>0</icon>
-		<r>252</r>
-		<g>180</g>
+	</actor>
+	<actor>
+		<id>UberMutant</id>
+		<radius>42</radius>
+		<height>64</height>
+		<name>Ubermutant</name>
+		<icon>0</icon>
+		<r>4</r>
+		<g>124</g>
 		<b>0</b>
 	</actor>
 	<actor>
-		<name>Gretel Grosse</name>
-		<id>Gretel</id>
-		<radius>42</radius>
-		<height>64</height>
-		<icon>0</icon>
-		<r>252</r>
-		<g>92</g>
-		<b>92</b>
-	</actor>
-	<actor>
-		<name>Otto Giftmacher</name>
-		<id>Gift</id>
+		<name>Death Knight</name>
+		<id>DeathKnight</id>
 		<radius>42</radius>
 		<height>64</height>
 		<icon>0</icon>
 		<r>0</r>
-		<g>180</g>
-		<b>180</b>
-	</actor>
-	<actor>
-		<name>General Fettgesicht</name>
-		<id>Fatface</id>
-		<radius>42</radius>
-		<height>64</height>
-		<icon>0</icon>
-		<r>252</r>
-		<g>136</g>
-		<b>32</b>
-	</actor>
-
-	<actor>
-		<name>Blinky</name>
-		<id>Blinky</id>
-		<radius>42</radius>
-		<height>64</height>
-		<icon>13</icon>
-		<r>188</r>
-		<g>0</g>
-		<b>0</b>
-	</actor>
-	<actor>
-		<name>Pinky</name>
-		<id>Pinky</id>
-		<radius>42</radius>
-		<height>64</height>
-		<icon>13</icon>
-		<r>252</r>
-		<g>92</g>
-		<b>92</b>
-	</actor>
-	<actor>
-		<name>Inky</name>
-		<id>Inky</id>
-		<radius>42</radius>
-		<height>64</height>
-		<icon>13</icon>
-		<r>64</r>
 		<g>64</g>
-		<b>252</b>
+		<b>64</b>
 	</actor>
 	<actor>
-		<name>Clyde</name>
-		<id>Clyde</id>
+		<name>Angel of Death</name>
+		<id>AngelOfDeath</id>
 		<radius>42</radius>
 		<height>64</height>
-		<icon>13</icon>
 		<r>252</r>
-		<g>152</g>
-		<b>64</b>
+		<g>32</g>
+		<b>32</b>
+		<icon>0</icon>
+	</actor>
+	<actor>
+		<name>Spectre</name>
+		<id>Spectre</id>
+		<radius>42</radius>
+		<height>64</height>
+		<r>192</r>
+		<g>192</g>
+		<b>192</b>
+		<icon>0</icon>
 	</actor>
 
 	<actor>
@@ -215,7 +164,7 @@
 		<b>0</b>
 	</actor>
 	<actor>
-		<name>Meal</name>
+		<name>Small Meal</name>
 		<id>Food</id>
 		<radius>20</radius>
 		<height>16</height>
@@ -225,7 +174,7 @@
 		<b>0</b>
 	</actor>
 	<actor>
-		<name>First Aid</name>
+		<name>Medikit</name>
 		<id>Medikit</id>
 		<radius>20</radius>
 		<height>16</height>
@@ -244,6 +193,16 @@
 		<r>0</r>
 		<g>168</g>
 		<b>168</b>
+	</actor>
+	<actor>
+		<name>Box of Bullets</name>
+		<id>ClipBox</id>
+		<radius>20</radius>
+		<height>16</height>
+		<icon>1</icon>
+		<r>4</r>
+		<g>152</g>
+		<b>0</b>
 	</actor>
 
 	<actor>
@@ -349,6 +308,16 @@
 		<g>140</g>
 		<b>228</b>
 	</actor>
+	<actor>
+		<name>Spear of Destiny</name>
+		<id>SpearOfDestiny</id>
+		<radius>20</radius>
+		<height>16</height>
+		<icon>6</icon>
+		<r>252</r>
+		<g>224</g>
+		<b>52</b>
+	</actor>
 
 	<actor>
 		<name>Ceiling Lamp</name>
@@ -359,6 +328,16 @@
 		<r>0</r>
 		<g>224</g>
 		<b>0</b>
+	</actor>
+	<actor>
+		<name>Red Ceiling Lamp</name>
+		<id>RedCeilingLight</id>
+		<radius>32</radius>
+		<height>64</height>
+		<icon>7</icon>
+		<r>252</r>
+		<g>92</g>
+		<b>92</b>
 	</actor>
 	<actor>
 		<name>Chandelier</name>
@@ -409,56 +388,6 @@
 		<r>188</r>
 		<g>120</g>
 		<b>72</b>
-	</actor>
-	<actor>
-		<name>Bunk Bed</name>
-		<id>BunkBed</id>
-		<radius>32</radius>
-		<height>64</height>
-		<icon>9</icon>
-		<r>188</r>
-		<g>120</g>
-		<b>72</b>
-	</actor>
-	<actor>
-		<name>Sink</name>
-		<id>Sink</id>
-		<radius>32</radius>
-		<height>64</height>
-		<icon>9</icon>
-		<r>192</r>
-		<g>192</g>
-		<b>192</b>
-	</actor>
-	<actor>
-		<name>Stove</name>
-		<id>Stove</id>
-		<radius>32</radius>
-		<height>64</height>
-		<icon>9</icon>
-		<r>72</r>
-		<g>72</g>
-		<b>72</b>
-	</actor>
-	<actor>
-		<name>Hanging Pots 1</name>
-		<id>KitchenStuff</id>
-		<radius>32</radius>
-		<height>64</height>
-		<icon>8</icon>
-		<r>0</r>
-		<g>180</g>
-		<b>180</b>
-	</actor>
-	<actor>
-		<name>Hanging Pots 2</name>
-		<id>Pots</id>
-		<radius>32</radius>
-		<height>64</height>
-		<icon>8</icon>
-		<r>0</r>
-		<g>180</g>
-		<b>180</b>
 	</actor>
 	<actor>
 		<name>Suit of Armor</name>
@@ -591,6 +520,16 @@
 		<b>0</b>
 	</actor>
 	<actor>
+		<name>Truck Rear</name>
+		<id>TruckRear</id>
+		<radius>32</radius>
+		<height>64</height>
+		<icon>9</icon>
+		<r>72</r>
+		<g>72</g>
+		<b>72</b>
+	</actor>
+	<actor>
 		<name>Hanged Man</name>
 		<id>HangedMan</id>
 		<radius>32</radius>
@@ -621,13 +560,23 @@
 		<b>0</b>
 	</actor>
 	<actor>
-		<name>Call Apogee Sign</name>
-		<id>CallApogee</id>
+		<name>Cage with Gore</name>
+		<id>CageWithGore</id>
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>252</r>
-		<g>0</g>
+		<r>228</r>
+		<g>108</g>
+		<b>0</b>
+	</actor>
+	<actor>
+		<name>Cage with Skulls</name>
+		<id>CageWithSkulls</id>
+		<radius>32</radius>
+		<height>64</height>
+		<icon>9</icon>
+		<r>228</r>
+		<g>108</g>
 		<b>0</b>
 	</actor>
 	<actor>
@@ -686,6 +635,46 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
+		<r>168</r>
+		<g>168</g>
+		<b>168</b>
+	</actor>
+	<actor>
+		<name>Skewered Skulls</name>
+		<id>Skewer</id>
+		<radius>32</radius>
+		<height>64</height>
+		<icon>9</icon>
+		<r>168</r>
+		<g>168</g>
+		<b>168</b>
+	</actor>
+	<actor>
+		<name>Impaled Cow Skull</name>
+		<id>CowCarcass</id>
+		<radius>32</radius>
+		<height>64</height>
+		<icon>9</icon>
+		<r>252</r>
+		<g>0</g>
+		<b>0</b>
+	</actor>
+	<actor>
+		<name>Well with Blood</name>
+		<id>WellWithBlood</id>
+		<radius>32</radius>
+		<height>64</height>
+		<icon>9</icon>
+		<r>252</r>
+		<g>156</g>
+		<b>156</b>
+	</actor>
+	<actor>
+		<name>Satan Statue</name>
+		<id>SatanStatue</id>
+		<radius>32</radius>
+		<height>64</height>
+		<icon>9</icon>
 		<r>168</r>
 		<g>168</g>
 		<b>168</b>

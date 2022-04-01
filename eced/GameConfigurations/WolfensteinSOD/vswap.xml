@@ -97,6 +97,34 @@
 	<wall>PLASTER2</wall>
 	<wall>GRYHTLR1</wall>
 	<wall>GRYHTLR2</wall>
+	<wall>COBBLEA1</wall>
+	<wall>COBBLEA2</wall>
+	<wall>COBBLEB1</wall>
+	<wall>COBBLEB2</wall>
+	<wall>COBFLAG1</wall>
+	<wall>COBFLAG2</wall>
+	<wall>COBWRTH1</wall>
+	<wall>COBWRTH2</wall>
+	<wall>BOLDERA1</wall>
+	<wall>BOLDERA2</wall>
+	<wall>BOLDERB1</wall>
+	<wall>BOLDERB2</wall>
+	<wall>HELLWAL1</wall>
+	<wall>HELLWAL2</wall>
+	<wall>GRAYCAV1</wall>
+	<wall>GRAYCAV2</wall>
+	<wall>RAMPRTA1</wall>
+	<wall>RAMPRTA2</wall>
+	<wall>RAMPRTB1</wall>
+	<wall>RAMPRTB2</wall>
+	<wall>ELEV3_1</wall>
+	<wall>ELEV3_2</wall>
+	<wall>WHITWAL1</wall>
+	<wall>WHITWAL2</wall>
+	<wall>BRWNVIN1</wall>
+	<wall>BRWNVIN2</wall>
+	<wall>PINKBRK1</wall>
+	<wall>PINKBRK2</wall>
 	<wall>DOOR1_1</wall>
 	<wall>DOOR1_2</wall>
 	<wall>SLOT1_1</wall>
@@ -118,19 +146,19 @@
 	<sprite>COLUA0</sprite>
 	<sprite>PLNTA0</sprite>
 	<sprite>SKELA0</sprite>
-	<sprite>SINKA0</sprite>
+	<sprite>SKWRA0</sprite>
 	<sprite>BPNTA0</sprite>
 	<sprite>VASEA0</sprite>
 	<sprite>TABLA0</sprite>
 	<sprite>GLMPA0</sprite>
-	<sprite>POT1A0</sprite>
+	<sprite>CAG3A0</sprite>
 	<sprite>ARMRA0</sprite>
 	<sprite>CAG1A0</sprite>
 	<sprite>CAG2A0</sprite>
 	<sprite>BON1A0</sprite>
 	<sprite>GKEYA0</sprite>
 	<sprite>SKEYA0</sprite>
-	<sprite>BUNKA0</sprite>
+	<sprite>CAG4A0</sprite>
 	<sprite>BASKA0</sprite>
 	<sprite>FOODA0</sprite>
 	<sprite>MEDIA0</sprite>
@@ -148,14 +176,18 @@
 	<sprite>WEL2A0</sprite>
 	<sprite>BLUDA0</sprite>
 	<sprite>FLAGA0</sprite>
-	<sprite>AARDA0</sprite>
+	<sprite>RLMPA0</sprite>
 	<sprite>BON2A0</sprite>
 	<sprite>BON3A0</sprite>
 	<sprite>BON4A0</sprite>
-	<sprite>POT2A0</sprite>
-	<sprite>STOVA0</sprite>
-	<sprite>RACKA0</sprite>
+	<sprite>COWCA0</sprite>
+	<sprite>WEL3A0</sprite>
+	<sprite>STATA0</sprite>
 	<sprite>VINEA0</sprite>
+	<sprite>COL2A0</sprite>
+	<sprite>AMMOA0</sprite>
+	<sprite>TRUKA0</sprite>
+	<sprite>SPODA0</sprite>
 	<sprite>GARDA1</sprite>
 	<sprite>GARDA2</sprite>
 	<sprite>GARDA3</sprite>
@@ -394,96 +426,14 @@
 	<sprite>OFFIF0</sprite>
 	<sprite>OFFIG0</sprite>
 	<sprite>OFFIH0</sprite>
-	<sprite>BLKYA0</sprite>
-	<sprite>BLKYB0</sprite>
-	<sprite>PNKYA0</sprite>
-	<sprite>PNKYB0</sprite>
-	<sprite>CLYDA0</sprite>
-	<sprite>CLYDB0</sprite>
-	<sprite>INKYA0</sprite>
-	<sprite>INKYB0</sprite>
-	<sprite>HANSA0</sprite>
-	<sprite>HANSB0</sprite>
-	<sprite>HANSC0</sprite>
-	<sprite>HANSD0</sprite>
-	<sprite>HANSE0</sprite>
-	<sprite>HANSF0</sprite>
-	<sprite>HANSG0</sprite>
-	<sprite>HANSK0</sprite>
-	<sprite>HANSH0</sprite>
-	<sprite>HANSI0</sprite>
-	<sprite>HANSJ0</sprite>
-	<sprite>SHABA0</sprite>
-	<sprite>SHABB0</sprite>
-	<sprite>SHABC0</sprite>
-	<sprite>SHABD0</sprite>
-	<sprite>SHABE0</sprite>
-	<sprite>SHABF0</sprite>
-	<sprite>SHABG0</sprite>
-	<sprite>SHABH0</sprite>
-	<sprite>SHABI0</sprite>
-	<sprite>SHABJ0</sprite>
-	<sprite>HYPOA0</sprite>
-	<sprite>HYPOB0</sprite>
-	<sprite>HYPOC0</sprite>
-	<sprite>HYPOD0</sprite>
-	<sprite>FAKEA0</sprite>
-	<sprite>FAKEB0</sprite>
-	<sprite>FAKEC0</sprite>
-	<sprite>FAKED0</sprite>
-	<sprite>FAKEE0</sprite>
-	<sprite>FIREA0</sprite>
-	<sprite>FIREB0</sprite>
-	<sprite>FAKEF0</sprite>
-	<sprite>FAKEG0</sprite>
-	<sprite>FAKEH0</sprite>
-	<sprite>FAKEI0</sprite>
-	<sprite>FAKEJ0</sprite>
-	<sprite>FAKEK0</sprite>
-	<sprite>MECHA0</sprite>
-	<sprite>MECHB0</sprite>
-	<sprite>MECHC0</sprite>
-	<sprite>MECHD0</sprite>
-	<sprite>MECHE0</sprite>
-	<sprite>MECHF0</sprite>
-	<sprite>MECHG0</sprite>
-	<sprite>MECHK0</sprite>
-	<sprite>MECHH0</sprite>
-	<sprite>MECHI0</sprite>
-	<sprite>MECHJ0</sprite>
-	<sprite>HTLRA0</sprite>
-	<sprite>HTLRB0</sprite>
-	<sprite>HTLRC0</sprite>
-	<sprite>HTLRD0</sprite>
-	<sprite>HTLRE0</sprite>
-	<sprite>HTLRF0</sprite>
-	<sprite>HTLRG0</sprite>
-	<sprite>HTLRO0</sprite>
-	<sprite>HTLRH0</sprite>
-	<sprite>HTLRI0</sprite>
-	<sprite>HTLRJ0</sprite>
-	<sprite>HTLRK0</sprite>
-	<sprite>HTLRL0</sprite>
-	<sprite>HTLRM0</sprite>
-	<sprite>HTLRN0</sprite>
-	<sprite>GIFTA0</sprite>
-	<sprite>GIFTB0</sprite>
-	<sprite>GIFTC0</sprite>
-	<sprite>GIFTD0</sprite>
-	<sprite>GIFTE0</sprite>
-	<sprite>GIFTF0</sprite>
-	<sprite>GIFTG0</sprite>
-	<sprite>GIFTH0</sprite>
-	<sprite>GIFTI0</sprite>
-	<sprite>GIFTJ0</sprite>
 	<sprite>ROCKA1</sprite>
 	<sprite>ROCKA2</sprite>
 	<sprite>ROCKA3</sprite>
 	<sprite>ROCKA4</sprite>
-	<sprite>ROCKA8</sprite>
-	<sprite>ROCKA7</sprite>
-	<sprite>ROCKA6</sprite>
 	<sprite>ROCKA5</sprite>
+	<sprite>ROCKA6</sprite>
+	<sprite>ROCKA7</sprite>
+	<sprite>ROCKA8</sprite>
 	<sprite>SMOKA0</sprite>
 	<sprite>SMOKB0</sprite>
 	<sprite>SMOKC0</sprite>
@@ -491,37 +441,100 @@
 	<sprite>BOOMA0</sprite>
 	<sprite>BOOMB0</sprite>
 	<sprite>BOOMC0</sprite>
-	<sprite>GRETA0</sprite>
-	<sprite>GRETB0</sprite>
-	<sprite>GRETC0</sprite>
-	<sprite>GRETD0</sprite>
-	<sprite>GRETE0</sprite>
-	<sprite>GRETF0</sprite>
-	<sprite>GRETG0</sprite>
-	<sprite>GRETK0</sprite>
-	<sprite>GRETH0</sprite>
-	<sprite>GRETI0</sprite>
-	<sprite>GRETJ0</sprite>
-	<sprite>FATFA0</sprite>
-	<sprite>FATFB0</sprite>
-	<sprite>FATFC0</sprite>
-	<sprite>FATFD0</sprite>
-	<sprite>FATFE0</sprite>
-	<sprite>FATFF0</sprite>
-	<sprite>FATFG0</sprite>
-	<sprite>FATFH0</sprite>
-	<sprite>FATFI0</sprite>
-	<sprite>FATFJ0</sprite>
-	<sprite>FATFK0</sprite>
-	<sprite>FATFL0</sprite>
-	<sprite>BLAZA0</sprite>
-	<sprite>BLAZB0</sprite>
-	<sprite>BLAZC0</sprite>
-	<sprite>BLAZD0</sprite>
-	<sprite>BLAZE0</sprite>
-	<sprite>BLAZF0</sprite>
-	<sprite>BLAZG0</sprite>
-	<sprite>BLAZH0</sprite>
+	<sprite>HRCKA1</sprite>
+	<sprite>HRCKA2</sprite>
+	<sprite>HRCKA3</sprite>
+	<sprite>HRCKA4</sprite>
+	<sprite>HRCKA5</sprite>
+	<sprite>HRCKA6</sprite>
+	<sprite>HRCKA7</sprite>
+	<sprite>HRCKA8</sprite>
+	<sprite>HSMKA0</sprite>
+	<sprite>HSMKB0</sprite>
+	<sprite>HSMKC0</sprite>
+	<sprite>HSMKD0</sprite>
+	<sprite>HBOMA0</sprite>
+	<sprite>HBOMB0</sprite>
+	<sprite>HBOMC0</sprite>
+	<sprite>SPRKA0</sprite>
+	<sprite>SPRKB0</sprite>
+	<sprite>SPRKC0</sprite>
+	<sprite>SPRKD0</sprite>
+	<sprite>TRNSA0</sprite>
+	<sprite>TRNSB0</sprite>
+	<sprite>TRNSC0</sprite>
+	<sprite>TRNSD0</sprite>
+	<sprite>TRNSE0</sprite>
+	<sprite>TRNSF0</sprite>
+	<sprite>TRNSG0</sprite>
+	<sprite>TRNSK0</sprite>
+	<sprite>TRNSH0</sprite>
+	<sprite>TRNSI0</sprite>
+	<sprite>TRNSJ0</sprite>
+	<sprite>WILLA0</sprite>
+	<sprite>WILLB0</sprite>
+	<sprite>WILLC0</sprite>
+	<sprite>WILLD0</sprite>
+	<sprite>WILLE0</sprite>
+	<sprite>WILLF0</sprite>
+	<sprite>WILLG0</sprite>
+	<sprite>WILLH0</sprite>
+	<sprite>WILLI0</sprite>
+	<sprite>WILLJ0</sprite>
+	<sprite>WILLK0</sprite>
+	<sprite>WILLL0</sprite>
+	<sprite>UBERA0</sprite>
+	<sprite>UBERB0</sprite>
+	<sprite>UBERC0</sprite>
+	<sprite>UBERD0</sprite>
+	<sprite>UBERE0</sprite>
+	<sprite>UBERF0</sprite>
+	<sprite>UBERG0</sprite>
+	<sprite>UBERH0</sprite>
+	<sprite>UBERI0</sprite>
+	<sprite>UBERJ0</sprite>
+	<sprite>UBERK0</sprite>
+	<sprite>UBERL0</sprite>
+	<sprite>UBERM0</sprite>
+	<sprite>DKNTA0</sprite>
+	<sprite>DKNTB0</sprite>
+	<sprite>DKNTC0</sprite>
+	<sprite>DKNTD0</sprite>
+	<sprite>DKNTE0</sprite>
+	<sprite>DKNTF0</sprite>
+	<sprite>DKNTG0</sprite>
+	<sprite>DKNTH0</sprite>
+	<sprite>DKNTI0</sprite>
+	<sprite>DKNTJ0</sprite>
+	<sprite>DKNTK0</sprite>
+	<sprite>DKNTL0</sprite>
+	<sprite>DKNTM0</sprite>
+	<sprite>DKNTN0</sprite>
+	<sprite>DKNTO0</sprite>
+	<sprite>SPCTA0</sprite>
+	<sprite>SPCTB0</sprite>
+	<sprite>SPCTC0</sprite>
+	<sprite>SPCTD0</sprite>
+	<sprite>SPCTE0</sprite>
+	<sprite>SPCTF0</sprite>
+	<sprite>SPCTG0</sprite>
+	<sprite>SPCTH0</sprite>
+	<sprite>ANGLA0</sprite>
+	<sprite>ANGLB0</sprite>
+	<sprite>ANGLC0</sprite>
+	<sprite>ANGLD0</sprite>
+	<sprite>ANGLE0</sprite>
+	<sprite>ANGLF0</sprite>
+	<sprite>ANGLG0</sprite>
+	<sprite>ANGLH0</sprite>
+	<sprite>ANGLI0</sprite>
+	<sprite>ANGLJ0</sprite>
+	<sprite>ANGLK0</sprite>
+	<sprite>ANGLL0</sprite>
+	<sprite>ANGLM0</sprite>
+	<sprite>ANGLN0</sprite>
+	<sprite>ANGLO0</sprite>
+	<sprite>ANGLP0</sprite>
 	<sprite>KNIFA0</sprite>
 	<sprite>KNIFB0</sprite>
 	<sprite>KNIFC0</sprite>

@@ -831,6 +831,244 @@
 </tile>
 
 <tile>
+	<name>Brown Cobble 1</name>
+
+	<texn>COBBLEA1</texn>
+	<texs>COBBLEA1</texs>
+	<texe>COBBLEA2</texe>
+	<texw>COBBLEA2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Brown Cobble 2</name>
+
+	<texn>COBBLEB1</texn>
+	<texs>COBBLEB1</texs>
+	<texe>COBBLEB2</texe>
+	<texw>COBBLEB2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Brown Cobble w/ Flag</name>
+
+	<texn>COBFLAG1</texn>
+	<texs>COBFLAG1</texs>
+	<texe>COBFLAG2</texe>
+	<texw>COBFLAG2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Brown Cobble w/ Wreath</name>
+
+	<texn>COBWRTH1</texn>
+	<texs>COBWRTH1</texs>
+	<texe>COBWRTH2</texe>
+	<texw>COBWRTH2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Gray Boulders 1</name>
+
+	<texn>BOLDERA1</texn>
+	<texs>BOLDERA1</texs>
+	<texe>BOLDERA2</texe>
+	<texw>BOLDERA2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Gray Boulders 2</name>
+
+	<texn>BOLDERB1</texn>
+	<texs>BOLDERB1</texs>
+	<texe>BOLDERB2</texe>
+	<texw>BOLDERB2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Hell Wall</name>
+
+	<texn>HELLWAL1</texn>
+	<texs>HELLWAL1</texs>
+	<texe>HELLWAL2</texe>
+	<texw>HELLWAL2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Gray Cave</name>
+
+	<texn>GRAYCAV1</texn>
+	<texs>GRAYCAV1</texs>
+	<texe>GRAYCAV2</texe>
+	<texw>GRAYCAV2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Ramparts 1</name>
+
+	<texn>RAMPRTA1</texn>
+	<texs>RAMPRTA1</texs>
+	<texe>RAMPRTA2</texe>
+	<texw>RAMPRTA2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Ramparts 2</name>
+
+	<texn>RAMPRTB1</texn>
+	<texs>RAMPRTB1</texs>
+	<texe>RAMPRTB2</texe>
+	<texw>RAMPRTB2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Elevator Wall</name>
+
+	<texn>ELEV3_1</texn>
+	<texs>ELEV3_1</texs>
+	<texe>ELEV3_2</texe>
+	<texw>ELEV3_2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>White Wall</name>
+
+	<texn>WHITWAL1</texn>
+	<texs>WHITWAL1</texs>
+	<texe>WHITWAL2</texe>
+	<texw>WHITWAL2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Brown Vine Wall</name>
+
+	<texn>BRWNVIN1</texn>
+	<texs>BRWNVIN1</texs>
+	<texe>BRWNVIN2</texe>
+	<texw>BRWNVIN2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
+	<name>Pink Brick</name>
+
+	<texn>PINKBRK1</texn>
+	<texs>PINKBRK1</texs>
+	<texe>PINKBRK2</texe>
+	<texw>PINKBRK2</texw>
+	
+	<offh>false</offh>
+	<offv>false</offv>
+	
+	<blockn>true</blockn>
+	<blocks>true</blocks>
+	<blocke>true</blocke>
+	<blockw>true</blockw>
+</tile>
+
+<tile>
 	<name>Door east/west</name>
 	
 	<texn>SLOT1_1</texn>
