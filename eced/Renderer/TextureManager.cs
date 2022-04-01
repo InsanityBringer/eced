@@ -31,7 +31,7 @@ namespace eced.Renderer
     public struct TextureCell
     {
         public int x, y;
-        public int w, h;
+        public BasicImage image;
     }
 
     public struct TextureInformation : IComparable
@@ -174,7 +174,7 @@ namespace eced.Renderer
         /// <param name="height">Height of the block</param>
         /// <param name="res">A structure indicating where the resultant block is placed</param>
         /// <returns>True if a spot is found, false if no spot is found</returns>
-        public bool AllocateAtlasSpace(int width, int height, out TextureCell res)
+        public bool AllocateAtlasSpace(BasicImage image, out TextureCell res)
         {
             int i, j;
             int best, best2;
@@ -183,36 +183,35 @@ namespace eced.Renderer
 
             best = baseAtlasSize;
 
-            for (i = 0; i < baseAtlasSize - width; i++)
+            for (i = 0; i < baseAtlasSize - image.Width; i++)
             {
                 best2 = 0;
-                for (j = 0; j < width; j++)
+                for (j = 0; j < image.Width; j++)
                 {
                     if (allocated[i + j] >= best)
                         break;
                     if (allocated[i + j] > best2)
                         best2 = allocated[i + j];
                 }
-                if (j == width)
+                if (j == image.Width)
                 {
                     result.x = i;
                     result.y = best = best2;
                 }
             }
-            result.w = width;
-            result.h = height;
+            result.image = image;
             res = result;
 
-            if (best + height > baseAtlasSize)
+            if (best + image.Height > baseAtlasSize)
             {
                 Console.WriteLine("could not find location for atlasing");
                 return false;
             }
 
-            for (i = 0; i < width; i++)
+            for (i = 0; i < image.Width; i++)
             {
                 //Console.WriteLine("updating allocation");
-                allocated[res.x + i] = best + res.h;
+                allocated[res.x + i] = best + image.Height;
             }
 
             return true;
@@ -274,7 +273,7 @@ namespace eced.Renderer
                         img = ImageDecoder.DecodeLump(lumps[i], data, state.CurrentState.CurrentMapInfo.Palette);
                         AddImageToAtlas(img);
                         //textureIDList[lumps[i].name.ToUpper()] = lastID; lastID++;
-                        textureIDList[lumps[i].name.ToUpperInvariant()] = new TextureInformation(lumps[i].name.ToUpperInvariant(), archive.filename, img.x, img.y, lastID); lastID++;
+                        textureIDList[lumps[i].name.ToUpperInvariant()] = new TextureInformation(lumps[i].name.ToUpperInvariant(), archive.filename, img.Width, img.Height, lastID); lastID++;
                         //Console.WriteLine("Added texture {0} at position {1}", lumps[i].name.ToUpper(), lastID - 1);
                     }
                     //if it isn't known, don't add it, possibly add a warning texture if it gets used
@@ -297,9 +296,9 @@ namespace eced.Renderer
         /// </summary>
         /// <param name="img">The image to upload</param>
         /// <param name="cell">The location the upload will occur</param>
-        public void UploadImageToAtlas(BasicImage img, TextureCell cell)
+        public void UploadImageToAtlas(TextureCell cell)
         {
-            GL.TexSubImage2D(TextureTarget.Texture2D, 0, cell.x, cell.y, cell.w, cell.h, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, img.data);
+            GL.TexSubImage2D(TextureTarget.Texture2D, 0, cell.x, cell.y, cell.image.Width, cell.image.Height, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, cell.image.Data);
 
             RendererState.ErrorCheck("TextureManager:UploadImageToAtlas: uploading texture");
         }
@@ -311,11 +310,11 @@ namespace eced.Renderer
         public void AddImageToAtlas(BasicImage img)
         {
             TextureCell newCell;
-            bool res = AllocateAtlasSpace(img.x, img.y, out newCell);
+            bool res = AllocateAtlasSpace(img, out newCell);
 
             if (res)
             {
-                UploadImageToAtlas(img, newCell);
+                UploadImageToAtlas(newCell);
                 cells.Add(newCell);
             }
             else
@@ -329,19 +328,20 @@ namespace eced.Renderer
             this.resourceInfoID = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, resourceInfoID);
             int numResources = cells.Count;
-            short[] data = new short[numResources * 4];
+            short[] data = new short[numResources * 4 * 2];
 
             for (int i = 0; i < numResources; i++)
             {
-                data[i * 4 + 0] = (short)cells[i].w;
-                data[i * 4 + 1] = (short)cells[i].h;
-                data[i * 4 + 2] = (short)cells[i].x;
-                data[i * 4 + 3] = (short)cells[i].y;
-
+                data[i * 8 + 0] = (short)cells[i].image.Width;
+                data[i * 8 + 1] = (short)cells[i].image.Height;
+                data[i * 8 + 2] = (short)cells[i].x;
+                data[i * 8 + 3] = (short)cells[i].y;
+                data[i * 8 + 4] = (short)cells[i].image.MapWidth;
+                data[i * 8 + 5] = (short)cells[i].image.MapHeight;
                 //Console.WriteLine("{0} {1} {2} {3}", cells[i].w, cells[i].h, cells[i].x, cells[i].y);
             }
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, 1, numResources, 0, OpenTK.Graphics.OpenGL.PixelFormat.RgbaInteger, PixelType.Short, data);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16i, 2, numResources, 0, OpenTK.Graphics.OpenGL.PixelFormat.RgbaInteger, PixelType.Short, data);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);

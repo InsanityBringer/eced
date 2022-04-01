@@ -29,13 +29,10 @@ namespace eced.ResourceFiles.Images
     {
         public override BasicImage DecodeImage(Lump lump, byte[] data, byte[] palette)
         {
-            BasicImage image = new BasicImage();
-
             short w = BinaryHelper.getInt16(data[0], data[1]);
             short h = BinaryHelper.getInt16(data[2], data[3]);
+            BasicImage image = new BasicImage(w, h);
 
-            image.x = w; image.y = h;
-            image.data = new int[w * h];
             int index;
 
             for (int y = 0; y < h; y++)
@@ -43,7 +40,7 @@ namespace eced.ResourceFiles.Images
                 for (int x = 0; x < w; x++)
                 {
                     index = data[y * w + x + 8];
-                    image.data[y * w + x] = BinaryHelper.getInt32(palette[index * 3 + 2], palette[index * 3 + 1], palette[index * 3 + 0], 255);
+                    image.Data[y * w + x] = BinaryHelper.getInt32(palette[index * 3 + 2], palette[index * 3 + 1], palette[index * 3 + 0], 255);
                 }
             }
 

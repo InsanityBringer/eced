@@ -55,6 +55,7 @@ void main()
 	}
 
 	ivec4 textureInfo;
+	ivec4 textureInfo2;
 
 	ivec2 cellpos;
 	vec2 cellposf;
@@ -87,6 +88,7 @@ void main()
 	else if (mode == 1) //Show textured wall
 	{
 		textureInfo = texelFetch(texInfo, ivec2(0, tileid), 0);
+		textureInfo2 = texelFetch(texInfo, ivec2(1, tileid), 0);
 
 		//Texture information
 		ivec2 textureRes = textureInfo.rg;
@@ -96,7 +98,7 @@ void main()
 		vec2 cellpost;
 
 		//Scales the texture to normalized units
-		vec2 texScale = vec2(tilesize / textureInfo.r, tilesize / textureInfo.g);
+		vec2 texScale = vec2(tilesize / textureInfo2.r, tilesize / textureInfo2.g);
 
 		//Find fractional position in the cell
 		cellposf = vec2(tileloc.x - itile.x , tileloc.y - itile.y);

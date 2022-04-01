@@ -34,7 +34,7 @@ namespace eced.ResourceFiles.Images
             short h = BinaryHelper.getInt16(data[4], data[5]);
             short alpha = BinaryHelper.getInt16(data[10], data[11]);
 
-            int[] output = new int[w * h];
+            BasicImage image = new BasicImage(w, h);
 
             //Load the image data for each patch
             for (int i = 0; i < w; i++)
@@ -52,7 +52,7 @@ namespace eced.ResourceFiles.Images
                     {
                         for (int p = 0; p < len; p++)
                         {
-                            output[i + (yoffs + p) * w] = BinaryHelper.getInt32(0, 0, 0, 128);
+                            image.Data[i + (yoffs + p) * w] = BinaryHelper.getInt32(0, 0, 0, 128);
                         }
                         pointer++;
                     }
@@ -62,7 +62,7 @@ namespace eced.ResourceFiles.Images
                         for (int p = 0; p < len; p++)
                         {
                             byte patchbyte = data[pointer + p];
-                            output[i + (yoffs + p) * w] = BinaryHelper.getInt32(palette[patchbyte * 3 + 2], palette[patchbyte * 3 + 1], palette[patchbyte * 3 + 0], 255);
+                            image.Data[i + (yoffs + p) * w] = BinaryHelper.getInt32(palette[patchbyte * 3 + 2], palette[patchbyte * 3 + 1], palette[patchbyte * 3 + 0], 255);
                         }
                         pointer += len;
                     }
@@ -71,9 +71,7 @@ namespace eced.ResourceFiles.Images
                 }
             }
 
-            BasicImage img = new BasicImage();
-            img.x = w; img.y = h; img.data = output;
-            return img;
+            return image;
         }
     }
 }
