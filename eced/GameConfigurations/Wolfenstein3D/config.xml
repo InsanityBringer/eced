@@ -1,4 +1,5 @@
 <gameconfig>
 	<name>Wolfenstein 3D</name>
 	<vswapext>WL6</vswapext>
+  <palettelump>WOLFPAL</palettelump>
 </gameconfig>

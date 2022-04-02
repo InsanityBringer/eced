@@ -169,7 +169,7 @@ namespace eced
                     file = ResourceFiles.WADArchive.loadResourceFile(mapinfo.files[i].filename);
                     file.OpenFile();
                     //TODO: needs to be in game configuration
-                    pal = file.LoadLump("WOLFPAL");
+                    pal = file.LoadLump(CurrentConfiguration.PaletteLumpName);
                     if (pal != null && pal.Length >= 768)
                         Array.Copy(pal, Palette, 768);
                         //CurrentMapInfo.SetPalette(pal);
@@ -185,7 +185,7 @@ namespace eced
                     file = ResourceFiles.ZIPArchive.loadResourceFile(mapinfo.files[i].filename);
                     file.OpenFile();
                     //TODO: needs to be in game configuration
-                    pal = file.LoadLump("WOLFPAL");
+                    pal = file.LoadLump(CurrentConfiguration.PaletteLumpName);
                     if (pal != null && pal.Length >= 768)
                         Array.Copy(pal, Palette, 768);
                     level.loadedResources.Add(file);

@@ -1,4 +1,5 @@
 <gameconfig>
 	<name>Spear of Destiny</name>
 	<vswapext>SOD</vswapext>
+  <palettelump>SPEARPAL</palettelump>
 </gameconfig>

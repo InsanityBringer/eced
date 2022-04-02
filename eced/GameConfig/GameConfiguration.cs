@@ -29,6 +29,7 @@ namespace eced.GameConfig
     {
         public string ConfigPath { get; }
         public string Name { get; private set; }
+        public string PaletteLumpName { get; private set; }
         public bool UsesVSwap { get; private set; }
         public string VSwapExtension { get; private set; }
         public TileManager TilePalette { get; }
@@ -41,6 +42,7 @@ namespace eced.GameConfig
         {
             ConfigPath = pathToConfig;
             Name = "Unnamed config";
+            PaletteLumpName = "PLAYPAL";
             UsesVSwap = false;
             ReadConfigFile();
 
@@ -109,6 +111,9 @@ namespace eced.GameConfig
                                     case "vswapext":
                                         UsesVSwap = true;
                                         VSwapExtension = elem.Value;
+                                        break;
+                                    case "palettelump":
+                                        PaletteLumpName = elem.Value;
                                         break;
                                 }
                             }
