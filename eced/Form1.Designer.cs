@@ -476,6 +476,7 @@
             this.Controls.Add(this.SizeTemplatePanel);
             this.Controls.Add(this.statusBar1);
             this.Controls.Add(this.tbToolPanel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Menu = this.mainMenu1;
             this.MinimumSize = new System.Drawing.Size(866, 663);
