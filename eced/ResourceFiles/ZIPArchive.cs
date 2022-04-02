@@ -54,6 +54,10 @@ namespace eced.ResourceFiles
                     {
                         type = LumpNamespace.Texture;
                     }
+                    else if (splitname[0].Equals("FLATS", StringComparison.OrdinalIgnoreCase))
+                    {
+                        type = LumpNamespace.Flat;
+                    }
 
                     Console.WriteLine("{0} {1} {2}", name, splitname[0], finalname);
                     Lump lump = new Lump(finalname, size);
