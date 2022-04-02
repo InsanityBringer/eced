@@ -138,6 +138,7 @@
     <Compile Include="Renderer\TextureRenderTarget.cs" />
     <Compile Include="Renderer\WorldRenderer.cs" />
     <Compile Include="ResourceFiles\DirectoryLump.cs" />
+    <Compile Include="ResourceFiles\Formats\FlatLumpFormat.cs" />
     <Compile Include="ResourceFiles\Formats\LumpClassifier.cs" />
     <Compile Include="ResourceFiles\Formats\LumpFormat.cs" />
     <Compile Include="ResourceFiles\Formats\PatchLumpFormat.cs" />

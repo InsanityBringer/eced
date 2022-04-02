@@ -59,6 +59,7 @@ namespace eced.ResourceFiles.Formats
             formats.Add(new LumpClassifierEntry(new ROTTPatchLumpFormat(), LumpFormatType.ROTTPatch));
             formats.Add(new LumpClassifierEntry(new ROTTRawLumpFormat(), LumpFormatType.ROTTRaw));
             formats.Add(new LumpClassifierEntry(new PNGLumpFormat(), LumpFormatType.PNG));
+            formats.Add(new LumpClassifierEntry(new FlatLumpFormat(), LumpFormatType.DoomFlat));
             formats.Add(new LumpClassifierEntry(new PatchLumpFormat(), LumpFormatType.DoomPatch));
         }
 

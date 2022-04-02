@@ -244,7 +244,6 @@ namespace eced
         
         public void CloseLevel()
         {
-            //arc.closeResource();
             CurrentLevel.DisposeLevel();
             CurrentLevel = null;
             SelectedThings.Clear();
