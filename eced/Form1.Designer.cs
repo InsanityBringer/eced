@@ -223,9 +223,9 @@
             this.toolBarButton2,
             this.toolBarButton3,
             this.toolBarButton4,
+            this.toolBarButton7,
             this.toolBarButton5,
             this.toolBarButton6,
-            this.toolBarButton7,
             this.toolBarButton8,
             this.toolBarButton18,
             this.toolBarButton13,
@@ -365,23 +365,23 @@
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Fuchsia;
-            this.imageList1.Images.SetKeyName(0, "Pointer.bmp");
-            this.imageList1.Images.SetKeyName(1, "SubtractBrush.bmp");
-            this.imageList1.Images.SetKeyName(2, "TextureBrush.bmp");
-            this.imageList1.Images.SetKeyName(3, "ThingBrush.bmp");
-            this.imageList1.Images.SetKeyName(4, "TileBrush.bmp");
-            this.imageList1.Images.SetKeyName(5, "TriggerBrush.bmp");
-            this.imageList1.Images.SetKeyName(6, "SectorPaintBrush.bmp");
-            this.imageList1.Images.SetKeyName(7, "FloorTool.bmp");
-            this.imageList1.Images.SetKeyName(8, "SaveIcon.bmp");
-            this.imageList1.Images.SetKeyName(9, "NewIcon.bmp");
-            this.imageList1.Images.SetKeyName(10, "OpenIcon.bmp");
-            this.imageList1.Images.SetKeyName(11, "PreviewNone.bmp");
-            this.imageList1.Images.SetKeyName(12, "PreviewCode.bmp");
-            this.imageList1.Images.SetKeyName(13, "PreviewCeiling.bmp");
-            this.imageList1.Images.SetKeyName(14, "PreviewFloor.bmp");
-            this.imageList1.Images.SetKeyName(15, "TagTool.png");
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "Pointer.png");
+            this.imageList1.Images.SetKeyName(1, "Mode Subtract.png");
+            this.imageList1.Images.SetKeyName(2, "Mode Textures.png");
+            this.imageList1.Images.SetKeyName(3, "Mode Things.png");
+            this.imageList1.Images.SetKeyName(4, "Mode Tiles.png");
+            this.imageList1.Images.SetKeyName(5, "Mode Triggers.png");
+            this.imageList1.Images.SetKeyName(6, "Mode Sectors.png");
+            this.imageList1.Images.SetKeyName(7, "Mode Zones.png");
+            this.imageList1.Images.SetKeyName(8, "File Save.png");
+            this.imageList1.Images.SetKeyName(9, "File New.png");
+            this.imageList1.Images.SetKeyName(10, "File Open.png");
+            this.imageList1.Images.SetKeyName(11, "Show ZoneColors.png");
+            this.imageList1.Images.SetKeyName(12, "Show ZoneNums.png");
+            this.imageList1.Images.SetKeyName(13, "Show Ceiling.png");
+            this.imageList1.Images.SetKeyName(14, "Show Floor.png");
+            this.imageList1.Images.SetKeyName(15, "Mode Tags.png");
             // 
             // statusBar1
             // 

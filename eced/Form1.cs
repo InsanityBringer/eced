@@ -313,6 +313,9 @@ namespace eced
             {
                 tbToolPanel.Buttons[i + 4].Pushed = false;
             }
+
+            if (editorState.CurrentLevel == null) return;
+
             tbToolPanel.Buttons[toolID + 4].Pushed = true;
 
             this.ThingEditorPanel.Visible = false;

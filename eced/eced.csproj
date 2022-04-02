@@ -326,7 +326,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FloorTool.bmp" />
+    <Content Include="File New.png" />
+    <Content Include="File Open.png" />
+    <Content Include="File Save.png" />
     <Content Include="GameConfigurations\Wolfenstein3D\actors.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -357,13 +359,16 @@
     <Content Include="GameConfigurations\WolfensteinSOD\vswap.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="NewIcon.bmp" />
+    <Content Include="Mode Sectors.png" />
+    <Content Include="Mode Subtract.png" />
+    <Content Include="Mode Tags.png" />
+    <Content Include="Mode Textures.png" />
+    <Content Include="Mode Things.png" />
+    <Content Include="Mode Tiles.png" />
+    <Content Include="Mode Triggers.png" />
+    <Content Include="Mode Zones.png" />
     <Content Include="OpenIcon.bmp" />
-    <Content Include="Pointer.bmp" />
-    <Content Include="PreviewCeiling.bmp" />
-    <Content Include="PreviewCode.bmp" />
-    <Content Include="PreviewFloor.bmp" />
-    <Content Include="PreviewNone.bmp" />
+    <Content Include="Pointer.png" />
     <Content Include="Resources\errortex.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -463,14 +468,11 @@
     <Content Include="Resources\wolfvswap.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SaveIcon.bmp" />
-    <Content Include="SectorPaintBrush.bmp" />
-    <Content Include="SubtractBrush.bmp" />
+    <Content Include="Show Ceiling.png" />
+    <Content Include="Show Floor.png" />
+    <Content Include="Show ZoneColors.png" />
+    <Content Include="Show ZoneNums.png" />
     <Content Include="TagTool.png" />
-    <Content Include="TextureBrush.bmp" />
-    <Content Include="ThingBrush.bmp" />
-    <Content Include="TileBrush.bmp" />
-    <Content Include="TriggerBrush.bmp" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
