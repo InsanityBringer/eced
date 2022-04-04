@@ -41,9 +41,6 @@ void main()
 	//Apply the current tile location
 	scaledPt += vec4(thingDefs[gl_InstanceID].pos.xy * tilesize, 0.0, 0.0);
 
-	//Pan to match the centered view of the tilemap
-	scaledPt -= vec4(float(mapsize.x * tilesize) / 2, float(mapsize.y * tilesize) / 2, 0.0, 0.0);
-
 	//Apply viewport zoom and pan
 	scaledPt *= vec4(zoom, zoom, 1.0, 1.0);
 	scaledPt += vec4(pan.xy, 0.0, 0.0);

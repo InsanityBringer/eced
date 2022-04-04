@@ -136,22 +136,22 @@ namespace eced.Renderer
 
         private void InitTilemapBuffer()
         {
-            tilemapBuffer[0] = -1.0f;
+            tilemapBuffer[0] = 0.0f;
             tilemapBuffer[1] = 1.0f;
             tilemapBuffer[2] = 0f;
             tilemapBuffer[3] = 1.0f;
             tilemapBuffer[4] = 0.0f;
             tilemapBuffer[5] = 1.0f;
 
-            tilemapBuffer[6 + 0] = -1.0f;
-            tilemapBuffer[6 + 1] = -1.0f;
+            tilemapBuffer[6 + 0] = 0.0f;
+            tilemapBuffer[6 + 1] = 0.0f;
             tilemapBuffer[6 + 2] = 0f;
             tilemapBuffer[6 + 3] = 1.0f;
             tilemapBuffer[6 + 4] = 0.0f;
             tilemapBuffer[6 + 5] = 0.0f;
 
             tilemapBuffer[12 + 0] = 1.0f;
-            tilemapBuffer[12 + 1] = -1.0f;
+            tilemapBuffer[12 + 1] = 0.0f;
             tilemapBuffer[12 + 2] = 0f;
             tilemapBuffer[12 + 3] = 1.0f;
             tilemapBuffer[12 + 4] = 1.0f;
@@ -316,7 +316,7 @@ namespace eced.Renderer
             GL.BufferSubData<float>(BufferTarget.ShaderStorageBuffer, (IntPtr)0, sizeof(float) * 12 * lastThingNum, thingBuffer);
             RendererState.ErrorCheck("RendererDrawer::FlushThings: Uploading thing buffer data");
 
-            GL.BindVertexArray(vaoNames[(int)VAOInidices.Tilemap]);
+            GL.BindVertexArray(vaoNames[(int)VAOInidices.BasicTexture]);
             GL.BindTexture(TextureTarget.Texture2DArray, thingArrowTexture);
             GL.DrawArraysInstanced(PrimitiveType.TriangleFan, 0, 4, lastThingNum);
             RendererState.ErrorCheck("RendererDrawer::FlushThings: Drawing things");
@@ -364,22 +364,22 @@ namespace eced.Renderer
         private void InitBasicBuffer()
         {
             RendererState.ErrorCheck("RendererDrawer::InitBasicBuffer: debug");
-            tilemapBuffer[0] = 0.0f;
+            tilemapBuffer[0] = -1.0f;
             tilemapBuffer[1] = 1.0f;
             tilemapBuffer[2] = 0f;
             tilemapBuffer[3] = 1.0f;
             tilemapBuffer[4] = 0.0f;
             tilemapBuffer[5] = 1.0f;
 
-            tilemapBuffer[6 + 0] = 0.0f;
-            tilemapBuffer[6 + 1] = 0.0f;
+            tilemapBuffer[6 + 0] = -1.0f;
+            tilemapBuffer[6 + 1] = -1.0f;
             tilemapBuffer[6 + 2] = 0f;
             tilemapBuffer[6 + 3] = 1.0f;
             tilemapBuffer[6 + 4] = 0.0f;
             tilemapBuffer[6 + 5] = 0.0f;
 
             tilemapBuffer[12 + 0] = 1.0f;
-            tilemapBuffer[12 + 1] = 0.0f;
+            tilemapBuffer[12 + 1] = -1.0f;
             tilemapBuffer[12 + 2] = 0f;
             tilemapBuffer[12 + 3] = 1.0f;
             tilemapBuffer[12 + 4] = 1.0f;

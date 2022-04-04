@@ -17,7 +17,7 @@ layout(std140) uniform BasicBlock
 void main()
 {
 	vec4 scale = vec4(tilesize, tilesize, 1.0, 1.0);
-	vec4 scaledPt = (point - vec4(mapsize.x / 2.0, mapsize.y / 2.0, 0.0, 0.0)) * scale;
+	vec4 scaledPt = point * scale;
 	scaledPt *= vec4(zoom, zoom, 1.0, 1.0);
 	scaledPt += vec4(pan.x, pan.y, 0.0, 0.0);
 	gl_Position = project * scaledPt;
