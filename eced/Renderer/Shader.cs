@@ -100,5 +100,14 @@ namespace eced.Renderer
             else
                 Console.Error.WriteLine("Shader::AddUniform: Uniform {0} added to shader doesn't exist", uniformName);
         }
+
+        public void AddUniformBlock(string uniformName)
+        {
+            int location = GL.GetUniformBlockIndex(ShaderID, uniformName);
+            if (location != -1)
+                UniformLocations[uniformName] = location;
+            else
+                Console.Error.WriteLine("Shader::AddUniformBlock: Uniform block {0} added to shader doesn't exist", uniformName);
+        }
     }
 }

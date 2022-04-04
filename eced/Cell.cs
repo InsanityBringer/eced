@@ -25,9 +25,4 @@ namespace eced
 
         public bool highlighted;
     }
-
-    public class NumberCell
-    {
-        public int tile, sector, zone, tag;
-    }
 }

@@ -4,11 +4,19 @@ smooth in vec2 tileloc;
 
 out vec4 color;
 
+layout(std140) uniform BasicBlock
+{
+	vec2 pan;
+	float zoom;
+	float tilesize;
+	mat4 project;
+	vec2 mapsize;
+};
+
 uniform sampler2D atlas;
 uniform sampler2D numbers;
 uniform isampler2D texInfo;
 uniform isampler2D mapPlane;
-uniform float tilesize;
 
 void main()
 {

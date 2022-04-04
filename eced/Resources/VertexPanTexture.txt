@@ -5,15 +5,18 @@ layout(location=1) in vec2 uvCoord;
 
 smooth out vec2 tileloc;
 
-uniform vec2 pan;
-uniform float zoom;
-uniform float tilesize;
-uniform mat4 project;
-uniform ivec2 mapsize;
+layout(std140) uniform BasicBlock
+{
+	vec2 pan;
+	float zoom;
+	float tilesize;
+	mat4 project;
+	vec2 mapsize;
+};
 
 void main()
 {
-	vec4 scale = vec4(tilesize * (float(mapsize.x) / 2), tilesize * (float(mapsize.y) / 2), 1.0, 1.0);
+	vec4 scale = vec4(tilesize * (mapsize.x / 2), tilesize * (mapsize.y / 2), 1.0, 1.0);
 	vec4 scaledPt = point * scale;
 	scaledPt *= vec4(zoom, zoom, 1.0, 1.0);
 	scaledPt += vec4(pan.x, pan.y, 0.0, 0.0);

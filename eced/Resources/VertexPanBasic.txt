@@ -5,12 +5,14 @@ layout(location=1) in vec4 color;
 
 smooth out vec4 acolor;
 
-uniform vec2 pan;
-uniform float zoom;
-uniform float tilesize;
-uniform mat4 project;
-uniform vec4 thingColor;
-uniform ivec2 mapsize;
+layout(std140) uniform BasicBlock
+{
+	vec2 pan;
+	float zoom;
+	float tilesize;
+	mat4 project;
+	vec2 mapsize;
+};
 
 void main()
 {

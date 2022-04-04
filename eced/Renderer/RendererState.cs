@@ -40,6 +40,15 @@ namespace eced.Renderer
 
         public RendererDrawer Drawer { get; private set; }
 
+        private int basicUniformBufferNum;
+        private float[] basicUniformBufferData = new float[24];
+        private bool basicUniformBlockDirty = false;
+        const int BASIC_PAN_OFFSET = 0;
+        const int BASIC_ZOOM_OFFSET = 2;
+        const int BASIC_TILESIZE_OFFSET = 3;
+        const int BASIC_PROJECTION_OFFSET = 4;
+        const int BASIC_MAPSIZE_OFFSET = 20;
+
         public RendererState(EditorState editorState)
         {
             CurrentState = editorState;
@@ -62,11 +71,7 @@ namespace eced.Renderer
             TileMapShader.AddShader("./Resources/VertexPanTexture.txt", ShaderType.VertexShader);
             TileMapShader.AddShader("./Resources/FragTextureAtlas.txt", ShaderType.FragmentShader);
             TileMapShader.LinkShader();
-            TileMapShader.AddUniform("pan");
-            TileMapShader.AddUniform("zoom");
-            TileMapShader.AddUniform("tilesize");
-            TileMapShader.AddUniform("project");
-            TileMapShader.AddUniform("mapsize");
+            TileMapShader.AddUniformBlock("BasicBlock"); //The binding doesn't need to be updated here, since it's bound to 0 by default.
             TileMapShader.AddUniform("atlas");
             TileMapShader.AddUniform("numbers");
             TileMapShader.AddUniform("texInfo");
@@ -77,25 +82,19 @@ namespace eced.Renderer
             ThingShader.AddShader("./Resources/VertexPanThing.txt", ShaderType.VertexShader);
             ThingShader.AddShader("./Resources/FragThing.txt", ShaderType.FragmentShader);
             ThingShader.LinkShader();
-            ThingShader.AddUniform("pan");
-            ThingShader.AddUniform("zoom");
-            ThingShader.AddUniform("thingrad");
-            ThingShader.AddUniform("project");
-            ThingShader.AddUniform("rotate");
-            ThingShader.AddUniform("mapsize");
-            ThingShader.AddUniform("tilesize");
+            TileMapShader.AddUniformBlock("BasicBlock");
 
             LineShader = new Shader("lineShader");
             LineShader.Init();
             LineShader.AddShader("./Resources/VertexPanBasic.txt", ShaderType.VertexShader);
             LineShader.AddShader("./Resources/FragColor.txt", ShaderType.FragmentShader);
             LineShader.LinkShader();
-            LineShader.AddUniform("pan");
-            LineShader.AddUniform("zoom");
-            LineShader.AddUniform("thingColor");
-            LineShader.AddUniform("project");
-            LineShader.AddUniform("mapsize");
-            LineShader.AddUniform("tilesize");
+            TileMapShader.AddUniformBlock("BasicBlock");
+
+            basicUniformBufferNum = GL.GenBuffer();
+            GL.BindBufferBase(BufferRangeTarget.UniformBuffer, 0, basicUniformBufferNum);
+            GL.BufferData(BufferTarget.UniformBuffer, basicUniformBufferData.Length * sizeof(float), basicUniformBufferData, BufferUsageHint.DynamicRead);
+            ErrorCheck("Creating basic UBO");
         }
 
         public void SetViewSize(int w, int h)
@@ -104,12 +103,22 @@ namespace eced.Renderer
             int halfHeight = h / 2;
             Matrix4 projectionMatrix = Matrix4.CreateOrthographicOffCenter(-halfWidth, halfWidth, halfHeight, -halfHeight, -16, 16);
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
-            TileMapShader.UseShader();
+            /*TileMapShader.UseShader();
             GL.UniformMatrix4(TileMapShader.UniformLocations["project"], false, ref projectionMatrix);
             ThingShader.UseShader();
             GL.UniformMatrix4(ThingShader.UniformLocations["project"], false, ref projectionMatrix);
             LineShader.UseShader();
-            GL.UniformMatrix4(LineShader.UniformLocations["project"], false, ref projectionMatrix);
+            GL.UniformMatrix4(LineShader.UniformLocations["project"], false, ref projectionMatrix);*/
+            int i = 0;
+            for (int v = 0; v < 4; v++)
+            {
+                for (int u = 0; u < 4; u++)
+                {
+                    basicUniformBufferData[BASIC_PROJECTION_OFFSET + i++] = projectionMatrix[u, v];
+                }
+            }
+
+            basicUniformBlockDirty = true;
 
             screenSize.X = w; screenSize.Y = h;
         }
@@ -125,7 +134,7 @@ namespace eced.Renderer
         /// <param name="level">The level to get the attribute sfrom.</param>
         public void SetLevelStaticUniforms(Level level)
         {
-            TileMapShader.UseShader();
+            /*TileMapShader.UseShader();
             GL.Uniform1(TileMapShader.UniformLocations["tilesize"], (float)CurrentState.CurrentLevel.TileSize); 
             GL.Uniform2(TileMapShader.UniformLocations["mapsize"], level.Width, level.Height);
             ThingShader.UseShader();
@@ -133,7 +142,11 @@ namespace eced.Renderer
             GL.Uniform2(ThingShader.UniformLocations["mapsize"], level.Width, level.Height);
             LineShader.UseShader();
             GL.Uniform1(LineShader.UniformLocations["tilesize"], (float)CurrentState.CurrentLevel.TileSize); 
-            GL.Uniform2(LineShader.UniformLocations["mapsize"], level.Width, level.Height);
+            GL.Uniform2(LineShader.UniformLocations["mapsize"], level.Width, level.Height);*/
+            basicUniformBufferData[BASIC_TILESIZE_OFFSET] = level.TileSize;
+            basicUniformBufferData[BASIC_MAPSIZE_OFFSET] = level.Width;
+            basicUniformBufferData[BASIC_MAPSIZE_OFFSET + 1] = level.Height;
+            basicUniformBlockDirty = true;
             ErrorCheck("RendererState::SetLevelStaticUniforms: Setting level uniforms");
 
             SetTilemapStaticUniforms();
@@ -143,12 +156,15 @@ namespace eced.Renderer
         {
             this.pan = newPan;
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
-            TileMapShader.UseShader();
+            /*TileMapShader.UseShader();
             GL.Uniform2(TileMapShader.UniformLocations["pan"], ref newPan);
             ThingShader.UseShader();
             GL.Uniform2(ThingShader.UniformLocations["pan"], ref newPan);
             LineShader.UseShader();
-            GL.Uniform2(LineShader.UniformLocations["pan"], ref newPan);
+            GL.Uniform2(LineShader.UniformLocations["pan"], ref newPan);*/
+            basicUniformBufferData[BASIC_PAN_OFFSET] = newPan.X;
+            basicUniformBufferData[BASIC_PAN_OFFSET + 1] = newPan.Y;
+            basicUniformBlockDirty = true;
             ErrorCheck("RendererState::SetPan: Setting pan");
         }
 
@@ -166,15 +182,18 @@ namespace eced.Renderer
             AddPan(-panOffX, -panOffY);
             this.zoom = zoom;
             //TODO: These should be set as some sort of "pending" structure that's applied when a shader is bound, instead of binding and setting immediately
-            TileMapShader.UseShader();
+            /*TileMapShader.UseShader();
             GL.Uniform1(TileMapShader.UniformLocations["zoom"], zoom);
             ThingShader.UseShader();
             GL.Uniform1(ThingShader.UniformLocations["zoom"], zoom);
             LineShader.UseShader();
-            GL.Uniform1(LineShader.UniformLocations["zoom"], zoom);
+            GL.Uniform1(LineShader.UniformLocations["zoom"], zoom);*/
+            basicUniformBufferData[BASIC_ZOOM_OFFSET] = zoom;
+            basicUniformBlockDirty = true;
             ErrorCheck("RendererState::SetZoom: Setting zoom");
         }
 
+        //TODO: Make a block that can be used for each tilemap object
         public void SetTilemapStaticUniforms()
         {
             TileMapShader.UseShader();
@@ -189,6 +208,16 @@ namespace eced.Renderer
             GL.BindTexture(TextureTarget.Texture2D, Textures.numberTextureID);
             GL.Uniform1(TileMapShader.UniformLocations["numbers"], 3);
             GL.ActiveTexture(TextureUnit.Texture0);
+        }
+
+        public void CheckUniformsDirty()
+        {
+            if (basicUniformBlockDirty)
+            {
+                GL.BufferSubData(BufferTarget.UniformBuffer, (IntPtr)0, basicUniformBufferData.Length * sizeof(float), basicUniformBufferData);
+                basicUniformBlockDirty = false;
+                ErrorCheck("Updating dirty basic uniform block");
+            }
         }
 
         public PickResult Pick(int mousex, int mousey)

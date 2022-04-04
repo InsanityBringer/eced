@@ -95,6 +95,7 @@ namespace eced.Renderer
         {
             if (lastLinePoint == 0) return;
             RendererState.ErrorCheck("RendererDrawer::FlushLines: debug");
+            state.CheckUniformsDirty();
             state.LineShader.UseShader();
 
             GL.BindVertexArray(vaoNames[(int)VAOInidices.LineBuffer]);
@@ -178,6 +179,7 @@ namespace eced.Renderer
 
         public void DrawTilemap()
         {
+            state.CheckUniformsDirty();
             GL.BindVertexArray(vaoNames[(int)VAOInidices.Tilemap]);
             GL.DrawArrays(PrimitiveType.TriangleFan, 0, 4);
         }
@@ -306,6 +308,7 @@ namespace eced.Renderer
         public void FlushThings()
         {
             if (lastThingNum == 0) return;
+            state.CheckUniformsDirty();
             RendererState.ErrorCheck("RendererDrawer::FlushThings: debug");
 
             state.ThingShader.UseShader();
