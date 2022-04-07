@@ -76,7 +76,7 @@ namespace eced.Renderer
             GL.Viewport(0, 0, 128, 128);
             RendererState.ErrorCheck("TextureRenderTarget::RenderTarget: Setting up state");
 
-            state.Drawer.DrawTilemap();
+            state.Drawer.DrawBasicCentered();
             //The worst synchronization primitive
             //(actually given how bad amd's drivers are does this do anything on them)
             GL.Finish();

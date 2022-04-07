@@ -184,6 +184,13 @@ namespace eced.Renderer
             GL.DrawArrays(PrimitiveType.TriangleFan, 0, 4);
         }
 
+        public void DrawBasicCentered()
+        {
+            state.CheckUniformsDirty();
+            GL.BindVertexArray(vaoNames[(int)VAOInidices.BasicTexture]);
+            GL.DrawArrays(PrimitiveType.TriangleFan, 0, 4);
+        }
+
         public void InitThingBuffer()
         {
             thingBufferName = GL.GenBuffer();
