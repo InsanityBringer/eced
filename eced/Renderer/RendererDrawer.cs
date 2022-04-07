@@ -37,8 +37,8 @@ namespace eced.Renderer
     }
     public class RendererDrawer
     {
-        private const int NUM_LINE_POINTS = 250;
-        private const int NUM_THING_POINTS = 150;
+        private const int NUM_LINE_POINTS = 4000;
+        private const int NUM_THING_POINTS = 1000;
         private RendererState state;
         //Drawing VAO Names
         private int[] vaoNames = new int[(int)VAOInidices.NumVAOs];
