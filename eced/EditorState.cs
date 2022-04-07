@@ -88,8 +88,9 @@ namespace eced
         {
             get
             {
-                //todo: make better
-                return currentBrush == BrushList[4];
+                //todo: instead of using IsThingMode, this should return the current brush's mode and things should decide to function from that.
+                //possibly brushes should also be able to handle all picking themselves. 
+                return currentBrush.GetMode() == BrushMode.Things;
             }
         }
 
@@ -142,9 +143,9 @@ namespace eced
             BrushList[1] = new RoomBrush(this);
             BrushList[2] = new TileBrush(this);
             BrushList[3] = new EditorBrush(this);
-            BrushList[4] = new ThingBrush(this); ((ThingBrush)BrushList[4]).thinglist = ThingList;
-            BrushList[5] = new TriggerBrush(this);
-            BrushList[6] = new SectorBrush(this);
+            BrushList[5] = new ThingBrush(this); ((ThingBrush)BrushList[5]).thinglist = ThingList;
+            BrushList[6] = new TriggerBrush(this);
+            BrushList[4] = new SectorBrush(this);
             BrushList[7] = new FloodBrush(this);
             BrushList[8] = new TagTool(this);
         }

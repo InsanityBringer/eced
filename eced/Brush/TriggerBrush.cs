@@ -56,5 +56,10 @@ namespace eced.Brushes
                 }
             }
         }
+
+        public override BrushMode GetMode()
+        {
+            return BrushMode.Triggers;
+        }
     }
 }

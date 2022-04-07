@@ -58,9 +58,9 @@
             this.toolBarButton2 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton3 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton4 = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButton7 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton5 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton6 = new System.Windows.Forms.ToolBarButton();
-            this.toolBarButton7 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton8 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton18 = new System.Windows.Forms.ToolBarButton();
             this.toolBarButton13 = new System.Windows.Forms.ToolBarButton();
@@ -294,26 +294,26 @@
             this.toolBarButton4.Tag = "3";
             this.toolBarButton4.ToolTipText = "Texture Brush";
             // 
+            // toolBarButton7
+            // 
+            this.toolBarButton7.ImageIndex = 6;
+            this.toolBarButton7.Name = "toolBarButton7";
+            this.toolBarButton7.Tag = "4";
+            this.toolBarButton7.ToolTipText = "Sector Paint Tool";
+            // 
             // toolBarButton5
             // 
             this.toolBarButton5.ImageIndex = 3;
             this.toolBarButton5.Name = "toolBarButton5";
-            this.toolBarButton5.Tag = "4";
+            this.toolBarButton5.Tag = "5";
             this.toolBarButton5.ToolTipText = "Thing Tool";
             // 
             // toolBarButton6
             // 
             this.toolBarButton6.ImageIndex = 5;
             this.toolBarButton6.Name = "toolBarButton6";
-            this.toolBarButton6.Tag = "5";
+            this.toolBarButton6.Tag = "6";
             this.toolBarButton6.ToolTipText = "Trigger Tool";
-            // 
-            // toolBarButton7
-            // 
-            this.toolBarButton7.ImageIndex = 6;
-            this.toolBarButton7.Name = "toolBarButton7";
-            this.toolBarButton7.Tag = "6";
-            this.toolBarButton7.ToolTipText = "Sector Paint Tool";
             // 
             // toolBarButton8
             // 

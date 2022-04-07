@@ -153,5 +153,10 @@ namespace eced.Brushes
             moving = false;
             Repeatable = false;
         }
+
+        public override BrushMode GetMode()
+        {
+            return BrushMode.Things;
+        }
     }
 }

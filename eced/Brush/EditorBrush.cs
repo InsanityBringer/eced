@@ -15,13 +15,15 @@
  *   along with eced.  If not, see <http://www.gnu.org/licenses/>.
  *  -------------------------------------------------------------------*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace eced.Brushes
 {
+    public enum BrushMode
+    {
+        Tiles,
+        Things,
+        Triggers
+    }
     public class EditorBrush
     {
         public bool Repeatable { get; protected set; } = true;
@@ -43,6 +45,11 @@ namespace eced.Brushes
 
         public virtual void EndBrush(Level level)
         {
+        }
+
+        public virtual BrushMode GetMode()
+        {
+            return BrushMode.Tiles;
         }
     }
 }

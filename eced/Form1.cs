@@ -339,19 +339,19 @@ namespace eced
                     TileEditorPanel.SetPairedBrush(editorState.BrushList[toolID]);
                     worldRenderer.showGrid = true;
                     break;
-                case 4:
+                case 5:
                     ThingEditorPanel.Visible = true;
                     ThingEditorPanel.AddThings(editorState.ThingList.thingList);
                     ThingEditorPanel.SetPairedBrush((ThingBrush)editorState.BrushList[toolID]);
                     worldRenderer.showGrid = true;
                     break;
-                case 5:
+                case 6:
                     TriggerEditorPanel.Visible = true;
                     TriggerEditorPanel.SetPairedBrush((TriggerBrush)editorState.BrushList[toolID]);
                     TriggerEditorPanel.SetTriggerList(editorState.TriggerList);
                     worldRenderer.showGrid = true;
                     break;
-                case 6:
+                case 4:
                     SectorEditorPanel.Visible = true;
                     SectorEditorPanel.pairedBrush = (SectorBrush)editorState.BrushList[toolID];
                     worldRenderer.showGrid = true;
