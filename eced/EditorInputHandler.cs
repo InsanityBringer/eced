@@ -37,7 +37,7 @@ namespace eced
 
         public bool HandleInputEvent(InputEvent ev)
         {
-            if (state.CurrentTool == CurrentToolNum.ThingTool)
+            if (state.CurrentToolMode == Brushes.BrushMode.Things)
             {
                 if (ev.keycode == Keys.Delete && !ev.down)
                 {
@@ -66,14 +66,14 @@ namespace eced
                 }
                 else if (ev.keycode == Keys.C && ev.down)
                 {
-                    if (state.CurrentTool == CurrentToolNum.ThingTool)
+                    if (state.CurrentToolMode == Brushes.BrushMode.Things)
                     {
                         state.ClearSelectedThings();
                         return true;
                     }
                 }
             }
-            else if (state.CurrentTool == CurrentToolNum.TriggerTool)
+            else if (state.CurrentToolMode == Brushes.BrushMode.Triggers)
             {
                 if (ev.keycode == Keys.Delete && !ev.down)
                 {

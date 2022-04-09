@@ -574,7 +574,7 @@ namespace eced
             }
 
             editorState.HandlePick(pickTest);
-            if (editorState.CurrentTool == CurrentToolNum.ZoneTool)
+            if (editorState.CurrentToolMode == BrushMode.Zones)
             {
                 ZoneListPanel.UpdateZoneHighlight(editorState.HighlightedZone);
             }

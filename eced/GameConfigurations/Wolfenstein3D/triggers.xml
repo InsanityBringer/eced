@@ -86,4 +86,12 @@
 		<arg4>nextTag</arg4>
 		<arg4type>tag</arg4type>
 	</trigger>
+	<trigger>
+		<name>Teleport_Relative</name>
+		
+		<arg1>dest</arg1>
+		<arg1type>tag</arg1type>
+		<arg2>angle</arg2>
+		<arg3>flags</arg3>
+	</trigger>
 </triggers>

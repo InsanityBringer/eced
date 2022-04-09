@@ -25,18 +25,6 @@ using eced.GameConfig;
 
 namespace eced
 {
-    public enum CurrentToolNum
-    {
-        Unknown,
-        RoomTool,
-        TileTool,
-        TextureTool,
-        ThingTool,
-        TriggerTool,
-        SectorTool,
-        ZoneTool,
-        TagTool
-    }
     public class EditorState
     {
         //needed since layers are bounds checked and need more properties
@@ -44,7 +32,6 @@ namespace eced
         public byte[] Palette { get; } = new byte[768];
         public ColorChart Colors { get; } = new ColorChart();
         private EditorBrush currentBrush;
-        public CurrentToolNum CurrentTool { get; private set; }
         public EditorBrush[] BrushList { get; } = new EditorBrush[9];
 
         public PickResult LastOrthoHit { get; private set; }
@@ -84,6 +71,9 @@ namespace eced
 
         //This file is getting way too big aaaaa
         private bool facingMode = false;
+
+        public BrushMode CurrentToolMode { get => currentBrush.GetMode(); }
+
         public bool IsThingMode
         {
             get
@@ -327,7 +317,6 @@ namespace eced
         public void SetBrush(int brushNum)
         {
             EndFacing(); //prevent issues with facing remaining
-            CurrentTool = (CurrentToolNum)brushNum;
             currentBrush = BrushList[brushNum];
         }
 
@@ -354,11 +343,11 @@ namespace eced
         {
             UpdateHighlight(res);
             LastOrthoHit = res;
-            if (CurrentTool == CurrentToolNum.ZoneTool)
+            if (CurrentToolMode == BrushMode.Zones)
             {
                 HighlightedZone = CurrentLevel.GetZoneID(res.x, res.y, res.z);
             }
-            else if (CurrentTool == CurrentToolNum.ThingTool)
+            else if (CurrentToolMode == BrushMode.Things)
             {
                 if (facingMode)
                     DoFacing();

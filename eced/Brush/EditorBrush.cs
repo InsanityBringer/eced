@@ -22,7 +22,8 @@ namespace eced.Brushes
     {
         Tiles,
         Things,
-        Triggers
+        Triggers,
+        Zones
     }
     public class EditorBrush
     {

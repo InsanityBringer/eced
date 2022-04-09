@@ -83,5 +83,10 @@ namespace eced.Brushes
             FloodFloorCode(x, y - 1, z);
             FloodFloorCode(x, y + 1, z);
         }
+
+        public override BrushMode GetMode()
+        {
+            return BrushMode.Zones;
+        }
     }
 }
