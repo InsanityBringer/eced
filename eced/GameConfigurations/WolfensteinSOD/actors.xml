@@ -6,7 +6,7 @@
 		<height>64</height>
 		<icon>0</icon>
 		<r>0</r>
-		<g>168</g>
+		<g>192</g>
 		<b>0</b>
 	</actor>
 
@@ -16,28 +16,28 @@
 		<radius>16</radius>
 		<height>64</height>
 		<icon>0</icon>
-		<r>168</r>
+		<r>192</r>
 		<g>0</g>
-		<b>168</b>
+		<b>192</b>
 	</actor>
 
-	<actor>
-		<name>Guard</name>
-		<id>Guard</id>
-		<radius>42</radius>
-		<height>64</height>
-		<icon>0</icon>
-		<r>156</r>
-		<g>76</g>
-		<b>0</b>
-	</actor>
 	<actor>
 		<name>Dog</name>
 		<id>Dog</id>
 		<radius>42</radius>
 		<height>64</height>
 		<icon>0</icon>
-		<r>224</r>
+		<r>160</r>
+		<g>80</g>
+		<b>0</b>
+	</actor>
+	<actor>
+		<name>Guard</name>
+		<id>Guard</id>
+		<radius>42</radius>
+		<height>64</height>
+		<icon>0</icon>
+		<r>255</r>
 		<g>0</g>
 		<b>0</b>
 	</actor>
@@ -49,7 +49,7 @@
 		<icon>0</icon>
 		<r>0</r>
 		<g>0</g>
-		<b>200</b>
+		<b>255</b>
 	</actor>
 	<actor>
 		<name>Mutant</name>
@@ -57,8 +57,8 @@
 		<radius>42</radius>
 		<height>64</height>
 		<icon>0</icon>
-		<r>4</r>
-		<g>76</g>
+		<r>32</r>
+		<g>96</g>
 		<b>0</b>
 	</actor>
 	<actor>
@@ -67,8 +67,8 @@
 		<radius>42</radius>
 		<height>64</height>
 		<icon>0</icon>
-		<r>132</r>
-		<g>132</g>
+		<r>192</r>
+		<g>160</g>
 		<b>0</b>
 	</actor>
 
@@ -78,8 +78,8 @@
 		<radius>42</radius>
 		<height>64</height>
 		<icon>0</icon>
-		<r>96</r>
-		<g>156</g>
+		<r>0</r>
+		<g>160</g>
 		<b>0</b>
 	</actor>
 	<actor>
@@ -88,8 +88,8 @@
 		<radius>42</radius>
 		<height>64</height>
 		<r>0</r>
-		<g>140</g>
-		<b>228</b>
+		<g>128</g>
+		<b>255</b>
 		<icon>0</icon>
 	</actor>
 	<actor>
@@ -98,9 +98,9 @@
 		<height>64</height>
 		<name>Ubermutant</name>
 		<icon>0</icon>
-		<r>4</r>
-		<g>124</g>
-		<b>0</b>
+		<r>80</r>
+		<g>160</g>
+		<b>80</b>
 	</actor>
 	<actor>
 		<name>Death Knight</name>
@@ -117,9 +117,9 @@
 		<id>AngelOfDeath</id>
 		<radius>42</radius>
 		<height>64</height>
-		<r>252</r>
-		<g>32</g>
-		<b>32</b>
+		<r>255</r>
+		<g>64</g>
+		<b>0</b>
 		<icon>0</icon>
 	</actor>
 	<actor>
@@ -129,7 +129,7 @@
 		<height>64</height>
 		<r>192</r>
 		<g>192</g>
-		<b>192</b>
+		<b>128</b>
 		<icon>0</icon>
 	</actor>
 
@@ -139,7 +139,7 @@
 		<radius>20</radius>
 		<height>16</height>
 		<icon>3</icon>
-		<r>152</r>
+		<r>192</r>
 		<g>0</g>
 		<b>0</b>
 	</actor>
@@ -149,7 +149,7 @@
 		<radius>20</radius>
 		<height>16</height>
 		<icon>3</icon>
-		<r>152</r>
+		<r>192</r>
 		<g>0</g>
 		<b>0</b>
 	</actor>
@@ -159,29 +159,29 @@
 		<radius>20</radius>
 		<height>16</height>
 		<icon>3</icon>
-		<r>180</r>
-		<g>84</g>
-		<b>0</b>
+		<r>192</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
-		<name>Small Meal</name>
+		<name>Meal</name>
 		<id>Food</id>
 		<radius>20</radius>
 		<height>16</height>
 		<icon>3</icon>
-		<r>4</r>
-		<g>152</g>
-		<b>0</b>
+		<r>80</r>
+		<g>160</g>
+		<b>80</b>
 	</actor>
 	<actor>
-		<name>Medikit</name>
+		<name>First Aid</name>
 		<id>Medikit</id>
 		<radius>20</radius>
 		<height>16</height>
 		<icon>3</icon>
 		<r>192</r>
-		<g>192</g>
-		<b>192</b>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 
 	<actor>
@@ -191,8 +191,8 @@
 		<height>16</height>
 		<icon>1</icon>
 		<r>0</r>
-		<g>168</g>
-		<b>168</b>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Box of Bullets</name>
@@ -200,61 +200,61 @@
 		<radius>20</radius>
 		<height>16</height>
 		<icon>1</icon>
-		<r>4</r>
-		<g>152</g>
-		<b>0</b>
+		<r>0</r>
+		<g>160</g>
+		<b>80</b>
 	</actor>
 
 	<actor>
+		<name>Machine Gun</name>
 		<id>MachineGun</id>
 		<radius>20</radius>
 		<height>16</height>
-		<name>Machine Gun</name>
 		<icon>2</icon>
 		<r>0</r>
-		<g>168</g>
-		<b>168</b>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
+		<name>Chaingun</name>
 		<id>GatlingGun</id>
 		<radius>20</radius>
 		<height>16</height>
-		<name>Chaingun</name>
 		<icon>2</icon>
-		<r>252</r>
-		<g>180</g>
+		<r>160</r>
+		<g>160</g>
 		<b>0</b>
 	</actor>
 	<actor>
+		<name>Chaingun + Machine Gun</name>
 		<id>GatlingGunUpgrade</id>
 		<radius>20</radius>
 		<height>16</height>
-		<name>Chaingun+Machinegun</name>
 		<icon>2</icon>
-		<r>252</r>
-		<g>180</g>
+		<r>160</r>
+		<g>160</g>
 		<b>0</b>
 	</actor>
 
 	<actor>
+		<name>Gold Key</name>
 		<id>GoldKey</id>
 		<radius>20</radius>
 		<height>16</height>
-		<name>Golden Key</name>
 		<icon>4</icon>
-		<r>180</r>
-		<g>172</g>
+		<r>160</r>
+		<g>160</g>
 		<b>0</b>
 	</actor>
 	<actor>
+		<name>Silver Key</name>
 		<id>SilverKey</id>
 		<radius>20</radius>
 		<height>16</height>
-		<name>Silver Key</name>
 		<icon>4</icon>
 		<r>0</r>
-		<g>180</g>
-		<b>180</b>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 
 	<actor>
@@ -263,8 +263,8 @@
 		<radius>20</radius>
 		<height>16</height>
 		<icon>5</icon>
-		<r>180</r>
-		<g>172</g>
+		<r>160</r>
+		<g>160</g>
 		<b>0</b>
 	</actor>
 	<actor>
@@ -273,8 +273,8 @@
 		<radius>20</radius>
 		<height>16</height>
 		<icon>5</icon>
-		<r>228</r>
-		<g>216</g>
+		<r>192</r>
+		<g>128</g>
 		<b>0</b>
 	</actor>
 	<actor>
@@ -282,9 +282,9 @@
 		<id>ChestofJewels</id>
 		<radius>20</radius>
 		<height>16</height>
-		<r>252</r>
-		<g>136</g>
-		<b>32</b>
+		<r>224</r>
+		<g>96</g>
+		<b>0</b>
 		<icon>5</icon>
 	</actor>
 	<actor>
@@ -292,9 +292,9 @@
 		<id>Crown</id>
 		<radius>20</radius>
 		<height>16</height>
-		<r>252</r>
-		<g>92</g>
-		<b>92</b>
+		<r>255</r>
+		<g>64</g>
+		<b>64</b>
 		<icon>5</icon>
 	</actor>
 
@@ -305,8 +305,8 @@
 		<height>16</height>
 		<icon>6</icon>
 		<r>0</r>
-		<g>140</g>
-		<b>228</b>
+		<g>128</g>
+		<b>255</b>
 	</actor>
 	<actor>
 		<name>Spear of Destiny</name>
@@ -314,9 +314,9 @@
 		<radius>20</radius>
 		<height>16</height>
 		<icon>6</icon>
-		<r>252</r>
-		<g>224</g>
-		<b>52</b>
+		<r>255</r>
+		<g>192</g>
+		<b>0</b>
 	</actor>
 
 	<actor>
@@ -325,9 +325,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>7</icon>
-		<r>0</r>
-		<g>224</g>
-		<b>0</b>
+		<r>64</r>
+		<g>192</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Red Ceiling Lamp</name>
@@ -335,9 +335,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>7</icon>
-		<r>252</r>
-		<g>92</g>
-		<b>92</b>
+		<r>255</r>
+		<g>128</g>
+		<b>128</b>
 	</actor>
 	<actor>
 		<name>Chandelier</name>
@@ -345,9 +345,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>7</icon>
-		<r>252</r>
-		<g>248</g>
-		<b>92</b>
+		<r>192</r>
+		<g>192</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Floor Lamp</name>
@@ -355,9 +355,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>0</r>
-		<g>224</g>
-		<b>0</b>
+		<r>64</r>
+		<g>192</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>White Column</name>
@@ -375,9 +375,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>188</r>
-		<g>120</g>
-		<b>72</b>
+		<r>192</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Table with Chairs</name>
@@ -385,9 +385,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>188</r>
-		<g>120</g>
-		<b>72</b>
+		<r>192</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Suit of Armor</name>
@@ -396,8 +396,8 @@
 		<height>64</height>
 		<icon>9</icon>
 		<r>0</r>
-		<g>180</g>
-		<b>180</b>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Nazi Flag</name>
@@ -405,9 +405,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>252</r>
-		<g>0</g>
-		<b>0</b>
+		<r>192</r>
+		<g>64</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Spear Rack</name>
@@ -415,9 +415,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>188</r>
-		<g>120</g>
-		<b>72</b>
+		<r>192</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Basket</name>
@@ -425,9 +425,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
-		<r>188</r>
-		<g>120</g>
-		<b>72</b>
+		<r>192</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Vase</name>
@@ -435,9 +435,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>32</r>
-		<g>36</g>
-		<b>252</b>
+		<r>64</r>
+		<g>128</g>
+		<b>192</b>
 	</actor>
 	<actor>
 		<name>Brown Plant</name>
@@ -445,9 +445,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>116</r>
-		<g>76</g>
-		<b>40</b>
+		<r>192</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Green Plant</name>
@@ -455,9 +455,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>4</r>
-		<g>152</g>
-		<b>0</b>
+		<r>64</r>
+		<g>192</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Wooden Barrel</name>
@@ -465,9 +465,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>188</r>
-		<g>120</g>
-		<b>72</b>
+		<r>192</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Green Barrel</name>
@@ -475,9 +475,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>4</r>
-		<g>152</g>
-		<b>0</b>
+		<r>64</r>
+		<g>192</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Empty Well</name>
@@ -485,9 +485,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>168</r>
-		<g>168</g>
-		<b>168</b>
+		<r>160</r>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Well with Water</name>
@@ -495,9 +495,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>156</r>
-		<g>156</g>
-		<b>252</b>
+		<r>160</r>
+		<g>160</g>
+		<b>192</b>
 	</actor>
 	<actor>
 		<name>Puddle of Water</name>
@@ -505,9 +505,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
-		<r>32</r>
-		<g>36</g>
-		<b>252</b>
+		<r>64</r>
+		<g>128</g>
+		<b>192</b>
 	</actor>
 	<actor>
 		<name>Hanging Vines</name>
@@ -515,9 +515,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
-		<r>4</r>
-		<g>152</g>
-		<b>0</b>
+		<r>64</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Truck Rear</name>
@@ -535,9 +535,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>228</r>
-		<g>108</g>
-		<b>0</b>
+		<r>255</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Hanging Cage</name>
@@ -545,9 +545,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>228</r>
-		<g>108</g>
-		<b>0</b>
+		<r>255</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Cage with Skeleton</name>
@@ -555,9 +555,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>228</r>
-		<g>108</g>
-		<b>0</b>
+		<r>255</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Cage with Gore</name>
@@ -565,9 +565,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>228</r>
-		<g>108</g>
-		<b>0</b>
+		<r>255</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Cage with Skulls</name>
@@ -575,9 +575,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>228</r>
-		<g>108</g>
-		<b>0</b>
+		<r>255</r>
+		<g>128</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Dead Guard</name>
@@ -585,9 +585,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
-		<r>156</r>
-		<g>76</g>
-		<b>0</b>
+		<r>192</r>
+		<g>64</g>
+		<b>64</b>
 	</actor>
 	<actor>
 		<name>Pile of Bones 1</name>
@@ -595,9 +595,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
-		<r>168</r>
-		<g>168</g>
-		<b>168</b>
+		<r>160</r>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Pile of Bones 2</name>
@@ -605,9 +605,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
-		<r>168</r>
-		<g>168</g>
-		<b>168</b>
+		<r>160</r>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Pile of Bones 3</name>
@@ -615,9 +615,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
-		<r>168</r>
-		<g>168</g>
-		<b>168</b>
+		<r>160</r>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Pile of Bones 4</name>
@@ -625,9 +625,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
-		<r>168</r>
-		<g>168</g>
-		<b>168</b>
+		<r>160</r>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Skeleton</name>
@@ -635,9 +635,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>8</icon>
-		<r>168</r>
-		<g>168</g>
-		<b>168</b>
+		<r>160</r>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Skewered Skulls</name>
@@ -645,9 +645,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>168</r>
-		<g>168</g>
-		<b>168</b>
+		<r>160</r>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Impaled Cow Skull</name>
@@ -655,9 +655,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>252</r>
-		<g>0</g>
-		<b>0</b>
+		<r>160</r>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Well with Blood</name>
@@ -665,9 +665,9 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>252</r>
-		<g>156</g>
-		<b>156</b>
+		<r>192</r>
+		<g>160</g>
+		<b>160</b>
 	</actor>
 	<actor>
 		<name>Satan Statue</name>
@@ -675,8 +675,8 @@
 		<radius>32</radius>
 		<height>64</height>
 		<icon>9</icon>
-		<r>168</r>
-		<g>168</g>
-		<b>168</b>
+		<r>192</r>
+		<g>192</g>
+		<b>192</b>
 	</actor>
 </wolfactors>
